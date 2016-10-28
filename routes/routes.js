@@ -1,3 +1,5 @@
+var user = require('../user/user.js');
+
 module.exports = function(app) {
 
     app.get('/', function(req, res)
@@ -7,45 +9,51 @@ module.exports = function(app) {
         res.sendFile(__dirname + '/index.html');
     });
 
-
-    var nodemailer = require('nodemailer');
- 
-	// create reusable transporter object using the default SMTP transport 
-	var transporter = nodemailer.createTransport({
-	    service: 'gmail',
-	    auth: {
-	        user: 'noreplycmpt470group6@gmail.com', 
-	        pass: 'aAcmpt470'
-	    }
-	});
-	 
-	// setup e-mail data with unicode symbols 
-	var mailOptions = {
-	    from: '"DoNotReply" <noreplycmpt470group6@gmail.com>', // sender address 
-	    to: '1165637488@qq.com', // list of receivers 
-	    subject: 'Please confirm your email', // Subject line 
-	    text: 'Please click on this link to verify your email', // plaintext body 
-	    html: '<b>Hello world 🐴</b>' // html body 
-	};
-
-	app.get('/emailtest', function(req, res)
+	app.post('/user/register',function(req, res)
     {
+        console.log("-> register called");
 
-    	transporter.sendMail(mailOptions, function(error, info){
-	    	if(error){
-	        	return console.log(error);
-	    	}
-	    	console.log('Message sent: ' + info.response);
-		});
+        var email = req.body.email;
+        var password = req.body.password;
+        var nickname = req.body.nickname;
 
-        res.send("try to send email");
+        user.register(email, password, nickname, function (found) {
+            console.log(found);
+            res.json(found);
+        });
+	});
+
+	app.post('/user/login',function(req, res)
+    {
+        var sess = req.session;
+        console.log("-> login called");
+        console.log("** session_id: " + sess.id);
+
+        var email = req.body.email;
+        var password = req.body.password;
+
+        user.login(sess,email,password,function (found){
+            console.log(found);
+            res.json(found);
+            console.log("** user_id: " + sess.user_id);
+        });
+	});
+
+    app.get('/user/verify', function(req, res)
+    {
+        console.log("-> verify called");
+
+		if(req.param("id")){
+			var id = req.param("id");
+			user.verify(id,function (found){
+				console.log(found);
+				res.json(found);
+        	});
+
+		}else{
+			res.status(400);
+			res.send('Invalid Request');
+		}
     });
- 
-	// send mail with defined transport object 
-	//transporter.sendMail(mailOptions, function(error, info){
-	//    if(error){
-	//        return console.log(error);
-	//    }
-	//    console.log('Message sent: ' + info.response);
-	//});
+
 };
