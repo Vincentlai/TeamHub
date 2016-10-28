@@ -4,13 +4,32 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "ubuntu/xenial64"
+
+  # Install necessary stuff for node.js
+  config.vm.provision "shell", inline: 
+  <<-SHELL
+  apt-get update
+  apt-get install -y g++
+  curl -sL https://deb.nodesource.com/setup_0.12 | sh
+  apt-get install -y nodejs
+  su vagrant
+  mkdir /home/vagrant/node_modules
+  cd /home/ubuntu/project
+  ln -s /home/vagrant/node_modules/ node_modules
+  npm install karma
+  npm install forever -g
+  SHELL
+
+  # Run the script that make server to run forever 
+  config.vm.provision :shell, path: "shell_script/run_forever.sh", run: 'always'
+
+  config.vm.box = "ubuntu/trusty64"
   config.vm.box_version = '>= 20160921.0.0'
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
-  # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network "forwarded_port", guest: 80, host: 8080
+  # accessing "localhost:8080" will access port 8080 on the guest machine.
+  config.vm.network "forwarded_port", guest: 8080, host: 8080
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -47,14 +66,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     cloudstack.name = "cmpt470-#{File.basename(Dir.getwd)}-#{Random.new.rand(100)}"
     cloudstack.ssh_user = "ubuntu"
     cloudstack.security_group_names = ['CMPT 470 firewall']
-  end
-
-  # Enable provisioning with chef solo, specifying a cookbooks path, roles
-  # path, and data_bags path (all relative to this Vagrantfile), and adding
-  # some recipes and/or roles.
-  config.vm.provision "chef_solo" do |chef|
-    chef.cookbooks_path = "chef/cookbooks"
-    chef.add_recipe "baseconfig"
   end
 
 end
