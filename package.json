@@ -6,6 +6,7 @@
     "connect": "~2.14.4",
     "cookie-parser": "^1.4.2",
     "express": "^4.10.2",
-    "express-session": "latest"
+    "express-session": "latest",
+    "nodemailer": "^2.6.4"
   }
 }
