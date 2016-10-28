@@ -39,6 +39,18 @@ module.exports = function(app) {
         });
 	});
 
+	app.post('/user/logout', function(req, res)
+    {
+        var sess = req.session;
+        console.log("-> logout is called");
+        console.log("** session_id: " + sess.id);
+        console.log("** user_id: " + sess.user_id + " destroyed" + "\n");
+        
+        user.logout(sess, function(found) {
+            res.json(found);
+        });
+	});
+
     app.get('/user/verify', function(req, res)
     {
         console.log("-> verify called");

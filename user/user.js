@@ -197,6 +197,37 @@ exports.login = function(sess,email,password,callback) {
 }
 
 
+/* PATH: host_url:8080/user/logout
+ *
+ * INPUT: None
+ * 
+ * OUTPUT:
+ *  JSON Object that contains
+ *  'code' : respond code
+ *  'msg' : respond message
+ *  'session_id' : a session id will be provided (only for debug purposes)
+ *
+ *  1 -> Successfully logged out
+ *  -1 -> You haven't been logged in yet
+ */
+exports.logout = function(sess, callback){
+    if(sess.user_id !== undefined) {
+        sess.destroy(function (err) {
+            callback({
+                'code': "1",
+                'msg': "Successfully logged out",
+                'session_id': sess.id
+            });
+        });
+    }else{
+        callback({
+            'code': "-1",
+            'msg': "You haven't been logged in yet",
+            'session_id': sess.id
+        });
+    }
+}
+
 /* PATH: host_url:8080/user/verify?id=12345678910 (GET)
  *
  * INPUT:
