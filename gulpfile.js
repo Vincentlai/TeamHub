@@ -32,12 +32,10 @@ gulp.task('clean', function (cb) {
 });
 
 gulp.task('default', function () {
-    gulp.run('clean');
+    // gulp.run('clean');
     gulp.run('styles');
     gulp.watch('./src/less/*.less', function(){
         gulp.run('styles');
     });
     gulp.watch(['public/css/*']).on('change', livereload.changed);
 });
-
-

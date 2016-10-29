@@ -1,15 +1,9 @@
 var user = require('../user/user.js');
+var express = require('express');
+var path = require('path');
+var router = express.Router();
 
-module.exports = function(app) {
-
-    app.get('/', function(req, res)
-    {
-        console.log("-> a user visited the page");
-        console.log("** session_id: " + req.session.id);
-        res.sendFile(__dirname + '/index.html');
-    });
-
-	app.post('/user/register',function(req, res)
+	router.post('/user/register',function(req, res)
     {
         console.log("-> register called");
 
@@ -23,7 +17,7 @@ module.exports = function(app) {
         });
 	});
 
-	app.post('/user/login',function(req, res)
+	router.post('/user/login',function(req, res)
     {
         var sess = req.session;
         console.log("-> login called");
@@ -39,7 +33,7 @@ module.exports = function(app) {
         });
 	});
 
-	app.post('/user/logout', function(req, res)
+	router.post('/user/logout', function(req, res)
     {
         var sess = req.session;
         console.log("-> logout is called");
@@ -51,7 +45,7 @@ module.exports = function(app) {
         });
 	});
 
-    app.get('/user/verify', function(req, res)
+    router.get('/user/verify', function(req, res)
     {
         console.log("-> verify called");
 
@@ -68,4 +62,11 @@ module.exports = function(app) {
 		}
     });
 
-};
+    router.get('/', function(req, res)
+    {
+        console.log("-> a user visited the page");
+        console.log("** session_id: " + req.session.id);
+        res.sendFile(path.join(__dirname, '../public/views/', 'index.html'));
+    });
+
+module.exports = router;
