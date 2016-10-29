@@ -21,7 +21,7 @@ gulp.task('styles', function () {
 });
 
 // gulp.task('scripts', function () {
-//    return gulp.src('public/js/*.js')
+//    return gulp.src('public/javascript/*.javascript')
 //        .pipe(jshint('.jshintrc'))
 //        .pipe(jshint.reporter('default'))
 //        .pipe(notify({message: 'scripts task complete'}));
@@ -32,7 +32,7 @@ gulp.task('clean', function (cb) {
 });
 
 gulp.task('default', function () {
-    // gulp.run('clean');
+    gulp.run('clean');
     gulp.run('styles');
     gulp.watch('./src/less/*.less', function(){
         gulp.run('styles');
