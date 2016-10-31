@@ -41,6 +41,6 @@
 	**Database: cmpt470db  
     User Name: dev  
 	Password: cmpt470
-  Auth Mechanism: use default (or either one should work)** 
+    Auth Mechanism: use default (Win)/ use MONGODB-CR(Mac)** 
 5. Click on `Save`
 6. Click on `Connect`
