@@ -1,0 +1,73 @@
+html {
+  background: none;
+}
+body {
+  background-image: url("/images/banner.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
+.clearfix:after,
+.clearfix:before {
+  content: '';
+  clear: both;
+  display: table;
+}
+.nav-bar {
+  width: 1024px;
+  margin: 30px auto;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(225, 225, 225, 0.8);
+  line-height: 2em;
+}
+.nav-bar * {
+  display: inline-block;
+  text-align: center;
+}
+.nav-bar .logo {
+  float: left;
+  margin: 0 10px;
+  font-size: 1.5em;
+}
+.nav-bar ul {
+  float: right;
+  margin-bottom: 0;
+}
+.nav-bar ul li {
+  margin-right: 10px;
+}
+.nav-bar ul li a {
+  color: white;
+  font-weight: bold;
+  width: 130px;
+  border: .5px solid white;
+  border-radius: 2em;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+.nav-bar ul li a.nav-link:hover {
+  color: #3F51B5;
+  border-color: #3F51B5;
+}
+.nav-bar ul li a.important {
+  color: #fc7169;
+  border-color: #fc7169;
+}
+.nav-bar ul li a.important:hover {
+  text-decoration: none;
+  background: #fc7169;
+  color: white;
+}
+.md-input-message-animation {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.md-block {
+  margin: 30px 0;
+}
+.md-input {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}

@@ -7,5 +7,6 @@
 Gemfile.lock
 log/*
 .bundle
-
+node_modules
+.idea
 .vscode
