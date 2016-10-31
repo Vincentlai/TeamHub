@@ -27,7 +27,7 @@ and open a new terminal to run next step**
 5.  Browse http://localhost:8080/ to see the site 
 
 
-## How to run 
+## How to run on VM(Vagrant)
 
 1. Make sure you've installed Vagrant
 2. Clone this repository
