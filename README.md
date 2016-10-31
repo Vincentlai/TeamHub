@@ -19,7 +19,7 @@
 
 ## How to run on local
 1. `git pull`
-2. `npm install` --- **You might need to run this command multiple times if errors occur
+2. `npm install` --- **You might need to run this command multiple times if errors occur**
 3. `gulp styles`  --- **If you are going to modify the .less files 
 run `gulp` instead of `gulp styles`
 and open a new terminal to run next step**
