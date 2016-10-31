@@ -1,26 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="myApp">
 <head>
-    <meta charset="UTF-8">
-    <script src="/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="/angular/angular.min.js"></script>
-    <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="/angular-ui-router/release/angular-ui-router.min.js"></script>
-    <!--<script src="/bootstrap-material-design/javascript/bootstrapMaterialDesign.javascript"></script>-->
-    <script src="/js/controllers/main.js"></script>
-    <link rel="stylesheet" href="/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/bootstrap-material-design/dist/bootstrap-material-design.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/reset.css">
-    <link rel="stylesheet" type="text/css" href="/css/main.css">
-    <title><%= title %></title>
+    <% include partials/head.ejs %>
 </head>
 <body>
-    <header class="nav-bar clearfix" ng-app="myApp">
-        <div class="logo">LOGO</div>
-        <ul>
-            <li ><a class="nav-link" href="#">HOME</a></li>
-            <li ><a class="important" href="#">SIGN UP</a></li>
-        </ul>
+    <header>
+        <% include partials/header.ejs %>
     </header>
+    <div class="container">
+        <div class="row">
+            <ui-view>
+            </ui-view>
+        </div>
+    </div>
+
 </body>
 </html>

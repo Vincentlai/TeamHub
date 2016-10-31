@@ -10,6 +10,7 @@ var path = require('path');
 
 // Configuration 
 app.use(express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname + '/views')));
 app.use(express.static(__dirname + '/bower_components'));
 app.use(connect.logger('dev')); 
 app.use(connect.json()); 
