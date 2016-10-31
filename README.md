@@ -17,6 +17,16 @@
 - Instant group chat
 - File sharing
 
+## How to run on local
+1. `git pull`
+2. `node install`
+3. `gulp styles`  --- **If you are going to modify the .less files 
+run `gulp` instead of `gulp styles`
+and open a new terminal to run next step**
+4. `node app.js`
+5.  Browse http://localhost:8080/ to see the site 
+
+
 ## How to run 
 
 1. Make sure you've installed Vagrant

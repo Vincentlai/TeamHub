@@ -30,11 +30,13 @@ app.use(session);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-//routes
-var routes = require('./routes/index');
-var users = require('./routes/users');
-app.use('/', routes);
-app.use('/users', users);
+//create a new route file
+var routes = require('./routes/index');// a route file manage the index page
+var users = require('./routes/users');// a route file that manage the user api
+
+//set prefix url of route file
+app.use('/', routes);//back end do not need to change this file
+app.use('/users', users);// all api url starts with /users will config in users.js
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

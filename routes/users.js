@@ -4,7 +4,12 @@
 var express = require('express');
 var router = express.Router();
 var user = require('../user/user.js');
-
+/*
+    all url here will start with /users
+    For example:
+        router.post('/login',.......)
+        will match /users/login
+ */
 /* GET users listing. */
 router.get('/', function(req, res, next) {
     res.send('respond with a resource');
