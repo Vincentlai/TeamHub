@@ -5,7 +5,8 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     console.log("-> a user visited the page");
     console.log("** session_id: " + req.session.id);
-    res.render('index');
+    res.sendFile(index.html);
+    // res.render('index');
 });
 
 module.exports = router;
