@@ -1,6 +1,3 @@
-/**
- * Created by Qiang Lai on 2016/10/28.
- */
 var express = require('express');
 var router = express.Router();
 var user = require('../controllers/user.js');
@@ -15,7 +12,7 @@ router.get('/', function(req, res, next) {
     res.send('respond with a resource');
 });
 
-/* PATH: host_url:8080/user/register (POST)
+/* PATH: host_url:8080/users/register (POST)
  *
  * INPUT:
  * 'email'
@@ -45,7 +42,7 @@ router.post('/register',function(req, res)
     });
 });
 
-/* PATH: host_url:8080/user/login (post)
+/* PATH: host_url:8080/users/login (post)
  *
  * INPUT:
  * 'email'
@@ -80,7 +77,7 @@ router.post('/login',function(req, res)
     });
 });
 
-/* PATH: host_url:8080/user/logout (POST)
+/* PATH: host_url:8080/users/logout (POST)
  *
  * INPUT: None
  * 
@@ -105,7 +102,7 @@ router.post('/logout', function(req, res)
     });
 });
 
-/* PATH: host_url:8080/user/verify?id=12345678910 (GET)
+/* PATH: host_url:8080/users/verify?id=12345678910 (GET)
  *
  * INPUT:
  * 'id' as param 
@@ -136,7 +133,7 @@ router.get('/verify', function(req, res)
     }
 });
 
-/* PATH: host_url:8080/user/is-exist?email=youremail@gmail.com (GET)
+/* PATH: host_url:8080/users/is-exist?email=youremail@gmail.com (GET)
  *
  * INPUT:
  * 'email' as param 
@@ -165,6 +162,38 @@ router.get('/is-exist', function(req, res)
         res.status(400);
         res.send('Invalid Request');
     }
+});
+
+
+/* PATH: host_url:8080/users/cpass (POST)
+ *
+ * INPUT: 'old_pwd'
+ *        'new_pwd'
+ * 
+ * OUTPUT:
+ *  JSON Object that contains
+ *  'code' : respond code
+ *  'msg' : respond message
+ *
+ *  1 -> Changed password successfully
+ *  -1 -> Incorrect old password
+ *  -2 -> New password is too short
+ *  -3 -> Error during change pwd
+ *  -9 -> No session, login required
+ *  -10 -> Missing fields
+ * 
+ */
+router.post('/cpass', function(req, res)
+{
+    var user_id = req.session.user_id;
+    var opass = req.body.old_pwd;
+    var npass = req.body.new_pwd;
+
+    console.log("-> cpass is called");
+
+    user.cpass(user_id, opass, npass, function(found) {
+        res.json(found);
+    });
 });
 
 module.exports = router;

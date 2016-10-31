@@ -76,7 +76,7 @@ exports.register = function(email, password, nickname, callback) {
                     to: email, // list of receivers 
                     subject: 'Please verify your email', // Subject line 
                     //text: 'Please click on this link to verify your email', // plaintext body 
-                    html: '<b> To verify your email please open this URL using the host machine http://localhost:8080/user/verify?id=' + user_id + '</b>' // html body 
+                    html: '<b> To verify your email please open this URL using the host machine http://localhost:8080/users/verify?id=' + user_id + '</b>' // html body 
                 };
 
                 // send email verification
@@ -225,5 +225,80 @@ exports.isExist = function(email,callback) {
             });
             return;
         }
+    });
+}
+
+exports.cpass = function(user_id,opass,npass,callback) {
+
+    if(!user_id){
+        callback({
+            'code': "-9",
+            'msg': "No session"
+        });
+        return;
+    }
+
+    if(!opass || !npass){
+        callback({
+            'code': "-10",
+            'msg': "Missing fields"
+        });
+        return;
+    }
+
+    var temp1 = rand(160, 36);
+    var newpass1 = temp1 + npass;
+    var hashed_passwordn = crypto.createHash('sha512').update(newpass1).digest("hex");
+
+    models.User.find({_id: user_id},function(err,users){
+
+        if(users.length != 0){
+
+            var temp = users[0].salt;
+            var hash_db = users[0].hashed_password; var newpass = temp + opass;
+            var hashed_password = crypto.createHash('sha512').update(newpass).digest("hex");
+
+            if(hash_db == hashed_password){
+                if (npass.length >= 6) {
+
+                    models.User.findOne({_id: user_id }, function (err, doc){
+                        doc.hashed_password = hashed_passwordn;
+                        doc.salt = temp1;
+                        doc.save();
+
+                        callback({
+                            'code': "1",
+                            'msg': "Password changed successfully"
+                        });
+                        return;
+                    });
+
+                }else{
+
+                        callback({
+                            'code': "-1",
+                            'msg': "New password is too short"
+                        });
+                        return;
+                }
+            }else{
+
+                        callback({
+                            'code': "-2",
+                            'msg': "Incorrect old password"
+                        });
+                        return;
+
+            }
+        }else{
+
+                        callback({
+                            'code': "-3",
+                            'msg': "Error occurs"
+                        });
+                        return;
+
+        }
+
     });
 }
