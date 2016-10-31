@@ -16,7 +16,10 @@
             $stateProvider
                 .state('home', {
                     url: "/",
-                    templateUrl: 'pages/login.ejs',
+                    views: {
+                        'navigation': {templateUrl:'partials/header.html'},
+                        'container': {templateUrl:'pages/login.html'}
+                    },
                     resolve: {
                         'title': ['$rootScope', function($rootScope){
                             $rootScope.title = "Home";
@@ -25,7 +28,10 @@
                 })
                 .state('signup', {
                     url: "/signup",
-                    templateUrl: 'pages/signup.ejs'
+                    views: {
+                        'navigation': {templateUrl:'partials/header.html'},
+                        'container': {templateUrl:'pages/signup.html'}
+                    }
                 });
         });
     module.config(function ($mdThemingProvider) {

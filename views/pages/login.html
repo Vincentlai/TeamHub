@@ -2,7 +2,7 @@
     <form ng-submit="User.login()" name="loginForm" class="md-title">
         <md-input-container class="md-block">
             <label>Email</label>
-            <input required type="email" name="email" ng-model="User.data.email" ng-pattern="/^.+@.+\..+$/"/>
+                <input required type="email" name="email" ng-model="User.data.email" ng-pattern="/^.+@.+\..+$/"/>
             <div ng-messages="loginForm.email.$error" role="alert">
                 <div ng-message="required">
                     Email cannot be empty.
@@ -14,7 +14,7 @@
         </md-input-container>
         <md-input-container class="md-block">
             <label>Password</label>
-            <input required name="password" ng-model="User.data.password">
+            <input type="password" required name="password" ng-model="User.data.password">
             <div ng-messages="loginForm.password.$error">
                 <div ng-message="required">
                     Password cannot be empty.
