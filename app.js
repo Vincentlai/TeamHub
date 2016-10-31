@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 var session = require("express-session")({
     secret: "aacd4d61-b4ee-4790-9faa-48236449b9d6",
-    cookie: { maxAge: 365 * 24 * 3600 * 1000 }, // session expires after one year
+    cookie: { maxAge: 7 * 24 * 3600 * 1000 }, // session expires after one week
     proxy: true,
     resave: true,
     saveUninitialized: true
