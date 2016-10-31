@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="angular-ui-router" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/bower_components/angular-ui-router" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/bower_components/angular-ui-router" />
+      <root url="file://$PROJECT_DIR$/bower_components/angular-ui-router" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>
