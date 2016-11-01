@@ -30,7 +30,7 @@ and open a new terminal to run next step**
 
 ## How to run on VM(Vagrant)
 
-1. Make sure that you've installed Vagrant
+1. Make sure that you've installed [Vagrant](https://www.vagrantup.com/) & [VirtualBox](https://www.virtualbox.org/)
 2. Clone this repository
 3. In terminal, run `$vagrant up`
 4. Wait for VM to finish booting up
