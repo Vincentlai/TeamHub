@@ -18,18 +18,19 @@
 - File sharing
 
 ## How to run on local
-1. `git pull`
-2. `npm install` --- **You might need to run this command multiple times if errors occur**
-3. `gulp styles`  --- **If you are going to modify the .less files 
+1. Make sure that you've installed [Node.js](https://nodejs.org/)
+2. `git pull`
+3. `npm install` --- **You might need to run this command multiple times if errors occur**
+4. `gulp styles`  --- **If you are going to modify the .less files 
 run `gulp` instead of `gulp styles`
 and open a new terminal to run next step**
-4. `node app.js`
-5.  Browse http://localhost:8080/ to see the site 
+5. `node app.js`
+6.  Browse http://localhost:8080/ to see the site 
 
 
 ## How to run on VM(Vagrant)
 
-1. Make sure you've installed Vagrant
+1. Make sure that you've installed Vagrant
 2. Clone this repository
 3. In terminal, run `$vagrant up`
 4. Wait for VM to finish booting up
