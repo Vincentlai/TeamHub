@@ -21,10 +21,6 @@
             <div ng-message="pattern">
                 Email invalid.
             </div>
-            <div ng-message="User.signup_failed">
-                failed
-            </div>
-
         </div>
 
     </md-input-container>
@@ -61,23 +57,20 @@
                 </div>
             </div>
         </md-input-container>
-        <md-input-container class="md-block">
-            <label>Confirm Password</label>
-            <input type="password"
-                   name="confirm-password"
-                   required
-                   ng-model="conform-password"
-                   checkPassword="User.data.password"
-            >
-            <div ng-messages="signupForm.confirm-password.$error">
-                <div ng-message="md-maxlength">
-                    Maximum length of password is 36.
-                </div>
-                <div ng-message="checkPassword">
-                    Password doesn't match.
-                </div>
-            </div>
-        </md-input-container>
+        <!--<md-input-container class="md-block">-->
+            <!--<label>Confirm Password</label>-->
+            <!--<input type="password"-->
+                   <!--name="confirm-password"-->
+                   <!--required-->
+                   <!--ng-model="conform-password"-->
+                   <!--checkPassword="User.data.password"-->
+            <!--&gt;-->
+            <!--<div ng-messages="signupForm.confirm-password.$error">-->
+                <!--<div ng-message="md-maxlength">-->
+                    <!--Maximum length of password is 36.-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</md-input-container>-->
         <div layout="row" layout-phone="column" layout-align="center">
             <md-button class="md-raised md-primary btn"
                        ng-disabled="signupForm.$invalid"

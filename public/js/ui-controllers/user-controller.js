@@ -33,25 +33,25 @@
             }
             me.signup = function() {
                 console.log('signup');
-            //     $http.post('/users/login', me.data)
-            //         .then(function (r) {
-            //             if (r.data.status == 1){
-            //                 me.msg = r.data.msg;
-            //                 me.error = true;
-            //                 $timeout(function () {
-            //                     me.error = false;
-            //                 }, 4000);
-            //             }else{
-            //                 me.msg = r.data.msg;
-            //                 me.error = true;
-            //                 $timeout(function () {
-            //                     me.error = false;
-            //                 }, 4000);
-            //             }
-            //         }, function (e) {
-            //             console.log(e.data);
-            //         });
-             }
+                $http.post('/users/register', me.data)
+                       .then(function (r) {
+                           if (r.data.status == 1){
+                               me.msg = r.data.msg;
+                               me.error = true;
+                               $timeout(function () {
+                                   me.error = false;
+                               }, 4000);
+                           }else{
+                               me.msg = r.data.msg;
+                               me.error = true;
+                               $timeout(function () {
+                                   me.error = false;
+                               }, 4000);
+                           }
+                       }, function (e) {
+                           console.log(e.data);
+                       });
+                 }
         }
     ]);
     module.controller('login', [
