@@ -13,7 +13,11 @@
                 console.log('login');
                 $http.post('/users/login', me.data)
                     .then(function (r) {
-                        console.log(r.data);
+                        if (r.data.status == 1){
+
+                        }else{
+                            me.login_failed == true;
+                        }
                     }, function (e) {
                         console.log(e.data);
                     });
