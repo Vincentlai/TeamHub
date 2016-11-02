@@ -1,8 +1,15 @@
-<div class="center-container col-md-6 col-md-offset-3" ng-controller="login" layout="column" ng-cloak>
+<div class="center-container col-md-6 col-md-offset-3" ng-controller="login" ng-cloak>
+    <div class="notify" ng-if="User.error">
+        <div class="notify-msg">
+            <i class="material-icons">info_outline</i>
+            <span>&nbsp;&nbsp;{{User.msg}}</span>
+        </div>
+    </div>
     <form ng-submit="User.login()" name="loginForm" class="md-title">
         <md-input-container class="md-block">
             <label>Email</label>
-                <input required type="email" name="email" ng-model="User.data.email" ng-pattern="/^.+@.+\..+$/"/>
+                <input required type="email" name="email" ng-model="User.data.email" ng-pattern="/^.+@.+\..+$/"
+                />
             <div ng-messages="loginForm.email.$error" role="alert">
                 <div ng-message="required">
                     Email cannot be empty.
@@ -10,6 +17,10 @@
                 <div ng-message="pattern">
                     Email invalid.
                 </div>
+                <div ng-message="User.login_failed">
+                    failed
+                </div>
+
             </div>
         </md-input-container>
         <md-input-container class="md-block">
