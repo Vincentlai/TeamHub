@@ -1,1 +1,88 @@
-<h1>signup</h1>
+<div class="center-container col-md-6 col-md-offset-3" ng-controller="signup" ng-cloak>
+    <div class="notify" ng-if="User.error">
+        <div class="notify-msg">
+            <i class="material-icons">info_outline</i>
+            <span>&nbsp;&nbsp;{{User.msg}}</span>
+        </div>
+    </div>
+    <form ng-submit="User.signup()" name="signupForm" class="md-title">
+        <md-input-container class="md-block">
+        <label>Email</label>
+        <input required
+               type="email"
+               name="email"
+               ng-model="User.data.email"
+               ng-pattern="/^.+@.+\..+$/"
+        />
+        <div ng-messages="signupForm.email.$error" role="alert">
+            <div ng-message="required">
+                Email cannot be empty.
+            </div>
+            <div ng-message="pattern">
+                Email invalid.
+            </div>
+            <div ng-message="User.signup_failed">
+                failed
+            </div>
+
+        </div>
+
+    </md-input-container>
+        <md-input-container class="md-block">
+            <label>Nickname</label>
+            <input name="nickname"
+                   required
+                   md-maxlength="16"
+                   md-minlength="3"
+                   ng-model="User.data.nickname"
+            />
+            <div ng-messages="signupForm.nickname.$error" role="alert">
+                <div ng-message="required">
+                    Nickname cannot be empty.
+                </div>
+            </div>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+            <label>Password</label>
+            <input type="password" required name="password"
+                   md-maxlength="36"
+                   md-minlength="6"
+                   ng-model="User.data.password">
+            <div ng-messages="signupForm.password.$error">
+                <div ng-message="required">
+                    Password cannot be empty.
+                </div>
+                <div ng-message="md-minlength">
+                    Minimum length of password is 6.
+                </div>
+                <div ng-message="md-maxlength">
+                    Maximum length of password is 36.
+                </div>
+            </div>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>Confirm Password</label>
+            <input type="password"
+                   name="confirm-password"
+                   required
+                   ng-model="conform-password"
+                   checkPassword="User.data.password"
+            >
+            <div ng-messages="signupForm.confirm-password.$error">
+                <div ng-message="md-maxlength">
+                    Maximum length of password is 36.
+                </div>
+                <div ng-message="checkPassword">
+                    Password doesn't match.
+                </div>
+            </div>
+        </md-input-container>
+        <div layout="row" layout-phone="column" layout-align="center">
+            <md-button class="md-raised md-primary btn"
+                       ng-disabled="signupForm.$invalid"
+                       type="submit">Sign up</md-button>
+        </div>
+    </form>
+</div>
+
