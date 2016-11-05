@@ -32,7 +32,7 @@ app.set('view engine', 'ejs');
 
 //create a new route file
 var routes = require('./routes/index');// a route file manage the index page
-var users = require('./routes/users');// a route file that manage the user api
+var users = require('./routes/userRoutes');// a route file that manage the user api
 
 //set prefix url of route file
 app.use('/', routes);//back end do not need to change this file
