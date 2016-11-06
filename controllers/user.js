@@ -228,6 +228,42 @@ exports.isExist = function(email,callback) {
     });
 }
 
+exports.myInfo = function(sess,callback) {
+
+    var user_id = sess.user_id;
+
+    if(!user_id){
+        
+        callback({
+            'code' : '-9',
+            'msg' : 'No session, please log in first'
+        });
+        return;
+    }
+
+    models.User.find({_id: user_id}, function (err, users) {
+
+        if (users.length != 0) {
+
+            callback({
+                'code': "1",
+                'msg': "Got my info Success",
+                'email': users[0].email,
+                'nickname': users[0].nickname
+            });
+            return;
+
+        } else {
+
+            callback({
+                'code': "-1",
+                'msg': "User not found"
+            });
+            return;
+        }
+    });
+}
+
 exports.cpass = function(user_id,opass,npass,callback) {
 
     if(!user_id){
