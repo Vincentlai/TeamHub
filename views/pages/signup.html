@@ -56,6 +56,26 @@
                     Maximum length of password is 36.
                 </div>
             </div>
+
+        </md-input-container>
+
+                <md-input-container class="md-block">
+            <label>Confirm Password</label>
+            <input type="password" required name="password"
+                   md-maxlength="36"
+                   md-minlength="6"
+                   ng-model="User.data.cpassword">
+            <div ng-messages="signupForm.password.$error">
+                <div ng-message="required">
+                    Confirm Password cannot be empty.
+                </div>
+                <div ng-message="md-minlength">
+                    Minimum length of password is 6.
+                </div>
+                <div ng-message="md-maxlength">
+                    Maximum length of password is 36.
+                </div>
+            </div>
         </md-input-container>
         <!--<md-input-container class="md-block">-->
             <!--<label>Confirm Password</label>-->

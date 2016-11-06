@@ -32,11 +32,13 @@ app.set('view engine', 'ejs');
 
 //create a new route file
 var routes = require('./routes/index');// a route file manage the index page
-var users = require('./routes/users');// a route file that manage the user api
+var userRoutes = require('./routes/userRoutes');// a route file that manage the user api
+var teamRoutes = require('./routes/teamRoutes'); 
 
 //set prefix url of route file
 app.use('/', routes);//back end do not need to change this file
-app.use('/users', users);// all api url starts with /users will config in users.js
+app.use('/users', userRoutes);// all api url starts with /users will config in users.js
+app.use('/teams', teamRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

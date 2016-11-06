@@ -6,7 +6,15 @@ var userSchema = mongoose.Schema({
     hashed_password: String,
     nickname: String,
     is_verified: Boolean,
-    salt: String
+    salt: String,
+    teams: [String]
+});
+
+var teamSchema = mongoose.Schema({
+    name: String,
+    description: String,
+    creator_id: String,
+    users: [String]
 });
 
 //var chatContactSchema = mongoose.Schema({
@@ -25,11 +33,13 @@ var userSchema = mongoose.Schema({
 
 mongoose.connect('mongodb://dev:cmpt470@ec2-52-40-59-253.us-west-2.compute.amazonaws.com:27017/cmpt470db');
 var User = mongoose.model('user', userSchema);
+var Team = mongoose.model('team', teamSchema);
 //var ChatContact = mongoose.model('chat_contact', chatContactSchema);
 //var ChatHistory = mongoose.model('chat_history', chatHistorySchema);
 
 module.exports = {
-    User: User
+    User: User,
+    Team: Team
     //ChatHistory: ChatHistory,
     //ChatContact: ChatContact
 };

@@ -147,9 +147,9 @@ router.get('/verify', function(req, res)
  *  1 -> User found
  * -1 -> User not found
 */
-router.get('/is-exist', function(req, res)
+router.get('/is_exist', function(req, res)
 {
-    console.log("-> is-exist called");
+    console.log("-> is_exist called");
 
     if(req.param("email")){
         var email = req.param("email");
@@ -164,6 +164,17 @@ router.get('/is-exist', function(req, res)
     }
 });
 
+router.get('/my_info', function(req, res)
+{
+    console.log("-> myinfo called");
+
+    var sess = req.session;
+
+    user.myInfo(sess,function (found){
+        console.log(found);
+        res.json(found);
+    });
+});
 
 /* PATH: host_url:8080/users/cpass (POST)
  *
