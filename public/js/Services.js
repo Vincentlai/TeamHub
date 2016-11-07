@@ -14,6 +14,7 @@
                     $cookies.putObject('User',u);
                 },
                 isLoggedIn: function () {
+                    console.log('check log in');
                     return $cookies.getObject('User');
                 },
                 removeCookie: function () {
@@ -28,19 +29,7 @@
         'Auth',
         function ($http, Auth) {
             this.checkCookie = function () {
-                $http.get('/users/my_info')
-                    .then(function (res) {
-                            if (res.data.code == 1) {
-                                var user = {
-                                    'email': res.data.email,
-                                    'nickname': res.data.nickname
-                                };
-                                Auth.setCookie(user);
-                            }
-                        }, function (error) {
-                            console.log('Error in Auth. ' + error);
-                        }
-                    );
+
             }
         }
 

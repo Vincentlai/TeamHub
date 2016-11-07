@@ -27,7 +27,7 @@
         '$state',
         '$http',
        function ($scope, Auth, $state, $http) {
-           $scope.isLoggedin = Auth.isLoggedIn();
+           $scope.isLoggedin = $state.current.authenticated;
            $scope.logout = function () {
                $http.post('/users/logout')
                    .then(
