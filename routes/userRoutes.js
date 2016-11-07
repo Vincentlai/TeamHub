@@ -2,13 +2,13 @@ var express = require('express');
 var router = express.Router();
 var user = require('../controllers/user.js');
 /*
-    all url here will start with /users
-    For example:
-        router.post('/login',.......)
-        will match /users/login
+ all url here will start with /users
+ For example:
+ router.post('/login',.......)
+ will match /users/login
  */
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', function (req, res, next) {
     res.send('respond with a resource');
 });
 
@@ -27,11 +27,9 @@ router.get('/', function(req, res, next) {
  * -1 -> Email already exists
  * -2 -> Invalid email format
  * -3 -> Password is too short
- * -4 -> Nickname is already taken
  * -10 -> Missing field
  */
-router.post('/register',function(req, res)
-{
+router.post('/register', function (req, res) {
     console.log("-> register called");
     var email = req.body.email;
     var password = req.body.password;
@@ -53,8 +51,6 @@ router.post('/register',function(req, res)
  *  JSON Object that contains
  *  'code' : respond code
  *  'msg' : respond message
- *  'email' : email
- *  'nickname' : nickname
  *  'session_id' : upon successful login a session id will be provided (only for debug purposes)
  *
  *
@@ -64,8 +60,7 @@ router.post('/register',function(req, res)
  * -3 -> Email not verified
  * -10 -> Missing field
  */
-router.post('/login',function(req, res)
-{
+router.post('/login', function (req, res) {
     var sess = req.session;
     console.log("-> login called");
     console.log("** session_id: " + sess.id);
@@ -73,7 +68,7 @@ router.post('/login',function(req, res)
     var email = req.body.email;
     var password = req.body.password;
 
-    user.login(sess,email,password,function (found){
+    user.login(sess, email, password, function (found) {
         console.log(found);
         res.json(found);
         console.log("** user_id: " + sess.user_id);
@@ -93,14 +88,13 @@ router.post('/login',function(req, res)
  *  1 -> Successfully logged out
  *  -1 -> You haven't been logged in yet
  */
-router.post('/logout', function(req, res)
-{
+router.post('/logout', function (req, res) {
     var sess = req.session;
     console.log("-> logout is called");
     console.log("** session_id: " + sess.id);
     console.log("** user_id: " + sess.user_id + " destroyed" + "\n");
 
-    user.logout(sess, function(found) {
+    user.logout(sess, function (found) {
         res.json(found);
     });
 });
@@ -118,19 +112,18 @@ router.post('/logout', function(req, res)
  *
  *  1 -> Successfully verified
  * -1 -> Invalid id
-*/
-router.get('/verify', function(req, res)
-{
+ */
+router.get('/verify', function (req, res) {
     console.log("-> verify called");
 
-    if(req.param("id")){
+    if (req.param("id")) {
         var id = req.param("id");
-        user.verify(id,function (found){
+        user.verify(id, function (found) {
             console.log(found);
             res.json(found);
         });
 
-    }else{
+    } else {
         res.status(400);
         res.send('Invalid Request');
     }
@@ -149,46 +142,29 @@ router.get('/verify', function(req, res)
  *
  *  1 -> User found
  * -1 -> User not found
-*/
-router.get('/is_exist', function(req, res)
-{
+ */
+router.get('/is_exist', function (req, res) {
     console.log("-> is_exist called");
 
-    if(req.param("email")){
+    if (req.param("email")) {
         var email = req.param("email");
-        user.isExist(email,function (found){
+        user.isExist(email, function (found) {
             console.log(found);
             res.json(found);
         });
 
-    }else{
+    } else {
         res.status(400);
         res.send('Invalid Request');
     }
 });
 
-/* PATH: host_url:8080/users/my_info (GET)
- *
- * INPUT: None
- * 
- * OUTPUT:
- *  JSON Object that contains
- *  'code' : respond code
- *  'msg' : respond message
- *  'email' : user email
- *  'nickname' : user nickname
- *
- *
- *  1 -> User found
- * -1 -> User not found
-*/
-router.get('/my_info', function(req, res)
-{
+router.get('/my_info', function (req, res) {
     console.log("-> myinfo called");
 
     var sess = req.session;
 
-    user.myInfo(sess,function (found){
+    user.myInfo(sess, function (found) {
         console.log(found);
         res.json(found);
     });
@@ -212,15 +188,14 @@ router.get('/my_info', function(req, res)
  *  -10 -> Missing fields
  * 
  */
-router.post('/cpass', function(req, res)
-{
+router.post('/cpass', function (req, res) {
     var user_id = req.session.user_id;
     var opass = req.body.old_pwd;
     var npass = req.body.new_pwd;
 
     console.log("-> cpass is called");
 
-    user.cpass(user_id, opass, npass, function(found) {
+    user.cpass(user_id, opass, npass, function (found) {
         res.json(found);
     });
 });

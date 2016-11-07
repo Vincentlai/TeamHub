@@ -31,12 +31,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 //create a new route file
-var routes = require('./routes/index');// a route file manage the index page
 var userRoutes = require('./routes/userRoutes');// a route file that manage the user api
 var teamRoutes = require('./routes/teamRoutes'); 
 
 //set prefix url of route file
-app.use('/', routes);//back end do not need to change this file
 app.use('/users', userRoutes);// all api url starts with /users will config in users.js
 app.use('/teams', teamRoutes);
 
@@ -46,16 +44,6 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
-
-if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
-    });
-}
 
 // production error handler
 // no stacktraces leaked to user

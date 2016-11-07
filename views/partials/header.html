@@ -1,10 +1,15 @@
 <!--I am the header of index page-->
 <!--I am the navigation bar-->
 
-<div class="nav-bar clearfix">
+<div class="nav-bar clearfix" ng-controller="headerCtrl">
     <div class="logo">LOGO</div>
-    <ul>
-        <li ><a class="nav-link" ui-sref="home">HOME</a></li>
-        <li ui-sref="signup"><a class="important" href="#">SIGN UP</a></li>
+    <ul ng-if="!(isLoggedin)">
+        <li><a class="nav-link" ui-sref="home">HOME</a></li>
+        <li><a class="nav-link" ui-sref="login">LOG IN</a></li>
+        <li><a class="important" ui-sref="signup">SIGN UP</a></li>
+    </ul>
+    <ul ng-if="isLoggedin">
+        <li><a class="nav-link" ui-sref="home">HOME</a></li>
+        <li><a class="nav-link" ng-click="logout()">LOG OUT</a></li>
     </ul>
 </div>
