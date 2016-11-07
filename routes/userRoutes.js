@@ -27,6 +27,7 @@ router.get('/', function(req, res, next) {
  * -1 -> Email already exists
  * -2 -> Invalid email format
  * -3 -> Password is too short
+ * -4 -> Nickname is already taken
  * -10 -> Missing field
  */
 router.post('/register',function(req, res)
@@ -52,6 +53,8 @@ router.post('/register',function(req, res)
  *  JSON Object that contains
  *  'code' : respond code
  *  'msg' : respond message
+ *  'email' : email
+ *  'nickname' : nickname
  *  'session_id' : upon successful login a session id will be provided (only for debug purposes)
  *
  *
@@ -164,6 +167,21 @@ router.get('/is_exist', function(req, res)
     }
 });
 
+/* PATH: host_url:8080/users/my_info (GET)
+ *
+ * INPUT: None
+ * 
+ * OUTPUT:
+ *  JSON Object that contains
+ *  'code' : respond code
+ *  'msg' : respond message
+ *  'email' : user email
+ *  'nickname' : user nickname
+ *
+ *
+ *  1 -> User found
+ * -1 -> User not found
+*/
 router.get('/my_info', function(req, res)
 {
     console.log("-> myinfo called");
