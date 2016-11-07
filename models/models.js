@@ -7,14 +7,22 @@ var userSchema = mongoose.Schema({
     nickname: String,
     is_verified: Boolean,
     salt: String,
-    teams: [String]
+    teams: [{
+        id: String,
+        name: String
+    }],
+    num_of_new_notif: Number,
+    notifications: [String]
 });
 
 var teamSchema = mongoose.Schema({
     name: String,
     description: String,
     creator_id: String,
-    users: [String]
+    users: [{
+        id: String,
+        nickname: String
+    }]
 });
 
 //var chatContactSchema = mongoose.Schema({

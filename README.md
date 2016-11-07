@@ -9,12 +9,12 @@
 - User registration
 - Update personal info(change pwd, etc)
 - Sign in/out
-- Create/delete groups
-- Invite/delete memebers to/from group with Email alert
-- Publish/delete new posts(text/pictures) in groups
+- Create/delete teams
+- Invite/delete memebers to/from team (Email alert maybe?)
+- Publish/delete new posts(text/pictures) in team
 - Comment on posts
 - Create new event/meeting using calendar
-- Instant group chat
+- Instant team chat
 - File sharing
 
 ## How to run on local
