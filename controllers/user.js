@@ -28,7 +28,7 @@ exports.register = function(email, password, nickname, callback) {
     if (!(password.length >= MIN_PWD_LENGTH)) {
         callback({
             'code': "-3",
-            'msg': "Password is too weak"
+            'msg': "Password is too short (minimum 6 characters)"
         });
         return;
     }
@@ -40,6 +40,9 @@ exports.register = function(email, password, nickname, callback) {
     var token = crypto.createHash('sha512').update(email + rand).digest("hex");
     var hashed_password = crypto.createHash('sha512').update(newpass).digest("hex");
 
+    email = email.trim();
+    nickname = nickname.trim();
+
     var newUser = new models.User
     ({
         token: token,
@@ -47,58 +50,77 @@ exports.register = function(email, password, nickname, callback) {
         hashed_password: hashed_password,
         nickname: nickname,
         is_verified: false,
-        salt: temp
+        salt: temp,
+        num_of_new_notif: 0
     });
 
     models.User.find({email: email},function(err,users){
 
     if(users.length == 0){
 
-        // save user to database
-        newUser.save(function (err, user_obj) {
+        models.User.find({nickname: nickname},function(err,users2){
 
-            if(!err){
+            if(users2.length == 0){
 
-                var user_id = user_obj.id;
+                // save user to database
+                newUser.save(function (err, user_obj) {
 
-                var nodemailer = require('nodemailer');
+                    if(!err){
 
-                var transporter = nodemailer.createTransport({
-                    service: 'gmail',
-                    auth: {
-                        user: 'noreplycmpt470group6@gmail.com', 
-                        pass: 'aAcmpt470'
+                        var user_id = user_obj.id;
+
+                        var nodemailer = require('nodemailer');
+
+                        var transporter = nodemailer.createTransport({
+                            service: 'gmail',
+                            auth: {
+                                user: 'noreplycmpt470group6@gmail.com', 
+                                pass: 'aAcmpt470'
+                            }
+                        });
+                        
+                        var mailOptions = {
+                            from: '"DoNotReply" <noreplycmpt470group6@gmail.com>', // sender address 
+                            to: email, // list of receivers 
+                            subject: 'Please verify your email', // Subject line 
+                            //text: 'Please click on this link to verify your email', // plaintext body 
+                            html: '<b> To verify your email please open this URL using the host machine http://localhost:8080/users/verify?id=' + user_id + '</b>' // html body 
+                        };
+
+                        // send email verification
+                        transporter.sendMail(mailOptions, function(error, info){
+                            if(error){
+                                return console.log(error);
+                            }
+                            console.log('Verifcation Email sent: ' + info.response);
+                        });
+
+                        callback({
+                            'code' : "1",
+                            'msg':"User registered, please verify your email"
+                        });
                     }
-                });
-                
-                var mailOptions = {
-                    from: '"DoNotReply" <noreplycmpt470group6@gmail.com>', // sender address 
-                    to: email, // list of receivers 
-                    subject: 'Please verify your email', // Subject line 
-                    //text: 'Please click on this link to verify your email', // plaintext body 
-                    html: '<b> To verify your email please open this URL using the host machine http://localhost:8080/users/verify?id=' + user_id + '</b>' // html body 
-                };
+                });                    
 
-                // send email verification
-                transporter.sendMail(mailOptions, function(error, info){
-                    if(error){
-                        return console.log(error);
-                    }
-                    console.log('Verifcation Email sent: ' + info.response);
-                });
+            
+            }else{
 
                 callback({
-                    'code' : "1",
-                    'msg':"User registered, please verify your email"
+                    'code' : "-4",
+                    'msg':"This nickname is already taken"
                 });
+
             }
-        });    
+
+        });
+   
 
     }else{
         callback({
             'code' : "-1",
-            'msg':"Email already exists"
+            'msg':"This Email already exists"
         });
+
     }});
 }
 
@@ -112,27 +134,31 @@ exports.login = function(sess,email,password,callback) {
         return;
     }
 
-    models.User.find({email: email}, function (err, users) {
+    models.User.findOne({email: email}, function (err, user_obj) {
 
-        if (users.length != 0) {
+        if (user_obj) {
             
-            var user_id = users[0].id;
-            var temp = users[0].salt;
-            var hash_db = users[0].hashed_password;
-            var id = users[0].token;
+            var user_id = user_obj.id;
+            var temp = user_obj.salt;
+            var hash_db = user_obj.hashed_password;
+            var id = user_obj.token;
             var newpass = temp + password;
             var hashed_password = crypto.createHash('sha512').update(newpass).digest("hex");
 
             if (hash_db == hashed_password) {
 
-                if(users[0].is_verified){
+                if(user_obj.is_verified){
 
                     // update user_id in session
-                    sess.user_id = users[0]._id;
+                    sess.user_id = user_obj._id;
+                    sess.nickname = user_obj.nickname;
+
 
                     callback({
                         'code': "1",
                         'msg': "Login Success",
+                        'email': email,
+                        'nickname': user_obj.nickname,
                         'session_id': sess.id
                     });
                 
