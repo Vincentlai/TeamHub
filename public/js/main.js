@@ -8,7 +8,9 @@
         'ui.router',
         'ngMaterial',
         'ngMessages',
-        'user-controller'
+        'user-controller',
+        'Services',
+        'ngCookies'
     ]);
     module
         .config(function ($stateProvider, $urlRouterProvider) {
@@ -17,21 +19,26 @@
                 .state('home', {
                     url: "/",
                     views: {
-                        'navigation': {templateUrl:'partials/header.html'},
-                        'container': {templateUrl:'pages/login.html'}
+                        'navigation': {templateUrl: 'partials/header.html'},
+                        'container': {templateUrl: 'pages/home.html'}
                     },
-                    resolve: {
-                        'title': ['$rootScope', function($rootScope){
-                            $rootScope.title = "Home";
-                        }]
-                    }
+                    authenticated: true
+                })
+                .state('login', {
+                    url: "/login",
+                    views: {
+                        'navigation': {templateUrl: 'partials/header.html'},
+                        'container': {templateUrl: 'pages/login.html'}
+                    },
+                    authenticated: false
                 })
                 .state('signup', {
                     url: "/signup",
                     views: {
-                        'navigation': {templateUrl:'partials/header.html'},
-                        'container': {templateUrl:'pages/signup.html'}
-                    }
+                        'navigation': {templateUrl: 'partials/header.html'},
+                        'container': {templateUrl: 'pages/signup.html'}
+                    },
+                    authenticated: false
                 });
         });
     module.config(function ($mdThemingProvider) {
@@ -41,5 +48,29 @@
             })
             .accentPalette('pink');
     });
+
+    module.run(['$rootScope',
+        '$state',
+        'Auth',
+        function ($rootScope, $state, Auth) {
+            // keep user logged in after page refresh
+            $rootScope.$on("$stateChangeStart",
+                function (event, toState, toParams, fromState, fromParams) {
+                    // redirect to login page if not logged in
+
+                    if (!Auth.isLoggedIn() && !Auth.checkCookie()) {
+                        if (toState.authenticated) {
+                            event.preventDefault();
+                            console.log('No user has logged in.');
+                            return $state.go('login');
+                        }
+                    } else {
+                        if (!toState.authenticated) {
+                            event.preventDefault();
+                        }
+                        // console.log(Auth.isLoggedIn().email + "is logged in ");
+                    }
+                });
+        }]);
 
 })();
