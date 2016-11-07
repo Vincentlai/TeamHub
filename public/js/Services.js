@@ -10,51 +10,41 @@
         '$cookies',
         function ($http, $cookies) {
             return {
-                setAccess: function () {
-                    $http.get('/users/my_info')
-                        .then(function (res) {
-                                if (res.data.code == 1) {
-                                    var user = {
-                                        'email': res.data.email,
-                                        'nickname': res.data.nickname
-                                    };
-                                    $cookies.putObject('User', user);
-                                }
-                            }, function (error) {
-                                console.log('Error in Auth. ' + error);
-                            }
-                        );
-                    // console.log($cookies.getObject('User'));
+                setCookie: function (u) {
+                    $cookies.putObject('User',u);
                 },
-
                 isLoggedIn: function () {
-                    var user = $cookies.getObject('User');
-                    console.log(user);
-                    return user;
+                    return $cookies.getObject('User');
                 },
-                checkCookie: function () {
-                    $http.get('/users/my_info')
-                        .then(function (res) {
-                                if (res.data.code == 1) {
-                                    var user = {
-                                        'email': res.data.email,
-                                        'nickname': res.data.nickname
-                                    };
-                                    $cookies.putObject('User', user);
-                                    return $cookies.getObject('User');
-                                }
-                            }, function (error) {
-                                console.log('Error in Auth. ' + error);
-                                return $cookies.getObject('User');
-                            }
-                        );
-
+                removeCookie: function () {
+                    $cookies.remove('User');
                 }
             }
         }
     ]);
 
+    module.service('AuthService',[
+        '$http',
+        'Auth',
+        function ($http, Auth) {
+            this.checkCookie = function () {
+                $http.get('/users/my_info')
+                    .then(function (res) {
+                            if (res.data.code == 1) {
+                                var user = {
+                                    'email': res.data.email,
+                                    'nickname': res.data.nickname
+                                };
+                                Auth.setCookie(user);
+                            }
+                        }, function (error) {
+                            console.log('Error in Auth. ' + error);
+                        }
+                    );
+            }
+        }
 
+    ]);
     module.service('UserService', [
         '$http',
         '$timeout',
@@ -68,15 +58,26 @@
                 $http.post('/users/login', me.data)
                     .then(function (r) {
                         if (r.data.code == 1) {
-                            Auth.setAccess();
-                            $state.go('home');
+                            $http.get('/users/my_info')
+                                .then(function (res) {
+                                        if (res.data.code == 1) {
+                                            var user = {
+                                                'email': res.data.email,
+                                                'nickname': res.data.nickname
+                                            };
+                                            Auth.setCookie(user);
+                                            $state.go('home');
+                                        }
+                                    }, function (error) {
+                                        console.log('Error in set access. ' + error);
+                                    }
+                                );
                         } else {
                             me.msg = r.data.msg;
                             me.error = true;
-                            me.error = false;
-                            // $timeout(function () {
-                            //     me.error = false;
-                            // }, 4000);
+                            $timeout(function () {
+                                me.error = false;
+                            }, 4000);
                         }
                     }, function (e) {
                         console.log(e.data);
@@ -89,17 +90,15 @@
                         if (r.data.code == 1) {
                             me.msg = r.data.msg;
                             me.error = true;
-                            me.error = false;
-                            // $timeout(function () {
-                            //     me.error = false;
-                            // }, 4000);
+                            $timeout(function () {
+                                me.error = false;
+                            }, 4000);
                         } else {
                             me.msg = r.data.msg;
                             me.error = true;
-                            me.error = false;
-                            // $timeout(function () {
-                            //     me.error = false;
-                            // }, 4000);
+                            $timeout(function () {
+                                me.error = false;
+                            }, 4000);
                         }
                     }, function (e) {
                         console.log(e.data);

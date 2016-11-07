@@ -52,21 +52,29 @@
     module.run(['$rootScope',
         '$state',
         'Auth',
-        function ($rootScope, $state, Auth) {
+        'AuthService',
+        function ($rootScope, $state, Auth, AuthService) {
             // keep user logged in after page refresh
             $rootScope.$on("$stateChangeStart",
                 function (event, toState, toParams, fromState, fromParams) {
                     // redirect to login page if not logged in
 
-                    if (!Auth.isLoggedIn() && !Auth.checkCookie()) {
+                    if (!Auth.isLoggedIn() && !AuthService.checkCookie()) {
                         if (toState.authenticated) {
                             event.preventDefault();
                             console.log('No user has logged in.');
                             return $state.go('login');
                         }
                     } else {
+                        console.log(Auth.isLoggedIn().email + "is logged in ");
                         if (!toState.authenticated) {
                             event.preventDefault();
+                            return $state.go('home');
+                            // if(fromState.name == ''){
+                            //     return $state.go('home');
+                            // }else{
+                            //     return $state.go(fromState.name);
+                            // }
                         }
                         // console.log(Auth.isLoggedIn().email + "is logged in ");
                     }
