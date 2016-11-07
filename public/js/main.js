@@ -53,19 +53,33 @@
         '$state',
         'Auth',
         'AuthService',
-        function ($rootScope, $state, Auth, AuthService) {
+        '$http',
+        function ($rootScope, $state, Auth, AuthService, $http) {
             // keep user logged in after page refresh
             $rootScope.$on("$stateChangeStart",
                 function (event, toState, toParams, fromState, fromParams) {
                     // redirect to login page if not logged in
-
-                    if (!Auth.isLoggedIn() && !AuthService.checkCookie()) {
-                        if (toState.authenticated) {
-                            event.preventDefault();
-                            console.log('No user has logged in.');
-                            return $state.go('login');
-                        }
-                    } else {
+                    if (!Auth.isLoggedIn()) {
+                        $http.get('/users/my_info')
+                            .then(function (res) {
+                                    if (res.data.code == 1) {
+                                        var user = {
+                                            'email': res.data.email,
+                                            'nickname': res.data.nickname
+                                        };
+                                        Auth.setCookie(user);
+                                    }else{
+                                        if (toState.authenticated) {
+                                            event.preventDefault();
+                                            console.log('No user has logged in.');
+                                            return $state.go('login');
+                                        }
+                                    }
+                                }, function (error) {
+                                    console.log('Error in Auth. ' + error);
+                                }
+                            );
+                    }else {
                         console.log(Auth.isLoggedIn().email + "is logged in ");
                         if (!toState.authenticated) {
                             event.preventDefault();
