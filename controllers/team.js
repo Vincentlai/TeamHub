@@ -50,7 +50,8 @@ exports.create = function(sess, name, description, callback) {
 
                         user_obj.teams.push({
                             id: newTeam.id,
-                            name: name
+                            name: name,
+                            is_creator: true
                         });
                         user_obj.save();
 
@@ -58,7 +59,7 @@ exports.create = function(sess, name, description, callback) {
 
                     callback({
                         'code': '1',
-                        'msg': 'Team '+team_obj.name+' has been created successfully'
+                        'msg': 'Team '+newTeam.name+' has been created successfully'
                     });
                     return;
                 }else{
@@ -231,9 +232,17 @@ exports.addUser = function(sess, team_id, user_id, message, callback) {
                         if (!found) {
 
                             // add user to user array in team doc
-                            team_obj.users.push({id: user_id, nickname: user_obj.nickname});
+                            team_obj.users.push({
+                                id: user_id,
+                                nickname: user_obj.nickname
+                            });
                             // add team to team array in user doc
-                            user_obj.teams.push({id: team_id, name: team_obj.name});
+                            user_obj.teams.push({
+                                id: team_id,
+                                name: team_obj.name,
+                                is_creator: false
+                            
+                            });
                             // increment new notication
                             user_obj.num_of_new_notif = user_obj.num_of_new_notif + 1;
                             // push new notifaction 
