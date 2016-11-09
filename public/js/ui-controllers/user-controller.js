@@ -6,60 +6,56 @@
     var module = angular.module('user-controller', []);
 
     module.controller('login', [
-        '$scope',
-        'UserService',
+            '$scope',
+            'UserService',
             function ($scope, UserService) {
                 $scope.User = UserService;
             }
         ]
     );
     module.controller('signup', [
-        '$scope',
-        'UserService',
+            '$scope',
+            'UserService',
             function ($scope, UserService) {
                 $scope.User = UserService;
             }
         ]
     );
-    module.controller('headerCtrl',[
+    module.controller('headerCtrl', [
         '$scope',
         'Auth',
         '$state',
         '$http',
-       function ($scope, Auth, $state, $http) {
-           $scope.isLoggedin = $state.current.authenticated;
-           $scope.logout = function () {
-               $http.post('/users/logout')
-                   .then(
-                       function (res) {
-                           if(res.data.code == 1){
-                               Auth.removeCookie();
-                               $state.go('login');
-                               console.log('remove user');
-                           }
-                           return res.data.code;
-                       }, function (error) {
-                           console.log('Error occurs in Logout' + error);
-                       }
-                   )
-           }
-       }
-    ]);
-    var checkPassword = function () {
-        return {
-            require: "ngModel",
-            scope: {
-                otherModelVale: "=checkPassword"
-            },
-            link: function (scope, element, attributes, ngModel) {
-                ngModel.$validators.checkPassword = function (value) {
-                    return value == scope.otherModelVale;
-                };
-                scope.$watch("otherModelValue", function () {
-                    ngModel.$validate();
-                });
+        function ($scope, Auth, $state, $http) {
+            $scope.isLoggedin = $state.current.authenticated;
+            $scope.logout = function () {
+                $http.post('/users/logout')
+                    .then(
+                        function (res) {
+                            if (res.data.code == 1) {
+                                Auth.removeCookie();
+                                $state.go('login');
+                                console.log('remove user');
+                            }
+                            return res.data.code;
+                        }, function (error) {
+                            console.log('Error occurs in Logout' + error);
+                        }
+                    )
             }
         }
-    };
-    module.directive('checkPassword', checkPassword);
+    ]);
+    module.directive("equalTo", function () {
+        return {
+            require: "ngModel",
+            link: function (scope, ele, attrs, ctrl) {
+
+                console.log(scope);//打印当前作用域
+                console.log(attrs);//打印当前标签属性列表
+                console.log(ctrl);//打印当前ctrl
+
+
+                }
+            }
+    });
 }());
