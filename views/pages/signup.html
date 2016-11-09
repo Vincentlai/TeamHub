@@ -67,8 +67,8 @@
                    equal-to="password"
             >
             <div ng-messages="signupForm.confirm_password.$error">
-                <div ng-message="match">
-                    Maximum length of password is 36.
+                <div ng-message="equalTo">
+                    Confirm password doesn't match.
                 </div>
             </div>
         </md-input-container>

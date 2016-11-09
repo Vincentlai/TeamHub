@@ -48,14 +48,26 @@
     module.directive("equalTo", function () {
         return {
             require: "ngModel",
-            link: function (scope, ele, attrs, ctrl) {
+            link: function (scope, ele, attrs, ctrl, ngModel) {
 
-                console.log(scope);//打印当前作用域
-                console.log(attrs);//打印当前标签属性列表
-                console.log(ctrl);//打印当前ctrl
+                // console.log(scope);
+                // console.log(attrs);
+                // console.log(ctrl);
+                var taget = attrs["equalTo"];
+                if (taget) {
+                    scope.$watch(taget, function () {
+                        ctrl.$validate()
+                    });
+                    var tagetCtrl = ctrl.$$parentForm[taget];
+                    console.log(tagetCtrl);
+                    ctrl.$validators.equalTo = function (modelValue, viewValue) {
+                        var targetValue = tagetCtrl.$viewValue;
+                        console.log(targetValue == viewValue);
+                        return targetValue == viewValue;
+                    };
 
 
                 }
-            }
-    });
+            }}
+        });
 }());
