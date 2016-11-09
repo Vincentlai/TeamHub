@@ -114,6 +114,8 @@ router.post('/add_user',function(req, res)
  *  -1 -> Invalid team_id
  *  -2 -> You're not the creator of this team
  *  -3 -> Invalid user_id
+ *  -4 -> This user is not in the team
+ *  -5 -> You cannot remove the creator
  *  -9 -> No session, login required
  *  -10 -> Missing fields
  * 
@@ -124,7 +126,7 @@ router.delete('/remove_user',function(req, res)
 
     var team_id = req.body.team_id;
     var user_id = req.body.user_id;
-    var reason = req.body.message;
+    var message = req.body.message;
     var sess = req.session;
 
     team.removeUser(sess, team_id, user_id, message, function (found) {

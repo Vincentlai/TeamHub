@@ -9,7 +9,8 @@ var userSchema = mongoose.Schema({
     salt: String,
     teams: [{
         id: String,
-        name: String
+        name: String,
+        is_creator: Boolean
     }],
     num_of_new_notif: Number,
     notifications: [String]
