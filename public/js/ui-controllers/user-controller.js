@@ -45,29 +45,4 @@
             }
         }
     ]);
-    module.directive("equalTo", function () {
-        return {
-            require: "ngModel",
-            link: function (scope, ele, attrs, ctrl, ngModel) {
-
-                // console.log(scope);
-                // console.log(attrs);
-                // console.log(ctrl);
-                var taget = attrs["equalTo"];
-                if (taget) {
-                    scope.$watch(taget, function () {
-                        ctrl.$validate()
-                    });
-                    var tagetCtrl = ctrl.$$parentForm[taget];
-                    console.log(tagetCtrl);
-                    ctrl.$validators.equalTo = function (modelValue, viewValue) {
-                        var targetValue = tagetCtrl.$viewValue;
-                        console.log(targetValue == viewValue);
-                        return targetValue == viewValue;
-                    };
-
-
-                }
-            }}
-        });
 }());

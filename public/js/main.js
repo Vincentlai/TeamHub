@@ -10,7 +10,8 @@
         'ngMessages',
         'user-controller',
         'Services',
-        'ngCookies'
+        'ngCookies',
+        'ngPassword'
     ]);
     module
         .config(function ($stateProvider, $urlRouterProvider) {

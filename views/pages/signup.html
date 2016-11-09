@@ -14,7 +14,7 @@
                ng-model="User.data.email"
                ng-pattern="/^.+@.+\..+$/"
         />
-        <div ng-messages="signupForm.email.$error" role="alert">
+        <div ng-messages="signupForm.email.$error" role="alert" ng-show="signupForm.email.$dirty">
             <div ng-message="required">
                 Email cannot be empty.
             </div>
@@ -32,9 +32,12 @@
                    ng-minlength="3"
                    ng-model="User.data.nickname"
             />
-            <div ng-messages="signupForm.nickname.$error" role="alert">
+            <div ng-messages="signupForm.nickname.$error" role="alert" ng-show="signupForm.nickname.$dirty">
                 <div ng-message="required">
-                    Nickname cannot be empty.
+                Nickname cannot be empty.
+            </div>
+                <div ng-message="minlength">
+                    Minimum length of Nickname is 3.
                 </div>
             </div>
         </md-input-container>
@@ -46,11 +49,11 @@
                    md-maxlength="36"
                    ng-minlength="6"
                    ng-model="User.data.password">
-            <div ng-messages="signupForm.password.$error">
-                <div ng-message="required">
+            <div ng-messages="signupForm.password.$error" role="alert" ng-show="signupForm.password.$dirty">
+                <div ng-message="required" >
                     Password cannot be empty.
                 </div>
-                <div ng-message="minlength">
+                <div ng-message="minlength" >
                     Minimum length of password is 6.
                 </div>
                 <div ng-message="md-maxlength">
@@ -64,10 +67,10 @@
             <input type="password" required
                    name="confirm_password"
                    ng-model="User.data.confirm_password"
-                   equal-to="password"
+                   match-password="password"
             >
-            <div ng-messages="signupForm.confirm_password.$error">
-                <div ng-message="equalTo">
+            <div ng-messages="signupForm.confirm_password.$error" role="alert" ng-show="signupForm.confirm_password.$dirty">
+                <div ng-message="passwordMatch" >
                     Confirm password doesn't match.
                 </div>
             </div>
