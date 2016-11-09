@@ -243,7 +243,7 @@ exports.addUser = function(sess, team_id, user_id, message, callback) {
                             if(message){
                                 msg = message;
                             }
-                            user_obj.notifications.push("You are added to Team " + team_obj.name + " by " +nickname
+                            user_obj.notifications.push("You are added to " + team_obj.name + " by " +nickname
                             +". Message: " + msg);
                             //save
                             team_obj.save();
@@ -262,17 +262,139 @@ exports.addUser = function(sess, team_id, user_id, message, callback) {
                             });
                             return;                                 
                         }
-                        
-
                     }
                 });
-
             }
-
         }
     });
+}
+
+exports.removeUser = function(sess, team_id, user_id, message, callback) {
+
+     var cid = sess.user_id;
+
+    if(!cid){
+
+        callback({
+            'code': '-9',
+            'msg': 'No session, please log in first'
+        });
+        return;   
+    }
+
+    if(!team_id || !user_id){
+
+        callback({
+            'code': '-10',
+            'msg': 'Missing fields'
+        });
+        return; 
+    } 
 
 
+    models.Team.findOne({_id: team_id}, function(err, team_obj){
 
+        if(!team_obj){
 
+            callback({
+                'code': '-1',
+                'msg': 'Invalid team_id'
+            });
+            return; 
+        
+
+        }else{
+
+            var creator_id = team_obj.creator_id;
+
+            // if non-creator try to invite new member
+            if(creator_id != cid){
+
+                callback({
+                    'code': '-2',
+                    'msg': 'You are not the creator of this team'
+                });
+                return; 
+
+            }else{
+
+                // check if user_id is the creator_id
+                if(user_id == team_obj.creator_id){
+                    callback({
+                        'code': '-5',
+                        'msg': 'You cannot remove the creator'
+                    });
+                    return;                     
+                }
+
+                // check whether the user is valid
+                models.User.findOne({_id: user_id}, function(err, user_obj){
+
+                    if(!user_obj){
+
+                        callback({
+                            'code': '-3',
+                            'msg': 'Invalid user_id'
+                        });
+                        return; 
+
+                    }else{
+
+                        // check whether user is already added to team
+                        var found = false;
+                        var toBeRemoved;
+                        for(var i = 0; i < team_obj.users.length; i++) {
+                            if (team_obj.users[i].id == user_id) {
+                                found = true;
+                                team_obj.users[i].remove();           
+                                break;
+                            }
+                        }
+
+                        if (found) {
+
+                            // remove the user in team
+                            //toBeRemoved.remove();
+
+                            // remove the team in user
+                            for(var i = 0; i < user_obj.teams.length; i++) {
+                                if (user_obj.teams[i].id == team_id) {
+                                    user_obj.teams[i].remove();
+                                    break;
+                                }
+                            }
+
+                            // notifaction
+                            user_obj.num_of_new_notif = user_obj.num_of_new_notif + 1;
+                            // push new notifaction 
+                            var nickname = sess.nickname;
+                            
+                            var msg = "None"
+                            if(message){
+                                msg = message;
+                            }
+                            user_obj.notifications.push("You are removed from " + team_obj.name + " by " +nickname
+                            +". Message: " + msg);
+                            //save
+                            team_obj.save();
+                            user_obj.save();
+
+                            callback({
+                                'code': '1',
+                                'msg': user_obj.nickname + " is removed from team " + team_obj.name
+                            });
+                            return; 
+
+                        }else{
+                            callback({
+                                'code': '-4',
+                                'msg': 'This user is not in the team'
+                            });
+                            return;                                 
+                        }
+                    }
+                });
+            }
+        }
+    });
 }
