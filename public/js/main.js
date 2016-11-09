@@ -25,6 +25,18 @@
                     },
                     authenticated: true
                 })
+                .state('teams',{
+                    parent: 'home',
+                    views: {
+                        'contains': {templateUrl: 'pages/teams.html'}
+                    }
+                })
+                .state('chat',{
+                    parent: 'home',
+                    views: {
+                        'contains': {templateUrl: 'pages/chat.html'}
+                    }
+                })
                 .state('login', {
                     url: "/login",
                     views: {

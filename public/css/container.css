@@ -2,10 +2,6 @@ html {
   background: none;
 }
 body {
-  background-image: url("/images/newdb.jpeg");
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: cover;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 .clearfix:after,
@@ -15,11 +11,9 @@ body {
   display: table;
 }
 .nav-bar {
-  width: 1024px;
-  margin: 30px auto;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(225, 225, 225, 0.8);
-  line-height: 2em;
+  background-color: #25283d;
+  padding: 0;
+  line-height: 3em;
 }
 .nav-bar * {
   display: inline-block;
@@ -32,7 +26,6 @@ body {
 }
 .nav-bar ul {
   float: right;
-  margin-bottom: 0;
 }
 .nav-bar ul li {
   margin-right: 10px;
@@ -41,8 +34,6 @@ body {
   color: white;
   font-weight: bold;
   width: 130px;
-  border: .5px solid white;
-  border-radius: 2em;
   -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
   -ms-transition: all 0.5s ease-in-out;
@@ -50,12 +41,11 @@ body {
   transition: all 0.5s ease-in-out;
 }
 .nav-bar ul li a.nav-link:hover {
-  color: #3F51B5;
-  border-color: #3F51B5;
+  background: #fc7169;
+  color: white;
 }
 .nav-bar ul li a.important {
   color: #fc7169;
-  border-color: #fc7169;
 }
 .nav-bar ul li a.important:hover {
   text-decoration: none;
@@ -70,6 +60,16 @@ body {
 }
 .md-input {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.main-container {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  background-image: url("/images/newdb.jpeg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .container {
   max-width: 1024px;

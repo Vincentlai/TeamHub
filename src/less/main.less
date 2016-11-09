@@ -3,10 +3,7 @@ html {
   background: none;
 }
 body {
-  background-image:  url("/images/newdb.jpeg");
-  background-position:center center;
-  background-repeat:no-repeat;
-  background-size: cover;
+
   //background:url(/images/index-bg.png);
   //background-size:100% 100%;
   //background-repeat:no-repeat;
@@ -19,11 +16,13 @@ body {
   display: table;
 }
 .nav-bar {
-  width: @main-width;
-  margin: 30px auto;
-  padding-bottom: 10px;
-  border-bottom: 1px solid @light-gray-border;
-  line-height: 2em;
+  //width: @main-width;
+  //margin: 30px auto;
+  background-color: rgb(37, 40, 61);
+  padding: 0;
+  //padding-bottom: 10px;
+  //border-bottom: 1px solid @light-gray-border;
+  line-height: 3em;
   * {
     display: inline-block;
     text-align: center;
@@ -36,23 +35,23 @@ body {
   ul {
     //font-size: 1.em;
     float: right;
-    margin-bottom: 0;
     li {
       margin-right: 10px;
       a {
         color: white;
         font-weight: bold;
         width: 130px;
-        border: .5px solid white;
-        border-radius: 2em;
+        //border: .5px solid white;
+        //border-radius: 2em;
         &.nav-link:hover {
-          color: @primary-color;
-          border-color: @primary-color;
+          //color: @primary-color;
+          //border-color: @primary-color;
           //background: @primary-color;
+          .convert-color(@important, white);
         }
         &.important {
           color: @important;
-          border-color: @important;
+          //border-color: @important;
         }
         &.important:hover {
           text-decoration: none;
