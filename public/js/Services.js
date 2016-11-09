@@ -14,7 +14,6 @@
                     $cookies.putObject('User',u);
                 },
                 isLoggedIn: function () {
-                    console.log('check log in');
                     return $cookies.getObject('User');
                 },
                 removeCookie: function () {
@@ -95,7 +94,8 @@
                 //     }, function (e) {
                 //         console.log(e.data);
                 //     });
-            }
+            };
+
         }
     ]);
 

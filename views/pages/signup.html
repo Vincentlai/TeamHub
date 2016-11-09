@@ -7,23 +7,27 @@
     </div>
     <form ng-submit="User.signup()" name="signupForm" class="md-title">
         <md-input-container class="md-block">
-        <label>Email</label>
-        <input required
-               type="email"
-               name="email"
-               ng-model="User.data.email"
-               ng-pattern="/^.+@.+\..+$/"
-        />
-        <div ng-messages="signupForm.email.$error" role="alert" ng-show="signupForm.email.$dirty">
-            <div ng-message="required">
-                Email cannot be empty.
+            <label>Email</label>
+            <input required
+                   type="email"
+                   name="email"
+                   ng-model="User.data.email"
+                   ng-pattern="/^.+@.+\..+$/"
+                   email-exists
+            />
+            <div ng-messages="signupForm.email.$error" role="alert" ng-show="signupForm.email.$dirty">
+                <div ng-message="required">
+                    Email cannot be empty.
+                </div>
+                <div ng-message="pattern">
+                    Email invalid.
+                </div>
+                <div ng-message="emailExists">
+                    Email already exists.
+                </div>
             </div>
-            <div ng-message="pattern">
-                Email invalid.
-            </div>
-        </div>
 
-    </md-input-container>
+        </md-input-container>
         <md-input-container class="md-block">
             <label>Nickname</label>
             <input name="nickname"
@@ -32,10 +36,11 @@
                    ng-minlength="3"
                    ng-model="User.data.nickname"
             />
+
             <div ng-messages="signupForm.nickname.$error" role="alert" ng-show="signupForm.nickname.$dirty">
                 <div ng-message="required">
-                Nickname cannot be empty.
-            </div>
+                    Nickname cannot be empty.
+                </div>
                 <div ng-message="minlength">
                     Minimum length of Nickname is 3.
                 </div>
@@ -50,10 +55,10 @@
                    ng-minlength="6"
                    ng-model="User.data.password">
             <div ng-messages="signupForm.password.$error" role="alert" ng-show="signupForm.password.$dirty">
-                <div ng-message="required" >
+                <div ng-message="required">
                     Password cannot be empty.
                 </div>
-                <div ng-message="minlength" >
+                <div ng-message="minlength">
                     Minimum length of password is 6.
                 </div>
                 <div ng-message="md-maxlength">
@@ -69,8 +74,9 @@
                    ng-model="User.data.confirm_password"
                    match-password="password"
             >
-            <div ng-messages="signupForm.confirm_password.$error" role="alert" ng-show="signupForm.confirm_password.$dirty">
-                <div ng-message="passwordMatch" >
+            <div ng-messages="signupForm.confirm_password.$error" role="alert"
+                 ng-show="signupForm.confirm_password.$dirty">
+                <div ng-message="passwordMatch">
                     Confirm password doesn't match.
                 </div>
             </div>
@@ -78,7 +84,8 @@
         <div layout="row" layout-phone="column" layout-align="center">
             <md-button class="md-raised md-primary btn"
                        ng-disabled="signupForm.$invalid"
-                       type="submit">Sign up</md-button>
+                       type="submit">Sign up
+            </md-button>
         </div>
     </form>
 

@@ -21,6 +21,38 @@
             }
         ]
     );
+    module.directive('emailExists', [
+        '$http',
+        function ($http) {
+            return {
+                restrict: 'A',
+                require: 'ngModel',
+                link: function (scope, elem, attrs, ctrl) {
+                    var ngModel = ctrl;
+
+                    scope.$watch(attrs.ngModel, function (n, o) {
+                        if (n !== o) {
+                            console.log(n);
+                            console.log(o);
+                            var url = '/users/is_exist?email=' + n;
+                            $http.get(url)
+                                .then(
+                                    function (res) {
+                                        if (res.data.code == 1) {
+                                            ngModel.$setValidity('emailExists', false);
+                                        } else {
+                                            ngModel.$setValidity('emailExists', true);
+                                        }
+                                    }, function (error) {
+                                        ngModel.$setValidity('emailExists', true);
+                                    }
+                                );
+                        }
+                    }, true);
+                }
+            }
+        }
+    ]);
     module.controller('headerCtrl', [
         '$scope',
         'Auth',
