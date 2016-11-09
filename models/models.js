@@ -26,6 +26,21 @@ var teamSchema = mongoose.Schema({
     }]
 });
 
+var postSchema = mongoose.Schema({
+    nickname: String,
+    user_id: String,
+    text: String,
+    picture: String,
+    like: Number,
+    time: String,
+    comments: [{
+        user_id: String,
+        nickname: String,
+        comment: String,
+        time: String
+    }]
+});
+
 //var chatContactSchema = mongoose.Schema({
 //    my_user_id: String,
 //    other_user_id: String,
@@ -43,12 +58,14 @@ var teamSchema = mongoose.Schema({
 mongoose.connect('mongodb://dev:cmpt470@ec2-52-40-59-253.us-west-2.compute.amazonaws.com:27017/cmpt470db');
 var User = mongoose.model('user', userSchema);
 var Team = mongoose.model('team', teamSchema);
+var Post = mongoose.model('post', postSchema);
 //var ChatContact = mongoose.model('chat_contact', chatContactSchema);
 //var ChatHistory = mongoose.model('chat_history', chatHistorySchema);
 
 module.exports = {
     User: User,
-    Team: Team
+    Team: Team,
+    Post: Post
     //ChatHistory: ChatHistory,
     //ChatContact: ChatContact
 };
