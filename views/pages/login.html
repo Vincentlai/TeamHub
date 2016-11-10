@@ -1,4 +1,4 @@
-<div class="center-container col-md-6 col-md-offset-3" ng-controller="login" ng-cloak>
+<div class="center-container col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3" ng-controller="login" ng-cloak>
     <div class="notify" ng-if="User.error">
         <div class="notify-msg">
             <i class="material-icons">info_outline</i>
@@ -10,7 +10,7 @@
             <label>Email</label>
                 <input required type="email" name="email" ng-model="User.data.email" ng-pattern="/^.+@.+\..+$/"
                 />
-            <div ng-messages="loginForm.email.$error" role="alert" ng-show="loginForm.email.$dirty">
+            <div ng-messages="loginForm.email.$error" role="alert" ng-show="loginForm.email.$dirty || loginForm.email.$touched">
                 <div ng-message="required">
                     Email cannot be empty.
                 </div>
@@ -26,7 +26,7 @@
         <md-input-container class="md-block">
             <label>Password</label>
             <input type="password" required name="password" ng-model="User.data.password">
-            <div ng-messages="loginForm.password.$error" ng-show="loginForm.password.$dirty">
+            <div ng-messages="loginForm.password.$error" ng-show="loginForm.password.$dirty || loginForm.password.$touched">
                 <div ng-message="required">
                     Password cannot be empty.
                 </div>

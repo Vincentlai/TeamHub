@@ -73,9 +73,6 @@
             };
             me.signup = function () {
                 console.log('signup');
-                if(me.data.password !== me.data.confirm_password){
-                    console.log("no");
-                }
                 $http.post('/users/register', me.data)
                     .then(function (r) {
                         if (r.data.code == 1) {

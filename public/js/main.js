@@ -56,7 +56,7 @@
         });
     module.config(function ($mdThemingProvider) {
         $mdThemingProvider.theme('default')
-            .primaryPalette('indigo', {
+            .primaryPalette('teal', {
                 'default': '500'
             })
             .accentPalette('pink');
