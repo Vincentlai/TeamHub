@@ -27,6 +27,7 @@ var teamSchema = mongoose.Schema({
 });
 
 var postSchema = mongoose.Schema({
+    team_id: String,
     nickname: String,
     user_id: String,
     text: String,

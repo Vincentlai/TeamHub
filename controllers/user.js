@@ -274,7 +274,7 @@ exports.myInfo = function (sess, callback) {
 
             callback({
                 'code': "1",
-                'msg': "Got my info Success",
+                'msg': "Get my info Success",
                 'email': users[0].email,
                 'nickname': users[0].nickname,
                 'teams': users[0].teams
