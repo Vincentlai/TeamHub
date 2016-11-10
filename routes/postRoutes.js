@@ -25,8 +25,8 @@ router.post('/post', function (req, res) {
     console.log("-> post called");
 
     var text = req.body.text;
-    var sess = req.session;
     var team_id = req.body.team_id;
+    var sess = req.session;
 
     post.post(sess, team_id, text, function (found) {
         console.log(found);
@@ -34,7 +34,7 @@ router.post('/post', function (req, res) {
     });
 });
 
-/* PATH: host_url:8080/posts/get_posts (GET)
+/* PATH: host_url:8080/posts/get_posts?team_id=123456789 (GET)
  *
  * INPUT: 'team_id' : team to get all posts
  * 
@@ -68,6 +68,38 @@ router.get('/get_posts', function (req, res) {
     var team_id = req.param("team_id");
 
     post.getPost(sess, team_id, function (found) {
+        console.log(found);
+        res.json(found);
+    });
+});
+
+/* PATH: host_url:8080/posts/comment (POST)
+ *
+ * INPUT: 'post_id' : specific post to comment
+ *        'comment' : your comment in text
+ * 
+ * OUTPUT:
+ *  JSON Object that contains
+ *  'code' : respond code
+ *  'msg' : respond message
+ *
+ *   1 -> Comment success
+ *  -1 -> Invalid post_id
+ *  -2 -> Empty comment
+ *  -2 -> You do not have permission to comment this post
+ *  -9 -> No session, login required
+ *  -10 -> Missing fields
+ * 
+ */
+router.post('/comment', function (req, res) {
+
+    console.log("-> comment called");
+
+    var comment = req.body.comment;
+    var post_id = req.body.post_id;
+    var sess = req.session;
+
+    post.comment(sess, post_id, comment, function (found) {
         console.log(found);
         res.json(found);
     });
