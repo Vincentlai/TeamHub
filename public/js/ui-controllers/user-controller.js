@@ -45,6 +45,14 @@
            }
        }
     ]);
+    module.controller('post', [
+            '$scope',
+            'PostService',
+            function ($scope, PostService) {
+                $scope.post = PostService;
+            }
+        ]
+    );
     var checkPassword = function () {
         return {
             require: "ngModel",

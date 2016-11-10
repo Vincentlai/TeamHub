@@ -5,12 +5,13 @@
             <span>&nbsp;&nbsp;{{User.msg}}</span>
         </div>
     </div>
+
     <form ng-submit="User.login()" name="loginForm" class="md-title">
         <md-input-container class="md-block">
             <label>Email</label>
                 <input required type="email" name="email" ng-model="User.data.email" ng-pattern="/^.+@.+\..+$/"
                 />
-            <div ng-messages="loginForm.email.$error" role="alert">
+            <div ng-messages="loginForm.email.$error" rolez`="alert">
                 <div ng-message="required">
                     Email cannot be empty.
                 </div>

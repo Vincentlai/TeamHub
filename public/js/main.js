@@ -39,6 +39,14 @@
                         'container': {templateUrl: 'pages/signup.html'}
                     },
                     authenticated: false
+                })
+                .state('post', {
+                url: "/post",
+                views: {
+                    'navigation': {templateUrl: 'partials/header.html'},
+                    'container': {templateUrl: 'pages/post.html'}
+                    },
+                    authenticated: true
                 });
         });
     module.config(function ($mdThemingProvider) {

@@ -95,5 +95,22 @@
             }
         }
     ]);
+    module.service('PostService',[
+        '$http',
+        '$timeout',
+        '$state',
+        function($http, $timeout, $state){
+            var me = this;
+            me.data = {};
+            me.CreatePost = function (){
+                console.log('CreatePost');
+                // $http.post('/users/post', me.data)
+                //     .then(function (r) {
+                // }
 
+
+
+            }
+        }
+    ]);
 })();
