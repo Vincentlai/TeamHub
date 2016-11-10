@@ -30,14 +30,12 @@ var postSchema = mongoose.Schema({
     nickname: String,
     user_id: String,
     text: String,
-    picture: String,
+    pic_id: String,
     like: Number,
-    time: String,
     comments: [{
         user_id: String,
         nickname: String,
-        comment: String,
-        time: String
+        comment: String
     }]
 });
 
