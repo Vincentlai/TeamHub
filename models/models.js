@@ -9,7 +9,8 @@ var userSchema = mongoose.Schema({
     salt: String,
     teams: [{
         id: String,
-        name: String
+        name: String,
+        is_creator: Boolean
     }],
     num_of_new_notif: Number,
     notifications: [String]
@@ -22,6 +23,19 @@ var teamSchema = mongoose.Schema({
     users: [{
         id: String,
         nickname: String
+    }]
+});
+
+var postSchema = mongoose.Schema({
+    nickname: String,
+    user_id: String,
+    text: String,
+    pic_id: String,
+    like: Number,
+    comments: [{
+        user_id: String,
+        nickname: String,
+        comment: String
     }]
 });
 
@@ -42,12 +56,14 @@ var teamSchema = mongoose.Schema({
 mongoose.connect('mongodb://dev:cmpt470@ec2-52-40-59-253.us-west-2.compute.amazonaws.com:27017/cmpt470db');
 var User = mongoose.model('user', userSchema);
 var Team = mongoose.model('team', teamSchema);
+var Post = mongoose.model('post', postSchema);
 //var ChatContact = mongoose.model('chat_contact', chatContactSchema);
 //var ChatHistory = mongoose.model('chat_history', chatHistorySchema);
 
 module.exports = {
     User: User,
-    Team: Team
+    Team: Team,
+    Post: Post
     //ChatHistory: ChatHistory,
     //ChatContact: ChatContact
 };
