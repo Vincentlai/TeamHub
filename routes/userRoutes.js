@@ -172,7 +172,7 @@ router.get('/is_exist', function (req, res) {
  *  'nickname'
  *  'teams'
  *
- *  1 -> Got my info success
+ *  1 -> Get my info success
  * -1 -> User not found
  * -9 -> No session
  */
