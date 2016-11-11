@@ -47,6 +47,7 @@ exports.post = function(sess, team_id, text, callback) {
             for (var i = 0; i < team_obj.users.length; i++) {
                 if (team_obj.users[i].id == user_id) {
                     found = true;
+                    break;
                 }
             }
 
@@ -115,6 +116,7 @@ exports.getPost = function(sess, team_id, callback) {
             for (var i = 0; i < team_obj.users.length; i++) {
                 if (team_obj.users[i].id == user_id) {
                     found = true;
+                    break;
                 }
             }
 
@@ -144,13 +146,13 @@ exports.getPost = function(sess, team_id, callback) {
                         // comments
                         var comments_arr = [];
                         var comments = posts[i].comments;
-                        for(var j=0; j<comments.length; j++){
+                        for (var j = 0; j < comments.length; j++) {
 
                             var comment_time = new Date(comments[j]._id.getTimestamp());
 
                             comments_arr.push({
                                 'nickname': comments[j].nickname,
-                                'time': comment_time.toDateString() + " " + comment_time.toTimeString().substring(0,8)
+                                'time': comment_time.toDateString() + " " + comment_time.toTimeString().substring(0, 8)
                             });
                         }
 
@@ -159,7 +161,7 @@ exports.getPost = function(sess, team_id, callback) {
                             'nickname': posts[i].nickname,
                             'text': posts[i].text,
                             'like': posts[i].like,
-                            'time': post_time.toDateString() + " " + post_time.toTimeString().substring(0,8),
+                            'time': post_time.toDateString() + " " + post_time.toTimeString().substring(0, 8),
                             'comments': comments_arr
                         });
                     }
@@ -169,9 +171,88 @@ exports.getPost = function(sess, team_id, callback) {
                     callback(respond);
                     return;
                 }
-
-
             });
+        }
+    });
+}
+
+exports.comment = function(sess, post_id, comment, callback) {
+
+    var user_id = sess.user_id;
+
+    if (!user_id) {
+        callback({
+            'code': "-9",
+            'msg': "No session, login required"
+        });
+        return;
+    }
+
+    if (!post_id || !comment) {
+        callback({
+            'code': "-10",
+            'msg': "Missing fields"
+        });
+        return;
+    }
+
+    if (comment.trim() == "") {
+        callback({
+            'code': "-2",
+            'msg': "Comment cannot be empty"
+        });
+        return;
+    }
+
+    models.Post.findOne({ _id: post_id }, function(err, post_obj) {
+
+        if (!post_obj) {
+
+            callback({
+                'code': '-1',
+                'msg': 'Invalid post_id'
+            });
+            return;
+
+
+        } else {
+
+            models.Team.findOne({ _id: post_obj.team_id }, function(err, team_obj) {
+
+                var users = team_obj.users;
+                var found = false;
+                for (var i = 0; i < users.length; i++) {
+                    if (users[i].id == user_id) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (found) {
+
+                    post_obj.comments.push({
+                        'user_id': user_id,
+                        'nickname': sess.nickname,
+                        'comment': comment
+                    });
+
+                    post_obj.save();
+
+                    callback({
+                        'code': '1',
+                        'msg': 'Comment success'
+                    });
+                    return;
+
+                } else {
+                    callback({
+                        'code': '-3',
+                        'msg': 'You do not have access to this post'
+                    });
+                    return;
+                }
+            });
+
         }
     });
 }
