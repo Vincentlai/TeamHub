@@ -1,0 +1,26 @@
+<div class="post" ng-controller="post">
+    <div class="notify" ng-if="Post.error">
+        <div class="notify-msg">
+            <i class="material-icons">info_outline</i>
+            <span>&nbsp;&nbsp;{{Post.msg}}</span>
+        </div>
+    </div>
+
+    <form ng-submit="Post.CreatePost()" name="PostForm" class="md-title">
+
+            <label>Description</label>
+            <textarea required type="text" name="post" ng-model="Post.data" max-rows="8"
+            ></textarea>
+            <div ng-messages="PostForm.$error" role="alert">
+                <div ng-message="required">
+                    Post cannot be empty.
+                </div>
+            </div>
+
+        <div layout="row" layout-phone="column" layout-align="center">
+            <md-button class="md-raised md-primary btn"
+                       ng-disabled="postForm.$invalid"
+                       type="submit">Submit</md-button>
+        </div>
+    </form>
+</div>

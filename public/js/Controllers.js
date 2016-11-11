@@ -3,7 +3,7 @@
  */
 ;(function () {
     'use strict';
-    var module = angular.module('user-controller', []);
+    var module = angular.module('Controllers', []);
 
     module.controller('login', [
             '$scope',
@@ -77,6 +77,14 @@
             }
         }
     ]);
+    module.controller('post', [
+            '$scope',
+            'PostService',
+            function ($scope, PostService) {
+                $scope.post = PostService;
+            }
+        ]
+    );
     module.controller('sideBarController', [
         '$scope',
         '$rootScope',
@@ -105,29 +113,29 @@
                 $(openElement).addClass('open');
                 $(openElement.children()[1]).slideToggle();
                 lastOpen = element;
-            }
-            $scope.tagSlide = function (open) {
-                var openElement;
-                if (lastOpen != null) {
-                    var closeElement = angular.element(document.querySelector('#' + lastOpen));
-                    $(closeElement).removeClass('open');
-                    $(closeElement.children()[1]).slideToggle();
-                    if (open != lastOpen) {
+                $scope.tagSlide = function (open) {
+                    var openElement;
+                    if (lastOpen != null) {
+                        var closeElement = angular.element(document.querySelector('#' + lastOpen));
+                        $(closeElement).removeClass('open');
+                        $(closeElement.children()[1]).slideToggle();
+                        if (open != lastOpen) {
+                            openElement = angular.element(document.querySelector('#' + open));
+                            $(openElement).addClass('open');
+                            $(openElement.children()[1]).slideToggle();
+                            lastOpen = open;
+                        } else {
+                            lastOpen = null;
+                        }
+                    } else {
                         openElement = angular.element(document.querySelector('#' + open));
                         $(openElement).addClass('open');
                         $(openElement.children()[1]).slideToggle();
                         lastOpen = open;
-                    } else {
-                        lastOpen = null;
                     }
-                } else {
-                    openElement = angular.element(document.querySelector('#' + open));
-                    $(openElement).addClass('open');
-                    $(openElement.children()[1]).slideToggle();
-                    lastOpen = open;
-                }
-            };
+                };
 
+            }
         }
     ]);
 }());

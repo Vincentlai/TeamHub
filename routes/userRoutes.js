@@ -159,6 +159,23 @@ router.get('/is_exist', function (req, res) {
     }
 });
 
+/* URL: host_url:8080/users/my_info (GET)
+ *
+ * INPUT:
+ * None
+ * 
+ * OUTPUT:
+ *  JSON Object that contains
+ *  'code' : respond code
+ *  'msg' : respond message
+ *  'email'
+ *  'nickname'
+ *  'teams'
+ *
+ *  1 -> Get my info success
+ * -1 -> User not found
+ * -9 -> No session
+ */
 router.get('/my_info', function (req, res) {
     console.log("-> myinfo called");
 
