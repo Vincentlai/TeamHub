@@ -1,3 +1,6 @@
+/*---------------------------
+    Variables
+-----------------------------*/
 /**
 Reset browser default css
 **/
@@ -144,7 +147,10 @@ body {
 * {
   box-sizing: border-box;
 }
-a:hover {
+a:hover,
+a:focus,
+a:link,
+a:visited {
   text-decoration: none;
 }
 /*
@@ -205,17 +211,13 @@ form {
 .md-input {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-.main-container {
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-}
-.container {
-  max-width: 1024px;
-  padding-top: 200px;
-}
-.container .center-container {
+/*
+ login and signup form
+ background
+ border
+*/
+.center-container {
+  margin-top: 200px;
   height: auto;
   color: black;
   background-color: rgba(255, 255, 255, 0.5);
@@ -226,10 +228,13 @@ form {
   border-bottom-left-radius: 0.4em;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
-.container .center-container .btn {
+.center-container .btn {
   width: 150px;
 }
-.container .notify {
+/*
+ notification setting
+*/
+.notify {
   margin-top: 10px;
   margin-bottom: 10px;
   display: flex;
@@ -246,7 +251,7 @@ form {
   overflow: hidden;
   animation: scale-in 0.3s ease-out forwards, expand 0.35s 0.25s ease-out forwards;
 }
-.container .notify-msg {
+.notify-msg {
   opacity: 0;
   display: flex;
   align-items: center;
@@ -278,4 +283,114 @@ form {
   100% {
     opacity: 1;
   }
+}
+/*
+notification end
+*/
+/*
+ home setting
+*/
+.main-container {
+  background-color: white;
+}
+/*
+  side bar
+*/
+.side-bar {
+  min-height: 100vh;
+  background-color: #25283d;
+  color: white;
+  float: left;
+  border-right: 1px solid #CCC;
+}
+.side-bar .accordion {
+  width: 199px;
+  background: #FFF;
+}
+.side-bar .accordion .link {
+  cursor: pointer;
+  display: block;
+  padding: 15px 15px 15px 42px;
+  color: #4D4D4D;
+  font-size: 14px;
+  font-weight: 700;
+  border-bottom: 1px solid #CCC;
+  position: relative;
+  -webkit-transition: all 0.4s ease;
+  -o-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+}
+.side-bar .accordion li:last-child .link {
+  border-bottom: 0;
+}
+.side-bar .accordion li {
+  /** -----------------------------
+        * Submenu
+      -----------------------------*/
+}
+.side-bar .accordion li i {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  font-size: 18px;
+  color: #595959;
+  -webkit-transition: all 0.4s ease;
+  -o-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+}
+.side-bar .accordion li i.drop-down {
+  right: 12px;
+  left: auto;
+  font-weight: bold;
+}
+.side-bar .accordion li.open i.main-menu {
+  color: #b63b4d;
+}
+.side-bar .accordion li.open i.drop-down {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.side-bar .accordion li.open .link {
+  color: #b63b4d;
+}
+.side-bar .accordion li .submenu {
+  display: none;
+  background: #444359;
+  font-size: 14px;
+}
+.side-bar .accordion li .submenu li {
+  border-bottom: 1px solid #4b4a5e;
+  display: block;
+  position: relative;
+}
+.side-bar .accordion li .submenu li i {
+  color: #d9d9d9;
+}
+.side-bar .accordion li .submenu li a {
+  display: block;
+  text-decoration: none;
+  color: #d9d9d9;
+  padding: 12px;
+  padding-left: 42px;
+  -webkit-transition: all 0.25s ease;
+  -o-transition: all 0.25s ease;
+  transition: all 0.25s ease;
+}
+.side-bar .accordion li .submenu li a:hover {
+  background: #b63b4d;
+  color: #FFF;
+}
+@media only screen and (min-width: 768px) {
+  .side-bar {
+    width: 200px;
+  }
+}
+/*
+  content
+*/
+.content {
+  float: right;
+  width: 100px;
 }

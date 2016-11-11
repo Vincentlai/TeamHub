@@ -15,7 +15,7 @@
     ]);
     module
         .config(function ($stateProvider, $urlRouterProvider) {
-            $urlRouterProvider.otherwise('/');
+            $urlRouterProvider.otherwise('/teams');
             $stateProvider
                 .state('home', {
                     url: "/",
@@ -23,19 +23,22 @@
                         'navigation': {templateUrl: 'partials/header.html'},
                         'container': {templateUrl: 'pages/home.html'}
                     },
-                    authenticated: true
+                    authenticated: true,
+                    abstract: true
                 })
-                .state('teams',{
-                    parent: 'home',
+                .state('home.teams',{
+                    url: "teams",
                     views: {
                         'contains': {templateUrl: 'pages/teams.html'}
-                    }
+                    },
+                    authenticated: true
                 })
-                .state('chat',{
-                    parent: 'home',
+                .state('home.chat',{
+                    url: 'chat',
                     views: {
                         'contains': {templateUrl: 'pages/chat.html'}
-                    }
+                    },
+                    authenticated: true
                 })
                 .state('login', {
                     url: "/login",
@@ -96,14 +99,13 @@
                         console.log(Auth.isLoggedIn().email + "is logged in ");
                         if (!toState.authenticated) {
                             event.preventDefault();
-                            return $state.go('home');
+                            return $state.go('home.teams');
                             // if(fromState.name == ''){
                             //     return $state.go('home');
                             // }else{
                             //     return $state.go(fromState.name);
                             // }
                         }
-                        // console.log(Auth.isLoggedIn().email + "is logged in ");
                     }
                 });
         }]);
