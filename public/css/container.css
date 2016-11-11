@@ -391,6 +391,7 @@ notification end
   content
 */
 .content {
+  border: 1px solid black;
   float: right;
-  width: 100px;
+  width: 1200px;
 }

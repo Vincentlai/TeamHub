@@ -8,7 +8,7 @@
         'ui.router',
         'ngMaterial',
         'ngMessages',
-        'user-controller',
+        'Controllers',
         'Services',
         'ngCookies',
         'ngPassword'
@@ -56,11 +56,10 @@
                     },
                     authenticated: false
                 })
-                .state('post', {
-                url: "/post",
+                .state('home.post', {
+                url: "post",
                 views: {
-                    'navigation': {templateUrl: 'partials/header.html'},
-                    'container': {templateUrl: 'pages/post.html'}
+                    'contains': {templateUrl: 'pages/post.html'}
                     },
                     authenticated: true
                 });
