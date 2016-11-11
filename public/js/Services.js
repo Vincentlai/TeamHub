@@ -14,7 +14,6 @@
                     $cookies.putObject('User',u);
                 },
                 isLoggedIn: function () {
-                    console.log('check log in');
                     return $cookies.getObject('User');
                 },
                 removeCookie: function () {
@@ -55,7 +54,7 @@
                                                 'nickname': res.data.nickname
                                             };
                                             Auth.setCookie(user);
-                                            $state.go('home');
+                                            $state.go('home.teams');
                                         }
                                     }, function (error) {
                                         console.log('Error in set access. ' + error);
@@ -92,8 +91,26 @@
                     }, function (e) {
                         console.log(e.data);
                     });
+            };
+
+        }
+    ]);
+    module.service('PostService',[
+        '$http',
+        '$timeout',
+        '$state',
+        function($http, $timeout, $state){
+            var me = this;
+            me.data = {};
+            me.CreatePost = function (){
+                console.log('CreatePost');
+                // $http.post('/users/post', me.data)
+                //     .then(function (r) {
+                // }
+
+
+
             }
         }
     ]);
-
 })();

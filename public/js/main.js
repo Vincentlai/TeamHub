@@ -10,17 +10,33 @@
         'ngMessages',
         'user-controller',
         'Services',
-        'ngCookies'
+        'ngCookies',
+        'ngPassword'
     ]);
     module
         .config(function ($stateProvider, $urlRouterProvider) {
-            $urlRouterProvider.otherwise('/');
+            $urlRouterProvider.otherwise('/teams');
             $stateProvider
                 .state('home', {
                     url: "/",
                     views: {
                         'navigation': {templateUrl: 'partials/header.html'},
                         'container': {templateUrl: 'pages/home.html'}
+                    },
+                    authenticated: true,
+                    abstract: true
+                })
+                .state('home.teams',{
+                    url: "teams",
+                    views: {
+                        'contains': {templateUrl: 'pages/teams.html'}
+                    },
+                    authenticated: true
+                })
+                .state('home.chat',{
+                    url: 'chat',
+                    views: {
+                        'contains': {templateUrl: 'pages/chat.html'}
                     },
                     authenticated: true
                 })
@@ -39,11 +55,19 @@
                         'container': {templateUrl: 'pages/signup.html'}
                     },
                     authenticated: false
+                })
+                .state('post', {
+                url: "/post",
+                views: {
+                    'navigation': {templateUrl: 'partials/header.html'},
+                    'container': {templateUrl: 'pages/post.html'}
+                    },
+                    authenticated: true
                 });
         });
     module.config(function ($mdThemingProvider) {
         $mdThemingProvider.theme('default')
-            .primaryPalette('indigo', {
+            .primaryPalette('teal', {
                 'default': '500'
             })
             .accentPalette('pink');
@@ -83,14 +107,13 @@
                         console.log(Auth.isLoggedIn().email + "is logged in ");
                         if (!toState.authenticated) {
                             event.preventDefault();
-                            return $state.go('home');
+                            return $state.go('home.teams');
                             // if(fromState.name == ''){
                             //     return $state.go('home');
                             // }else{
                             //     return $state.go(fromState.name);
                             // }
                         }
-                        // console.log(Auth.isLoggedIn().email + "is logged in ");
                     }
                 });
         }]);

@@ -15,8 +15,8 @@ var gulp = require('gulp'),
 gulp.task('styles', function () {
    return gulp.src('src/less/*.less')
        .pipe(less())
-       .pipe(gulp.dest('public/css'))
-       .pipe(notify({ message: 'Styles task complete' }));
+       .pipe(gulp.dest('public/css'));
+       // .pipe(notify({ message: 'Styles task complete' }));
 });
 
 // gulp.task('scripts', function () {

@@ -1,9 +1,139 @@
-html {
-  background: none;
+/*---------------------------
+    Variables
+-----------------------------*/
+/**
+Reset browser default css
+**/
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section,
+main {
+  display: block;
 }
 body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/*
+global setting
+*/
+body {
   background-image: url("/images/newdb.jpeg");
-  background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
@@ -14,35 +144,41 @@ body {
   clear: both;
   display: table;
 }
-.nav-bar {
-  width: 1024px;
-  margin: 30px auto;
-  padding-bottom: 10px;
-  border-bottom: 1px solid rgba(225, 225, 225, 0.8);
-  line-height: 2em;
+* {
+  box-sizing: border-box;
 }
-.nav-bar * {
-  display: inline-block;
-  text-align: center;
+a:hover,
+a:focus,
+a:link,
+a:visited {
+  text-decoration: none;
+}
+/*
+Header  Navigation
+*/
+.nav-bar {
+  background-color: #25283d;
+  line-height: 3em;
+  padding: 0;
 }
 .nav-bar .logo {
+  color: #fc7169;
   float: left;
-  margin: 0 10px;
+  margin: 0 30px;
   font-size: 1.5em;
 }
 .nav-bar ul {
   float: right;
-  margin-bottom: 0;
 }
 .nav-bar ul li {
-  margin-right: 10px;
+  display: inline-block;
+  text-align: center;
 }
 .nav-bar ul li a {
+  display: inline-block;
   color: white;
   font-weight: bold;
   width: 130px;
-  border: .5px solid white;
-  border-radius: 2em;
   -webkit-transition: all 0.5s ease-in-out;
   -moz-transition: all 0.5s ease-in-out;
   -ms-transition: all 0.5s ease-in-out;
@@ -50,20 +186,24 @@ body {
   transition: all 0.5s ease-in-out;
 }
 .nav-bar ul li a.nav-link:hover {
-  color: #3F51B5;
-  border-color: #3F51B5;
+  background: #009688;
+  color: white;
 }
 .nav-bar ul li a.important {
   color: #fc7169;
-  border-color: #fc7169;
 }
 .nav-bar ul li a.important:hover {
-  text-decoration: none;
   background: #fc7169;
   color: white;
 }
+/*
+Setting for angular material
+*/
 .md-input-message-animation {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+form {
+  overflow: auto;
 }
 .md-block {
   margin: 30px 0;

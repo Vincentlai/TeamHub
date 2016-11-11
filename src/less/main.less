@@ -1,61 +1,113 @@
 @import "variable.less";
-html {
-  background: none;
+/**
+Reset browser default css
+**/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, main {
+  display: block;
 }
 body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+
+
+
+/*
+global setting
+*/
+
+body {
   background-image:  url("/images/newdb.jpeg");
-  background-position:center center;
   background-repeat:no-repeat;
   background-size: cover;
-  //background:url(/images/index-bg.png);
-  //background-size:100% 100%;
-  //background-repeat:no-repeat;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
 }
+
 .clearfix:after,
 .clearfix:before {
   content: '';
   clear: both;
   display: table;
 }
+
+* {
+  box-sizing: border-box;
+}
+a:hover,
+a:focus,
+a:link,
+a:visited{
+  text-decoration: none;
+}
+/*
+Header  Navigation
+*/
+
 .nav-bar {
-  width: @main-width;
-  margin: 30px auto;
-  padding-bottom: 10px;
-  border-bottom: 1px solid @light-gray-border;
-  line-height: 2em;
-  * {
-    display: inline-block;
-    text-align: center;
-  }
+  background-color: @primary-bg-color;
+  line-height: 3em;
+  padding: 0;
+
   .logo {
+    color: @important;
     float: left;
-    margin: 0 10px;
+    margin: 0 30px;
     font-size: 1.5em;
   }
   ul {
-    //font-size: 1.em;
     float: right;
-    margin-bottom: 0;
     li {
-      margin-right: 10px;
+      display: inline-block;
+      text-align: center;
       a {
+        display: inline-block;
         color: white;
         font-weight: bold;
         width: 130px;
-        border: .5px solid white;
-        border-radius: 2em;
         &.nav-link:hover {
-          color: @primary-color;
-          border-color: @primary-color;
-          //background: @primary-color;
+          .convert-color(#009688, white);
         }
         &.important {
           color: @important;
-          border-color: @important;
         }
         &.important:hover {
-          text-decoration: none;
           .convert-color(@important, white);
         }
         -webkit-transition: all .5s ease-in-out;
@@ -67,8 +119,16 @@ body {
     }
   }
 }
+
+/*
+Setting for angular material
+*/
+
 .md-input-message-animation {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+form {
+  overflow: auto;
 }
 .md-block{
   margin: 30px 0;

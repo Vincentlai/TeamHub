@@ -14,31 +14,26 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-cookies.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
     <script src="http://unpkg.com/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="/js/jq.js"></script>
     <script src="/js/main.js"></script>
     <script src="/js/Services.js"></script>
+    <script src="/js/confirm-password.js"></script>
     <script src="/js/ui-controllers/user-controller.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/reset.css">
     <link rel="stylesheet" type="text/css" href="/css/main.css">
     <link rel="stylesheet" type="text/css" href="/css/container.css">
     <title>{{title}}</title>
 </head>
 <body>
-<header>
-    <div ui-view="navigation">
-    </div>
-</header>
-<div class="container">
-    <div class="row">
-        <div ui-view="container">
-        </div>
-    </div>
+<div ui-view="navigation" class="clearfix">
+</div>
+<div ui-view="container" class="clearfix">
 </div>
 
 </body>

@@ -1,11 +1,27 @@
 //@primary-color: #00aa9a;
 //@primary-color: #40c4ff;
+/*---------------------------
+    Variables
+-----------------------------*/
 @primary-color: #3F51B5;
 @primary-warn: rgba(221,44,0,.5);
+@primary-bg-color: rgb(37, 40, 61);
 @light-gray-border: rgba(225, 225, 225, 0.8);
-@main-width: 1024px;
+@mid-size-screen-width: 768px;
 @important: #fc7169;
 .convert-color(@bg,@ft){
   background: @bg;
   color: @ft;
+}
+.primary-border() {
+  border-radius: .25em .25em .4em .4em;
+  border-top-left-radius: 0.25em;
+  border-top-right-radius: 0.25em;
+  border-bottom-right-radius: 0.4em;
+  border-bottom-left-radius: 0.4em;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.white-bg() {
+  background-color: rgba(255, 255, 255,.5);
 }

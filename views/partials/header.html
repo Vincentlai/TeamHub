@@ -4,12 +4,11 @@
 <div class="nav-bar clearfix" ng-controller="headerCtrl">
     <div class="logo">LOGO</div>
     <ul ng-if="!(isLoggedin)">
-        <li><a class="nav-link" ui-sref="home">HOME</a></li>
         <li><a class="nav-link" ui-sref="login">LOG IN</a></li>
         <li><a class="important" ui-sref="signup">SIGN UP</a></li>
     </ul>
     <ul ng-if="isLoggedin">
-        <li><a class="nav-link" ui-sref="home">HOME</a></li>
+        <!--<li><a class="nav-link" ui-sref="home">HOME</a></li>-->
         <li><a class="nav-link" ng-click="logout()">LOG OUT</a></li>
     </ul>
 </div>
