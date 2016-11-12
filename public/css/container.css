@@ -364,6 +364,7 @@ notification end
   border-bottom: 1px solid #4b4a5e;
   display: block;
   position: relative;
+  cursor: pointer;
 }
 .side-bar .accordion li .submenu li i {
   color: #d9d9d9;
@@ -392,6 +393,5 @@ notification end
 */
 .content {
   float: right;
-  border: 1px solid black;
   width: calc(100% - 200px);
 }

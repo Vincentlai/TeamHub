@@ -2,13 +2,13 @@
     <div class="side-bar" ng-controller="sideBarController">
         <ul id="accordion" class="accordion">
             <li id="teams">
-                <div  class="link" ui-sref="home.teams" ng-click="tagSlide('teams')">
+                <div  class="link"  ng-click="tagSlide('teams')">
                     <i class="material-icons main-menu">group</i>
                     Teams
                     <i class="material-icons drop-down">expand_more</i>
                 </div>
                 <ul class="submenu">
-                    <li id="manageTeams">
+                    <li id="manageTeams" ui-sref="home.teams">
                         <i class="material-icons">build</i>
                         <a >Manage Teams</a>
                     </li>
@@ -67,7 +67,6 @@
         </ul>
     </div>
     <div class="content">
-        <h1> I AM HOME</h1>
         <div ui-view="contains"></div>
     </div>
 </div>

@@ -69,6 +69,8 @@
                                 $state.go('login');
                                 console.log('remove user');
                             }
+                            Auth.removeCookie();
+                            $state.go('login');
                             return res.data.code;
                         }, function (error) {
                             console.log('Error occurs in Logout' + error);
@@ -89,7 +91,7 @@
         '$scope',
         '$rootScope',
         '$state',
-        function ($scope, $rootScope, $state) {
+        function ($scope, $rootScope, $state, teams) {
             // $scope.$watch(function () {
             //     return $state.$current.name;
             // }, function (newState, oldState) {
@@ -134,7 +136,8 @@
                         lastOpen = open;
                     }
                 };
-
+                $scope.teams = teams;
+                console.log($scope.teams);
             }
         }
     ]);

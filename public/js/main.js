@@ -15,7 +15,7 @@
     ]);
     module
         .config(function ($stateProvider, $urlRouterProvider) {
-            $urlRouterProvider.otherwise('/teams');
+            $urlRouterProvider.otherwise('/overview');
             $stateProvider
                 .state('home', {
                     url: "/",
@@ -23,17 +23,32 @@
                         'navigation': {templateUrl: 'partials/header.html'},
                         'container': {templateUrl: 'pages/home.html'}
                     },
+                    controller: 'sideBarController',
+                    resolve: {
+                        'teams': function () {
+                            return ['team1', 'team2'];
+                        }
+                    },
                     authenticated: true,
                     abstract: true
                 })
-                .state('home.teams',{
+                .state('home.overview', {
+                    url: 'overview',
+                    views: {
+                        'contains': {
+                            templateUrl: 'pages/overview.html'
+                        }
+                    },
+                    authenticated: true
+                })
+                .state('home.teams', {
                     url: "teams",
                     views: {
                         'contains': {templateUrl: 'pages/teams.html'}
                     },
                     authenticated: true
                 })
-                .state('home.chat',{
+                .state('home.chat', {
                     url: 'chat',
                     views: {
                         'contains': {templateUrl: 'pages/chat.html'}
@@ -48,6 +63,7 @@
                     },
                     authenticated: false
                 })
+
                 .state('signup', {
                     url: "/signup",
                     views: {
@@ -57,9 +73,9 @@
                     authenticated: false
                 })
                 .state('home.post', {
-                url: "post",
-                views: {
-                    'contains': {templateUrl: 'pages/post.html'}
+                    url: "post",
+                    views: {
+                        'contains': {templateUrl: 'pages/post.html'}
                     },
                     authenticated: true
                 });
@@ -91,7 +107,7 @@
                                             'nickname': res.data.nickname
                                         };
                                         Auth.setCookie(user);
-                                    }else{
+                                    } else {
                                         if (toState.authenticated) {
                                             event.preventDefault();
                                             console.log('No user has logged in.');
@@ -102,7 +118,7 @@
                                     console.log('Error in Auth. ' + error);
                                 }
                             );
-                    }else {
+                    } else {
                         console.log(Auth.isLoggedIn().email + "is logged in ");
                         if (!toState.authenticated) {
                             event.preventDefault();

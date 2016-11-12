@@ -54,7 +54,7 @@
                                                 'nickname': res.data.nickname
                                             };
                                             Auth.setCookie(user);
-                                            $state.go('home.teams');
+                                            $state.go('home.overview');
                                         }
                                     }, function (error) {
                                         console.log('Error in set access. ' + error);
