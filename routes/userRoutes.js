@@ -85,7 +85,7 @@ router.post('/login', function (req, res) {
  *  'msg' : respond message
  *  'session_id' : a session id will be provided (only for debug purposes)
  *
- *  1 -> Successfully logged out
+ *   1 -> Successfully logged out
  *  -1 -> You haven't been logged in yet
  */
 router.post('/logout', function (req, res) {
@@ -197,7 +197,7 @@ router.get('/my_info', function (req, res) {
  *  'code' : respond code
  *  'msg' : respond message
  *
- *  1 -> Changed password successfully
+ *   1 -> Changed password successfully
  *  -1 -> Incorrect old password
  *  -2 -> New password is too short
  *  -3 -> Error during change pwd

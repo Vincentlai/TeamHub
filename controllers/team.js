@@ -148,6 +148,19 @@ exports.delete = function (sess, team_id, callback) {
                 // delete the team from DB
                 team_obj.remove();
 
+                // delete the team from user doc
+                models.User.findOne({ _id: user_id }, function (err, user_obj) {
+
+                    for(var i=0; i<user_obj.teams.length; i++){
+                        if(user_obj.teams[i].id == team_id){
+                            user_obj.teams[i].remove();
+                            user_obj.save();
+                            break;
+                        }
+                    }
+
+                });
+
                 callback({
                     'code': '1',
                     'msg': teamName + ' has been deleted successfully'
@@ -364,9 +377,6 @@ exports.removeUser = function (sess, team_id, user_id, message, callback) {
 
                         if (found) {
 
-                            // remove the user in team
-                            //toBeRemoved.remove();
-
                             // remove the team in user
                             for (var i = 0; i < user_obj.teams.length; i++) {
                                 if (user_obj.teams[i].id == team_id) {
@@ -405,6 +415,104 @@ exports.removeUser = function (sess, team_id, user_id, message, callback) {
                         }
                     }
                 });
+            }
+        }
+    });
+}
+
+exports.quit = function (sess, team_id, callback) {
+
+    var user_id = sess.user_id;
+
+    if (!user_id) {
+
+        callback({
+            'code': '-9',
+            'msg': 'No session, login required'
+        });
+        return;
+    }
+
+    if (!team_id) {
+
+        callback({
+            'code': '-10',
+            'msg': 'team_id is missing'
+        });
+        return;
+    }
+
+
+    models.Team.findOne({ _id: team_id }, function (err, team_obj) {
+
+        if (!team_obj) {
+
+            callback({
+                'code': '-1',
+                'msg': 'Invalid team_id'
+            });
+            return;
+
+
+        } else {
+
+            var creator_id = team_obj.creator_id;
+
+            // if non-creator try to invite new member
+            if (creator_id == user_id) {
+
+                callback({
+                    'code': '-3',
+                    'msg': 'Cannot quit this team because you are the creator'
+                });
+                return;
+
+            } else {
+
+                // check whether the user is valid
+                models.User.findOne({ _id: user_id }, function (err, user_obj) {
+
+                    // check whether user is in the team
+                    var found = false;
+                    var toBeRemoved;
+                    for (var i = 0; i < team_obj.users.length; i++) {
+                        if (team_obj.users[i].id == user_id) {
+                            found = true;
+                            team_obj.users[i].remove();
+                            break;
+                        }
+                    }
+
+                    if (found) {
+
+                        // remove the team in user
+                        for (var i = 0; i < user_obj.teams.length; i++) {
+                            if (user_obj.teams[i].id == team_id) {
+                                user_obj.teams[i].remove();
+                                break;
+                            }
+                        }
+
+                        //save
+                        team_obj.save();
+                        user_obj.save();
+
+                        callback({
+                            'code': '1',
+                            'msg': user_obj.nickname + " quited from team " + team_obj.name
+                        });
+                        return;
+
+                    } else {
+                        callback({
+                            'code': '-2',
+                            'msg': 'You are not in this team'
+                        });
+                        return;
+                    }
+                    
+                });
+                
             }
         }
     });

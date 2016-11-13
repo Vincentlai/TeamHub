@@ -12,7 +12,7 @@ var team = require('../controllers/team.js');
  *  'code' : respond code
  *  'msg' : respond message
  *
- *  1 -> Success
+ *   1 -> Success
  *  -1 -> Name already taken
  *  -2 -> Error
  *  -9 -> No session, login required
@@ -43,7 +43,7 @@ router.post('/create',function(req, res)
  *  'code' : respond code
  *  'msg' : respond message
  *
- *  1 -> Delete success
+ *   1 -> Delete success
  *  -1 -> Invalid team_id
  *  -2 -> You're not the creator of this team
  *  -9 -> No session, login required
@@ -74,7 +74,7 @@ router.delete('/delete',function(req, res)
  *  'code' : respond code
  *  'msg' : respond message
  *
- *  1 -> User is added successfully
+ *   1 -> User is added successfully
  *  -1 -> Invalid team_id
  *  -2 -> You're not the creator of this team
  *  -3 -> Invalid user_id
@@ -110,7 +110,7 @@ router.post('/add_user',function(req, res)
  *  'code' : respond code
  *  'msg' : respond message
  *
- *  1 -> User is removed successfully
+ *   1 -> User is removed successfully
  *  -1 -> Invalid team_id
  *  -2 -> You're not the creator of this team
  *  -3 -> Invalid user_id
@@ -130,6 +130,36 @@ router.delete('/remove_user',function(req, res)
     var sess = req.session;
 
     team.removeUser(sess, team_id, user_id, message, function (found) {
+        console.log(found);
+        res.json(found);
+    });
+});
+
+/* PATH: host_url:8080/teams/quit (DELETE)
+ *
+ * INPUT: 'team_id' : team to quit
+ * 
+ * OUTPUT:
+ *  JSON Object that contains
+ *  'code' : respond code
+ *  'msg' : respond message
+ *
+ *   1 -> Quit team successfully
+ *  -1 -> Invalid team_id
+ *  -2 -> You're not in this team
+ *  -3 -> Cannot quit this team because you're the creator
+ *  -9 -> No session, login required
+ *  -10 -> Missing fields
+ * 
+ */
+router.delete('/quit',function(req, res)
+{
+    console.log("-> quit called");
+
+    var team_id = req.param("team_id");
+    var sess = req.session;
+
+    team.quit(sess, team_id, function (found) {
         console.log(found);
         res.json(found);
     });
