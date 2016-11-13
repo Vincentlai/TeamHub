@@ -54,7 +54,7 @@ router.delete('/delete',function(req, res)
 {
     console.log("-> delete group called");
 
-    var team_id = req.body.team_id;
+    var team_id = req.param("team_id");
     var sess = req.session;
 
     team.delete(sess, team_id, function (found) {
@@ -124,9 +124,9 @@ router.delete('/remove_user',function(req, res)
 {
     console.log("-> remove_user called");
 
-    var team_id = req.body.team_id;
-    var user_id = req.body.user_id;
-    var message = req.body.message;
+    var team_id = req.param("team_id");
+    var user_id = req.param("user_id");
+    var message = req.params("message");
     var sess = req.session;
 
     team.removeUser(sess, team_id, user_id, message, function (found) {
