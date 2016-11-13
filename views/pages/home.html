@@ -15,12 +15,9 @@
                         <i class="material-icons">build</i>
                         <a>Manage Teams</a>
                     </li>
-                    <li id="createTeam" ui-sref="home.teams.manage" ng-if="hasNoTeam">
+                    <li id="createTeam"  ng-if="hasNoTeam" ng-click="createForm()">
                         <i class="material-icons">group_add</i>
                         <a>Create A Team</a>
-                    </li>
-                    <li >
-                        <a class="popUpWindow-trigger" ng-click="createForm()">View Pop-up</a>
                     </li>
                 </ul>
             </li>
