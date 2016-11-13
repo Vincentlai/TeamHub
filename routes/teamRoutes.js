@@ -126,7 +126,7 @@ router.delete('/remove_user',function(req, res)
 
     var team_id = req.param("team_id");
     var user_id = req.param("user_id");
-    var message = req.params("message");
+    var message = req.param("message");
     var sess = req.session;
 
     team.removeUser(sess, team_id, user_id, message, function (found) {
