@@ -21,12 +21,21 @@
                     url: "/",
                     views: {
                         'navigation': {templateUrl: 'partials/header.html'},
-                        'container': {templateUrl: 'pages/home.html'}
-                    },
-                    controller: 'sideBarController',
-                    resolve: {
-                        'teams': function () {
-                            return ['team1', 'team2'];
+                        'container': {
+                            templateUrl: 'pages/home.html',
+                            controller: 'sideBarController',
+                            resolve: {
+                                teams: function ($http) {
+                                     return $http.get('/users/my_info')
+                                         .then(
+                                             function (res) {
+                                                 return res.data.teams;
+                                             },function (error) {
+                                                console.log('error in get user info' + error);
+                                             }
+                                         )
+                                }
+                            }
                         }
                     },
                     authenticated: true,
@@ -44,8 +53,16 @@
                 .state('home.teams', {
                     url: "teams",
                     views: {
-                        'contains': {templateUrl: 'pages/teams.html'}
+                        'contains': {
+                            template: '<div ui-view></div>'
+                        }
                     },
+                    authenticated: true,
+                    abstract: true
+                })
+                .state('home.teams.manage',{
+                    url: '/manage',
+                    templateUrl: 'pages/teams.html',
                     authenticated: true
                 })
                 .state('home.chat', {
@@ -102,11 +119,7 @@
                         $http.get('/users/my_info')
                             .then(function (res) {
                                     if (res.data.code == 1) {
-                                        var user = {
-                                            'email': res.data.email,
-                                            'nickname': res.data.nickname
-                                        };
-                                        Auth.setCookie(user);
+                                        Auth.setCookie(res.data.session_id);
                                     } else {
                                         if (toState.authenticated) {
                                             event.preventDefault();
@@ -119,7 +132,7 @@
                                 }
                             );
                     } else {
-                        console.log(Auth.isLoggedIn().email + "is logged in ");
+                        console.log(Auth.isLoggedIn() + "is logged in ");
                         if (!toState.authenticated) {
                             event.preventDefault();
                             return $state.go('home.teams');

@@ -1,38 +1,41 @@
-<div class="main-container clearfix" >
-    <div class="side-bar" ng-controller="sideBarController">
+<div class="main-container clearfix">
+    <div class="side-bar" data-ng-init="openTeam()">
         <ul id="accordion" class="accordion">
             <li id="teams">
-                <div  class="link"  ng-click="tagSlide('teams')">
+                <div class="link" ng-click="tagSlide('teams')">
                     <i class="material-icons main-menu">group</i>
                     Teams
                     <i class="material-icons drop-down">expand_more</i>
                 </div>
                 <ul class="submenu">
-                    <li id="manageTeams" ui-sref="home.teams">
-                        <i class="material-icons">build</i>
-                        <a >Manage Teams</a>
+                    <li ng-repeat="team in teams">
+                        <a>{{team.name}}</a>
                     </li>
-                    <li id="createTeam">
+                    <li id="manageTeams" ui-sref="home.teams.manage" ng-if="!hasNoTeam">
+                        <i class="material-icons">build</i>
+                        <a>Manage Teams</a>
+                    </li>
+                    <li id="createTeam" ui-sref="home.teams.manage" ng-if="hasNoTeam">
                         <i class="material-icons">group_add</i>
-                        <a >Create A Team</a>
+                        <a>Create A Team</a>
                     </li>
                 </ul>
             </li>
             <li id="chat">
-                <div  class="link" ui-sref="home.chat" ng-click="tagSlide('chat')">
+                <div class="link" ui-sref="home.chat" ng-click="tagSlide('chat')">
                     <i class="material-icons main-menu">chat</i>
                     Chat Rooms
                     <i class="material-icons drop-down">expand_more</i>
                 </div>
                 <ul class="submenu">
                     <li>
-                        <a >Room 1</a>
+                        <a>Room 1</a>
                     </li>
                     <li>
-                        <a >Room 2</a>
+                        <a>Room 2</a>
                     </li>
                     <li>
-                        <a >Room 3</a>
+                        <a>Room 3</a>
                     </li>
                 </ul>
             </li>
@@ -43,10 +46,10 @@
                 </div>
                 <ul class="submenu">
                     <li>
-                        <a >#1</a>
+                        <a>#1</a>
                     </li>
                     <li>
-                        <a >#2</a>
+                        <a>#2</a>
                     </li>
                 </ul>
             </li>
@@ -57,10 +60,10 @@
                 </div>
                 <ul class="submenu">
                     <li>
-                        <a >#1</a>
+                        <a>#1</a>
                     </li>
                     <li>
-                        <a >#2</a>
+                        <a>#2</a>
                     </li>
                 </ul>
             </li>

@@ -91,7 +91,9 @@
         '$scope',
         '$rootScope',
         '$state',
-        function ($scope, $rootScope, $state, teams) {
+        'teams',
+        '$timeout',
+        function ($scope, $rootScope, $state, teams, $timeout) {
             // $scope.$watch(function () {
             //     return $state.$current.name;
             // }, function (newState, oldState) {
@@ -107,38 +109,89 @@
             //         $(openElement.children()[1]).slideToggle();
             //     }
             // }, true);
-            var lastOpen = null;
-            if (lastOpen == null) {
-                var element = $state.current.name.replace('home.', '');
-                var openElement = angular.element(document.querySelector('#' + element));
-                console.log(openElement);
+            $scope.teams = teams;
+            $scope.hasNoTeam = ($scope.teams.length === 0);
+            /*
+             * Open teams tag when page load
+             * */
+            $scope.openTeam = function () {
+                console.log('onlad');
+                var openElement = angular.element(document.querySelector('#' + 'teams'));
                 $(openElement).addClass('open');
-                $(openElement.children()[1]).slideToggle();
-                lastOpen = element;
-                $scope.tagSlide = function (open) {
-                    var openElement;
-                    if (lastOpen != null) {
-                        var closeElement = angular.element(document.querySelector('#' + lastOpen));
-                        $(closeElement).removeClass('open');
-                        $(closeElement.children()[1]).slideToggle();
-                        if (open != lastOpen) {
-                            openElement = angular.element(document.querySelector('#' + open));
-                            $(openElement).addClass('open');
-                            $(openElement.children()[1]).slideToggle();
-                            lastOpen = open;
-                        } else {
-                            lastOpen = null;
+                $timeout(function () {
+                    $(openElement.children()[1]).slideToggle();
+                }, 300);
+            };
+            /*
+             Open or close tag
+             */
+            $scope.tagSlide = function (tagName) {
+                var element = angular.element(document.querySelector('#' + tagName));
+                if ($(element).hasClass('open')) {
+                    $(element).removeClass('open');
+                } else {
+                    $(element).addClass('open');
+                }
+                $(element.children()[1]).slideToggle();
+                // var openElement;
+                // if (lastOpen != null) {
+                //     var closeElement = angular.element(document.querySelector('#' + lastOpen));
+                //     $(closeElement).removeClass('open');
+                //     $(closeElement.children()[1]).slideToggle();
+                //     if (open != lastOpen) {
+                //         openElement = angular.element(document.querySelector('#' + open));
+                //         $(openElement).addClass('open');
+                //         $(openElement.children()[1]).slideToggle();
+                //         lastOpen = open;
+                //     } else {
+                //         lastOpen = null;
+                //     }
+                // } else {
+                //     openElement = angular.element(document.querySelector('#' + open));
+                //     $(openElement).addClass('open');
+                //     $(openElement.children()[1]).slideToggle();
+                //     lastOpen = open;
+                // }
+            };
+
+
+        }
+    ]);
+    module.controller('teamController', [
+        '$http',
+        '$scope',
+        '$timeout',
+        function ($http, $scope, $timeout) {
+            $scope.team = {};
+            $scope.createTeam = function () {
+                console.log('createTeam clicked');
+                $http.post('/teams/create', $scope.team)
+                    .then(
+                        function (res) {
+                            if (res.data.code === 1) {
+                                console.log('code = ' + res.data.code);
+                                $scope.msg = res.data.msg;
+                                $scope.error = true;
+                                $timeout(function () {
+                                    $scope.error = false;
+                                }, 4000);
+                            } else {
+                                $scope.msg = res.data.msg;
+                                $scope.error = true;
+                                $timeout(function () {
+                                    $scope.error = false;
+                                }, 4000);
+                            }
+                        }, function (error) {
+                            console.log('error in create teams ' + error);
                         }
-                    } else {
-                        openElement = angular.element(document.querySelector('#' + open));
-                        $(openElement).addClass('open');
-                        $(openElement.children()[1]).slideToggle();
-                        lastOpen = open;
-                    }
-                };
-                $scope.teams = teams;
-                console.log($scope.teams);
+                    )
             }
+        }
+    ]);
+    module.controller('chatController', [
+        '$scope',
+        function ($scope) {
         }
     ]);
 }());
