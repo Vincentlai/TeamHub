@@ -11,7 +11,8 @@
         'Controllers',
         'Services',
         'ngCookies',
-        'ngPassword'
+        'ngPassword',
+        'socket.io'
     ]);
     module
         .config(function ($stateProvider, $urlRouterProvider) {

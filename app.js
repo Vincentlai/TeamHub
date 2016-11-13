@@ -61,3 +61,11 @@ app.use(function(err, req, res, next) {
 module.exports = app;
 var server = app.listen(port);
 console.log('Server runs on port ' + port);
+
+// init Socket.io and enable socket.io session support
+var sharedsession = require("express-socket.io-session");
+var io = require('socket.io').listen(server);
+io.use(sharedsession(session, {
+    autoSave:true
+}));
+require('./controllers/socket.js')(io);

@@ -1,4 +1,7 @@
-<div>
-
-    <h1> hi i am chat</h1>
+<div ng-app="myApp" ng-controller="Ctrl">
+    <input ng-model="dataToSend">
+    <button ng-click="emitBasic()">Send</button>
+    <button ng-click="emitACK()">Send (ACK)</button>
+    <div>Server Response: {{ serverResponse }}</div>
+    <div>Server Response (ACK): {{ serverResponseACK }}</div>
 </div>
