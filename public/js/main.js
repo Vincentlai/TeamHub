@@ -23,12 +23,13 @@
                         'navigation': {templateUrl: 'partials/header.html'},
                         'container': {
                             templateUrl: 'pages/home.html',
-                            controller: 'sideBarController',
+                            controller: 'homeController',
                             resolve: {
                                 teams: function ($http) {
                                      return $http.get('/users/my_info')
                                          .then(
                                              function (res) {
+                                                 console.log(res.data.teams);
                                                  return res.data.teams;
                                              },function (error) {
                                                 console.log('error in get user info' + error);

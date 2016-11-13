@@ -87,7 +87,7 @@
             }
         ]
     );
-    module.controller('sideBarController', [
+    module.controller('homeController', [
         '$scope',
         '$rootScope',
         '$state',
@@ -198,12 +198,10 @@
             $scope.team_name = $stateParams.team_name;
             $scope.deleteTeam = function () {
                 console.log('delete');
-                var data = {team_id: $scope.team_id};
-                console.log(data);
-                $http.delete('/teams/delete', data)
+                $http.delete('/teams/delete?team_id=' + $scope.team_id)
                     .then(
                         function (res) {
-                            if(res.data.code === 1 ){
+                            if(res.data.code == 1 ){
                                 console.log('deleted');
                                 $state.transitionTo('home.overview', {}, {
                                     reload: true, inherit: false, notify: false
@@ -213,7 +211,7 @@
                                 console.log('cannot delete team');
                             }
                         }, function (error) {
-                            console.log('error inn delete team ' + error);
+                            console.log('error in delete team ' + error);
                         }
                     )
             }
