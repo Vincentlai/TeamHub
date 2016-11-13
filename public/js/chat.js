@@ -1,4 +1,4 @@
-var app = angular.module('socket.io', []);
+var app = angular.module('chat', []);
 
 app.config(function ($socketProvider) {
     $socketProvider.setConnectionUrl('http://localhost:8080');
