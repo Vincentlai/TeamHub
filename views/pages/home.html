@@ -19,6 +19,9 @@
                         <i class="material-icons">group_add</i>
                         <a>Create A Team</a>
                     </li>
+                    <li >
+                        <a class="popUpWindow-trigger" ng-click="createForm()">View Pop-up</a>
+                    </li>
                 </ul>
             </li>
             <li id="chat">
@@ -71,5 +74,15 @@
     </div>
     <div class="content">
         <div ui-view="contains"></div>
+    </div>
+    <div class="popUpWindow" role="alert">
+        <div class="popUpWindow-container">
+            <p>Are you sure you want to delete this element?</p>
+            <ul class="cd-buttons clearfix">
+                <li><a class="agree">Yes</a></li>
+                <li><a ng-click="closeForm()">No</a></li>
+            </ul>
+            <a class="popUpWindow-close " ng-click="closeForm()"><i class="material-icons">clear</i></a>
+        </div>
     </div>
 </div>

@@ -301,11 +301,11 @@ notification end
   background-color: #25283d;
   color: white;
   float: left;
-  border-right: 1px solid #CCC;
+  border-right: 1px solid rgba(225, 225, 225, 0.8);
 }
 .side-bar .accordion {
   width: 199px;
-  background: #FFF;
+  background: white;
 }
 .side-bar .accordion .link {
   cursor: pointer;
@@ -314,7 +314,7 @@ notification end
   color: #4D4D4D;
   font-size: 14px;
   font-weight: 700;
-  border-bottom: 1px solid #CCC;
+  border-bottom: 1px solid rgba(225, 225, 225, 0.8);
   position: relative;
   -webkit-transition: all 0.4s ease;
   -o-transition: all 0.4s ease;
@@ -330,10 +330,10 @@ notification end
 }
 .side-bar .accordion li i {
   position: absolute;
-  top: 10px;
+  top: 13px;
   left: 12px;
   font-size: 18px;
-  color: #595959;
+  color: #4D4D4D;
   -webkit-transition: all 0.4s ease;
   -o-transition: all 0.4s ease;
   transition: all 0.4s ease;
@@ -344,7 +344,7 @@ notification end
   font-weight: bold;
 }
 .side-bar .accordion li.open i.main-menu {
-  color: #b63b4d;
+  color: teal;
 }
 .side-bar .accordion li.open i.drop-down {
   -webkit-transform: rotate(180deg);
@@ -353,7 +353,7 @@ notification end
   transform: rotate(180deg);
 }
 .side-bar .accordion li.open .link {
-  color: #b63b4d;
+  color: teal;
 }
 .side-bar .accordion li .submenu {
   display: none;
@@ -367,6 +367,7 @@ notification end
   cursor: pointer;
 }
 .side-bar .accordion li .submenu li i {
+  top: 10px;
   color: #d9d9d9;
 }
 .side-bar .accordion li .submenu li a {
@@ -380,7 +381,7 @@ notification end
   transition: all 0.25s ease;
 }
 .side-bar .accordion li .submenu li a:hover {
-  background: #b63b4d;
+  background: teal;
   color: #FFF;
 }
 @media only screen and (min-width: 768px) {
@@ -394,4 +395,101 @@ notification end
 .content {
   float: right;
   width: calc(100% - 200px);
+}
+/*
+popUp Window
+ */
+.popUpWindow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(37, 40, 61, 0.8);
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+  -moz-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+  transition: opacity 0.3s 0s, visibility 0s 0.3s;
+}
+.popUpWindow.is-visible {
+  opacity: 1;
+  visibility: visible;
+  -webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
+  -moz-transition: opacity 0.3s 0s, visibility 0s 0s;
+  transition: opacity 0.3s 0s, visibility 0s 0s;
+}
+.popUpWindow-container {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  margin: 5em auto;
+  background: #FFF;
+  border-radius: .25em .25em .4em .4em;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  -webkit-transform: translateY(-40px);
+  -moz-transform: translateY(-40px);
+  -ms-transform: translateY(-40px);
+  -o-transform: translateY(-40px);
+  transform: translateY(-40px);
+  -webkit-backface-visibility: hidden;
+  -webkit-transition-property: -webkit-transform;
+  -moz-transition-property: -moz-transform;
+  transition-property: transform;
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+}
+.popUpWindow-container p {
+  padding: 3em 1em;
+}
+.popUpWindow-container .cd-buttons li {
+  float: left;
+  width: 50%;
+  cursor: pointer;
+}
+.popUpWindow-container .cd-buttons li a {
+  display: block;
+  height: 40px;
+  line-height: 40px;
+  color: #FFF;
+  -webkit-transition: background-color 0.2s;
+  -moz-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+  background: #b6bece;
+  border-radius: 0 0 .25em 0;
+}
+.popUpWindow-container .cd-buttons li a.agree {
+  background: #fc7169;
+  border-radius: 0 0 0 .25em;
+}
+.popUpWindow-container .popUpWindow-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  color: #8f9cb5;
+  cursor: pointer;
+  -webkit-transition: color .3s linear;
+  -moz-transition: color .3s linear;
+  -ms-transition: color .3s linear;
+  -o-transition: color .3s linear;
+  transition: color .3s linear;
+}
+.popUpWindow-container .popUpWindow-close:hover {
+  color: #fc7169;
+}
+.is-visible .popUpWindow-container {
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  -o-transform: translateY(0);
+  transform: translateY(0);
+}
+@media only screen and (min-width: 1170px) {
+  .popUpWindow-container {
+    margin: 300px auto;
+  }
 }

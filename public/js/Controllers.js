@@ -153,7 +153,19 @@
                 // }
             };
 
+            /*
+                Show create team form
+             */
+            $scope.createForm = function () {
+                $('.popUpWindow').addClass('is-visible');
+            };
+            /*
+                Close form
+             */
+            $scope.closeForm = function () {
 
+                $('.popUpWindow').removeClass('is-visible');
+            };
         }
     ]);
     module.controller('teamController', [
