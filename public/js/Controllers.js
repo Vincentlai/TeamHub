@@ -115,7 +115,6 @@
              * Open teams tag when page load
              * */
             $scope.openTeam = function () {
-                console.log('onlad');
                 var openElement = angular.element(document.querySelector('#' + 'teams'));
                 $(openElement).addClass('open');
                 $timeout(function () {
@@ -189,9 +188,41 @@
             }
         }
     ]);
+    module.controller('teamDetailController',[
+        '$scope',
+        '$stateParams',
+        '$http',
+        '$state',
+        function ($scope, $stateParams, $http, $state) {
+            $scope.team_id = $stateParams.team_id;
+            $scope.team_name = $stateParams.team_name;
+            $scope.deleteTeam = function () {
+                console.log('delete');
+                var data = {team_id: $scope.team_id};
+                console.log(data);
+                $http.delete('/teams/delete', data)
+                    .then(
+                        function (res) {
+                            if(res.data.code === 1 ){
+                                console.log('deleted');
+                                $state.transitionTo('home.overview', {}, {
+                                    reload: true, inherit: false, notify: false
+                                });
+                            }else{
+                                console.log(res.data.msg);
+                                console.log('cannot delete team');
+                            }
+                        }, function (error) {
+                            console.log('error inn delete team ' + error);
+                        }
+                    )
+            }
+        }
+    ]);
     module.controller('chatController', [
         '$scope',
         function ($scope) {
+
         }
     ]);
 }());

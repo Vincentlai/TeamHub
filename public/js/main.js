@@ -63,8 +63,16 @@
                 .state('home.teams.manage',{
                     url: '/manage',
                     templateUrl: 'pages/teams.html',
+                    controller: 'teamController',
                     authenticated: true
                 })
+                .state('home.teams.detail',{
+                    url: '/:team_id/:team_name',
+                    templateUrl: 'pages/teamDetail.html',
+                    controller: 'teamDetailController',
+                    authenticated: true
+                })
+
                 .state('home.chat', {
                     url: 'chat',
                     views: {

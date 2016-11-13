@@ -8,8 +8,8 @@
                     <i class="material-icons drop-down">expand_more</i>
                 </div>
                 <ul class="submenu">
-                    <li ng-repeat="team in teams">
-                        <a>{{team.name}}</a>
+                    <li ng-repeat="teamItem in teams">
+                        <a ui-sref="home.teams.detail({team_id:teamItem.id, team_name:teamItem.name})">{{teamItem.name}}</a>
                     </li>
                     <li id="manageTeams" ui-sref="home.teams.manage" ng-if="!hasNoTeam">
                         <i class="material-icons">build</i>

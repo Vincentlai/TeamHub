@@ -53,7 +53,7 @@ router.post('/create',function(req, res)
 router.delete('/delete',function(req, res)
 {
     console.log("-> delete group called");
-
+    console.log(req.body);
     var team_id = req.body.team_id;
     var sess = req.session;
 

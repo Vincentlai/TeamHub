@@ -1,5 +1,13 @@
-<div class="teams container clearfix">
-    <div class="center-container col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3" ng-controller="teamController" ng-cloak>
+<div class="teams container clearfix" ng-cloak>
+    <div class="center-container col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3" >
+        <div ng-repeat="teamCard in teams" id="{{teamCard.name}}">
+            <h1> Team name : {{teamCard.name}}</h1>
+            <h1> Team Id : {{teamCard.id}}</h1>
+            <button ng-click="addUser()">Add User</button>
+        </div>
+    </div>
+    <div class="center-container col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3" >
+
         <div class="notify" ng-if="error">
             <div class="notify-msg">
                 <i class="material-icons">info_outline</i>
