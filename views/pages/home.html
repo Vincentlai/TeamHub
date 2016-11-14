@@ -12,6 +12,9 @@
                         <a ui-sref="home.teams.detail({team_id:teamItem.id, team_name:teamItem.name})">{{teamItem.name}}</a>
                     </li>
                     <li id="manageTeams" ui-sref="home.teams.manage" ng-if="!hasNoTeam">
+                        <md-tooltip md-direction="right">
+                            See all your teams
+                        </md-tooltip>
                         <i class="material-icons">build</i>
                         <a>Manage Teams</a>
                     </li>

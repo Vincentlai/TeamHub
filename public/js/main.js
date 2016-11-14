@@ -20,23 +20,40 @@
                 .state('home', {
                     url: "/",
                     views: {
-                        'navigation': {templateUrl: 'partials/header.html'},
+                        'navigation': {templateUrl: 'partials/header.html',
+                            controller: 'homeController'
+                        },
                         'container': {
                             templateUrl: 'pages/home.html',
-                            controller: 'homeController',
-                            resolve: {
-                                teams: function ($http) {
-                                     return $http.get('/users/my_info')
-                                         .then(
-                                             function (res) {
-                                                 console.log(res.data.teams);
-                                                 return res.data.teams;
-                                             },function (error) {
-                                                console.log('error in get user info' + error);
-                                             }
-                                         )
-                                }
-                            }
+                            controller: 'homeController'
+
+                        }
+                    },
+                    resolve: {
+                        information: function ($http, $state, Auth) {
+                            return $http.get('/users/my_info')
+                                .then(
+                                    function (res) {
+                                        if(res.data.code == 1){
+                                            var info = {
+                                                user: {
+                                                    email: res.data.email,
+                                                    nickname: res.data.nickname
+                                                },
+                                                teams: res.data.teams
+                                            };
+                                            console.log(info);
+                                            return info;
+                                        }else{
+                                            Auth.removeCookie();
+                                            $state.go('login');
+                                        }
+                                    },function (error) {
+                                        Auth.removeCookie();
+                                        console.log('error in get user info' + error);
+                                        $state.go('login');
+                                    }
+                                )
                         }
                     },
                     authenticated: true,

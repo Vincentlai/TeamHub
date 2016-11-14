@@ -183,6 +183,7 @@ Header  Navigation
 .nav-bar ul li {
   display: inline-block;
   text-align: center;
+  cursor: pointer;
 }
 .nav-bar ul li a {
   display: inline-block;

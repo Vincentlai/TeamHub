@@ -1,14 +1,24 @@
 <!--I am the header of index page-->
 <!--I am the navigation bar-->
 
-<div class="nav-bar clearfix" ng-controller="headerCtrl">
+<div class="nav-bar clearfix" >
     <div class="logo">LOGO</div>
     <ul ng-if="!(isLoggedin)">
         <li><a class="nav-link" ui-sref="login">LOG IN</a></li>
         <li><a class="important" ui-sref="signup">SIGN UP</a></li>
     </ul>
     <ul ng-if="isLoggedin">
-        <li><a class="nav-link" ui-sref="home.overview">HOME</a></li>
-        <li><a class="nav-link" ng-click="logout()">LOG OUT</a></li>
+        <li>
+            <md-tooltip md-direction="bottom">
+                Back to Overview
+            </md-tooltip>
+            <a class="nav-link" ui-sref="home.overview">HOME</a>
+        </li>
+        <li>
+            <md-tooltip md-direction="bottom">
+                Click me to Log out
+            </md-tooltip>
+            <a class="nav-link" ng-click="logout()">{{user.nickname}}</a>
+        </li>
     </ul>
 </div>

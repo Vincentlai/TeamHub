@@ -53,13 +53,57 @@
             }
         }
     ]);
-    module.controller('headerCtrl', [
+    // module.controller('headerCtrl', [
+    //     '$scope',
+    //     'Auth',
+    //     '$state',
+    //     '$http',
+    //     '$rootScope',
+    //     function ($scope, Auth, $state, $http, $rootScope) {
+    //
+    //     }
+    // ]);
+    module.controller('post', [
+            '$scope',
+            'PostService',
+            function ($scope, PostService) {
+                $scope.post = PostService;
+            }
+        ]
+    );
+    module.controller('homeController', [
         '$scope',
-        'Auth',
+        '$rootScope',
         '$state',
+        'information',
+        '$timeout',
+        'Auth',
         '$http',
-        function ($scope, Auth, $state, $http) {
-            $scope.isLoggedin = $state.current.authenticated;
+        function ($scope, $rootScope, $state, information, $timeout, Auth, $http) {
+
+
+            // $scope.$watch(function () {
+            //     return $state.$current.name;
+            // }, function (newState, oldState) {
+            //     var element = newState.replace('home.', '');
+            //     var openElement = angular.element(document.querySelector('#' + element));
+            //     $(openElement).addClass('open');
+            //     if (newState !== oldState) {
+            //         element = oldState.replace('home.', '');
+            //         var closeElement = angular.element(document.querySelector('#' + element));
+            //         $(closeElement).removeClass('open');
+            //         $(closeElement.children()[1]).slideToggle();
+            //     } else {
+            //         $(openElement.children()[1]).slideToggle();
+            //     }
+            // }, true);
+            $scope.teams = information.teams;
+            $scope.hasNoTeam = ($scope.teams.length === 0);
+            $rootScope.user = information.user;
+            $scope.isLoggedin = $rootScope.user;
+            /*
+                Log out
+             */
             $scope.logout = function () {
                 $http.post('/users/logout')
                     .then(
@@ -76,41 +120,7 @@
                             console.log('Error occurs in Logout' + error);
                         }
                     )
-            }
-        }
-    ]);
-    module.controller('post', [
-            '$scope',
-            'PostService',
-            function ($scope, PostService) {
-                $scope.post = PostService;
-            }
-        ]
-    );
-    module.controller('homeController', [
-        '$scope',
-        '$rootScope',
-        '$state',
-        'teams',
-        '$timeout',
-        function ($scope, $rootScope, $state, teams, $timeout) {
-            // $scope.$watch(function () {
-            //     return $state.$current.name;
-            // }, function (newState, oldState) {
-            //     var element = newState.replace('home.', '');
-            //     var openElement = angular.element(document.querySelector('#' + element));
-            //     $(openElement).addClass('open');
-            //     if (newState !== oldState) {
-            //         element = oldState.replace('home.', '');
-            //         var closeElement = angular.element(document.querySelector('#' + element));
-            //         $(closeElement).removeClass('open');
-            //         $(closeElement.children()[1]).slideToggle();
-            //     } else {
-            //         $(openElement.children()[1]).slideToggle();
-            //     }
-            // }, true);
-            $scope.teams = teams;
-            $scope.hasNoTeam = ($scope.teams.length === 0);
+            };
             /*
              * Open teams tag when page load
              * */
@@ -234,16 +244,62 @@
                         }
                     )
             };
-            $scope.addUserForm = function (team_id) {
-            };
-            $scope.addUser = function (team_id) {
+            $scope.addUser = function () {
                 console.log('addUSER');
-                $http.post('/teams/add_user', team_id)
+                $scope.adduser.team_id = $scope.seletedTeamId;
+                $scope.adduser.user_id = 55655;
+                $http.post('/teams/add_user', $scope.adduser)
                     .then(
                         function (res) {
-
+                            if (res.data.code == 1){
+                                $scope.msg = res.data.msg;
+                                $scope.error = true;
+                                $timeout(function () {
+                                    $scope.error = false;
+                                    $scope.closeForm('add-user');
+                                    delete $scope.msg;
+                                    delete $scope.adduser;
+                                }, 4000);
+                            }else {
+                                $scope.msg = res.data.msg;
+                                $scope.error = true;
+                                $timeout(function () {
+                                    $scope.error = false;
+                                    delete $scope.msg;
+                                }, 4000);
+                                console.log('cannot add user');
+                            }
                         }, function (error) {
-
+                            console.log('error in add user ' + error);
+                        }
+                    );
+            };
+            $scope.removeUser = function () {
+                console.log('remove user');
+                $scope.user.team_id = $scope.seletedTeamId;
+                $scope.user.user_id = 55655;
+                $http.post('/teams/add_user', $scope.user)
+                    .then(
+                        function (res) {
+                            if (res.data.code == 1){
+                                $scope.msg = res.data.msg;
+                                $scope.error = true;
+                                $timeout(function () {
+                                    $scope.error = false;
+                                    $scope.closeForm('add-user');
+                                    delete $scope.msg;
+                                }, 4000);
+                            }else {
+                                $scope.msg = res.data.msg;
+                                $scope.error = true;
+                                $timeout(function () {
+                                    $scope.error = false;
+                                    delete $scope.msg;
+                                }, 4000);
+                                console.log('cannot add user');
+                            }
+                        }, function (error) {
+                            console.log('error in add user ' + error);
                         }
                     );
             }
