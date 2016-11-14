@@ -11,7 +11,9 @@
         'Controllers',
         'Services',
         'ngCookies',
-        'ngPassword'
+        'ngPassword',
+        'socket.io',
+        'chat'
     ]);
     module
         .config(function ($stateProvider, $urlRouterProvider) {
