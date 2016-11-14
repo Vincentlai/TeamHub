@@ -79,6 +79,9 @@
             }
         }
     ]);
+
+
+
     module.controller('post', [
             '$scope',
             'PostService',

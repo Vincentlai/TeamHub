@@ -48,6 +48,13 @@
                     },
                     authenticated: true
                 })
+                .state('home.calendar', {
+                    url: 'calendar',
+                    views: {
+                        'contains': {templateUrl: 'pages/calendar.html'}
+                    },
+                    authenticated: true
+                })
                 .state('home.chat', {
                     url: 'chat',
                     views: {
