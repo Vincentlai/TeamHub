@@ -123,7 +123,6 @@ blockquote:after,
 q:before,
 q:after {
   content: '';
-  content: none;
 }
 table {
   border-collapse: collapse;
@@ -132,7 +131,12 @@ table {
 /*
 global setting
 */
+html,
 body {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
   background-image: url("/images/newdb.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
@@ -157,6 +161,12 @@ a:visited {
 Header  Navigation
 */
 .nav-bar {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   background-color: #25283d;
   line-height: 3em;
   padding: 0;
@@ -291,16 +301,24 @@ notification end
  home setting
 */
 .main-container {
+  position: fixed;
+  top: 48px;
+  bottom: 0;
+  width: 100%;
   background-color: white;
+  overflow: auto;
 }
 /*
   side bar
 */
 .side-bar {
-  min-height: 100vh;
+  position: fixed;
+  top: 48px;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
   background-color: #25283d;
   color: white;
-  float: left;
   border-right: 1px solid rgba(225, 225, 225, 0.8);
 }
 .side-bar .accordion {
@@ -393,8 +411,8 @@ notification end
   content
 */
 .content {
-  float: right;
-  width: calc(100% - 200px);
+  position: relative;
+  margin-left: 200px;
 }
 /*
 popUp Window
@@ -426,7 +444,6 @@ popUp Window
   margin: 5em auto;
   background: #FFF;
   border-radius: .25em .25em .4em .4em;
-  text-align: center;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   -webkit-transform: translateY(-40px);
   -moz-transform: translateY(-40px);
@@ -441,8 +458,19 @@ popUp Window
   -moz-transition-duration: 0.3s;
   transition-duration: 0.3s;
 }
-.popUpWindow-container p {
-  padding: 3em 1em;
+.popUpWindow-container h1 {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+  padding: 2em 1em 1em 1em;
+  color: #8f9cb5;
+}
+.popUpWindow-container h1 span {
+  color: #fc7169;
+}
+.popUpWindow-container .cd-buttons {
+  margin-top: 3em;
+  text-align: center;
 }
 .popUpWindow-container .cd-buttons li {
   float: left;
@@ -450,6 +478,7 @@ popUp Window
   cursor: pointer;
 }
 .popUpWindow-container .cd-buttons li a {
+  font-size: 15px;
   display: block;
   height: 40px;
   line-height: 40px;
@@ -463,6 +492,9 @@ popUp Window
 .popUpWindow-container .cd-buttons li a.agree {
   background: #fc7169;
   border-radius: 0 0 0 .25em;
+}
+.popUpWindow-container .cd-buttons li a:hover {
+  opacity: .75;
 }
 .popUpWindow-container .popUpWindow-close {
   position: absolute;
@@ -492,4 +524,66 @@ popUp Window
   .popUpWindow-container {
     margin: 300px auto;
   }
+}
+.card-container {
+  margin-top: 1.5em;
+  padding: 1em 3em;
+}
+.card-container .card {
+  padding: 2em 1em;
+}
+.card-container .card .card-content {
+  padding: 1.2em;
+  border-radius: .25em .25em .4em .4em;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+.card-container .card .card-content:hover {
+  -webkit-transform: translateY(-5px);
+  -moz-transform: translateY(-5px);
+  -ms-transform: translateY(-5px);
+  -o-transform: translateY(-5px);
+  transform: translateY(-5px);
+}
+.card-container .card .card-btn {
+  margin-top: 3em;
+  text-align: center;
+}
+.card-container .card .card-btn li {
+  margin-top: 5px;
+  cursor: pointer;
+}
+.card-container .card .card-btn li a {
+  display: block;
+  height: 40px;
+  line-height: 40px;
+  color: #FFF;
+  -webkit-transition: background-color 0.2s;
+  -moz-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+  background: teal;
+}
+.card-container .card .card-btn li a.important {
+  background: #fc7169;
+}
+.card-container .card .card-btn li a:hover {
+  opacity: .75;
+}
+.card-container .card h1 {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: #25283d;
+}
+.card-container .card h2 {
+  margin-top: 1.5em;
+}
+.control-btn {
+  width: 172px;
+  padding-left: 40px;
+  position: relative;
+  color: teal;
+}
+.control-btn i {
+  position: absolute;
+  top: 6px;
+  left: 10px;
 }

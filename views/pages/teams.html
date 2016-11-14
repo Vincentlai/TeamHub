@@ -1,39 +1,42 @@
-<div class="teams container clearfix" ng-cloak>
-    <div class="center-container col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3" >
-        <div ng-repeat="teamCard in teams" id="{{teamCard.name}}">
-            <h1> Team name : {{teamCard.name}}</h1>
-            <h1> Team Id : {{teamCard.id}}</h1>
-            <button ng-click="addUser()">Add User</button>
-        </div>
-    </div>
-    <div class="center-container col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3" >
+<div class="page-container" ng-cloak>
 
-        <div class="notify" ng-if="error">
-            <div class="notify-msg">
-                <i class="material-icons">info_outline</i>
-                <span>{{msg}}</span>
+    <md-button ng-click="createForm('create-team')" class="control-btn"><i class="material-icons">group_add</i>Create A Team</md-button>
+
+    <div class="card-container clearfix">
+        <div class="col-lg-4 col-md-6 col-sm-12 card" ng-repeat="teamCard in teams" id="{{teamCard.name}}">
+            <div class="card-content">
+                <h1>{{teamCard.name}}</h1>
+                <h2>Maybe some description here<br>
+                    Lorem ipsum dolor sit amet,
+                    consectetur adipisicing elit.
+                    Delectus doloribus id iste iusto maiores,
+                    minus, molestias mollitia obcaecati provident repellendus sapiente sint tempora? Animi cumqu
+                    e eligendi eum fugit inventore vel.</h2>
+                <ul class="card-btn clearfix">
+                    <li ng-if=teamCard.is_creator ng-click="addUserForm(teamCard.id)"><a>Add User</a></li>
+                    <li ng-if=teamCard.is_creator><a class="important">Remove User</a></li>
+                    <li ng-if=teamCard.is_creator ng-click="createForm('delete-team', teamCard.id, teamCard.name)"><a class="important">Delete Team</a></li>
+                    <li ng-if=!teamCard.is_creator><a class="important">Quit from Team</a></li>
+                </ul>
             </div>
-        </div>
 
-        <form ng-submit="createTeam()" name="teamCreateForm" >
-                <label>Name</label>
-                <input required type="text" name="name" ng-model="team.name"
-                />
-                <div ng-messages="teamCreateForm.name.$error" role="alert" ng-show="teamCreateForm.name.$dirty || teamCreateForm.name.$touched">
-                    <div ng-message="required">
-                        Name cannot be empty.
-                    </div>
-                </div>
-                <label>Description</label>
-                <input type="description" required name="description" ng-model="team.description">
-                <div ng-messages="teamCreateForm.password.$error" ng-show="teamCreateForm.password.$dirty || teamCreateForm.password.$touched">
-                    <div ng-message="required">
-                        Description cannot be empty.
-                    </div>
-                </div>
-                <button class="md-raised md-primary btn"
-                           ng-disabled="teamCreateForm.$invalid"
-                           type="submit">Create Team</button>
-        </form>
+        </div>
     </div>
+    <div id="delete-team" class="popUpWindow" role="alert" ng-cloak>
+        <div class="popUpWindow-container">
+            <div class="notify" ng-if="error">
+                <div class="notify-msg">
+                    <i class="material-icons">info_outline</i>
+                    <span>{{msg}}</span>
+                </div>
+            </div>
+            <h1>Are you sure you want to delete team <span>"{{seletedTeamName}}"</span> ?</h1>
+            <ul class="cd-buttons clearfix">
+                <li type="submit" ng-click="deleteTeam()"><a class="agree">Yes</a></li>
+                <li><a ng-click="closeForm('delete-team')">No</a></li>
+            </ul>
+            <a class="popUpWindow-close " ng-click="closeForm('delete-team')"><i class="material-icons">clear</i></a>
+        </div>
+    </div>
+
 </div>

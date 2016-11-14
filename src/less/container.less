@@ -38,7 +38,6 @@
   animation: scale-in .3s ease-out forwards,
   expand .35s .25s ease-out forwards;
 }
-
 .notify-msg {
   opacity: 0;
   display: flex;
@@ -86,17 +85,25 @@ notification end
  home setting
 */
 .main-container {
+  position: fixed;
+  top: 48px;
+  bottom: 0;
+  width: 100%;
   background-color: white;
+  overflow: auto;
 }
 
 /*
   side bar
 */
 .side-bar {
-  min-height: 100vh;
+  position: fixed;
+  top: 48px;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
   background-color: @primary-bg-color;
   color: white;
-  float: left;
   border-right: 1px solid @light-gray-border;
   .accordion {
     width: 199px;
@@ -198,8 +205,8 @@ notification end
   content
 */
 .content {
-  float: right;
-  width: calc(~"100% - 200px");
+  position: relative;
+  margin-left: 200px;
 }
 
 /*
@@ -211,7 +218,7 @@ popUp Window
   top: 0;
   height: 100%;
   width: 100%;
-  background-color: rgba(37, 40, 61,.8);
+  background-color: rgba(37, 40, 61, .8);
   opacity: 0;
   visibility: hidden;
   -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;
@@ -234,7 +241,6 @@ popUp Window
   margin: 5em auto;
   background: #FFF;
   border-radius: .25em .25em .4em .4em;
-  text-align: center;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   -webkit-transform: translateY(-40px);
   -moz-transform: translateY(-40px);
@@ -248,15 +254,25 @@ popUp Window
   -webkit-transition-duration: 0.3s;
   -moz-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  p {
-    padding: 3em 1em;
+  h1 {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    padding: 2em 1em 1em 1em;
+    color: @secondary-text-color;
+    span {
+      color: @important;
+    }
   }
   .cd-buttons {
+    margin-top: 3em;
+    text-align: center;
     li {
       float: left;
       width: 50%;
       cursor: pointer;
       a {
+        font-size: 15px;
         display: block;
         height: 40px;
         line-height: 40px;
@@ -269,6 +285,9 @@ popUp Window
         &.agree {
           background: @important;
           border-radius: 0 0 0 .25em;
+        }
+        &:hover {
+          opacity: .75;
         }
       }
     }
@@ -291,6 +310,7 @@ popUp Window
     }
   }
 }
+
 .is-visible .popUpWindow-container {
   -webkit-transform: translateY(0);
   -moz-transform: translateY(0);
@@ -298,11 +318,81 @@ popUp Window
   -o-transform: translateY(0);
   transform: translateY(0);
 }
+
 @media only screen and (min-width: 1170px) {
   .popUpWindow-container {
     margin: 300px auto;
   }
 }
+
+.page-container {
+}
+
+.card-container {
+  margin-top: 1.5em;
+  padding: 1em 3em;
+  .card {
+    padding: 2em 1em;
+    .card-content {
+      padding: 1.2em;
+      border-radius: .25em .25em .4em .4em;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      &:hover {
+        -webkit-transform: translateY(-5px) ;
+        -moz-transform: translateY(-5px) ;
+        -ms-transform: translateY(-5px) ;
+        -o-transform: translateY(-5px) ;
+        transform: translateY(-5px) ;
+      }
+    }
+    .card-btn {
+      margin-top: 3em;
+      text-align: center;
+      li {
+        margin-top: 5px;
+        cursor: pointer;
+        a {
+          display: block;
+          height: 40px;
+          line-height: 40px;
+          color: #FFF;
+          -webkit-transition: background-color 0.2s;
+          -moz-transition: background-color 0.2s;
+          transition: background-color 0.2s;
+          background: @primary-color;
+          &.important {
+            background: @important;
+          }
+          &:hover {
+            opacity: .75;
+          }
+        }
+      }
+    }
+    h1 {
+      font-size: 1.4em;
+      font-weight: bold;
+      color: @primary-bg-color;
+    }
+    h2 {
+      margin-top: 1.5em;
+    }
+  }
+}
+
+.control-btn {
+  width: 172px;
+  padding-left: 40px;
+  position: relative;
+  color: teal;
+  i {
+    position: absolute;
+    top: 6px;
+    left: 10px;
+  }
+}
+
+
 
 
 

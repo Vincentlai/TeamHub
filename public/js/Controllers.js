@@ -154,79 +154,112 @@
             };
 
             /*
-                Show create team form
+             Show create team form
              */
-            $scope.createForm = function () {
-                $('.popUpWindow').addClass('is-visible');
+            $scope.createForm = function (tag, team_id, name) {
+                $scope.seletedTeamId = team_id;
+                $scope.seletedTeamName = name;
+                $('#' + tag).addClass('is-visible');
             };
             /*
-                Close form
+             Close form
              */
-            $scope.closeForm = function () {
-
-                $('.popUpWindow').removeClass('is-visible');
+            $scope.closeForm = function (tag) {
+                delete $scope.seletedTeamId;
+                delete $scope.seletedTeamName;
+                $('#' + tag).removeClass('is-visible');
             };
+
+            /*
+             Reload side bar when add or delete team
+             */
+            $scope.$on('ChangeTeam',
+                function (event, args) {
+                    $state.transitionTo(args, null, {reload: true, inherit: false, notify: true});
+                });
         }
     ]);
     module.controller('teamController', [
         '$http',
         '$scope',
         '$timeout',
-        function ($http, $scope, $timeout) {
+        '$state',
+        function ($http, $scope, $timeout, $state) {
             $scope.team = {};
             $scope.createTeam = function () {
                 console.log('createTeam clicked');
                 $http.post('/teams/create', $scope.team)
                     .then(
                         function (res) {
-                            if (res.data.code === 1) {
-                                console.log('code = ' + res.data.code);
-                                $scope.msg = res.data.msg;
-                                $scope.error = true;
-                                $timeout(function () {
-                                    $scope.error = false;
-                                }, 4000);
+                            if (res.data.code == 1) {
+                                $scope.closeForm('create-team');
+                                $timeout(
+                                    function () {
+                                        $scope.$emit('ChangeTeam', $state.$current);
+                                    }, 500);
                             } else {
                                 $scope.msg = res.data.msg;
                                 $scope.error = true;
                                 $timeout(function () {
                                     $scope.error = false;
+                                    $scope.msg = null;
                                 }, 4000);
                             }
                         }, function (error) {
                             console.log('error in create teams ' + error);
                         }
                     )
-            }
-        }
-    ]);
-    module.controller('teamDetailController',[
-        '$scope',
-        '$stateParams',
-        '$http',
-        '$state',
-        function ($scope, $stateParams, $http, $state) {
-            $scope.team_id = $stateParams.team_id;
-            $scope.team_name = $stateParams.team_name;
+            };
             $scope.deleteTeam = function () {
                 console.log('delete');
-                $http.delete('/teams/delete?team_id=' + $scope.team_id)
+                $http.delete('/teams/delete?team_id=' + $scope.seletedTeamId)
                     .then(
                         function (res) {
-                            if(res.data.code == 1 ){
-                                console.log('deleted');
-                                $state.transitionTo('home.overview', {}, {
-                                    reload: true, inherit: false, notify: false
-                                });
-                            }else{
-                                console.log(res.data.msg);
+                            if (res.data.code == 1) {
+                                $scope.closeForm('delete-team');
+                                $timeout(function () {
+                                    $scope.$emit('ChangeTeam', 'home.teams.manage');
+                                }, 500);
+                            } else {
+                                $scope.msg = res.data.msg;
+                                $scope.error = true;
+                                $timeout(function () {
+                                    $scope.error = false;
+                                    delete $scope.msg;
+                                }, 4000);
                                 console.log('cannot delete team');
                             }
                         }, function (error) {
                             console.log('error in delete team ' + error);
                         }
                     )
+            };
+            $scope.addUserForm = function (team_id) {
+            };
+            $scope.addUser = function (team_id) {
+                console.log('addUSER');
+                $http.post('/teams/add_user', team_id)
+                    .then(
+                        function (res) {
+
+                        }, function (error) {
+
+                        }
+                    );
             }
+
+        }
+    ]);
+    module.controller('teamDetailController', [
+        '$scope',
+        '$stateParams',
+        '$http',
+        '$state',
+        '$timeout',
+        function ($scope, $stateParams, $http, $state, $timeout) {
+            $scope.team_id = $stateParams.team_id;
+            $scope.team_name = $stateParams.team_name;
+
         }
     ]);
     module.controller('chatController', [

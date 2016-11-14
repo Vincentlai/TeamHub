@@ -39,7 +39,6 @@ blockquote, q {
 blockquote:before, blockquote:after,
 q:before, q:after {
   content: '';
-  content: none;
 }
 table {
   border-collapse: collapse;
@@ -52,8 +51,12 @@ table {
 /*
 global setting
 */
-
+html,
 body {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
   background-image:  url("/images/newdb.jpeg");
   background-repeat:no-repeat;
   background-size: cover;
@@ -81,6 +84,12 @@ Header  Navigation
 */
 
 .nav-bar {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   background-color: @primary-bg-color;
   line-height: 3em;
   padding: 0;
