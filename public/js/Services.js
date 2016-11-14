@@ -10,14 +10,14 @@
         '$cookies',
         function ($http, $cookies) {
             return {
-                setCookie: function (u) {
-                    $cookies.putObject('User',u);
+                setCookie: function (s) {
+                    $cookies.put('Access',s);
                 },
                 isLoggedIn: function () {
-                    return $cookies.getObject('User');
+                    return $cookies.get('Access');
                 },
                 removeCookie: function () {
-                    $cookies.remove('User');
+                    $cookies.remove('Access');
                 }
             }
         }
@@ -46,20 +46,8 @@
                 $http.post('/users/login', me.data)
                     .then(function (r) {
                         if (r.data.code == 1) {
-                            $http.get('/users/my_info')
-                                .then(function (res) {
-                                        if (res.data.code == 1) {
-                                            var user = {
-                                                'email': res.data.email,
-                                                'nickname': res.data.nickname
-                                            };
-                                            Auth.setCookie(user);
-                                            $state.go('home.overview');
-                                        }
-                                    }, function (error) {
-                                        console.log('Error in set access. ' + error);
-                                    }
-                                );
+                            Auth.setCookie(r.data.session_id);
+                            $state.go('home.overview');
                         } else {
                             me.msg = r.data.msg;
                             me.error = true;

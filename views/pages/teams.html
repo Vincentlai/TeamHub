@@ -1,4 +1,98 @@
-<div class="team">
+<div class="page-container" ng-cloak>
 
-    <h1> hi i am team </h1>
+    <md-button ng-click="createForm('create-team')" class="control-btn"><i class="material-icons">group_add</i>Create A Team</md-button>
+
+    <div class="card-container clearfix">
+        <div class="col-lg-4 col-md-6 col-sm-12 card" ng-repeat="teamCard in teams" id="{{teamCard.name}}">
+            <div class="card-content">
+                <h1>{{teamCard.name}}</h1>
+                <h2>Maybe some description here<br>
+                    Lorem ipsum dolor sit amet,
+                    consectetur adipisicing elit.
+                    Delectus doloribus id iste iusto maiores,
+                    minus, molestias mollitia obcaecati provident repellendus sapiente sint tempora? Animi cumqu
+                    e eligendi eum fugit inventore vel.</h2>
+                <ul class="card-btn clearfix">
+                    <li ng-if=teamCard.is_creator ng-click="createForm('add-user', teamCard.id, teamCard.name)"><a>Add User</a></li>
+                    <li ng-if=teamCard.is_creator><a class="important">Remove User</a></li>
+                    <li ng-if=teamCard.is_creator ng-click="createForm('delete-team', teamCard.id, teamCard.name)"><a class="important">Delete Team</a></li>
+                    <li ng-if=!teamCard.is_creator><a class="important">Quit from Team</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <div id="delete-team" class="popUpWindow" role="alert" ng-cloak>
+        <div class="popUpWindow-container">
+            <div class="notify" ng-if="error">
+                <div class="notify-msg">
+                    <i class="material-icons">info_outline</i>
+                    <span>{{msg}}</span>
+                </div>
+            </div>
+            <h1>Are you sure you want to delete team <span>"{{seletedTeamName}}"</span> ?</h1>
+            <ul class="cd-buttons clearfix">
+                <li type="submit" ng-click="deleteTeam()"><a class="agree">Yes</a></li>
+                <li><a ng-click="closeForm('delete-team')">No</a></li>
+            </ul>
+            <a class="popUpWindow-close " ng-click="closeForm('delete-team')"><i class="material-icons">clear</i></a>
+        </div>
+    </div>
+    <div id="add-user" class="popUpWindow" role="alert" ng-cloak>
+        <div class="popUpWindow-container">
+            <div class="notify" ng-if="error">
+                <div class="notify-msg">
+                    <i class="material-icons">info_outline</i>
+                    <span>{{msg}}</span>
+                </div>
+            </div>
+            <h1>Add User</h1>
+            <div class="pop-form">
+                <form name="addUserForm" class="md-title">
+
+                    <md-input-container class="md-block">
+                        <label>The email address of the user</label>
+                        <input type="email"
+                               name="email"
+                               ng-model="adduser.email"
+                               ng-pattern="/^.+@.+\..+$/"
+                               required
+                        />
+                        <div ng-messages="addUserForm.email.$error"
+                             ng-show="addUserForm.email.$dirty || addUserForm.email.$touched">
+                            <div ng-message="required">
+                                Email cannot be empty.
+                            </div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Message</label>
+                        <textarea type="text" required
+                                  name="description"
+                                  ng-model="adduser.message"
+                                  rows="2"
+                                  max-rows="5" md-maxlength="256">
+                            </textarea>
+                        <div ng-messages="addUserForm.message.$error"
+                             ng-show="addUserForm.message.$dirty || addUserForm.message.$touched">
+                            <div ng-message="required">
+                                Message cannot be empty.
+                            </div>
+                            <div ng-message="md-maxlength">
+                                Maximum length of description is 256.
+                            </div>
+                        </div>
+                    </md-input-container>
+                    <ul class="cd-buttons clearfix">
+                        <li type="submit" ng-click="addUser()"><a class="agree">Add</a></li>
+                        <li><a ng-click="closeForm('add-user')">Cancel</a></li>
+                    </ul>
+                </form>
+
+            </div>
+            <a class="popUpWindow-close " ng-click="closeForm('add-user')"><i class="material-icons">clear</i></a>
+        </div>
+    </div>
+
 </div>

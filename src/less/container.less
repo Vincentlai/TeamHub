@@ -38,7 +38,6 @@
   animation: scale-in .3s ease-out forwards,
   expand .35s .25s ease-out forwards;
 }
-
 .notify-msg {
   opacity: 0;
   display: flex;
@@ -86,29 +85,37 @@ notification end
  home setting
 */
 .main-container {
+  position: fixed;
+  top: 48px;
+  bottom: 0;
+  width: 100%;
   background-color: white;
+  overflow: auto;
 }
 
 /*
   side bar
 */
 .side-bar {
-  min-height: 100vh;
+  position: fixed;
+  top: 48px;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
   background-color: @primary-bg-color;
   color: white;
-  float: left;
-  border-right: 1px solid #CCC;
+  border-right: 1px solid @light-gray-border;
   .accordion {
     width: 199px;
-    background: #FFF;
+    background: white;
     .link {
       cursor: pointer;
       display: block;
       padding: 15px 15px 15px 42px;
-      color: #4D4D4D;
+      color: @primary-text-color;
       font-size: 14px;
       font-weight: 700;
-      border-bottom: 1px solid #CCC;
+      border-bottom: 1px solid @light-gray-border;
       position: relative;
       -webkit-transition: all 0.4s ease;
       -o-transition: all 0.4s ease;
@@ -120,10 +127,10 @@ notification end
     li {
       i {
         position: absolute;
-        top: 10px;
+        top: 13px;
         left: 12px;
         font-size: 18px;
-        color: #595959;
+        color: @primary-text-color;
         -webkit-transition: all 0.4s ease;
         -o-transition: all 0.4s ease;
         transition: all 0.4s ease;
@@ -136,7 +143,7 @@ notification end
       &.open {
         i {
           &.main-menu {
-            color: #b63b4d;
+            color: @primary-color;
           }
           &.drop-down {
             -webkit-transform: rotate(180deg);
@@ -146,7 +153,7 @@ notification end
           }
         }
         .link {
-          color: #b63b4d;
+          color: @primary-color;
         }
       }
       /** -----------------------------
@@ -154,7 +161,7 @@ notification end
       -----------------------------*/
       .submenu {
         display: none;
-        background: #444359;
+        background: @secondary-bg-color;
         font-size: 14px;
         li {
           border-bottom: 1px solid #4b4a5e;
@@ -162,6 +169,7 @@ notification end
           position: relative;
           cursor: pointer;
           i {
+            top: 10px;
             color: #d9d9d9;
           }
           a {
@@ -173,9 +181,8 @@ notification end
             -webkit-transition: all 0.25s ease;
             -o-transition: all 0.25s ease;
             transition: all 0.25s ease;
-
             &:hover {
-              background: #b63b4d;
+              background: @primary-color;
               color: #FFF;
             }
           }
@@ -198,8 +205,195 @@ notification end
   content
 */
 .content {
-  float: right;
-  width: calc(~"100% - 200px");
+  position: relative;
+  margin-left: 200px;
 }
+
+/*
+popUp Window
+ */
+.popUpWindow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(37, 40, 61, .8);
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+  -moz-transition: opacity 0.3s 0s, visibility 0s 0.3s;
+  transition: opacity 0.3s 0s, visibility 0s 0.3s;
+}
+
+.popUpWindow.is-visible {
+  opacity: 1;
+  visibility: visible;
+  -webkit-transition: opacity 0.3s 0s, visibility 0s 0s;
+  -moz-transition: opacity 0.3s 0s, visibility 0s 0s;
+  transition: opacity 0.3s 0s, visibility 0s 0s;
+}
+
+.popUpWindow-container {
+  position: relative;
+  width: 90%;
+  max-width: 400px;
+  margin: 5em auto;
+  background: #FFF;
+  border-radius: .25em .25em .4em .4em;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  -webkit-transform: translateY(-40px);
+  -moz-transform: translateY(-40px);
+  -ms-transform: translateY(-40px);
+  -o-transform: translateY(-40px);
+  transform: translateY(-40px);
+  -webkit-backface-visibility: hidden;
+  -webkit-transition-property: -webkit-transform;
+  -moz-transition-property: -moz-transform;
+  transition-property: transform;
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  h1 {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    padding: 2em 1em 1em 1em;
+    color: @secondary-text-color;
+    span {
+      color: @important;
+    }
+  }
+  .cd-buttons {
+    margin-top: 3em;
+    text-align: center;
+    li {
+      float: left;
+      width: 50%;
+      cursor: pointer;
+      a {
+        font-size: 15px;
+        display: block;
+        height: 40px;
+        line-height: 40px;
+        color: #FFF;
+        -webkit-transition: background-color 0.2s;
+        -moz-transition: background-color 0.2s;
+        transition: background-color 0.2s;
+        background: @light-bg-color;
+        border-radius: 0 0 .25em 0;
+        &.agree {
+          background: @important;
+          border-radius: 0 0 0 .25em;
+        }
+        &:hover {
+          opacity: .75;
+        }
+      }
+    }
+  }
+  .popUpWindow-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 30px;
+    height: 30px;
+    color: @secondary-text-color;
+    cursor: pointer;
+    -webkit-transition: color .3s linear;
+    -moz-transition: color .3s linear;
+    -ms-transition: color .3s linear;
+    -o-transition: color .3s linear;
+    transition: color .3s linear;
+    &:hover {
+      color: @important;
+    }
+  }
+}
+
+.is-visible .popUpWindow-container {
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  -o-transform: translateY(0);
+  transform: translateY(0);
+}
+
+@media only screen and (min-width: 1170px) {
+  .popUpWindow-container {
+    margin: 300px auto;
+  }
+}
+
+.page-container {
+}
+
+.card-container {
+  margin-top: 1.5em;
+  padding: 1em 3em;
+  .card {
+    padding: 2em 1em;
+    .card-content {
+      padding: 1.2em;
+      border-radius: .25em .25em .4em .4em;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      &:hover {
+        -webkit-transform: translateY(-5px) ;
+        -moz-transform: translateY(-5px) ;
+        -ms-transform: translateY(-5px) ;
+        -o-transform: translateY(-5px) ;
+        transform: translateY(-5px) ;
+      }
+    }
+    .card-btn {
+      margin-top: 3em;
+      text-align: center;
+      li {
+        margin-top: 5px;
+        cursor: pointer;
+        a {
+          display: block;
+          height: 40px;
+          line-height: 40px;
+          color: #FFF;
+          -webkit-transition: background-color 0.2s;
+          -moz-transition: background-color 0.2s;
+          transition: background-color 0.2s;
+          background: @primary-color;
+          &.important {
+            background: @important;
+          }
+          &:hover {
+            opacity: .75;
+          }
+        }
+      }
+    }
+    h1 {
+      font-size: 1.4em;
+      font-weight: bold;
+      color: @primary-bg-color;
+    }
+    h2 {
+      margin-top: 1.5em;
+    }
+  }
+}
+
+.control-btn {
+  width: 172px;
+  padding-left: 40px;
+  position: relative;
+  color: teal;
+  i {
+    position: absolute;
+    top: 6px;
+    left: 10px;
+  }
+}
+
+
+
+
 
 

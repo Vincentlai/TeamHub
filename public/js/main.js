@@ -22,13 +22,40 @@
                 .state('home', {
                     url: "/",
                     views: {
-                        'navigation': {templateUrl: 'partials/header.html'},
-                        'container': {templateUrl: 'pages/home.html'}
+                        'navigation': {templateUrl: 'partials/header.html',
+                            controller: 'homeController'
+                        },
+                        'container': {
+                            templateUrl: 'pages/home.html',
+                            controller: 'homeController'
+
+                        }
                     },
-                    controller: 'sideBarController',
                     resolve: {
-                        'teams': function () {
-                            return ['team1', 'team2'];
+                        information: function ($http, $state, Auth) {
+                            return $http.get('/users/my_info')
+                                .then(
+                                    function (res) {
+                                        if(res.data.code == 1){
+                                            var info = {
+                                                user: {
+                                                    email: res.data.email,
+                                                    nickname: res.data.nickname
+                                                },
+                                                teams: res.data.teams
+                                            };
+                                            console.log(info);
+                                            return info;
+                                        }else{
+                                            Auth.removeCookie();
+                                            $state.go('login');
+                                        }
+                                    },function (error) {
+                                        Auth.removeCookie();
+                                        console.log('error in get user info' + error);
+                                        $state.go('login');
+                                    }
+                                )
                         }
                     },
                     authenticated: true,
@@ -46,10 +73,26 @@
                 .state('home.teams', {
                     url: "teams",
                     views: {
-                        'contains': {templateUrl: 'pages/teams.html'}
+                        'contains': {
+                            template: '<div ui-view></div>'
+                        }
                     },
+                    authenticated: true,
+                    abstract: true
+                })
+                .state('home.teams.manage',{
+                    url: '/manage',
+                    templateUrl: 'pages/teams.html',
+                    controller: 'teamController',
                     authenticated: true
                 })
+                .state('home.teams.detail',{
+                    url: '/:team_id/:team_name',
+                    templateUrl: 'pages/teamDetail.html',
+                    controller: 'teamDetailController',
+                    authenticated: true
+                })
+
                 .state('home.chat', {
                     url: 'chat',
                     views: {
@@ -104,11 +147,7 @@
                         $http.get('/users/my_info')
                             .then(function (res) {
                                     if (res.data.code == 1) {
-                                        var user = {
-                                            'email': res.data.email,
-                                            'nickname': res.data.nickname
-                                        };
-                                        Auth.setCookie(user);
+                                        Auth.setCookie(res.data.session_id);
                                     } else {
                                         if (toState.authenticated) {
                                             event.preventDefault();
@@ -121,7 +160,7 @@
                                 }
                             );
                     } else {
-                        console.log(Auth.isLoggedIn().email + "is logged in ");
+                        console.log(Auth.isLoggedIn() + "is logged in ");
                         if (!toState.authenticated) {
                             event.preventDefault();
                             return $state.go('home.teams');
