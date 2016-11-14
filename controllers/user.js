@@ -152,6 +152,7 @@ exports.login = function (sess, email, password, callback) {
 
                     // update user_id in session
                     sess.user_id = user_obj._id;
+                    sess.email = user_obj.email;
                     sess.nickname = user_obj.nickname;
 
 

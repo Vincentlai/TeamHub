@@ -173,7 +173,7 @@ exports.delete = function (sess, team_id, callback) {
     });
 }
 
-exports.addUser = function (sess, team_id, user_id, message, callback) {
+exports.addUser = function (sess, team_id, user_id, email, nickname, message, callback) {
 
     var cid = sess.user_id;
 
@@ -186,7 +186,7 @@ exports.addUser = function (sess, team_id, user_id, message, callback) {
         return;
     }
 
-    if (!team_id || !user_id) {
+    if (!team_id || (!user_id && !email && !nickname)) {
 
         callback({
             'code': '-10',
@@ -223,17 +223,19 @@ exports.addUser = function (sess, team_id, user_id, message, callback) {
             } else {
 
                 // check whether the user is valid
-                models.User.findOne({ _id: user_id }, function (err, user_obj) {
+                models.User.findOne({ $or:[{_id: user_id}, {email: email}, {nickname: nickname}] }, function (err, user_obj) {
 
                     if (!user_obj) {
 
                         callback({
                             'code': '-3',
-                            'msg': 'Invalid user_id'
+                            'msg': 'Invalid user identifier'
                         });
                         return;
 
                     } else {
+
+                        var user_id = user_obj._id;
 
                         // check whether user is already added to team
                         var found = false;
@@ -293,7 +295,7 @@ exports.addUser = function (sess, team_id, user_id, message, callback) {
     });
 }
 
-exports.removeUser = function (sess, team_id, user_id, message, callback) {
+exports.removeUser = function (sess, team_id, user_id, email, nickname, message, callback) {
 
     var cid = sess.user_id;
 
@@ -306,7 +308,7 @@ exports.removeUser = function (sess, team_id, user_id, message, callback) {
         return;
     }
 
-    if (!team_id || !user_id) {
+    if (!team_id || (!user_id && !email && !nickname)) {
 
         callback({
             'code': '-10',
@@ -343,7 +345,7 @@ exports.removeUser = function (sess, team_id, user_id, message, callback) {
             } else {
 
                 // check if user_id is the creator_id
-                if (user_id == team_obj.creator_id) {
+                if (user_id == team_obj.creator_id || email == sess.email || nickname == sess.nickname) {
                     callback({
                         'code': '-5',
                         'msg': 'You cannot remove the creator'
@@ -352,17 +354,19 @@ exports.removeUser = function (sess, team_id, user_id, message, callback) {
                 }
 
                 // check whether the user is valid
-                models.User.findOne({ _id: user_id }, function (err, user_obj) {
+                models.User.findOne({ $or:[{_id: user_id}, {email: email}, {nickname: nickname}] }, function (err, user_obj) {
 
                     if (!user_obj) {
 
                         callback({
                             'code': '-3',
-                            'msg': 'Invalid user_id'
+                            'msg': 'Invalid user identifier'
                         });
                         return;
 
                     } else {
+
+                        user_id = user_obj._id;
 
                         // check whether user is already added to team
                         var found = false;
