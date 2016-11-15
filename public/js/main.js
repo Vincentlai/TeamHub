@@ -13,7 +13,8 @@
         'ngCookies',
         'ngPassword',
         'socket.io',
-        'chat'
+        'chat',
+        'iconUpload'
     ]);
     module
         .config(function ($stateProvider, $urlRouterProvider) {
