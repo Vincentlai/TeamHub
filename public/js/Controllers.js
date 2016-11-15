@@ -115,7 +115,6 @@
                             }
                             Auth.removeCookie();
                             $state.go('login');
-                            return res.data.code;
                         }, function (error) {
                             console.log('Error occurs in Logout' + error);
                         }
@@ -164,19 +163,22 @@
             };
 
             /*
-             Show create team form
+             Show team form
              */
             $scope.createForm = function (tag, team_id, name) {
-                $scope.seletedTeamId = team_id;
-                $scope.seletedTeamName = name;
+                $scope.selectedTeamId = team_id;
+                $scope.selectedTeamName = name;
                 $('#' + tag).addClass('is-visible');
             };
             /*
-             Close form
+             Close team form
              */
-            $scope.closeForm = function (tag) {
-                delete $scope.seletedTeamId;
-                delete $scope.seletedTeamName;
+            $scope.closeForm = function (tag, flag) {
+                if (flag) {
+                    delete $scope.input;
+                }
+                delete $scope.selectedTeamId;
+                delete $scope.selectedTeamName;
                 $('#' + tag).removeClass('is-visible');
             };
 
@@ -206,6 +208,7 @@
                                 $timeout(
                                     function () {
                                         $scope.$emit('ChangeTeam', $state.$current);
+                                        delete $scope.team;
                                     }, 500);
                             } else {
                                 $scope.msg = res.data.msg;
@@ -222,7 +225,7 @@
             };
             $scope.deleteTeam = function () {
                 console.log('delete');
-                $http.delete('/teams/delete?team_id=' + $scope.seletedTeamId)
+                $http.delete('/teams/delete?team_id=' + $scope.selectedTeamId)
                     .then(
                         function (res) {
                             if (res.data.code == 1) {
@@ -246,9 +249,10 @@
             };
             $scope.addUser = function () {
                 console.log('addUSER');
-                $scope.adduser.team_id = $scope.seletedTeamId;
-                $scope.adduser.user_id = 55655;
-                $http.post('/teams/add_user', $scope.adduser)
+                $scope.input = {};
+                $scope.input.team_id = $scope.selectedTeamId;
+                $scope.input.user_id = 55655;
+                $http.post('/teams/add_user', $scope.input)
                     .then(
                         function (res) {
                             if (res.data.code == 1){
@@ -256,9 +260,8 @@
                                 $scope.error = true;
                                 $timeout(function () {
                                     $scope.error = false;
-                                    $scope.closeForm('add-user');
+                                    $scope.closeForm('add-user',true);
                                     delete $scope.msg;
-                                    delete $scope.adduser;
                                 }, 4000);
                             }else {
                                 $scope.msg = res.data.msg;
@@ -276,9 +279,11 @@
             };
             $scope.removeUser = function () {
                 console.log('remove user');
-                $scope.user.team_id = $scope.seletedTeamId;
-                $scope.user.user_id = 55655;
-                $http.post('/teams/add_user', $scope.user)
+                $scope.input = {};
+                $scope.input.team_id = $scope.selectedTeamId;
+                console.log($scope.input);
+                $scope.input.user_id = 55655;
+                $http.delete('/teams/remove_user', $scope.input)
                     .then(
                         function (res) {
                             if (res.data.code == 1){
@@ -286,7 +291,7 @@
                                 $scope.error = true;
                                 $timeout(function () {
                                     $scope.error = false;
-                                    $scope.closeForm('add-user');
+                                    $scope.closeForm('remove-user', true);
                                     delete $scope.msg;
                                 }, 4000);
                             }else {
@@ -296,13 +301,37 @@
                                     $scope.error = false;
                                     delete $scope.msg;
                                 }, 4000);
-                                console.log('cannot add user');
+                                console.log('cannot remove user');
                             }
                         }, function (error) {
-                            console.log('error in add user ' + error);
+                            console.log('error in remove user ' + error);
                         }
                     );
-            }
+            };
+            $scope.quitTeam = function () {
+                console.log('quit');
+                $http.delete('/teams/quit?team_id=' + $scope.selectedTeamId)
+                    .then(
+                        function (res) {
+                            if (res.data.code == 1) {
+                                $scope.closeForm('quit-team');
+                                $timeout(function () {
+                                    $scope.$emit('ChangeTeam', 'home.teams.manage');
+                                }, 500);
+                            } else {
+                                $scope.msg = res.data.msg;
+                                $scope.error = true;
+                                $timeout(function () {
+                                    $scope.error = false;
+                                    delete $scope.msg;
+                                }, 4000);
+                                console.log('cannot quit team');
+                            }
+                        }, function (error) {
+                            console.log('error in quit team ' + error);
+                        }
+                    )
+            };
 
         }
     ]);
