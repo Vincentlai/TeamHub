@@ -26,11 +26,11 @@ app.controller('Ctrl', function Ctrl($scope, $socket) {
     // initialize msg list
     $scope.msg_list = [];
 
-    $scope.getClass = function(index){
+    $scope.getClass = function (index) {
         return role_arr[index].class;
     };
 
-    $scope.getSrc = function(index){
+    $scope.getSrc = function (index) {
         return role_arr[index].src;
     };
 
@@ -44,7 +44,7 @@ app.controller('Ctrl', function Ctrl($scope, $socket) {
             //$scope.role_class = getClass;
             //$scope.icon_scr = getSrc;
             $scope.msg_list.push({ index, msg, time });
-            role_arr.push({class:"other", src:other_icon});
+            role_arr.push({ class: "other", src: other_icon });
             index++;
         }
     });
@@ -53,8 +53,11 @@ app.controller('Ctrl', function Ctrl($scope, $socket) {
     $scope.emitTeamMsg = function emitTeamMsg() {
 
         // send json to server
-        var json = {};
         var msg = $scope.dataToSend;
+        if (msg.trim() == "") {
+            return;
+        }
+        var json = {};
         json.msg = msg;
         json.team_id = "1234567890"; // tmp: to be changed
         json.uuid = uuid;
@@ -62,21 +65,45 @@ app.controller('Ctrl', function Ctrl($scope, $socket) {
         $socket.emit('team_msg', json);
 
         // update ui
-        $scope.dataToSend = '';
+        $scope.dataToSend = "";
         var time = new Date().getHours() + ":" + new Date().getMinutes();
         //$scope.role_class = getClass;
         //$scope.icon_scr = getSrc;
         $scope.msg_list.push({ index, msg, time });
-        role_arr.push({class:"self", src:self_icon});
+        role_arr.push({ class: "self", src: self_icon });
         index++;
     };
 
     $scope.emitACK = function emitACK() {
         $socket.emit('echo-ack', $scope.dataToSend, function (data) {
-            //se nao tivesse sido feito $apply
-            //a variavel $scope não seria reconhecida
             $scope.serverResponseACK = data;
         });
         $scope.dataToSend = '';
     };
 });
+
+// scroll list to bottom when type in or receive a new message
+app.directive('scrollSection',
+    ['$location', '$timeout', '$anchorScroll',
+        function ($location, $timeout, $anchorScroll) {
+            return {
+                scope: {
+                    scrollBottom: "="
+                },
+                link: function ($scope, $element) {
+                    $scope.$watchCollection('scrollBottom', function (newValue) {
+                        if (newValue) {
+                            console.log($scope.scrollBottom.length);
+                            var index = $scope.scrollBottom.length - 1;
+                            var id = 'msg_' + index;
+                            console.log(id);
+                            $location.hash(id);
+                            $timeout(function () {
+                                $anchorScroll();
+                            });
+
+                        }
+                    });
+                }
+            }
+        }]);
