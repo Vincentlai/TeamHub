@@ -13,6 +13,7 @@
         'ngCookies',
         'ngPassword',
         'material.components.eventCalendar'
+        //'material.components.expansionPanels'
     ]);
     module
         .config(function ($stateProvider, $urlRouterProvider) {
