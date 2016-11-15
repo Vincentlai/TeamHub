@@ -169,5 +169,39 @@ router.delete('/quit',function(req, res)
     });
 });
 
+/* PATH: host_url:8080/teams/team_info (GET)
+ *
+ * INPUT: 'team_id' : team to get info from
+ * 
+ * OUTPUT:
+ *  JSON Object that contains
+ *  'code' : respond code
+ *  'msg' : respond message
+ *  'name' : team name
+ *  'description' : team description
+ *  'r_u_creator' : (Boolean) the requester is creator or not
+ *  'users' : users json array
+ *
+ *   1 -> Get team info successfully
+ *  -1 -> Invalid team_id
+ *  -2 -> Permission denied, you're not in this team
+ *  -9 -> No session, login required
+ *  -10 -> Missing fields
+ * 
+ */
+router.get('/team_info',function(req, res)
+{
+    console.log("-> team_info called");
+
+    var team_id = req.param("team_id");
+    var sess = req.session;
+
+    team.teamInfo(sess, team_id, function (found) {
+        console.log(found);
+        res.json(found);
+    });
+});
+
+
 
 module.exports = router;

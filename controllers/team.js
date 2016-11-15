@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var models = require('../models/models.js');
 
-exports.create = function (sess, name, description, callback) {
+exports.create = function(sess, name, description, callback) {
 
     var user_id = sess.user_id;
     var nickname = sess.nickname;
@@ -30,7 +30,7 @@ exports.create = function (sess, name, description, callback) {
         des = description;
     }
 
-    models.Team.find({ name: name }, function (err, team_obj) {
+    models.Team.find({ name: name }, function(err, team_obj) {
 
         if (team_obj.length == 0) {
 
@@ -44,11 +44,11 @@ exports.create = function (sess, name, description, callback) {
                 }]
             });
 
-            newTeam.save(function (err, newTeam) {
+            newTeam.save(function(err, newTeam) {
 
                 if (!err) {
                     // update teams array in user doc
-                    models.User.findOne({ _id: user_id }, function (err, user_obj) {
+                    models.User.findOne({ _id: user_id }, function(err, user_obj) {
 
                         user_obj.teams.push({
                             id: newTeam.id,
@@ -80,12 +80,11 @@ exports.create = function (sess, name, description, callback) {
                 'msg': 'Team name is already taken, please use another team name'
             });
             return;
-
         }
     });
 }
 
-exports.delete = function (sess, team_id, callback) {
+exports.delete = function(sess, team_id, callback) {
 
     var user_id = sess.user_id;
 
@@ -108,7 +107,7 @@ exports.delete = function (sess, team_id, callback) {
 
     }
 
-    models.Team.findOne({ _id: team_id }, function (err, team_obj) {
+    models.Team.findOne({ _id: team_id }, function(err, team_obj) {
 
         if (!team_obj) {
 
@@ -149,10 +148,10 @@ exports.delete = function (sess, team_id, callback) {
                 team_obj.remove();
 
                 // delete the team from user doc
-                models.User.findOne({ _id: user_id }, function (err, user_obj) {
+                models.User.findOne({ _id: user_id }, function(err, user_obj) {
 
-                    for(var i=0; i<user_obj.teams.length; i++){
-                        if(user_obj.teams[i].id == team_id){
+                    for (var i = 0; i < user_obj.teams.length; i++) {
+                        if (user_obj.teams[i].id == team_id) {
                             user_obj.teams[i].remove();
                             user_obj.save();
                             break;
@@ -166,14 +165,12 @@ exports.delete = function (sess, team_id, callback) {
                     'msg': teamName + ' has been deleted successfully'
                 });
                 return;
-
             }
-
         }
     });
 }
 
-exports.addUser = function (sess, team_id, user_id, email, nickname, message, callback) {
+exports.addUser = function(sess, team_id, user_id, email, nickname, message, callback) {
 
     var cid = sess.user_id;
 
@@ -196,7 +193,7 @@ exports.addUser = function (sess, team_id, user_id, email, nickname, message, ca
     }
 
 
-    models.Team.findOne({ _id: team_id }, function (err, team_obj) {
+    models.Team.findOne({ _id: team_id }, function(err, team_obj) {
 
         if (!team_obj) {
 
@@ -223,7 +220,7 @@ exports.addUser = function (sess, team_id, user_id, email, nickname, message, ca
             } else {
 
                 // check whether the user is valid
-                models.User.findOne({ $or:[{_id: user_id}, {email: email}, {nickname: nickname}] }, function (err, user_obj) {
+                models.User.findOne({ $or: [{ _id: user_id }, { email: email }, { nickname: nickname }] }, function(err, user_obj) {
 
                     if (!user_obj) {
 
@@ -295,7 +292,7 @@ exports.addUser = function (sess, team_id, user_id, email, nickname, message, ca
     });
 }
 
-exports.removeUser = function (sess, team_id, user_id, email, nickname, message, callback) {
+exports.removeUser = function(sess, team_id, user_id, email, nickname, message, callback) {
 
     var cid = sess.user_id;
 
@@ -318,7 +315,7 @@ exports.removeUser = function (sess, team_id, user_id, email, nickname, message,
     }
 
 
-    models.Team.findOne({ _id: team_id }, function (err, team_obj) {
+    models.Team.findOne({ _id: team_id }, function(err, team_obj) {
 
         if (!team_obj) {
 
@@ -354,7 +351,7 @@ exports.removeUser = function (sess, team_id, user_id, email, nickname, message,
                 }
 
                 // check whether the user is valid
-                models.User.findOne({ $or:[{_id: user_id}, {email: email}, {nickname: nickname}] }, function (err, user_obj) {
+                models.User.findOne({ $or: [{ _id: user_id }, { email: email }, { nickname: nickname }] }, function(err, user_obj) {
 
                     if (!user_obj) {
 
@@ -424,7 +421,7 @@ exports.removeUser = function (sess, team_id, user_id, email, nickname, message,
     });
 }
 
-exports.quit = function (sess, team_id, callback) {
+exports.quit = function(sess, team_id, callback) {
 
     var user_id = sess.user_id;
 
@@ -447,7 +444,7 @@ exports.quit = function (sess, team_id, callback) {
     }
 
 
-    models.Team.findOne({ _id: team_id }, function (err, team_obj) {
+    models.Team.findOne({ _id: team_id }, function(err, team_obj) {
 
         if (!team_obj) {
 
@@ -474,7 +471,7 @@ exports.quit = function (sess, team_id, callback) {
             } else {
 
                 // check whether the user is valid
-                models.User.findOne({ _id: user_id }, function (err, user_obj) {
+                models.User.findOne({ _id: user_id }, function(err, user_obj) {
 
                     // check whether user is in the team
                     var found = false;
@@ -514,10 +511,80 @@ exports.quit = function (sess, team_id, callback) {
                         });
                         return;
                     }
-                    
                 });
-                
             }
         }
     });
 }
+
+exports.teamInfo = function(sess, team_id, callback) {
+
+    var user_id = sess.user_id;
+
+    if (!user_id) {
+
+        callback({
+            'code': '-9',
+            'msg': 'No session, login required'
+        });
+        return;
+    }
+
+    if (!team_id) {
+
+        callback({
+            'code': '-10',
+            'msg': 'Missing team_id'
+        });
+        return;
+    }
+
+    models.Team.findOne({ _id: team_id }, function(err, team_obj) {
+
+        if (!team_obj) {
+
+            callback({
+                'code': '-1',
+                'msg': 'Invalid team_id'
+            });
+
+        } else {
+
+            models.User.findOne({ _id: user_id }, function(err, user_obj) {
+
+                // check whether user is in the team
+                var found = false;
+                for (var i = 0; i < team_obj.users.length; i++) {
+                    if (team_obj.users[i].id == user_id) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                var r_u_creator = false;
+                if(user_id == team_obj.creator_id){
+                    r_u_creator = true;
+                }
+
+                if (found) {
+
+                    callback({
+                        'code': '1',
+                        'msg': 'Get team info successfully',
+                        'name': team_obj.name,
+                        'description': team_obj.description,
+                        'r_u_creator': r_u_creator,
+                        'users': team_obj.users
+                    });
+
+                } else {
+
+                    callback({
+                        'code': '-2',
+                        'msg': 'Permission denied, you are not in this team'
+                    });
+                }
+            });
+        }
+    });
+};
