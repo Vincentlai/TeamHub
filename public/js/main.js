@@ -11,7 +11,8 @@
         'Controllers',
         'Services',
         'ngCookies',
-        'ngPassword'
+        'ngPassword',
+        'material.components.eventCalendar'
     ]);
     module
         .config(function ($stateProvider, $urlRouterProvider) {
