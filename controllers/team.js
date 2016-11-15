@@ -572,6 +572,7 @@ exports.teamInfo = function(sess, team_id, callback) {
                         'code': '1',
                         'msg': 'Get team info successfully',
                         'name': team_obj.name,
+                        'team_id': team_id,
                         'description': team_obj.description,
                         'r_u_creator': r_u_creator,
                         'users': team_obj.users

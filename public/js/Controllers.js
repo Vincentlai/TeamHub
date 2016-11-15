@@ -134,7 +134,7 @@
             $rootScope.user = information.user;
             $scope.isLoggedin = $rootScope.user;
             /*
-                Log out
+             Log out
              */
             $scope.logout = function () {
                 $http.post('/users/logout')
@@ -197,9 +197,10 @@
             /*
              Show team form
              */
-            $scope.createForm = function (tag, team_id, name) {
+            $scope.createForm = function (tag, team_id, name, teammates) {
                 $scope.selectedTeamId = team_id;
                 $scope.selectedTeamName = name;
+                $scope.selectedTeamTeammates = teammates;
                 $('#' + tag).addClass('is-visible');
             };
             /*
@@ -211,6 +212,7 @@
                 }
                 delete $scope.selectedTeamId;
                 delete $scope.selectedTeamName;
+                delete $scope.selectedTeamTeammates;
                 $('#' + tag).removeClass('is-visible');
             };
 
@@ -256,7 +258,33 @@
         '$state',
         function ($http, $scope, $timeout, $state) {
             $scope.team = {};
-
+            $scope.loadTeamDetail = function () {
+                $scope.teamsDetail = [];
+                for (var i = 0; i < $scope.teams.length; i++) {
+                    $http.get('/teams/team_info?team_id=' + $scope.teams[i].id)
+                        .then(
+                            function (res) {
+                                var detail;
+                                if(res.data.code == 1){
+                                    console.log(res.data);
+                                    detail = {
+                                        name: res.data.name,
+                                        team_id: res.data.team_id,
+                                        description: res.data.description,
+                                        is_creator: res.data.r_u_creator,
+                                        teammates: res.data.users
+                                    };
+                                    console.log(detail);
+                                    $scope.teamsDetail[$scope.teamsDetail.length] = detail;
+                                }else {
+                                    $scope.teamsDetail[$scope.teamsDetail.length] = {};
+                                }
+                            }, function (error) {
+                                console.log('error in get team info ' + error);
+                            }
+                        );
+                }
+            };
             $scope.deleteTeam = function () {
                 console.log('delete');
                 $http.delete('/teams/delete?team_id=' + $scope.selectedTeamId)
@@ -287,15 +315,12 @@
                 $http.post('/teams/add_user', $scope.input)
                     .then(
                         function (res) {
-                            if (res.data.code == 1){
-                                $scope.msg = res.data.msg;
-                                $scope.error = true;
+                            if (res.data.code == 1) {
+                                $scope.closeForm('add-user');
                                 $timeout(function () {
-                                    $scope.error = false;
-                                    $scope.closeForm('add-user',true);
-                                    delete $scope.msg;
-                                }, 4000);
-                            }else {
+                                    $scope.$emit('ChangeTeam', 'home.teams.manage');
+                                }, 500);
+                            } else {
                                 $scope.msg = res.data.msg;
                                 $scope.error = true;
                                 $timeout(function () {
@@ -311,22 +336,17 @@
             };
             $scope.removeUser = function () {
                 console.log('remove user');
-                $scope.input = {};
                 $scope.input.team_id = $scope.selectedTeamId;
-                console.log($scope.input);
-                $scope.input.user_id = 55655;
-                $http.delete('/teams/remove_user', $scope.input)
+                $http.delete('/teams/remove_user?team_id=' + $scope.input.team_id
+                + '&user_id=' + $scope.input.user_id + '&message=' + $scope.input.message)
                     .then(
                         function (res) {
-                            if (res.data.code == 1){
-                                $scope.msg = res.data.msg;
-                                $scope.error = true;
+                            if (res.data.code == 1) {
+                                $scope.closeForm('remove-user');
                                 $timeout(function () {
-                                    $scope.error = false;
-                                    $scope.closeForm('remove-user', true);
-                                    delete $scope.msg;
-                                }, 4000);
-                            }else {
+                                    $scope.$emit('ChangeTeam', 'home.teams.manage');
+                                }, 500);
+                            } else {
                                 $scope.msg = res.data.msg;
                                 $scope.error = true;
                                 $timeout(function () {

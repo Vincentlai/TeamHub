@@ -1,27 +1,27 @@
-<div class="page-container" ng-cloak>
+<div class="page-container" ng-cloak data-ng-init="loadTeamDetail()">
 
     <md-button ng-click="createForm('create-team')" class="control-btn"><i class="material-icons">group_add</i>Create A
         Team
     </md-button>
 
     <div class="card-container clearfix">
-        <div class="col-lg-4 col-md-6 col-sm-12 card" ng-repeat="teamCard in teams" id="{{teamCard.name}}">
+        <div class="col-lg-4 col-md-6 col-sm-12 card" ng-repeat="teamCard in teamsDetail" id="{{teamCard.name}}">
             <div class="card-content">
                 <h1>{{teamCard.name}}</h1>
-                <h2>Maybe some description here<br>
-                    Lorem ipsum dolor sit amet,
-                    consectetur adipisicing elit.
-                    Delectus doloribus id iste iusto maiores,
-                    minus, molestias mollitia obcaecati provident repellendus sapiente sint tempora? Animi cumqu
-                    e eligendi eum fugit inventore vel.</h2>
+                <h2>
+                    {{teamCard.description}}
+                </h2>
+                <h2>
+                    Total teammates: {{teamCard.teammates.length}}
+                </h2>
                 <ul class="card-btn clearfix">
-                    <li ng-if=teamCard.is_creator ng-click="createForm('add-user', teamCard.id, teamCard.name)">
+                    <li ng-if=teamCard.is_creator ng-click="createForm('add-user', teamCard.team_id, teamCard.name)">
                         <a>Add User</a></li>
-                    <li ng-if=teamCard.is_creator ng-click="createForm('remove-user', teamCard.id, teamCard.name)">
+                    <li ng-if=teamCard.is_creator ng-click="createForm('remove-user', teamCard.team_id, teamCard.name, teamCard.teammates)">
                         <a class="important">Remove User</a></li>
-                    <li ng-if=teamCard.is_creator ng-click="createForm('delete-team', teamCard.id, teamCard.name)">
+                    <li ng-if=teamCard.is_creator ng-click="createForm('delete-team', teamCard.team_id, teamCard.name)">
                         <a class="important">Delete Team</a></li>
-                    <li ng-if=teamCard.is_creator ng-click="createForm('quit-team', teamCard.id, teamCard.name)">
+                    <li ng-if=!teamCard.is_creator ng-click="createForm('quit-team', teamCard.team_id, teamCard.name)">
                         <a class="important">Quit from Team</a></li>
                 </ul>
             </div>
@@ -121,13 +121,10 @@
 
                     <md-input-container class="md-block">
                         <label>Select the user</label>
-                        <md-select ng-model="input.nickname" required>
-                            <!--<md-option ng-repeat="state in states" value="{{state.abbrev}}">-->
-                            <!--{{state.abbrev}}-->
-                            <!--</md-option>-->
-                            <md-option value="nickname1">nickname1---------------test1@qq.com</md-option>
-                            <md-option value="nickname2">nickname2-----test2@qq.com</md-option>
-                            <md-option value="nickname3">nickname3-----test3@qq.com</md-option>
+                        <md-select ng-model="input.user_id" required>
+                            <md-option ng-repeat="teammate in selectedTeamTeammates" value="{{teammate.id}}">
+                            {{teammate.nickname}}
+                            </md-option>
                         </md-select>
                         <div ng-messages="removeUserForm.nickname.$error"
                              ng-show="removeUserForm.nickname.$dirty || removeUserForm.nickname.$touched">
