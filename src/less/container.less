@@ -170,12 +170,12 @@ notification end
           cursor: pointer;
           i {
             top: 10px;
-            color: #d9d9d9;
+            color: white;
           }
           a {
             display: block;
             text-decoration: none;
-            color: #d9d9d9;
+            color: white;
             padding: 12px;
             padding-left: 42px;
             -webkit-transition: all 0.25s ease;
@@ -185,13 +185,13 @@ notification end
               background: @primary-color;
               color: #FFF;
             }
+            &.important {
+              background-color: @important;
+            }
           }
         }
-
       }
-
     }
-
   }
 }
 
@@ -199,6 +199,33 @@ notification end
   .side-bar {
     width: 200px;
   }
+}
+
+/*
+  secondary list
+*/
+#second-list {
+  margin-top: 75px;
+  opacity: 0;
+  -webkit-transform: translateX(-200px);
+  -moz-transform: translateX(-200px);
+  -ms-transform: translateX(-200px);
+  -o-transform: translateX(-200px);
+  transform: translateX(-200px);
+  -webkit-transition: all .5s linear;
+  -moz-transition: all .5s linear;
+  -ms-transition: all .5s linear;
+  -o-transition: all .5s linear;
+  transition: all .5s linear;
+}
+
+#second-list.is-visible {
+  opacity: 1;
+  -webkit-transform: translateX(0);
+  -moz-transform: translateX(0);
+  -ms-transform: translateX(0);
+  -o-transform: translateX(0);
+  transform: translateX(0);
 }
 
 /*
@@ -382,6 +409,7 @@ popUp Window
           &.important {
             background: @important;
           }
+
           &:hover {
             opacity: .75;
           }
@@ -410,6 +438,7 @@ popUp Window
     left: 10px;
   }
 }
+
 
 
 

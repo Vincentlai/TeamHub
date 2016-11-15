@@ -390,12 +390,12 @@ notification end
 }
 .side-bar .accordion li .submenu li i {
   top: 10px;
-  color: #d9d9d9;
+  color: white;
 }
 .side-bar .accordion li .submenu li a {
   display: block;
   text-decoration: none;
-  color: #d9d9d9;
+  color: white;
   padding: 12px;
   padding-left: 42px;
   -webkit-transition: all 0.25s ease;
@@ -406,10 +406,38 @@ notification end
   background: teal;
   color: #FFF;
 }
+.side-bar .accordion li .submenu li a.important {
+  background-color: #fc7169;
+}
 @media only screen and (min-width: 768px) {
   .side-bar {
     width: 200px;
   }
+}
+/*
+  secondary list
+*/
+#second-list {
+  margin-top: 75px;
+  opacity: 0;
+  -webkit-transform: translateX(-200px);
+  -moz-transform: translateX(-200px);
+  -ms-transform: translateX(-200px);
+  -o-transform: translateX(-200px);
+  transform: translateX(-200px);
+  -webkit-transition: all .5s linear;
+  -moz-transition: all .5s linear;
+  -ms-transition: all .5s linear;
+  -o-transition: all .5s linear;
+  transition: all .5s linear;
+}
+#second-list.is-visible {
+  opacity: 1;
+  -webkit-transform: translateX(0);
+  -moz-transform: translateX(0);
+  -ms-transform: translateX(0);
+  -o-transform: translateX(0);
+  transform: translateX(0);
 }
 /*
   content
