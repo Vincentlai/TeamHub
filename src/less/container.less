@@ -271,7 +271,11 @@ popUp Window
       float: left;
       width: 50%;
       cursor: pointer;
-      a {
+      button.inpop {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border: none;
         font-size: 15px;
         display: block;
         height: 40px;
@@ -282,12 +286,21 @@ popUp Window
         transition: background-color 0.2s;
         background: @light-bg-color;
         border-radius: 0 0 .25em 0;
+        opacity: 1;
         &.agree {
           background: @important;
           border-radius: 0 0 0 .25em;
         }
         &:hover {
           opacity: .75;
+        }
+        &:disabled {
+          color: rgba(0,0,0,0.38);
+          cursor: default;
+          opacity: .65;
+        }
+        &:focus {
+          outline: none;
         }
       }
     }

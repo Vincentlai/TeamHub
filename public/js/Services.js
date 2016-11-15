@@ -23,16 +23,6 @@
         }
     ]);
 
-    module.service('AuthService',[
-        '$http',
-        'Auth',
-        function ($http, Auth) {
-            this.checkCookie = function () {
-
-            }
-        }
-
-    ]);
     module.service('UserService', [
         '$http',
         '$timeout',

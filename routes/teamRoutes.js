@@ -86,7 +86,7 @@ router.delete('/delete',function(req, res)
 router.post('/add_user',function(req, res)
 {
     console.log("-> add_user called");
-
+    console.log(req.body);
     var team_id = req.body.team_id;
     var user_id = req.body.user_id;
     var email = req.body.email;

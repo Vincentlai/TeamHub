@@ -142,6 +142,9 @@ body {
   background-size: cover;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
+button {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
 .clearfix:after,
 .clearfix:before {
   content: '';

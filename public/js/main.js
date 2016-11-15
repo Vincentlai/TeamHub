@@ -70,6 +70,15 @@
                     },
                     authenticated: true
                 })
+                .state('home.setting', {
+                    url: 'setting',
+                    views: {
+                        'contains': {
+                            templateUrl: 'pages/setting.html'
+                        }
+                    },
+                    authenticated: true
+                })
                 .state('home.teams', {
                     url: "teams",
                     views: {
@@ -86,12 +95,12 @@
                     controller: 'teamController',
                     authenticated: true
                 })
-                .state('home.teams.detail',{
-                    url: '/:team_id/:team_name',
-                    templateUrl: 'pages/teamDetail.html',
-                    controller: 'teamDetailController',
-                    authenticated: true
-                })
+                // .state('home.teams.detail',{
+                //     url: '/:team_id/:team_name',
+                //     templateUrl: 'pages/teamDetail.html',
+                //     controller: 'teamDetailController',
+                //     authenticated: true
+                // })
 
                 .state('home.chat', {
                     url: 'chat',
@@ -136,9 +145,8 @@
     module.run(['$rootScope',
         '$state',
         'Auth',
-        'AuthService',
         '$http',
-        function ($rootScope, $state, Auth, AuthService, $http) {
+        function ($rootScope, $state, Auth, $http) {
             // keep user logged in after page refresh
             $rootScope.$on("$stateChangeStart",
                 function (event, toState, toParams, fromState, fromParams) {

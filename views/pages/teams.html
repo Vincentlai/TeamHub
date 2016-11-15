@@ -38,8 +38,8 @@
             </div>
             <h1>Are you sure you want to delete team <span>"{{selectedTeamName}}"</span> ?</h1>
             <ul class="cd-buttons clearfix">
-                <li type="submit" ng-click="deleteTeam()"><a class="agree">Yes</a></li>
-                <li><a ng-click="closeForm('delete-team')">No</a></li>
+                <li type="submit" ng-click="deleteTeam()"><button class="agree inpop">Yes</button></li>
+                <li><button class="inpop" ng-click="closeForm('delete-team')">No</button></li>
             </ul>
             <a class="popUpWindow-close " ng-click="closeForm('delete-team')"><i class="material-icons">clear</i></a>
         </div>
@@ -63,11 +63,15 @@
                                ng-model="input.email"
                                ng-pattern="/^.+@.+\..+$/"
                                required
+                               email-notexists
                         />
                         <div ng-messages="addUserForm.email.$error"
                              ng-show="addUserForm.email.$dirty || addUserForm.email.$touched">
                             <div ng-message="required">
                                 Email cannot be empty.
+                            </div>
+                            <div ng-message="emailNotexists">
+                                Email does not exists.
                             </div>
                         </div>
                     </md-input-container>
@@ -91,8 +95,10 @@
                         </div>
                     </md-input-container>
                     <ul class="cd-buttons clearfix">
-                        <li type="submit" ng-click="addUser()"><a class="agree">Add</a></li>
-                        <li><a ng-click="closeForm('add-user', true)">Cancel</a></li>
+                        <li type="submit" ng-click="addUser()">
+                            <button ng-disabled="addUserForm.$invalid" class="agree inpop">Add</button>
+                        </li>
+                        <li><button class="inpop" ng-click="closeForm('add-user', true)">Cancel</button></li>
                     </ul>
                 </form>
 
@@ -150,8 +156,9 @@
                         </div>
                     </md-input-container>
                     <ul class="cd-buttons clearfix">
-                        <li type="submit" ng-click="removeUser()"><a class="agree">Remove</a></li>
-                        <li><a ng-click="closeForm('remove-user', true)">Cancel</a></li>
+                        <li type="submit" ng-click="removeUser()">
+                            <button ng-disabled="removeUserForm.$invalid" class="agree inpop">Remove</button></li>
+                        <li><button class="inpop" ng-click="closeForm('remove-user', true)">Cancel</button></li>
                     </ul>
                 </form>
 
@@ -171,8 +178,9 @@
             </div>
             <h1>Are you sure you want to quit from team <span>"{{selectedTeamName}}"</span> ?</h1>
             <ul class="cd-buttons clearfix">
-                <li type="submit" ng-click="quitTeam()"><a class="agree">Yes</a></li>
-                <li><a ng-click="closeForm('quit-team')">No</a></li>
+                <li type="submit" ng-click="quitTeam()">
+                    <button class="agree inpop">Yes</button></li>
+                <li><button class="inpop" ng-click="closeForm('quit-team')">No</button></li>
             </ul>
             <a class="popUpWindow-close " ng-click="closeForm('quit-team')"><i
                     class="material-icons">clear</i></a>

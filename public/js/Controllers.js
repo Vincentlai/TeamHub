@@ -53,6 +53,38 @@
             }
         }
     ]);
+    module.directive('emailNotexists', [
+        '$http',
+        function ($http) {
+            return {
+                restrict: 'A',
+                require: 'ngModel',
+                link: function (scope, elem, attrs, ctrl) {
+                    var ngModel = ctrl;
+
+                    scope.$watch(attrs.ngModel, function (n, o) {
+                        if (n !== o) {
+                            console.log(n);
+                            console.log(o);
+                            var url = '/users/is_exist?email=' + n;
+                            $http.get(url)
+                                .then(
+                                    function (res) {
+                                        if (res.data.code == 1) {
+                                            ngModel.$setValidity('emailNotexists', true);
+                                        } else {
+                                            ngModel.$setValidity('emailNotexists', false);
+                                        }
+                                    }, function (error) {
+                                        ngModel.$setValidity('emailNotexists', false);
+                                    }
+                                );
+                        }
+                    }, true);
+                }
+            }
+        }
+    ]);
     // module.controller('headerCtrl', [
     //     '$scope',
     //     'Auth',
@@ -182,22 +214,6 @@
                 $('#' + tag).removeClass('is-visible');
             };
 
-            /*
-             Reload side bar when add or delete team
-             */
-            $scope.$on('ChangeTeam',
-                function (event, args) {
-                    $state.transitionTo(args, null, {reload: true, inherit: false, notify: true});
-                });
-        }
-    ]);
-    module.controller('teamController', [
-        '$http',
-        '$scope',
-        '$timeout',
-        '$state',
-        function ($http, $scope, $timeout, $state) {
-            $scope.team = {};
             $scope.createTeam = function () {
                 console.log('createTeam clicked');
                 $http.post('/teams/create', $scope.team)
@@ -223,6 +239,24 @@
                         }
                     )
             };
+
+            /*
+             Reload side bar when add or delete team
+             */
+            $scope.$on('ChangeTeam',
+                function (event, args) {
+                    $state.transitionTo(args, null, {reload: true, inherit: false, notify: true});
+                });
+        }
+    ]);
+    module.controller('teamController', [
+        '$http',
+        '$scope',
+        '$timeout',
+        '$state',
+        function ($http, $scope, $timeout, $state) {
+            $scope.team = {};
+
             $scope.deleteTeam = function () {
                 console.log('delete');
                 $http.delete('/teams/delete?team_id=' + $scope.selectedTeamId)
@@ -249,9 +283,7 @@
             };
             $scope.addUser = function () {
                 console.log('addUSER');
-                $scope.input = {};
                 $scope.input.team_id = $scope.selectedTeamId;
-                $scope.input.user_id = 55655;
                 $http.post('/teams/add_user', $scope.input)
                     .then(
                         function (res) {
@@ -335,18 +367,18 @@
 
         }
     ]);
-    module.controller('teamDetailController', [
-        '$scope',
-        '$stateParams',
-        '$http',
-        '$state',
-        '$timeout',
-        function ($scope, $stateParams, $http, $state, $timeout) {
-            $scope.team_id = $stateParams.team_id;
-            $scope.team_name = $stateParams.team_name;
-
-        }
-    ]);
+    // module.controller('teamDetailController', [
+    //     '$scope',
+    //     '$stateParams',
+    //     '$http',
+    //     '$state',
+    //     '$timeout',
+    //     function ($scope, $stateParams, $http, $state, $timeout) {
+    //         $scope.team_id = $stateParams.team_id;
+    //         $scope.team_name = $stateParams.team_name;
+    //
+    //     }
+    // ]);
     module.controller('chatController', [
         '$scope',
         function ($scope) {

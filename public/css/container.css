@@ -142,6 +142,9 @@ body {
   background-size: cover;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
+button {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+}
 .clearfix:after,
 .clearfix:before {
   content: '';
@@ -478,7 +481,11 @@ popUp Window
   width: 50%;
   cursor: pointer;
 }
-.popUpWindow-container .cd-buttons li a {
+.popUpWindow-container .cd-buttons li button.inpop {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
   font-size: 15px;
   display: block;
   height: 40px;
@@ -489,13 +496,22 @@ popUp Window
   transition: background-color 0.2s;
   background: #b6bece;
   border-radius: 0 0 .25em 0;
+  opacity: 1;
 }
-.popUpWindow-container .cd-buttons li a.agree {
+.popUpWindow-container .cd-buttons li button.inpop.agree {
   background: #fc7169;
   border-radius: 0 0 0 .25em;
 }
-.popUpWindow-container .cd-buttons li a:hover {
+.popUpWindow-container .cd-buttons li button.inpop:hover {
   opacity: .75;
+}
+.popUpWindow-container .cd-buttons li button.inpop:disabled {
+  color: rgba(0, 0, 0, 0.38);
+  cursor: default;
+  opacity: .65;
+}
+.popUpWindow-container .cd-buttons li button.inpop:focus {
+  outline: none;
 }
 .popUpWindow-container .popUpWindow-close {
   position: absolute;

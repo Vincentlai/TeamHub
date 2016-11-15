@@ -9,7 +9,8 @@
                 </div>
                 <ul class="submenu">
                     <li ng-repeat="teamItem in teams">
-                        <a ui-sref="home.teams.detail({team_id:teamItem.id, team_name:teamItem.name})">{{teamItem.name}}</a>
+                        <!--<a ui-sref="home.teams.detail({team_id:teamItem.id, team_name:teamItem.name})">{{teamItem.name}}</a>-->
+                        <a >{{teamItem.name}}</a>
                     </li>
                     <li id="manageTeams" ui-sref="home.teams.manage" ng-if="!hasNoTeam">
                         <md-tooltip md-direction="right">
@@ -57,8 +58,8 @@
                 </ul>
             </li>
             <li>
-                <div class="link">
-                    Something
+                <div ui-sref="home.setting" class="link">
+                    Setting
                     <i class="material-icons drop-down">expand_more</i>
                 </div>
                 <ul class="submenu">
@@ -75,7 +76,7 @@
     <div class="content">
         <div ui-view="contains"></div>
     </div>
-    <div id="create-team" class="popUpWindow" role="alert" ng-controller="teamController" ng-cloak="">
+    <div id="create-team" class="popUpWindow" role="alert"  ng-cloak>
 
         <div class="popUpWindow-container">
             <h1>Create Team</h1>
@@ -125,8 +126,9 @@
                         </div>
                     </md-input-container>
                     <ul class="cd-buttons clearfix">
-                        <li type="submit" ng-click="createTeam('create-team')"><a class="agree">Create</a></li>
-                        <li><a ng-click="closeForm('create-team')">Cancel</a></li>
+                        <li type="submit" ng-click="createTeam('create-team')">
+                            <button ng-disabled="teamCreateForm.$invalid" class="agree inpop">Create</button></li>
+                        <li><button class="inpop" ng-click="closeForm('create-team')">Cancel</button></li>
                     </ul>
                 </form>
 
