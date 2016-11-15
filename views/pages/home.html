@@ -12,7 +12,7 @@
                         <!--<a ui-sref="home.teams.detail({team_id:teamItem.id, team_name:teamItem.name})">{{teamItem.name}}</a>-->
                         <a >{{teamItem.name}}</a>
                     </li>
-                    <li id="manageTeams" ui-sref="home.teams.manage" ng-if="!hasNoTeam">
+                    <li id="manageTeams" ui-sref="home.teams" ng-if="!hasNoTeam">
                         <md-tooltip md-direction="right">
                             See all your teams
                         </md-tooltip>
@@ -25,6 +25,7 @@
                     </li>
                 </ul>
             </li>
+
             <li id="chat">
                 <div class="link" ui-sref="home.chat" ng-click="tagSlide('chat')">
                     <i class="material-icons main-menu">chat</i>

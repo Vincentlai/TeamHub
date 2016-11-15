@@ -293,7 +293,7 @@
                             if (res.data.code == 1) {
                                 $scope.closeForm('delete-team');
                                 $timeout(function () {
-                                    $scope.$emit('ChangeTeam', 'home.teams.manage');
+                                    $scope.$emit('ChangeTeam', 'home.teams');
                                 }, 500);
                             } else {
                                 $scope.msg = res.data.msg;
@@ -318,7 +318,7 @@
                             if (res.data.code == 1) {
                                 $scope.closeForm('add-user');
                                 $timeout(function () {
-                                    $scope.$emit('ChangeTeam', 'home.teams.manage');
+                                    $scope.$emit('ChangeTeam', 'home.teams');
                                 }, 500);
                             } else {
                                 $scope.msg = res.data.msg;
@@ -344,7 +344,7 @@
                             if (res.data.code == 1) {
                                 $scope.closeForm('remove-user');
                                 $timeout(function () {
-                                    $scope.$emit('ChangeTeam', 'home.teams.manage');
+                                    $scope.$emit('ChangeTeam', 'home.teams');
                                 }, 500);
                             } else {
                                 $scope.msg = res.data.msg;
@@ -368,7 +368,7 @@
                             if (res.data.code == 1) {
                                 $scope.closeForm('quit-team');
                                 $timeout(function () {
-                                    $scope.$emit('ChangeTeam', 'home.teams.manage');
+                                    $scope.$emit('ChangeTeam', 'home.teams');
                                 }, 500);
                             } else {
                                 $scope.msg = res.data.msg;
