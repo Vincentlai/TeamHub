@@ -128,6 +128,9 @@
                 }
             ];
 
+            $scope.selected = $scope.events[0];
+            $scope.showCreateEventForm = false;
+
             function getDate(offsetDays, hour) {
                 offsetDays = offsetDays || 0;
                 var offset = offsetDays * 24 * 60 * 60 * 1000;
@@ -135,16 +138,42 @@
                 if (hour) { date.setHours(hour); }
                 return date;
             }
+            //new///////////////////////////////////////////
+            function setDate(time){
+                time = time || 0;
+            }
+
+            function createEvent(date){
+                var newEvent = {
+                    start: getDate(6, 12),
+                    end: getDate(6, 13),
+                    allDay: false,
+                    title: 'Event new'
+                }
+            }
+
+            function currentDay(date){
+                return date;
+            }
 
             $scope.eventClicked = function (item) {
                 console.log(item);
             };
 
-            $scope.createClicked = function (date) {
-                console.log(date);
+            $scope.resetTime=function(){
+                $scope.eventTimeHour = 0;
+                $scope.eventTimeMin = 0;
+                //console.log("aaa");
             };
 
-            $scope.dis = true;
+            $scope.createClicked = function (date) {
+                console.log(date);
+                $scope.showCreateEventForm = true;
+                $scope.result = currentDay(date);
+                createEvent(date);
+            };
+
+            $scope.dis = false;
 
 
 
