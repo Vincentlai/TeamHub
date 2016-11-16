@@ -1,26 +1,68 @@
-<div class="post" ng-controller="post">
-    <div class="notify" ng-if="Post.error">
-        <div class="notify-msg">
-            <i class="material-icons">info_outline</i>
-            <span>&nbsp;&nbsp;{{Post.msg}}</span>
+<div class="page-container" ng-cloak>
+
+    <md-button ng-click="createForm('create-post')" class="control-btn">
+        <i class="material-icons">mode_edit</i>
+        New Post
+    </md-button>
+
+    <div class="card-container clearfix">
+        <div class="col-lg-4 col-md-6 col-sm-12 card" ng-repeat="postCard in postList">
+            <div class="card-content">
+                <h1>
+                    {{postCard.nickname}}
+                </h1>
+                <h2>
+                    {{postCard.text}}
+                </h2>
+                <h2>
+                    likes: {{postCard.like}}
+                </h2>
+                <h2>
+                    create time: {{postCard.time}}
+                </h2>
+            </div>
+
         </div>
     </div>
 
-    <form ng-submit="Post.CreatePost()" name="PostForm" class="md-title">
+    <div id="create-post" class="popUpWindow" role="alert"  ng-cloak>
 
-            <label>Description</label>
-            <textarea required type="text" name="post" ng-model="Post.data" max-rows="8"
-            ></textarea>
-            <div ng-messages="PostForm.$error" role="alert">
-                <div ng-message="required">
-                    Post cannot be empty.
+        <div class="popUpWindow-container">
+            <h1>New Post</h1>
+            <div class="notify " ng-if="error">
+                <div class="notify-msg">
+                    <i class="material-icons">info_outline</i>
+                    <span>{{msg}}</span>
                 </div>
             </div>
+            <div class="pop-form">
+                <form name="postCreateForm" class="md-title">
 
-        <div layout="row" layout-phone="column" layout-align="center">
-            <md-button class="md-raised md-primary btn"
-                       ng-disabled="postForm.$invalid"
-                       type="submit">Submit</md-button>
+                    <md-input-container class="md-block">
+                        <label>Description</label>
+                        <textarea type="text" required
+                                  name="description"
+                                  ng-model="input.description"
+                                  rows="5"
+                                  max-rows="10">
+                            </textarea>
+                        <div ng-messages="postCreateForm.description.$error"
+                             ng-show="postCreateForm.description.$dirty || postCreateForm.description.$touched">
+                            <div ng-message="required">
+                                Description cannot be empty.
+                            </div>
+                        </div>
+                    </md-input-container>
+                    <ul class="cd-buttons clearfix">
+                        <li type="submit" ng-click="createPost('create-post')">
+                            <button ng-disabled="postCreateForm.$invalid" class="agree inpop">Create</button></li>
+                        <li><button class="inpop" ng-click="closeForm('create-post')">Cancel</button></li>
+                    </ul>
+                </form>
+
+            </div>
+            <a class="popUpWindow-close " ng-click="closeForm('create-post')"><i class="material-icons">clear</i></a>
         </div>
-    </form>
-</div>
+    </div>
+
+    </div>

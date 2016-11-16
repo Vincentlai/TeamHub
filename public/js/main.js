@@ -13,7 +13,8 @@
         'ngCookies',
         'ngPassword',
         'socket.io',
-        'chat'
+        'chat',
+        'ngStorage'
     ]);
     module
         .config(function ($stateProvider, $urlRouterProvider) {
@@ -115,10 +116,41 @@
                     },
                     authenticated: false
                 })
-                .state('home.post', {
-                    url: "post",
+                .state('home.posts', {
+                    url: "posts",
                     views: {
-                        'contains': {templateUrl: 'pages/post.html'}
+                        'contains': {
+                            templateUrl: 'pages/post.html',
+                            controller: 'postController'
+                        }
+                    },
+                    resolve : {
+                        postList : function ($localStorage, $http) {
+                            return $http.get('posts/get_posts?team_id=' + $localStorage.selectedTeam.id)
+                                .then(
+                                    function (res) {
+                                        if(res.data.code == 1){
+                                            return res.data.posts;
+                                        }
+                                    }, function (error) {
+                                        console.log('error in getting post list ' + error);
+                                    }
+                                )
+                        }
+                    },
+                    authenticated: true
+                })
+                .state('home.events', {
+                    url: "events",
+                    views: {
+                        'contains': {templateUrl: 'pages/events.html'}
+                    },
+                    authenticated: true
+                })
+                .state('home.files', {
+                    url: "files",
+                    views: {
+                        'contains': {templateUrl: 'pages/files.html'}
                     },
                     authenticated: true
                 });
