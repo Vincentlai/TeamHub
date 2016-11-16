@@ -42,10 +42,9 @@ module.exports = function (io) {
         });
 
         socket.on('team_msg', function (json) {
-            
-            console.log("echo " + json.msg + " " +json.team_id + " " + json.uuid);
 
             io.emit('team_msg', json);
+            
         });
 
 
