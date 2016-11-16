@@ -179,16 +179,9 @@
 		box-shadow: 0px 2px 0px #D4D4D4;
 	}
 	
-	.msg {
-		background: white;
-		min-width: 50px;
-		padding: 10px;
-		border-radius: 2px;
-		box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.07);
-	}
 	
 	.msg p {
-		font-size: 0.8rem;
+		font-size: 15px;
 		margin: 0 0 0.2rem 0;
 		color: #777;
 	}
@@ -219,11 +212,10 @@
 		}
 	}
 	
-	.msg time {
+	time {
 		font-size: 0.7rem;
 		color: #ccc;
-		margin-top: 3px;
-		float: right;
+		float: left;
 		cursor: default;
 		-webkit-touch-callout: none;
 		-webkit-user-select: none;
@@ -231,12 +223,14 @@
 		-ms-user-select: none;
 	}
 	
-	.msg time:before {
+	time:before {
 		content: "\f017";
 		color: #ddd;
 		font-family: FontAwesome;
 		display: inline-block;
-		margin-right: 4px;
+		margin-left: 6px;
+		margin-right: 2px;
+		float: left;
 	}
 	/* T Y P E */
 	
@@ -267,6 +261,30 @@
 		display: inline-block;
 		z-index: 100;
 	}
+
+	.msg {
+		background: white;
+		min-width: 50px;
+		padding: 10px;
+		border-radius: 2px;
+		box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.07);
+		float: left;
+		clear: left;
+		margin-top: 2px;
+	}
+
+	.chat  .nickname {
+		position: relative;
+		font-size: 12px;
+		float: left;
+		color: #ccc;
+	}
+
+	#wrapper{
+		margin-left:10px;
+		height:auto; 
+		width:auto;
+	}
 </style>
 
 <div id=chat_bg ng-controller="Ctrl">
@@ -282,10 +300,14 @@
 
             <li ng-repeat="json in msg_list" ng-class="getClass($index)" ng-attr-id="{{ 'msg_' + $index }}">
                 <div class="avatar"><img ng-src="{{getSrc($index)}}" draggable="false" /></div>
-                <div class="msg">
-                    <p>{{json.msg}}</p>
-                    <time>{{json.time}}</time>
-                </div>
+
+				<div id="wrapper">
+					<div class="nickname">{{json.nickname}}</div>
+					<time>{{json.time}}</time>
+					<div class="msg">
+						<p>{{json.msg}}</p>
+					</div>
+				</div>
             </li>
 
         </ol>

@@ -138,7 +138,7 @@ exports.delete = function(sess, team_id, callback) {
 
                 callback({
                     'code': '-3',
-                    'msg': 'The team that you are trying to delete is not empty'
+                    'msg': 'You cannot delete the team that has users other than the creator'
                 });
                 return;
 
