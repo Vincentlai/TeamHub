@@ -1,0 +1,57 @@
+{
+  "name": "angular-material-event-calendar",
+  "version": "0.1.2",
+  "description": "Angular material event calander component",
+  "main": [
+    "dist/angular-material-event-calendar.js",
+    "dist/angular-material-event-calendar.css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:B-3PO/angular-material-event-calendar.git"
+  },
+  "authors": [
+    "Ben Rubin"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "material",
+    "material-design",
+    "design",
+    "angular",
+    "component",
+    "calendar",
+    "event",
+    "md"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app",
+    "src",
+    "gulp"
+  ],
+  "dependencies": {
+    "angular": "^1.5.7",
+    "angular-animate": "^1.5.7",
+    "angular-messages": "^1.5.7",
+    "angular-aria": "^1.5.7",
+    "angular-material": "^1.1.0"
+  },
+  "devDependencies": {
+    "angular-mocks": "^1.5.7",
+    "angular-route": "^1.5.7"
+  },
+  "homepage": "https://github.com/B-3PO/angular-material-event-calendar",
+  "_release": "0.1.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.2",
+    "commit": "784a3bea909d6542553d6722f44c1aadde67aad1"
+  },
+  "_source": "https://github.com/B-3PO/angular-material-event-calendar.git",
+  "_target": "^0.1.2",
+  "_originalSource": "angular-material-event-calendar",
+  "_direct": true
+}
