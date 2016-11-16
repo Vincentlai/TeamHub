@@ -95,11 +95,44 @@
     //
     //     }
     // ]);
-    module.controller('post', [
+    module.controller('postController', [
             '$scope',
-            'PostService',
-            function ($scope, PostService) {
-                $scope.post = PostService;
+            'postList',
+            '$localStorage',
+            '$state',
+            '$http',
+            '$timeout',
+            function ($scope, postList, $localStorage, $state, $http, $timeout) {
+                $scope.postList = postList;
+                console.log(typeof(postList[0].time));
+                $scope.createPost = function () {
+                    $http.post('/posts/post',{
+                        text: $scope.input.description,
+                        team_id: $localStorage.selectedTeam.id})
+                        .then(
+                            function (res) {
+                                if (res.data.code == 1) {
+                                    $scope.closeForm('create-post');
+                                    $timeout(
+                                        function () {
+                                            $state.transitionTo($state.current.name, null,
+                                                {reload: $state.current.name, inherit: false, notify: true});
+                                            delete $scope.input;
+                                        }, 500);
+                                } else {
+                                    $scope.msg = res.data.msg;
+                                    $scope.error = true;
+                                    $timeout(function () {
+                                        $scope.error = false;
+                                        $scope.msg = null;
+                                    }, 4000);
+                                }
+                            }, function (error) {
+                                console.log('error in creating post ' + error);
+                            }
+                        )
+                }
+
             }
         ]
     );
@@ -111,7 +144,8 @@
         '$timeout',
         'Auth',
         '$http',
-        function ($scope, $rootScope, $state, information, $timeout, Auth, $http) {
+        '$localStorage',
+        function ($scope, $rootScope, $state, information, $timeout, Auth, $http, $localStorage) {
 
 
             // $scope.$watch(function () {
@@ -161,6 +195,11 @@
                 $timeout(function () {
                     $(openElement.children()[1]).slideToggle();
                 }, 300);
+                $timeout(function () {
+                    if($localStorage.selectedTeam){
+                        $('#second-list').addClass('is-visible');
+                    }
+                }, 800);
             };
             /*
              Open or close tag
@@ -243,6 +282,14 @@
             };
 
             /*
+              Show secondary list
+             */
+            $scope.showSndList = function (selected_team, event) {
+                $localStorage.selectedTeam = selected_team;
+                $('#second-list').addClass('is-visible');
+                $(event.target).addClass('important');
+            };
+            /*
              Reload side bar when add or delete team
              */
             $scope.$on('ChangeTeam',
@@ -266,7 +313,6 @@
                             function (res) {
                                 var detail;
                                 if(res.data.code == 1){
-                                    console.log(res.data);
                                     detail = {
                                         name: res.data.name,
                                         team_id: res.data.team_id,
@@ -274,7 +320,6 @@
                                         is_creator: res.data.r_u_creator,
                                         teammates: res.data.users
                                     };
-                                    console.log(detail);
                                     $scope.teamsDetail[$scope.teamsDetail.length] = detail;
                                 }else {
                                     $scope.teamsDetail[$scope.teamsDetail.length] = {};
