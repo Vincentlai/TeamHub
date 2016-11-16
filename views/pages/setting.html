@@ -4,6 +4,7 @@
         overflow: hidden;
         width:500px;
         height:350px;
+        position: relative;
     }
     form .progress {
         line-height: 15px;
@@ -18,17 +19,29 @@
         background: orange;
         width: 0;
     }
+    .img-crop {
+        position: relative;
+        margin: 50px;
+    }
+    .img-crop canvas {
+        /*width: 100px;*/
+        /*height: auto;*/
+        position: absolute;
+        top: 0;
+        bottom: 0;
+    }
+
 </style>
 
 
-<body ng-controller="MyCtrl">
+<div ng-controller="MyCtrl">
     <form name="myForm">
         <div>Crop Image and Upload</div>
         <button ngf-select ng-model="picFile" accept="image/*">
             Select Picture</button>
         <div ngf-drop ng-model="picFile" ngf-pattern="image/*"
              class="cropArea">
-            <img-crop image="picFile  | ngfDataUrl"                 
+            <img-crop class="img-crop" image="picFile  | ngfDataUrl"                 
             result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
             </img-crop>
         </div>
@@ -36,6 +49,7 @@
             <img ng-src="{{croppedDataUrl}}" />
         </div>
         <button ng-click="upload(croppedDataUrl, picFile.name)">Submit</button> 
+        <button ng-click="upload_test()">Test</button> 
             
         <span class="progress" ng-show="progress >= 0">
           <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
@@ -43,4 +57,4 @@
         <span ng-show="result">Upload Successful</span>
         <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
     </form>
-</body>
+</div>

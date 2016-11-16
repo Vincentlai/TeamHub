@@ -1,9 +1,11 @@
 var app = angular.module('iconUpload', ['ngFileUpload', 'ngImgCrop']);
 
 app.controller('MyCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Upload, $timeout) {
+
     $scope.upload = function (dataUrl, name) {
+        console.log("upload-> dataUrl: " + dataUrl + " name: " + name);
         Upload.upload({
-            url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
+            url: 'http://localhost:8080/users/upload_icon',
             data: {
                 file: Upload.dataUrltoBlob(dataUrl, name)
             },
@@ -18,4 +20,5 @@ app.controller('MyCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Uplo
             $scope.progress = parseInt(100.0 * evt.loaded / evt.total);
         });
     }
+
 }]);
