@@ -81,15 +81,19 @@
     ]);
 
     module.controller('calendarController', [
+        '$http',
+        'Auth',
+        '$state',
         '$scope',
         '$timeout',
-        function($scope, $timeout){
+        function($http,Auth,$state,$scope,$timeout){
             //for event test, after passing the test, using database to access events.
+            var newEventDate = new Date(1478592000000);
             $scope.events = [
                 {
-                    start: getDate(-6, 0),
-                    end: getDate(-4, 0),
-                    title: 'Event 1'
+                    start: newEventDate,
+                    end: getDate(0, 0),
+                    title: 'Event test'
                 },
                 {
                     start: getDate(0, 10),
@@ -143,34 +147,68 @@
                 time = time || 0;
             }
 
-            function createEvent(date){
-                var newEvent = {
-                    start: getDate(6, 12),
-                    end: getDate(6, 13),
-                    allDay: false,
-                    title: 'Event new'
-                }
-            }
+            $scope.createEvent = function(){
+                console.log(" working ");
+                var createdEvent = {};
+
+                createdEvent.team_id = "???????"
+                createdEvent.title = $scope.newEventTitle;
+                createdEvent.start = new Date($scope.eventStartDate.getTime() 
+                                            + $scope.eventStartTimeHour*60*60*1000 
+                                            + $scope.eventStartTimeMin*60*1000);
+                createdEvent.end = new Date($scope.eventEndDate.getTime() 
+                                            + $scope.eventEndTimeHour*60*60*1000 
+                                            + $scope.eventEndTimeMin*60*1000);
+                createdEvent.description = $scope.eventDescription;
+                //createdEvent.allDayEvent = $scope.allDayEvent;
+                console.log(createdEvent.start);
+                console.log(createdEvent.end);
+                console.log(createdEvent.title);
+                console.log(createdEvent.description);
+                console.log(createdEvent.allDayEvent);
+                console.log(createdEvent);
+                sendToDataBase(createdEvent);
+            };
+
+            function sendToDataBase(createdEvent){
+                $http.post('/events/create', createdEvent)
+                .then(
+                    function(response){
+                        if(response.data.code == 1){
+                            console.log("seccessfully");
+                        } else{
+                            console.log("error message in response");
+                        }
+                    }, function(error){
+                        console.log('error in create events' + error);
+                    }
+                )
+            };
 
             function currentDay(date){
-                return date;
+                var tempDate = date.getTime();
+                $scope.eventStartDate = new Date(tempDate);
+                $scope.eventEndDate = new Date(tempDate);
+                return date.toDateString();
             }
 
             $scope.eventClicked = function (item) {
                 console.log(item);
             };
 
-            $scope.resetTime=function(){
-                $scope.eventTimeHour = 0;
-                $scope.eventTimeMin = 0;
-                //console.log("aaa");
+            $scope.resetTime = function(){
+                $scope.eventStartTimeHour = 0;
+                $scope.eventStartTimeMin = 0;
+                $scope.eventEndTimeHour = 0;
+                $scope.eventEndTimeMin = 0;
+                //console.log($scope.newEndDate.getTime());
             };
 
             $scope.createClicked = function (date) {
                 console.log(date);
-                $scope.showCreateEventForm = true;
                 $scope.result = currentDay(date);
-                createEvent(date);
+                $scope.showCreateEventForm = true;
+                console.log(date.getTime());
             };
 
             $scope.dis = false;
