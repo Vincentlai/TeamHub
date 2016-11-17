@@ -5,11 +5,12 @@
         New Post
     </md-button>
 
-    <div class="card-container clearfix">
+    <article class="card-container clearfix">
         <div class="col-lg-4 col-md-6 col-sm-12 card" ng-repeat="postCard in postList">
             <div class="card-content">
                 <h1>
                     {{postCard.nickname}}
+                    {{postCard.team_id}}
                 </h1>
                 <h2>
                     {{postCard.text}}
@@ -23,7 +24,7 @@
             </div>
 
         </div>
-    </div>
+    </article>
 
     <div id="create-post" class="popUpWindow" role="alert"  ng-cloak>
 

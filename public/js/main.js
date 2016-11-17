@@ -117,7 +117,7 @@
                     authenticated: false
                 })
                 .state('home.posts', {
-                    url: "posts",
+                    url: "posts/:team_id",
                     views: {
                         'contains': {
                             templateUrl: 'pages/post.html',

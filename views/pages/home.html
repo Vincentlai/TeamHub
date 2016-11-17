@@ -8,10 +8,10 @@
                     <i class="material-icons drop-down">expand_more</i>
                 </div>
                 <ul class="submenu">
-                    <li  ng-repeat="teamItem in teams" ng-click="showSndList(teamItem, $event)">
+                    <li  ng-repeat="teamItem in teams" ng-click="showSndList(teamItem)">
                         <i class="material-icons" ng-if="teamItem.is_creator">person</i>
                         <i class="material-icons" ng-if="!teamItem.is_creator">person_outline</i>
-                        <a >{{teamItem.name}}</a>
+                        <a ng-class="{'important': isSelected(teamItem.id)}" >{{teamItem.name}}</a>
                     </li>
                     <li id="manageTeams" ui-sref="home.teams" ng-if="!hasNoTeam">
                         <md-tooltip md-direction="right">
@@ -30,7 +30,7 @@
 
         <ul id="second-list" class="accordion">
             <li>
-                <div ui-sref="home.posts" class="link">
+                <div ui-sref="home.posts({team_id:selectedTeam.name})"  class="link">
                     <i class="material-icons">assignment</i>
                     Post
                 </div>

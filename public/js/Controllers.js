@@ -102,9 +102,19 @@
             '$state',
             '$http',
             '$timeout',
-            function ($scope, postList, $localStorage, $state, $http, $timeout) {
+            function ($scope, postList, $localStorage, $state, $http, $timeout, $stateParams) {
+                /*
+                 keys in post list item
+                 comments   Array[0]
+                 like
+                 nickname
+                 post_id
+                 text
+                 time
+                 */
                 $scope.postList = postList;
-                console.log(typeof(postList[0].time));
+                console.log($stateParams);
+                console.log($scope.current_team);
                 $scope.createPost = function () {
                     $http.post('/posts/post',{
                         text: $scope.input.description,
@@ -284,10 +294,14 @@
             /*
               Show secondary list
              */
-            $scope.showSndList = function (selected_team, event) {
+            $scope.showSndList = function (selected_team) {
                 $localStorage.selectedTeam = selected_team;
+                $scope.selectedTeam = selected_team;
+                console.log($localStorage.selectedTeam.name);
                 $('#second-list').addClass('is-visible');
-                $(event.target).addClass('important');
+            };
+            $scope.isSelected = function (id) {
+                return id === $localStorage.selectedTeam.id;
             };
             /*
              Reload side bar when add or delete team

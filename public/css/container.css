@@ -387,6 +387,7 @@ notification end
   display: block;
   position: relative;
   cursor: pointer;
+  outline: none;
 }
 .side-bar .accordion li .submenu li i {
   top: 10px;
@@ -444,7 +445,9 @@ notification end
 */
 .content {
   position: relative;
+  height: 100%;
   margin-left: 200px;
+  background-color: #eeeeee;
 }
 /*
 popUp Window
@@ -576,8 +579,10 @@ popUp Window
 }
 .card-container .card {
   padding: 2em 1em;
+  cursor: default;
 }
 .card-container .card .card-content {
+  background-color: white;
   padding: 1.2em;
   border-radius: .25em .25em .4em .4em;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
@@ -593,7 +598,7 @@ popUp Window
   -ms-transform: translateY(-5px);
   -o-transform: translateY(-5px);
   transform: translateY(-5px);
-  box-shadow: 5px 5px 50px rgba(0, 0, 0, 0.2);
+  box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.2);
 }
 .card-container .card .card-btn {
   margin-top: 3em;
