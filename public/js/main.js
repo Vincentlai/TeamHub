@@ -117,7 +117,7 @@
                     authenticated: false
                 })
                 .state('home.posts', {
-                    url: "posts/:team_id",
+                    url: ":team_id/posts",
                     views: {
                         'contains': {
                             templateUrl: 'pages/post.html',
@@ -125,11 +125,12 @@
                         }
                     },
                     resolve : {
-                        postList : function ($localStorage, $http) {
-                            return $http.get('posts/get_posts?team_id=' + $localStorage.selectedTeam.id)
+                        postList : function ($localStorage, $http, $stateParams, $rootScope) {
+                            return $http.get('posts/get_posts?team_id=' + $stateParams.team_id)
                                 .then(
                                     function (res) {
                                         if(res.data.code == 1){
+                                            $rootScope.selectedTeamId = $stateParams.team_id;
                                             return res.data.posts;
                                         }
                                     }, function (error) {
@@ -141,14 +142,14 @@
                     authenticated: true
                 })
                 .state('home.events', {
-                    url: "events",
+                    url: ":team_id/events",
                     views: {
                         'contains': {templateUrl: 'pages/events.html'}
                     },
                     authenticated: true
                 })
                 .state('home.files', {
-                    url: "files",
+                    url: ":team_id/files",
                     views: {
                         'contains': {templateUrl: 'pages/files.html'}
                     },

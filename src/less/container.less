@@ -1,5 +1,4 @@
 @import "variable.less";
-@import "main.less";
 
 /*
  login and signup form
@@ -38,6 +37,7 @@
   animation: scale-in .3s ease-out forwards,
   expand .35s .25s ease-out forwards;
 }
+
 .notify-msg {
   opacity: 0;
   display: flex;
@@ -105,57 +105,70 @@ notification end
   background-color: @primary-bg-color;
   color: white;
   border-right: 1px solid @light-gray-border;
+  .setting-list {
+    margin-bottom: 10px;
+  }
   .accordion {
-    width: 199px;
+    color: @primary-text-color;
+    width: 250px;
     background: white;
-    .link {
-      cursor: pointer;
-      display: block;
-      padding: 15px 15px 15px 42px;
-      color: @primary-text-color;
-      font-size: 14px;
-      font-weight: 700;
-      border-bottom: 1px solid @light-gray-border;
-      position: relative;
-      -webkit-transition: all 0.4s ease;
-      -o-transition: all 0.4s ease;
-      transition: all 0.4s ease;
-    }
-    li:last-child .link {
-      border-bottom: 0;
-    }
     li {
+      -webkit-transition: all .2s ease;
+      -o-transition: all .2s ease;
+      transition: all .2s ease;
+      border-bottom: .5px solid @light-gray-border;
+      a, i {
+        color: @primary-text-color;
+      }
       i {
         position: absolute;
         top: 13px;
         left: 12px;
         font-size: 18px;
-        color: @primary-text-color;
-        -webkit-transition: all 0.4s ease;
-        -o-transition: all 0.4s ease;
-        transition: all 0.4s ease;
+        -webkit-transition: all .2s ease;
+        -o-transition: all .2s ease;
+        transition: all .2s ease;
         &.drop-down {
           right: 12px;
           left: auto;
           font-weight: bold;
         }
       }
+      .link:hover {
+        a, i {
+          color: @important;
+        }
+      }
       &.open {
+        .link {
+          border-right: 6px solid @important;
+        }
         i {
-          &.main-menu {
-            color: @primary-color;
-          }
           &.drop-down {
             -webkit-transform: rotate(180deg);
             -ms-transform: rotate(180deg);
             -o-transform: rotate(180deg);
             transform: rotate(180deg);
+            right: 7px;
           }
         }
-        .link {
-          color: @primary-color;
+      }
+      .link, .submenu > li {
+        cursor: pointer;
+        display: block;
+        padding: 15px 15px 15px 42px;
+        font-size: 14px;
+        font-weight: 700;
+        position: relative;
+        -webkit-transition: all .2s ease;
+        -o-transition: all .2s ease;
+        transition: all .2s ease;
+        outline: none;
+        &:active {
+          outline: none;
         }
       }
+
       /** -----------------------------
         * Submenu
       -----------------------------*/
@@ -165,30 +178,25 @@ notification end
         font-size: 14px;
         li {
           border-bottom: 1px solid #4b4a5e;
-          display: block;
-          position: relative;
-          cursor: pointer;
-          outline: none;
+          padding-left: 62px;
+          -webkit-transition: all 0.25s ease;
+          -o-transition: all 0.25s ease;
+          transition: all 0.25s ease;
           i {
-            top: 10px;
+            top: 13px;
+            left: 32px;
             color: white;
           }
           a {
             display: block;
             text-decoration: none;
             color: white;
-            padding: 12px;
-            padding-left: 42px;
-            -webkit-transition: all 0.25s ease;
-            -o-transition: all 0.25s ease;
-            transition: all 0.25s ease;
-            &:hover {
-              background: @primary-color;
-              color: #FFF;
-            }
-            &.important {
-              background-color: @important;
-            }
+          }
+          &:hover {
+            background-color: @important;
+          }
+          &.selected {
+            border-right: 6px solid @important;
           }
         }
       }
@@ -196,37 +204,14 @@ notification end
   }
 }
 
+li:last-child .link {
+  border-bottom: 0;
+}
+
 @media only screen and (min-width: @mid-size-screen-width) {
   .side-bar {
-    width: 200px;
+    width: 250px;
   }
-}
-
-/*
-  secondary list
-*/
-#second-list {
-  margin-top: 75px;
-  opacity: 0;
-  -webkit-transform: translateX(-200px);
-  -moz-transform: translateX(-200px);
-  -ms-transform: translateX(-200px);
-  -o-transform: translateX(-200px);
-  transform: translateX(-200px);
-  -webkit-transition: all .5s linear;
-  -moz-transition: all .5s linear;
-  -ms-transition: all .5s linear;
-  -o-transition: all .5s linear;
-  transition: all .5s linear;
-}
-
-#second-list.is-visible {
-  opacity: 1;
-  -webkit-transform: translateX(0);
-  -moz-transform: translateX(0);
-  -ms-transform: translateX(0);
-  -o-transform: translateX(0);
-  transform: translateX(0);
 }
 
 /*
@@ -235,8 +220,8 @@ notification end
 .content {
   position: relative;
   height: 100%;
-  margin-left: 200px;
-  background-color: rgb(238,238,238);
+  margin-left: 250px;
+  background-color: rgb(238, 238, 238);
 }
 
 /*
@@ -325,7 +310,7 @@ popUp Window
           opacity: .75;
         }
         &:disabled {
-          color: rgba(0,0,0,0.38);
+          color: rgba(0, 0, 0, 0.38);
           cursor: default;
           opacity: .65;
         }

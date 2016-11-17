@@ -5,7 +5,7 @@ app.config(function($socketProvider) {
 });
 
 
-app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $localStorage) {
+app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope) {
 
     function guid() {
         function s4() {
@@ -37,7 +37,7 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $localStorage)
     /* on receive team message */
     $socket.on('team_msg', function(json) {
 
-        var team_ui = $localStorage.selectedTeam.id;
+        var team_ui = $rootScope.selectedTeamId;
 
         if (json.uuid != uuid && json.team_id == team_ui) { // if not my message & is in the same team
             // update ui
@@ -55,7 +55,7 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $localStorage)
     $scope.emitTeamMsg = function emitTeamMsg() {
 
         var nickname = $rootScope.user.nickname;
-        var team_ui = $localStorage.selectedTeam.id;
+        var team_ui = $rootScope.selectedTeamId;
 
         console.log(team_ui);
 
@@ -90,7 +90,7 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $localStorage)
     };
 
     // check when selected team changes
-    $scope.$watch(function() { return $localStorage.selectedTeam.id; }, function(newVal, oldVal) {
+    $scope.$watch(function() { return $rootScope.selectedTeamId; }, function(newVal, oldVal) {
 
         if(newVal && oldVal){
             if(newVal != oldVal){

@@ -98,11 +98,10 @@
     module.controller('postController', [
             '$scope',
             'postList',
-            '$localStorage',
             '$state',
             '$http',
             '$timeout',
-            function ($scope, postList, $localStorage, $state, $http, $timeout, $stateParams) {
+            function ($scope, postList, $state, $http, $timeout, $stateParams) {
                 /*
                  keys in post list item
                  comments   Array[0]
@@ -113,12 +112,11 @@
                  time
                  */
                 $scope.postList = postList;
-                console.log($stateParams);
-                console.log($scope.current_team);
                 $scope.createPost = function () {
-                    $http.post('/posts/post',{
+                    $http.post('/posts/post', {
                         text: $scope.input.description,
-                        team_id: $localStorage.selectedTeam.id})
+                        team_id: $rootScope.selectedTeamId
+                    })
                         .then(
                             function (res) {
                                 if (res.data.code == 1) {
@@ -154,38 +152,46 @@
         '$timeout',
         'Auth',
         '$http',
-        '$localStorage',
-        function ($scope, $rootScope, $state, information, $timeout, Auth, $http, $localStorage) {
+        function ($scope, $rootScope, $state, information, $timeout, Auth, $http) {
 
-
-            // $scope.$watch(function () {
-            //     return $state.$current.name;
-            // }, function (newState, oldState) {
-            //     var element = newState.replace('home.', '');
-            //     var openElement = angular.element(document.querySelector('#' + element));
-            //     $(openElement).addClass('open');
-            //     if (newState !== oldState) {
-            //         element = oldState.replace('home.', '');
-            //         var closeElement = angular.element(document.querySelector('#' + element));
-            //         $(closeElement).removeClass('open');
-            //         $(closeElement.children()[1]).slideToggle();
-            //     } else {
-            //         $(openElement.children()[1]).slideToggle();
-            //     }
-            // }, true);
             $scope.teams = information.teams;
             $scope.hasNoTeam = ($scope.teams.length === 0);
             $rootScope.user = information.user;
             $scope.isLoggedin = $rootScope.user;
+            $scope.openTag = function () {
+                for(var i = 0; i < $scope.teams.length ; i++){
+                    if($scope.teams[i].id == $rootScope.selectedTeamId){
+                        // var element = angular.element(document.querySelector('#team' + i));
+                        // $(element.children()[1]).slideToggle();
+                        $scope.index = i;
+                        $timeout(function () {
+                            $scope.tagSlide('teams' + $scope.index);
+                        },10);
+                        break;
+                    }
+                }
+            };
+
+            $scope.$watch(function () {
+                return $state.$current.name;
+            }, function (newState, oldState) {
+                $scope.isPost = (newState.includes('post'));
+                $scope.isEvent = (newState.includes('event'));
+                $scope.isChat = (newState.includes('chat'));
+                $scope.isFile = (newState.includes('file'));
+
+            });
             /*
              Log out
              */
             $scope.logout = function () {
+
                 $http.post('/users/logout')
                     .then(
                         function (res) {
                             if (res.data.code == 1) {
                                 Auth.removeCookie();
+                                $scope.clear();
                                 $state.go('login');
                                 console.log('remove user');
                             }
@@ -197,50 +203,15 @@
                     )
             };
             /*
-             * Open teams tag when page load
-             * */
-            $scope.openTeam = function () {
-                var openElement = angular.element(document.querySelector('#' + 'teams'));
-                $(openElement).addClass('open');
-                $timeout(function () {
-                    $(openElement.children()[1]).slideToggle();
-                }, 300);
-                $timeout(function () {
-                    if($localStorage.selectedTeam){
-                        $('#second-list').addClass('is-visible');
-                    }
-                }, 800);
-            };
-            /*
              Open or close tag
              */
             $scope.tagSlide = function (tagName) {
                 var element = angular.element(document.querySelector('#' + tagName));
-                if ($(element).hasClass('open')) {
-                    $(element).removeClass('open');
-                } else {
-                    $(element).addClass('open');
-                }
                 $(element.children()[1]).slideToggle();
-                // var openElement;
-                // if (lastOpen != null) {
-                //     var closeElement = angular.element(document.querySelector('#' + lastOpen));
-                //     $(closeElement).removeClass('open');
-                //     $(closeElement.children()[1]).slideToggle();
-                //     if (open != lastOpen) {
-                //         openElement = angular.element(document.querySelector('#' + open));
-                //         $(openElement).addClass('open');
-                //         $(openElement.children()[1]).slideToggle();
-                //         lastOpen = open;
-                //     } else {
-                //         lastOpen = null;
-                //     }
-                // } else {
-                //     openElement = angular.element(document.querySelector('#' + open));
-                //     $(openElement).addClass('open');
-                //     $(openElement.children()[1]).slideToggle();
-                //     lastOpen = open;
-                // }
+            };
+            // $scope.isPost = true;
+            $scope.isSelected = function (id) {
+                return id === $rootScope.selectedTeamId;
             };
 
             /*
@@ -290,19 +261,13 @@
                         }
                     )
             };
+            $scope.changeID = function(id){
+              $rootScope.selectedTeamId = id;
+            };
+            $scope.clear = function () {
+                delete $rootScope.selectedTeamId;
+            };
 
-            /*
-              Show secondary list
-             */
-            $scope.showSndList = function (selected_team) {
-                $localStorage.selectedTeam = selected_team;
-                $scope.selectedTeam = selected_team;
-                console.log($localStorage.selectedTeam.name);
-                $('#second-list').addClass('is-visible');
-            };
-            $scope.isSelected = function (id) {
-                return id === $localStorage.selectedTeam.id;
-            };
             /*
              Reload side bar when add or delete team
              */
@@ -326,7 +291,7 @@
                         .then(
                             function (res) {
                                 var detail;
-                                if(res.data.code == 1){
+                                if (res.data.code == 1) {
                                     detail = {
                                         name: res.data.name,
                                         team_id: res.data.team_id,
@@ -335,7 +300,7 @@
                                         teammates: res.data.users
                                     };
                                     $scope.teamsDetail[$scope.teamsDetail.length] = detail;
-                                }else {
+                                } else {
                                     $scope.teamsDetail[$scope.teamsDetail.length] = {};
                                 }
                             }, function (error) {
@@ -397,7 +362,7 @@
                 console.log('remove user');
                 $scope.input.team_id = $scope.selectedTeamId;
                 $http.delete('/teams/remove_user?team_id=' + $scope.input.team_id
-                + '&user_id=' + $scope.input.user_id + '&message=' + $scope.input.message)
+                    + '&user_id=' + $scope.input.user_id + '&message=' + $scope.input.message)
                     .then(
                         function (res) {
                             if (res.data.code == 1) {
