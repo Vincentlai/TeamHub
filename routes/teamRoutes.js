@@ -196,6 +196,17 @@ router.get('/team_info',function(req, res)
     });
 });
 
+router.get('/chat_history',function(req, res)
+{
+
+    var team_id = req.query.team_id;
+    var sess = req.session;
+
+    team.getChatHistory(sess, team_id, function (found) {
+        res.json(found);
+    });
+});
+
 
 
 module.exports = router;

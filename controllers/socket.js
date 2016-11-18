@@ -43,6 +43,20 @@ module.exports = function (io) {
 
         socket.on('team_msg', function (json) {
 
+            var newMsg = new models.ChatHistory({
+                team_id: json.team_id,
+                nickname: json.nickname,
+                user_id: json.user_id,
+                time: json.time,
+                message: json.msg
+            });
+
+            newMsg.save(function (err, msg){
+                if(err){
+                    console.log("Error saving team chat message");
+                }
+            });
+
             io.emit('team_msg', json);
             
         });
