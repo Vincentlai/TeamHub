@@ -42,7 +42,8 @@
                                             var info = {
                                                 user: {
                                                     email: res.data.email,
-                                                    nickname: res.data.nickname
+                                                    nickname: res.data.nickname,
+                                                    user_id: res.data.user_id
                                                 },
                                                 teams: res.data.teams
                                             };

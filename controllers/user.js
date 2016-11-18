@@ -278,6 +278,7 @@ exports.myInfo = function (sess, callback) {
                 'msg': "Get my info Success",
                 'email': users[0].email,
                 'nickname': users[0].nickname,
+                'user_id': users[0]._id,
                 'teams': users[0].teams
             });
             return;
