@@ -33,7 +33,6 @@
                             controller: 'homeController'
                         }
                     },
-                    controller: 'sideBarController',
                     resolve: {
                         information: function ($http, $state, Auth) {
                             return $http.get('/users/my_info')
