@@ -161,7 +161,7 @@ exports.getPost = function(sess, team_id, callback) {
                             'nickname': posts[i].nickname,
                             'text': posts[i].text,
                             'like': posts[i].like,
-                            'time': post_time.toDateString() + " " + post_time.toTimeString().substring(0, 8),
+                            'time': post_time.toTimeString().substring(0, 8) + " " + post_time.toDateString(),
                             'comments': comments_arr
                         });
                     }

@@ -104,7 +104,7 @@
             function ($scope, postList, $state, $http, $timeout, $rootScope) {
                 /*
                  keys in post list item
-                 comments   Array[0]
+                 comments   Array
                  like
                  nickname
                  post_id
@@ -112,6 +112,7 @@
                  time
                  */
                 $scope.postList = postList;
+                $scope.numOfPosts = $scope.postList.length;
                 $scope.createPost = function () {
                     $http.post('/posts/post', {
                         text: $scope.input.description,
@@ -123,7 +124,7 @@
                                     $scope.closeForm('create-post');
                                     $timeout(
                                         function () {
-                                            $state.transitionTo($state.current.name, null,
+                                            $state.transitionTo($state.current.name, {team_id: $rootScope.selectedTeamId},
                                                 {reload: $state.current.name, inherit: false, notify: true});
                                             delete $scope.input;
                                         }, 500);
@@ -144,6 +145,7 @@
             }
         ]
     );
+
     module.controller('homeController', [
         '$scope',
         '$rootScope',

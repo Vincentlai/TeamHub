@@ -211,9 +211,9 @@ li:last-child .link {
 */
 .content {
   position: relative;
+  background-color: #eeeeee;
   height: 100%;
   margin-left: 250px;
-  background-color: #eeeeee;
 }
 /*
 popUp Window
@@ -339,6 +339,9 @@ popUp Window
     margin: 300px auto;
   }
 }
+.page-container {
+  background-color: #eeeeee;
+}
 .card-container {
   margin-top: 1.5em;
   padding: 1em 3em;
@@ -398,14 +401,136 @@ popUp Window
 .card-container .card h2 {
   margin-top: 1.5em;
 }
-.control-btn {
-  width: 172px;
+a.control-btn {
+  display: inline-block;
+  float: right;
+  margin-right: 16%;
+  margin-top: 5px;
+  line-height: 40px;
+  width: auto;
+  height: 40px;
   padding-left: 40px;
+  padding-right: 10px;
+  cursor: pointer;
   position: relative;
-  color: teal;
+  color: #4D4D4D;
+  -webkit-transition: all .4s ease;
+  -o-transition: all .4s ease;
+  transition: all .4s ease;
 }
-.control-btn i {
+a.control-btn i {
   position: absolute;
   top: 6px;
   left: 10px;
+}
+a.control-btn:hover {
+  color: teal;
+}
+/*
+  post container
+*/
+.page-title {
+  background-color: rgba(225, 225, 225, 0.8);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  margin: 0 auto 20px auto;
+  height: 50px;
+}
+.page-title h1.title {
+  display: inline-block;
+  line-height: 50px;
+  margin-left: 16%;
+  font-size: 1.2em;
+  opacity: .8;
+  color: #4D4D4D;
+  cursor: pointer;
+  -webkit-transition: all .4s ease;
+  -o-transition: all .4s ease;
+  transition: all .4s ease;
+}
+.page-title h1.title:hover {
+  color: teal;
+}
+.page-title:hover {
+  opacity: 1;
+}
+.post-container {
+  margin: 0 auto;
+}
+.post-container .post {
+  margin-bottom: 10px;
+}
+.post-container .post .post-content {
+  position: relative;
+  background-color: white;
+  padding: 1.2em;
+  border-radius: .25em .25em .4em .4em;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.post-container .post .post-content .post-creater {
+  position: absolute;
+  margin: 5px 7px;
+  font-size: 1.3em;
+  font-weight: 500;
+}
+.post-container .post .post-content .more {
+  position: absolute;
+  right: 0;
+  left: auto;
+  margin-top: -8px;
+  display: inline-block;
+}
+.post-container .post .post-content .more ul li {
+  display: inline-block;
+  opacity: .5;
+  -webkit-transition: all .2s ease;
+  -o-transition: all .2s ease;
+  transition: all .2s ease;
+}
+.post-container .post .post-content .more ul li:hover {
+  opacity: 1;
+}
+.post-container .post .post-content .more ul li:hover i {
+  color: teal;
+}
+.post-container .post .post-content .more ul li:hover i.delete {
+  color: #fc7169;
+}
+.post-container .post .post-content .create-time {
+  position: absolute;
+  margin-top: 35px;
+  margin-left: 7px;
+  color: gray;
+}
+.post-container .post .post-content .description {
+  margin-top: 5px;
+  margin-bottom: 15px;
+  font-size: 1.1em;
+  line-height: 1.2em;
+}
+.post-container .post .post-content .likes-btn {
+  margin: 0;
+}
+.post-container .post .post-content .likes-btn .likes {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  font-size: 18px;
+}
+.post-container .post .post-content .likes-btn a {
+  color: black;
+}
+.avatar {
+  border: 1px solid rgba(225, 225, 225, 0.8);
+  width: 50px;
+  height: 50px;
+}
+@media only screen and (min-width: 1024px) {
+  .post-container {
+    width: 80%;
+  }
+}
+@media only screen and (min-device-width: 1440px) {
+  .post-container {
+    width: 70%;
+  }
 }
