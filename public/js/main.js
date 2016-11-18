@@ -14,6 +14,8 @@
         'ngPassword',
         'socket.io',
         'chat'
+        'material.components.eventCalendar'
+        //'material.components.expansionPanels'
     ]);
     module
         .config(function ($stateProvider, $urlRouterProvider) {
@@ -30,6 +32,7 @@
                             controller: 'homeController'
                         }
                     },
+                    controller: 'sideBarController',
                     resolve: {
                         information: function ($http, $state, Auth) {
                             return $http.get('/users/my_info')
@@ -86,6 +89,13 @@
                         }
                     },
 
+                    authenticated: true
+                })
+                .state('home.calendar', {
+                    url: 'calendar',
+                    views: {
+                        'contains': {templateUrl: 'pages/calendar.html'}
+                    },
                     authenticated: true
                 })
 
@@ -173,6 +183,7 @@
     module.run(['$rootScope',
         '$state',
         'Auth',
+        'AuthService',
         '$http',
         function ($rootScope, $state, Auth, $http) {
             // keep user logged in after page refresh
