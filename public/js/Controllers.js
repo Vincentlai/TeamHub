@@ -140,8 +140,32 @@
                                 console.log('error in creating post ' + error);
                             }
                         )
+                };
+                $scope.deletePost = function (id) {
+                    console.log('delete post clicked');
+                    // $http.delete('/posts/delete?post_id=' + id)
+                    //     .then(
+                    //         function (res) {
+                    //             if (res.data.code == 1) {
+                    //                 $scope.closeForm('delete-team');
+                    //                 $timeout(function () {
+                    //                     $scope.$emit('ChangeTeam', 'home.teams');
+                    //                 }, 500);
+                    //             } else {
+                    //                 $scope.msg = res.data.msg;
+                    //                 $scope.error = true;
+                    //                 $timeout(function () {
+                    //                     $scope.error = false;
+                    //                     delete $scope.msg;
+                    //                 }, 4000);
+                    //                 console.log('cannot delete team');
+                    //             }
+                    //         }, function (error) {
+                    //             console.log('error in delete team ' + error);
+                    //         }
+                    //     )
                 }
-
+    
             }
         ]
     );
@@ -228,8 +252,8 @@
              Show team form
              */
             $scope.createForm = function (tag, team_id, name, teammates) {
-                $scope.selectedTeamId = team_id;
-                $scope.selectedTeamName = name;
+                $scope.selectedId = team_id;
+                $scope.selectedName = name;
                 $scope.selectedTeamTeammates = teammates;
                 $('#' + tag).addClass('is-visible');
             };
@@ -240,7 +264,7 @@
                 if (flag) {
                     delete $scope.input;
                 }
-                delete $scope.selectedTeamId;
+                delete $scope.selectedId;
                 delete $scope.selectedTeamName;
                 delete $scope.selectedTeamTeammates;
                 $('#' + tag).removeClass('is-visible');
@@ -322,7 +346,7 @@
             };
             $scope.deleteTeam = function () {
                 console.log('delete');
-                $http.delete('/teams/delete?team_id=' + $scope.selectedTeamId)
+                $http.delete('/teams/delete?team_id=' + $scope.selectedId)
                     .then(
                         function (res) {
                             if (res.data.code == 1) {
@@ -346,7 +370,7 @@
             };
             $scope.addUser = function () {
                 console.log('addUSER');
-                $scope.input.team_id = $scope.selectedTeamId;
+                $scope.input.team_id = $scope.selectedId;
                 $http.post('/teams/add_user', $scope.input)
                     .then(
                         function (res) {
@@ -371,7 +395,7 @@
             };
             $scope.removeUser = function () {
                 console.log('remove user');
-                $scope.input.team_id = $scope.selectedTeamId;
+                $scope.input.team_id = $scope.selectedId;
                 $http.delete('/teams/remove_user?team_id=' + $scope.input.team_id
                     + '&user_id=' + $scope.input.user_id + '&message=' + $scope.input.message)
                     .then(
@@ -397,7 +421,7 @@
             };
             $scope.quitTeam = function () {
                 console.log('quit');
-                $http.delete('/teams/quit?team_id=' + $scope.selectedTeamId)
+                $http.delete('/teams/quit?team_id=' + $scope.selectedId)
                     .then(
                         function (res) {
                             if (res.data.code == 1) {
