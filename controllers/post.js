@@ -176,6 +176,62 @@ exports.getPost = function(sess, team_id, callback) {
     });
 }
 
+exports.delete = function(sess, post_id, callback) {
+
+    var user_id = sess.user_id;
+
+    if (!user_id) {
+        callback({
+            'code': "-9",
+            'msg': "No session, login required"
+        });
+        return;
+    }
+
+    if (!post_id) {
+        callback({
+            'code': "-10",
+            'msg': "Missing fields"
+        });
+        return;
+    }
+
+    models.Post.findOne({ _id: post_id }, function(err, post_obj) {
+
+        if (!post_obj) {
+
+            callback({
+                'code': '-1',
+                'msg': 'Invalid post_id'
+            });
+            return;
+
+
+        } else {
+
+            // check if user is the creator of this team
+            if (user_id == post_obj.user_id) {
+                
+                post_obj.remove();
+
+                callback({
+                    'code': '1',
+                    'msg': 'Delete post successfully'
+                });
+            
+            } else {
+
+                callback({
+                    'code': '-2',
+                    'msg': 'You are not the poster of this post'
+                });
+
+            }
+
+        }
+    });
+}
+
 exports.comment = function(sess, post_id, comment, callback) {
 
     var user_id = sess.user_id;

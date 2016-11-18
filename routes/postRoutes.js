@@ -73,6 +73,35 @@ router.get('/get_posts', function (req, res) {
     });
 });
 
+/* PATH: host_url:8080/posts/delete?post_id=123456789 (DELETE)
+ *
+ * INPUT: 'post_id' : post to delete
+ * 
+ * OUTPUT:
+ *  JSON Object that contains
+ *  'code' : respond code
+ *  'msg' : respond message
+ *      
+ *   1 -> Delete post successfully
+ *  -1 -> Invalid post_id
+ *  -2 -> You are not the poster of this post
+ *  -9 -> No session, login required
+ *  -10 -> Missing fields
+ * 
+ */
+router.delete('/delete', function (req, res) {
+
+    console.log("-> delete called");
+
+    var sess = req.session;
+    var post_id = req.query.post_id;
+
+    post.delete(sess, post_id, function (found) {
+        console.log(found);
+        res.json(found);
+    });
+});
+
 /* PATH: host_url:8080/posts/comment (POST)
  *
  * INPUT: 'post_id' : specific post to comment
