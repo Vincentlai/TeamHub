@@ -237,7 +237,7 @@ var storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage });
 
-router.post('/upload_icon', upload.single('file'), function (req, res, next) {
+router.post('/upload_avatar', upload.single('file'), function (req, res, next) {
     // req.file is the `avatar` file
     // req.body will hold the text fields, if there were any
     var user_id = req.session.user_id;
