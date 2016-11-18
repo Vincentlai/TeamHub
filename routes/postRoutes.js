@@ -22,8 +22,6 @@ var post = require('../controllers/post.js');
  */
 router.post('/post', function (req, res) {
 
-    console.log("-> post called");
-
     var text = req.body.text;
     var team_id = req.body.team_id;
     var sess = req.session;
@@ -62,8 +60,6 @@ router.post('/post', function (req, res) {
  */
 router.get('/get_posts', function (req, res) {
 
-    console.log("-> get_posts called");
-
     var sess = req.session;
     var team_id = req.query.team_id;
 
@@ -90,8 +86,6 @@ router.get('/get_posts', function (req, res) {
  * 
  */
 router.delete('/delete', function (req, res) {
-
-    console.log("-> delete called");
 
     var sess = req.session;
     var post_id = req.query.post_id;
@@ -121,8 +115,6 @@ router.delete('/delete', function (req, res) {
  * 
  */
 router.post('/comment', function (req, res) {
-
-    console.log("-> comment called");
 
     var comment = req.body.comment;
     var post_id = req.body.post_id;

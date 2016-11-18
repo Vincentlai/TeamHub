@@ -21,7 +21,6 @@ var team = require('../controllers/team.js');
  */
 router.post('/create',function(req, res)
 {
-    console.log("-> create group called");
 
     var name = req.body.name;
     var description = req.body.description;
@@ -52,7 +51,6 @@ router.post('/create',function(req, res)
  */
 router.delete('/delete',function(req, res)
 {
-    console.log("-> delete group called");
 
     var team_id = req.query.team_id;
     var sess = req.session;
@@ -85,8 +83,7 @@ router.delete('/delete',function(req, res)
  */
 router.post('/add_user',function(req, res)
 {
-    console.log("-> add_user called");
-    console.log(req.body);
+
     var team_id = req.body.team_id;
     var user_id = req.body.user_id;
     var email = req.body.email;
@@ -124,7 +121,6 @@ router.post('/add_user',function(req, res)
  */
 router.delete('/remove_user',function(req, res)
 {
-    console.log("-> remove_user called");
 
     var team_id = req.query.team_id;
     var user_id = req.query.user_id;
@@ -158,7 +154,6 @@ router.delete('/remove_user',function(req, res)
  */
 router.delete('/quit',function(req, res)
 {
-    console.log("-> quit called");
 
     var team_id = req.query.team_id;
     var sess = req.session;
@@ -191,7 +186,6 @@ router.delete('/quit',function(req, res)
  */
 router.get('/team_info',function(req, res)
 {
-    console.log("-> team_info called");
 
     var team_id = req.query.team_id;
     var sess = req.session;
