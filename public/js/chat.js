@@ -43,7 +43,7 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope) {
             // update ui
             var nickname = json.nickname;
             var msg = json.msg;
-            var time = new Date().getHours() + ":" + new Date().getMinutes();
+            var time = json.time;
 
             $scope.msg_list.push({ index, nickname, msg, time });
             role_arr.push({ class: "other", src: other_icon });
@@ -55,6 +55,7 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope) {
     $scope.emitTeamMsg = function emitTeamMsg() {
 
         var nickname = $rootScope.user.nickname;
+        var user_id = $rootScope.user.user_id;
         var team_ui = $rootScope.selectedTeamId;
 
         console.log(team_ui);
@@ -64,19 +65,27 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope) {
         if (msg.trim() == "") {
             return;
         }
+
+        // format time
+        var d = new Date();
+        var min = d.getMinutes();
+        if(min < 10)
+            min = '0'+min;
+        var time = d.getHours()+ ":" + min;
+
         var json = {};
         json.nickname = nickname;
         json.msg = msg;
         json.team_id = team_ui; // tmp: to be changed
         json.uuid = uuid;
+        json.time = time;
+        json.user_id = user_id;
 
         $socket.emit('team_msg', json);
 
         // update ui
         $scope.dataToSend = "";
-        var time = new Date().getHours() + ":" + new Date().getMinutes();
-        //$scope.role_class = getClass;
-        //$scope.icon_scr = getSrc;
+
         $scope.msg_list.push({ index, nickname, msg, time });
         role_arr.push({ class: "other", src: self_icon });
         index++;
