@@ -13,7 +13,10 @@
         'ngCookies',
         'ngPassword',
         'socket.io',
-        'chat'
+        'chat',
+        'event',
+        'material.components.eventCalendar',
+        //'material.components.expansionPanels'
     ]);
     module
         .config(function ($stateProvider, $urlRouterProvider) {
@@ -30,6 +33,7 @@
                             controller: 'homeController'
                         }
                     },
+                    controller: 'sideBarController',
                     resolve: {
                         information: function ($http, $state, Auth) {
                             return $http.get('/users/my_info')
@@ -150,7 +154,10 @@
                 .state('home.events', {
                     url: ":team_id/events",
                     views: {
-                        'contains': {templateUrl: 'pages/events.html'}
+                        'contains': {
+                            templateUrl: 'pages/events.html',
+                            controller: 'calendarController'
+                        }
                     },
                     authenticated: true
                 })
