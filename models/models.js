@@ -40,6 +40,16 @@ var postSchema = mongoose.Schema({
     }]
 });
 
+var eventSchema = mongoose.Schema({
+    team_id: String,
+    title: String,
+    description: String,
+    start: String,
+    end: String,
+    creator_id: String,
+    creator_nickname: String
+});
+
 //var chatContactSchema = mongoose.Schema({
 //    my_user_id: String,
 //    other_user_id: String,
@@ -58,13 +68,15 @@ mongoose.connect('mongodb://dev:cmpt470@ec2-52-40-59-253.us-west-2.compute.amazo
 var User = mongoose.model('user', userSchema);
 var Team = mongoose.model('team', teamSchema);
 var Post = mongoose.model('post', postSchema);
+var Event = mongoose.model('event', eventSchema);
 //var ChatContact = mongoose.model('chat_contact', chatContactSchema);
 //var ChatHistory = mongoose.model('chat_history', chatHistorySchema);
 
 module.exports = {
     User: User,
     Team: Team,
-    Post: Post
+    Post: Post,
+    Event: Event
     //ChatHistory: ChatHistory,
     //ChatContact: ChatContact
 };

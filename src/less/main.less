@@ -39,7 +39,6 @@ blockquote, q {
 blockquote:before, blockquote:after,
 q:before, q:after {
   content: '';
-  content: none;
 }
 table {
   border-collapse: collapse;
@@ -53,10 +52,19 @@ table {
 global setting
 */
 
+html,
 body {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
   background-image:  url("/images/newdb.jpeg");
   background-repeat:no-repeat;
   background-size: cover;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+}
+
+button {
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
 }
 
@@ -76,26 +84,76 @@ a:link,
 a:visited{
   text-decoration: none;
 }
+
+
+/**
+scroll bar
+**/
+
+* {
+  scrollbar-arrow-color: rgb(200,200,200);
+  scrollbar-3dlight-color: rgb(200,200,200);
+  scrollbar-highlight-color: rgb(200,200,200);
+  scrollbar-shadow-color: rgb(200,200,200);
+  scrollbar-darkshadow-color: rgb(200,200,200);
+  scrollbar-face-color: rgb(200,200,200);
+  scrollbar-track-color: rgb(240,240,240);
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 10px;
+  color: #009688;
+}
+::-webkit-scrollbar-button {
+  display: none;
+}
+::-webkit-scrollbar-track {
+  display: none;
+}
+::-webkit-scrollbar-track-piece {
+  background: rgb(240,240,240);
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(200,200,200);
+  border-radius: 2em;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(180,180,180);
+}
+::-webkit-scrollbar-corner {
+  background: rgb(200,200,200);
+}
+::-webkit-scrollbar-resizer {
+  background: rgb(200,200,200);
+}
 /*
 Header  Navigation
 */
 
 .nav-bar {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
   background-color: @primary-bg-color;
-  line-height: 3em;
+  height: 60px;
+  line-height: 60px;
   padding: 0;
 
   .logo {
     color: @important;
     float: left;
-    margin: 0 30px;
-    font-size: 1.5em;
+    margin: 13.5px 30px;
   }
   ul {
     float: right;
     li {
       display: inline-block;
       text-align: center;
+      cursor: pointer;
       a {
         display: inline-block;
         color: white;

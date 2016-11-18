@@ -1,4 +1,187 @@
-<div class="team">
+<div class="page-container" ng-cloak data-ng-init="loadTeamDetail()">
 
-    <h1> hi i am team </h1>
+    <md-button ng-click="createForm('create-team')" class="control-btn"><i class="material-icons">group_add</i>Create A
+        Team
+    </md-button>
+
+    <div class="card-container clearfix">
+        <div class="col-lg-4 col-md-6 col-sm-12 card" ng-repeat="teamCard in teamsDetail" id="{{teamCard.name}}">
+            <div class="card-content">
+                <h1>{{teamCard.name}}</h1>
+                <h2>
+                    {{teamCard.description}}
+                </h2>
+                <h2>
+                    Total teammates: {{teamCard.teammates.length}}
+                </h2>
+                <ul class="card-btn clearfix">
+                    <li ng-if=teamCard.is_creator ng-click="createForm('add-user', teamCard.team_id, teamCard.name)">
+                        <a>Add User</a></li>
+                    <li ng-if=teamCard.is_creator ng-click="createForm('remove-user', teamCard.team_id, teamCard.name, teamCard.teammates)">
+                        <a class="important">Remove User</a></li>
+                    <li ng-if=teamCard.is_creator ng-click="createForm('delete-team', teamCard.team_id, teamCard.name)">
+                        <a class="important">Delete Team</a></li>
+                    <li ng-if=!teamCard.is_creator ng-click="createForm('quit-team', teamCard.team_id, teamCard.name)">
+                        <a class="important">Quit from Team</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <div id="delete-team" class="popUpWindow" role="alert" ng-cloak>
+        <div class="popUpWindow-container">
+            <div class="notify" ng-if="error">
+                <div class="notify-msg">
+                    <i class="material-icons">info_outline</i>
+                    <span>{{msg}}</span>
+                </div>
+            </div>
+            <h1>Are you sure you want to delete team <span>"{{selectedTeamName}}"</span> ?</h1>
+            <ul class="cd-buttons clearfix">
+                <li type="submit" ng-click="deleteTeam()"><button class="agree inpop">Yes</button></li>
+                <li><button class="inpop" ng-click="closeForm('delete-team')">No</button></li>
+            </ul>
+            <a class="popUpWindow-close " ng-click="closeForm('delete-team')"><i class="material-icons">clear</i></a>
+        </div>
+    </div>
+    <div id="add-user" class="popUpWindow" role="alert" ng-cloak>
+        <div class="popUpWindow-container">
+            <div class="notify" ng-if="error">
+                <div class="notify-msg">
+                    <i class="material-icons">info_outline</i>
+                    <span>{{msg}}</span>
+                </div>
+            </div>
+            <h1>Add User</h1>
+            <div class="pop-form">
+                <form name="addUserForm" class="md-title">
+
+                    <md-input-container class="md-block">
+                        <label>The email address of the user</label>
+                        <input type="email"
+                               name="email"
+                               ng-model="input.email"
+                               ng-pattern="/^.+@.+\..+$/"
+                               required
+                               email-notexists
+                        />
+                        <div ng-messages="addUserForm.email.$error"
+                             ng-show="addUserForm.email.$dirty || addUserForm.email.$touched">
+                            <div ng-message="required">
+                                Email cannot be empty.
+                            </div>
+                            <div ng-message="emailNotexists">
+                                Email does not exists.
+                            </div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Message</label>
+                        <textarea type="text" required
+                                  name="description"
+                                  ng-model="input.message"
+                                  rows="2"
+                                  max-rows="5" md-maxlength="256">
+                            </textarea>
+                        <div ng-messages="addUserForm.message.$error"
+                             ng-show="addUserForm.message.$dirty || addUserForm.message.$touched">
+                            <div ng-message="required">
+                                Message cannot be empty.
+                            </div>
+                            <div ng-message="md-maxlength">
+                                Maximum length of description is 256.
+                            </div>
+                        </div>
+                    </md-input-container>
+                    <ul class="cd-buttons clearfix">
+                        <li type="submit" ng-click="addUser()">
+                            <button ng-disabled="addUserForm.$invalid" class="agree inpop">Add</button>
+                        </li>
+                        <li><button class="inpop" ng-click="closeForm('add-user', true)">Cancel</button></li>
+                    </ul>
+                </form>
+
+            </div>
+            <a class="popUpWindow-close " ng-click="closeForm('add-user', true)"><i class="material-icons">clear</i></a>
+        </div>
+    </div>
+
+    <div id="remove-user" class="popUpWindow" role="alert" ng-cloak>
+        <div class="popUpWindow-container">
+            <div class="notify" ng-if="error">
+                <div class="notify-msg">
+                    <i class="material-icons">info_outline</i>
+                    <span>{{msg}}</span>
+                </div>
+            </div>
+            <h1>Remove User</h1>
+            <div class="pop-form">
+                <form name="removeUserForm" class="md-title">
+
+                    <md-input-container class="md-block">
+                        <label>Select the user</label>
+                        <md-select ng-model="input.user_id" required>
+                            <md-option ng-repeat="teammate in selectedTeamTeammates" value="{{teammate.id}}">
+                            {{teammate.nickname}}
+                            </md-option>
+                        </md-select>
+                        <div ng-messages="removeUserForm.nickname.$error"
+                             ng-show="removeUserForm.nickname.$dirty || removeUserForm.nickname.$touched">
+                            <div ng-message="required">
+                                You have to choose one user to remove.
+                            </div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Message</label>
+                        <textarea type="text" required
+                                  name="description"
+                                  ng-model="input.message"
+                                  rows="2"
+                                  max-rows="5" md-maxlength="256">
+                            </textarea>
+                        <div ng-messages="removeUserForm.message.$error"
+                             ng-show="removeUserForm.message.$dirty || removeUserForm.message.$touched">
+                            <div ng-message="required">
+                                Message cannot be empty.
+                            </div>
+                            <div ng-message="md-maxlength">
+                                Maximum length of description is 256.
+                            </div>
+                        </div>
+                    </md-input-container>
+                    <ul class="cd-buttons clearfix">
+                        <li type="submit" ng-click="removeUser()">
+                            <button ng-disabled="removeUserForm.$invalid" class="agree inpop">Remove</button></li>
+                        <li><button class="inpop" ng-click="closeForm('remove-user', true)">Cancel</button></li>
+                    </ul>
+                </form>
+
+            </div>
+            <a class="popUpWindow-close " ng-click="closeForm('remove-user', true)"><i class="material-icons">clear</i></a>
+        </div>
+
+    </div>
+
+    <div id="quit-team" class="popUpWindow" role="alert" ng-cloak>
+        <div class="popUpWindow-container">
+            <div class="notify" ng-if="error">
+                <div class="notify-msg">
+                    <i class="material-icons">info_outline</i>
+                    <span>{{msg}}</span>
+                </div>
+            </div>
+            <h1>Are you sure you want to quit from team <span>"{{selectedTeamName}}"</span> ?</h1>
+            <ul class="cd-buttons clearfix">
+                <li type="submit" ng-click="quitTeam()">
+                    <button class="agree inpop">Yes</button></li>
+                <li><button class="inpop" ng-click="closeForm('quit-team')">No</button></li>
+            </ul>
+            <a class="popUpWindow-close " ng-click="closeForm('quit-team')"><i
+                    class="material-icons">clear</i></a>
+        </div>
+    </div>
+
 </div>

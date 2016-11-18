@@ -12,6 +12,8 @@
         'Services',
         'ngCookies',
         'ngPassword',
+        'socket.io',
+        'chat'
         'material.components.eventCalendar'
         //'material.components.expansionPanels'
     ]);
@@ -22,13 +24,39 @@
                 .state('home', {
                     url: "/",
                     views: {
-                        'navigation': {templateUrl: 'partials/header.html'},
-                        'container': {templateUrl: 'pages/home.html'}
+                        'navigation': {templateUrl: 'partials/header.html',
+                            controller: 'headerController'
+                        },
+                        'container': {
+                            templateUrl: 'pages/home.html',
+                            controller: 'homeController'
+                        }
                     },
                     controller: 'sideBarController',
                     resolve: {
-                        'teams': function () {
-                            return ['team1', 'team2'];
+                        information: function ($http, $state, Auth) {
+                            return $http.get('/users/my_info')
+                                .then(
+                                    function (res) {
+                                        if(res.data.code == 1){
+                                            var info = {
+                                                user: {
+                                                    email: res.data.email,
+                                                    nickname: res.data.nickname
+                                                },
+                                                teams: res.data.teams
+                                            };
+                                            return info;
+                                        }else{
+                                            Auth.removeCookie();
+                                            $state.go('login');
+                                        }
+                                    },function (error) {
+                                        Auth.removeCookie();
+                                        console.log('error in get user info' + error);
+                                        $state.go('login');
+                                    }
+                                )
                         }
                     },
                     authenticated: true,
@@ -43,11 +71,24 @@
                     },
                     authenticated: true
                 })
+                .state('home.setting', {
+                    url: 'setting',
+                    views: {
+                        'contains': {
+                            templateUrl: 'pages/setting.html'
+                        }
+                    },
+                    authenticated: true
+                })
                 .state('home.teams', {
                     url: "teams",
                     views: {
-                        'contains': {templateUrl: 'pages/teams.html'}
+                        'contains': {
+                            templateUrl: 'pages/teams.html',
+                            controller: 'teamController'
+                        }
                     },
+
                     authenticated: true
                 })
                 .state('home.calendar', {
@@ -57,10 +98,14 @@
                     },
                     authenticated: true
                 })
+
                 .state('home.chat', {
                     url: 'chat',
                     views: {
-                        'contains': {templateUrl: 'pages/chat.html'}
+                        'contains': {
+                            templateUrl: 'pages/chat.html',
+                            controller: 'Ctrl'
+                        }
                     },
                     authenticated: true
                 })
@@ -68,7 +113,10 @@
                     url: "/login",
                     views: {
                         'navigation': {templateUrl: 'partials/header.html'},
-                        'container': {templateUrl: 'pages/login.html'}
+                        'container': {
+                            templateUrl: 'pages/login.html',
+                            controller: 'login'
+                        }
                     },
                     authenticated: false
                 })
@@ -77,14 +125,49 @@
                     url: "/signup",
                     views: {
                         'navigation': {templateUrl: 'partials/header.html'},
-                        'container': {templateUrl: 'pages/signup.html'}
+                        'container': {
+                            templateUrl: 'pages/signup.html',
+                            controller: 'signup'
+                        }
                     },
                     authenticated: false
                 })
-                .state('home.post', {
-                    url: "post",
+                .state('home.posts', {
+                    url: ":team_id/posts",
                     views: {
-                        'contains': {templateUrl: 'pages/post.html'}
+                        'contains': {
+                            templateUrl: 'pages/post.html',
+                            controller: 'postController'
+                        }
+                    },
+                    resolve : {
+                        postList : function ($http, $stateParams, $rootScope) {
+                            return $http.get('posts/get_posts?team_id=' + $stateParams.team_id)
+                                .then(
+                                    function (res) {
+                                        if(res.data.code == 1){
+                                            $rootScope.selectedTeamId = $stateParams.team_id;
+                                            return res.data.posts;
+                                        }
+                                    }, function (error) {
+                                        console.log('error in getting post list ' + error);
+                                    }
+                                )
+                        }
+                    },
+                    authenticated: true
+                })
+                .state('home.events', {
+                    url: ":team_id/events",
+                    views: {
+                        'contains': {templateUrl: 'pages/events.html'}
+                    },
+                    authenticated: true
+                })
+                .state('home.files', {
+                    url: ":team_id/files",
+                    views: {
+                        'contains': {templateUrl: 'pages/files.html'}
                     },
                     authenticated: true
                 });
@@ -102,7 +185,7 @@
         'Auth',
         'AuthService',
         '$http',
-        function ($rootScope, $state, Auth, AuthService, $http) {
+        function ($rootScope, $state, Auth, $http) {
             // keep user logged in after page refresh
             $rootScope.$on("$stateChangeStart",
                 function (event, toState, toParams, fromState, fromParams) {
@@ -111,11 +194,7 @@
                         $http.get('/users/my_info')
                             .then(function (res) {
                                     if (res.data.code == 1) {
-                                        var user = {
-                                            'email': res.data.email,
-                                            'nickname': res.data.nickname
-                                        };
-                                        Auth.setCookie(user);
+                                        Auth.setCookie(res.data.session_id);
                                     } else {
                                         if (toState.authenticated) {
                                             event.preventDefault();
@@ -128,7 +207,7 @@
                                 }
                             );
                     } else {
-                        console.log(Auth.isLoggedIn().email + "is logged in ");
+                        console.log(Auth.isLoggedIn() + "is logged in ");
                         if (!toState.authenticated) {
                             event.preventDefault();
                             return $state.go('home.teams');

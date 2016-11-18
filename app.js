@@ -34,11 +34,13 @@ app.set('view engine', 'ejs');
 var userRoutes = require('./routes/userRoutes');// a route file that manage the user api
 var teamRoutes = require('./routes/teamRoutes'); 
 var postRoutes = require('./routes/postRoutes'); 
+var eventRoutes = require('./routes/eventRoutes');
 
 //set prefix url of route file
 app.use('/users', userRoutes);// all api url starts with /users will config in users.js
 app.use('/teams', teamRoutes);
 app.use('/posts', postRoutes);
+app.use('/events', eventRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -61,3 +63,11 @@ app.use(function(err, req, res, next) {
 module.exports = app;
 var server = app.listen(port);
 console.log('Server runs on port ' + port);
+
+// init Socket.io and enable socket.io session support
+var sharedsession = require("express-socket.io-session");
+var io = require('socket.io').listen(server);
+io.use(sharedsession(session, {
+    autoSave:true
+}));
+require('./controllers/socket.js')(io);

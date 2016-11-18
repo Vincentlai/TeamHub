@@ -1,72 +1,140 @@
-<div class="main-container clearfix" >
-    <div class="side-bar" ng-controller="sideBarController">
-        <ul id="accordion" class="accordion">
-            <li id="teams">
-                <div  class="link"  ng-click="tagSlide('teams')">
-                    <i class="material-icons main-menu">group</i>
-                    Teams
-                    <i class="material-icons drop-down">expand_more</i>
-                </div>
-                <ul class="submenu">
-                    <li id="manageTeams" ui-sref="home.teams">
+<div class="main-container clearfix" ng-init="openTag()">
+    <div class="side-bar">
+
+        <div class="setting-list">
+            <ul class="accordion">
+                <li id="overview" ui-sref="home.overview" ng-click="clear()" ng-class="{'selected': isOverview}">
+                    <div class="link">
+                        <i class="material-icons">home</i>
+                        <a>Overview</a>
+                    </div>
+                </li>
+                <li id="manageTeams" ui-sref="home.teams" ng-if="!hasNoTeam" ng-click="clear()" ng-class="{'selected': isManage}">
+                    <div class="link">
                         <i class="material-icons">build</i>
-                        <a >Manage Teams</a>
-                    </li>
-                    <li id="createTeam">
+                        <a>Manage Teams</a>
+                    </div>
+                </li>
+                <li id="createTeam" ng-if="hasNoTeam" ng-click="createForm('create-team')">
+                    <div class="link">
                         <i class="material-icons">group_add</i>
-                        <a >Create A Team</a>
-                    </li>
-                </ul>
-            </li>
-            <li id="chat">
-                <div  class="link" ui-sref="home.chat" ng-click="tagSlide('chat')">
-                    <i class="material-icons main-menu">chat</i>
-                    Chat Rooms
-                    <i class="material-icons drop-down">expand_more</i>
-                </div>
-                <ul class="submenu">
-                    <li>
-                        <a >Room 1</a>
-                    </li>
-                    <li>
-                        <a >Room 2</a>
-                    </li>
-                    <li>
-                        <a >Room 3</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <div ui-sref="home.post" class="link">
-                    Post
-                    <i class="material-icons drop-down">expand_more</i>
-                </div>
-                <ul class="submenu">
-                    <li>
-                        <a >#1</a>
-                    </li>
-                    <li>
-                        <a >#2</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <div class="link">
-                    Something
-                    <i class="material-icons drop-down">expand_more</i>
-                </div>
-                <ul class="submenu">
-                    <li>
-                        <a >#1</a>
-                    </li>
-                    <li>
-                        <a >#2</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+                        <a>Create A Team</a>
+                    </div>
+                </li>
+                <li>
+                    <div ui-sref="home.setting" class="link">
+                        <i class="material-icons">settings</i>
+                        <a>Setting</a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+        <div class="link">
+            <i class="material-icons main-menu">group</i>
+            Teams
+        </div>
+        <div class="team-list">
+            <ul id="accordion" class="accordion" ng-repeat="teamItem in teams">
+                <li id="teams{{$index}}" ng-class="{'selected': isSelected(teamItem.id)}">
+                    <div class="link" ng-click="tagSlide('teams'+$index)" >
+                        <i class="material-icons" ng-if="teamItem.is_creator">person</i>
+                        <i class="material-icons" ng-if="!teamItem.is_creator">person_outline</i>
+                        <a >{{teamItem.name}}</a>
+                        <!--<i class="material-icons main-menu">group</i>-->
+                        <!--Teams-->
+                        <i class="material-icons drop-down">expand_more</i>
+                    </div>
+                    <ul class="submenu">
+                        <li ui-sref="home.posts({team_id:teamItem.id})" ng-class="{'selected': isPost&&isSelected(teamItem.id)}">
+                                <i class="material-icons">assignment</i>
+                                <a>Post</a>
+                        </li>
+                        <li ui-sref="home.chat({team_id:teamItem.id})" ng-click="changeID(teamItem.id)" ng-class="{'selected': isChat&&isSelected(teamItem.id)}">
+                                <i class="material-icons">chat</i>
+                                <a> Chat Rooms</a>
+                        </li>
+
+                        <li ui-sref="home.events({team_id:teamItem.id})" ng-click="changeID(teamItem.id)" ng-class="{'selected': isEvent&&isSelected(teamItem.id)}">
+                                <i class="material-icons">event</i>
+                                <a>Event</a>
+                        </li>
+
+                        <li ui-sref="home.files({team_id:teamItem.id})" ng-click="changeID(teamItem.id)" ng-class="{'selected': isFile&&isSelected(teamItem.id)}">
+                                <i class="material-icons">folder</i>
+                                <a>File</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+
     </div>
     <div class="content">
         <div ui-view="contains"></div>
+    </div>
+    <div id="create-team" class="popUpWindow" role="alert" ng-cloak>
+
+        <div class="popUpWindow-container">
+            <h1>Create Team</h1>
+            <div class="notify " ng-if="error">
+                <div class="notify-msg">
+                    <i class="material-icons">info_outline</i>
+                    <span>{{msg}}</span>
+                </div>
+            </div>
+            <div class="pop-form">
+                <form name="teamCreateForm" class="md-title">
+                    <md-input-container class="md-block">
+                        <label>Name</label>
+                        <input required type="text" name="name" ng-model="team.name"
+                               ng-minlength="6"
+                               md-maxlength="36"
+                        />
+                        <div ng-messages="teamCreateForm.name.$error" role="alert"
+                             ng-show="teamCreateForm.name.$dirty || teamCreateForm.name.$touched">
+                            <div ng-message="required">
+                                Name cannot be empty.
+                            </div>
+                            <div ng-message="minlength">
+                                Minimum length of name is 6.
+                            </div>
+                            <div ng-message="md-maxlength">
+                                Maximum length of name is 36.
+                            </div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Description</label>
+                        <textarea type="text" required
+                                  name="description"
+                                  ng-model="team.description"
+                                  rows="2"
+                                  max-rows="5" md-maxlength="256">
+                            </textarea>
+                        <div ng-messages="teamCreateForm.description.$error"
+                             ng-show="teamCreateForm.description.$dirty || teamCreateForm.description.$touched">
+                            <div ng-message="required">
+                                Description cannot be empty.
+                            </div>
+                            <div ng-message="md-maxlength">
+                                Maximum length of description is 256.
+                            </div>
+                        </div>
+                    </md-input-container>
+                    <ul class="cd-buttons clearfix">
+                        <li type="submit" ng-click="createTeam('create-team')">
+                            <button ng-disabled="teamCreateForm.$invalid" class="agree inpop">Create</button>
+                        </li>
+                        <li>
+                            <button class="inpop" ng-click="closeForm('create-team')">Cancel</button>
+                        </li>
+                    </ul>
+                </form>
+
+            </div>
+            <a class="popUpWindow-close " ng-click="closeForm('create-team')"><i class="material-icons">clear</i></a>
+        </div>
     </div>
 </div>
