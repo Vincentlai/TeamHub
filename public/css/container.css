@@ -118,6 +118,9 @@ notification end
         * Submenu
       -----------------------------*/
 }
+.side-bar .accordion li:last-child {
+  border-bottom: 0;
+}
 .side-bar .accordion li a,
 .side-bar .accordion li i {
   color: #4D4D4D;
@@ -182,6 +185,9 @@ notification end
   -o-transition: all 0.25s ease;
   transition: all 0.25s ease;
 }
+.side-bar .accordion li .submenu li:last-child {
+  border-bottom: 0;
+}
 .side-bar .accordion li .submenu li i {
   top: 13px;
   left: 32px;
@@ -197,9 +203,6 @@ notification end
 }
 .side-bar .accordion li .submenu li.selected {
   border-right: 6px solid #fc7169;
-}
-li:last-child .link {
-  border-bottom: 0;
 }
 @media only screen and (min-width: 768px) {
   .side-bar {
@@ -518,6 +521,17 @@ a.control-btn:hover {
 }
 .post-container .post .post-content .likes-btn a {
   color: black;
+  font-weight: bold;
+}
+.post-container .post .post-content .likes-btn a,
+.post-container .post .post-content .likes-btn i {
+  -webkit-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease;
+}
+.post-container .post .post-content .likes-btn.liked a,
+.post-container .post .post-content .likes-btn.liked i {
+  color: #fc7169;
 }
 .avatar {
   border: 1px solid rgba(225, 225, 225, 0.8);
@@ -533,4 +547,8 @@ a.control-btn:hover {
   .post-container {
     width: 70%;
   }
+}
+.cons img {
+  width: 100%;
+  height: auto;
 }

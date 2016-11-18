@@ -94,7 +94,7 @@
                 })
 
                 .state('home.chat', {
-                    url: 'chat',
+                    url: ':team_id/chat',
                     views: {
                         'contains': {
                             templateUrl: 'pages/chat.html',

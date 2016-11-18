@@ -32,7 +32,10 @@ var postSchema = mongoose.Schema({
     user_id: String,
     text: String,
     pic_id: String,
-    like: Number,
+    likes: [{
+        user_id: String,
+        nickname: String
+    }],
     comments: [{
         user_id: String,
         nickname: String,
