@@ -82,7 +82,7 @@ notification end
 */
 .main-container {
   position: fixed;
-  top: 48px;
+  top: 60px;
   bottom: 0;
   width: 100%;
   background-color: white;
@@ -93,7 +93,7 @@ notification end
 */
 .side-bar {
   position: fixed;
-  top: 48px;
+  top: 60px;
   bottom: 0;
   overflow-x: hidden;
   overflow-y: auto;
@@ -132,6 +132,7 @@ notification end
   transition: all .2s ease;
 }
 .side-bar .accordion li i.drop-down {
+  position: absolute;
   right: 12px;
   left: auto;
   font-weight: bold;
@@ -140,15 +141,17 @@ notification end
 .side-bar .accordion li .link:hover i {
   color: #fc7169;
 }
-.side-bar .accordion li.open .link {
+.side-bar .accordion li.selected .link {
   border-right: 6px solid #fc7169;
+}
+.side-bar .accordion li.selected i.drop-down {
+  right: 6px;
 }
 .side-bar .accordion li.open i.drop-down {
   -webkit-transform: rotate(180deg);
   -ms-transform: rotate(180deg);
   -o-transform: rotate(180deg);
   transform: rotate(180deg);
-  right: 7px;
 }
 .side-bar .accordion li .link,
 .side-bar .accordion li .submenu > li {

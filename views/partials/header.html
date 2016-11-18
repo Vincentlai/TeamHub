@@ -2,18 +2,14 @@
 <!--I am the navigation bar-->
 
 <div class="nav-bar clearfix" >
-    <div class="logo">LOGO</div>
+    <div class="logo">
+        <img src="/images/logo.png" alt="logo">
+    </div>
     <ul ng-if="!(isLoggedin)">
         <li><a class="nav-link" ui-sref="login">LOG IN</a></li>
         <li><a class="important" ui-sref="signup">SIGN UP</a></li>
     </ul>
     <ul ng-if="isLoggedin">
-        <li>
-            <md-tooltip md-direction="bottom">
-                Back to Overview
-            </md-tooltip>
-            <a class="nav-link" ui-sref="home.overview" ng-click="clear()">HOME</a>
-        </li>
         <li>
             <md-tooltip md-direction="bottom">
                 Click me to Log out

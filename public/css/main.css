@@ -210,14 +210,14 @@ Header  Navigation
   right: 0;
   width: 100%;
   background-color: #25283d;
-  line-height: 3em;
+  height: 60px;
+  line-height: 60px;
   padding: 0;
 }
 .nav-bar .logo {
   color: #fc7169;
   float: left;
-  margin: 0 30px;
-  font-size: 1.5em;
+  margin: 13.5px 30px;
 }
 .nav-bar ul {
   float: right;

@@ -3,13 +3,19 @@
 
         <div class="setting-list">
             <ul class="accordion">
-                <li id="manageTeams" ui-sref="home.teams" ng-if="!hasNoTeam">
+                <li id="overview" ui-sref="home.overview" ng-click="clear()" ng-class="{'selected': isOverview}">
+                    <div class="link">
+                        <i class="material-icons">home</i>
+                        <a>Overview</a>
+                    </div>
+                </li>
+                <li id="manageTeams" ui-sref="home.teams" ng-if="!hasNoTeam" ng-click="clear()" ng-class="{'selected': isManage}">
                     <div class="link">
                         <i class="material-icons">build</i>
                         <a>Manage Teams</a>
                     </div>
                 </li>
-                <li id="createTeam" ng-if="!hasNoTeam" ng-click="createForm('create-team')">
+                <li id="createTeam" ng-if="hasNoTeam" ng-click="createForm('create-team')">
                     <div class="link">
                         <i class="material-icons">group_add</i>
                         <a>Create A Team</a>
@@ -24,9 +30,13 @@
             </ul>
 
         </div>
+        <div class="link">
+            <i class="material-icons main-menu">group</i>
+            Teams
+        </div>
         <div class="team-list">
             <ul id="accordion" class="accordion" ng-repeat="teamItem in teams">
-                <li id="teams{{$index}}" ng-class="{'open': isSelected(teamItem.id)}">
+                <li id="teams{{$index}}" ng-class="{'selected': isSelected(teamItem.id)}">
                     <div class="link" ng-click="tagSlide('teams'+$index)" >
                         <i class="material-icons" ng-if="teamItem.is_creator">person</i>
                         <i class="material-icons" ng-if="!teamItem.is_creator">person_outline</i>

@@ -13,8 +13,7 @@
         'ngCookies',
         'ngPassword',
         'socket.io',
-        'chat',
-        'ngStorage'
+        'chat'
     ]);
     module
         .config(function ($stateProvider, $urlRouterProvider) {
@@ -24,12 +23,11 @@
                     url: "/",
                     views: {
                         'navigation': {templateUrl: 'partials/header.html',
-                            controller: 'homeController'
+                            controller: 'headerController'
                         },
                         'container': {
                             templateUrl: 'pages/home.html',
                             controller: 'homeController'
-
                         }
                     },
                     resolve: {
@@ -45,7 +43,6 @@
                                                 },
                                                 teams: res.data.teams
                                             };
-                                            console.log(info);
                                             return info;
                                         }else{
                                             Auth.removeCookie();
@@ -95,7 +92,10 @@
                 .state('home.chat', {
                     url: 'chat',
                     views: {
-                        'contains': {templateUrl: 'pages/chat.html'}
+                        'contains': {
+                            templateUrl: 'pages/chat.html',
+                            controller: 'Ctrl'
+                        }
                     },
                     authenticated: true
                 })
@@ -103,7 +103,10 @@
                     url: "/login",
                     views: {
                         'navigation': {templateUrl: 'partials/header.html'},
-                        'container': {templateUrl: 'pages/login.html'}
+                        'container': {
+                            templateUrl: 'pages/login.html',
+                            controller: 'login'
+                        }
                     },
                     authenticated: false
                 })
@@ -112,7 +115,10 @@
                     url: "/signup",
                     views: {
                         'navigation': {templateUrl: 'partials/header.html'},
-                        'container': {templateUrl: 'pages/signup.html'}
+                        'container': {
+                            templateUrl: 'pages/signup.html',
+                            controller: 'signup'
+                        }
                     },
                     authenticated: false
                 })
@@ -125,7 +131,7 @@
                         }
                     },
                     resolve : {
-                        postList : function ($localStorage, $http, $stateParams, $rootScope) {
+                        postList : function ($http, $stateParams, $rootScope) {
                             return $http.get('posts/get_posts?team_id=' + $stateParams.team_id)
                                 .then(
                                     function (res) {

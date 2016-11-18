@@ -85,23 +85,23 @@
             }
         }
     ]);
-    // module.controller('headerCtrl', [
-    //     '$scope',
-    //     'Auth',
-    //     '$state',
-    //     '$http',
-    //     '$rootScope',
-    //     function ($scope, Auth, $state, $http, $rootScope) {
-    //
-    //     }
-    // ]);
+    module.controller('headerController', [
+        '$scope',
+        'Auth',
+        '$state',
+        '$http',
+        '$rootScope',
+        function ($scope, Auth, $state, $http, $rootScope) {
+        }
+    ]);
     module.controller('postController', [
             '$scope',
             'postList',
             '$state',
             '$http',
             '$timeout',
-            function ($scope, postList, $state, $http, $timeout, $stateParams) {
+            '$rootScope',
+            function ($scope, postList, $state, $http, $timeout, $rootScope) {
                 /*
                  keys in post list item
                  comments   Array[0]
@@ -153,11 +153,10 @@
         'Auth',
         '$http',
         function ($scope, $rootScope, $state, information, $timeout, Auth, $http) {
-
             $scope.teams = information.teams;
             $scope.hasNoTeam = ($scope.teams.length === 0);
             $rootScope.user = information.user;
-            $scope.isLoggedin = $rootScope.user;
+            $rootScope.isLoggedin = $rootScope.user;
             $scope.openTag = function () {
                 for(var i = 0; i < $scope.teams.length ; i++){
                     if($scope.teams[i].id == $rootScope.selectedTeamId){
@@ -175,6 +174,8 @@
             $scope.$watch(function () {
                 return $state.$current.name;
             }, function (newState, oldState) {
+                $scope.isManage = (newState.includes('teams'));
+                $scope.isOverview = (newState.includes('overview'));
                 $scope.isPost = (newState.includes('post'));
                 $scope.isEvent = (newState.includes('event'));
                 $scope.isChat = (newState.includes('chat'));
@@ -184,7 +185,7 @@
             /*
              Log out
              */
-            $scope.logout = function () {
+            $rootScope.logout = function () {
 
                 $http.post('/users/logout')
                     .then(
@@ -207,9 +208,15 @@
              */
             $scope.tagSlide = function (tagName) {
                 var element = angular.element(document.querySelector('#' + tagName));
+                if( $(element).hasClass('open')){
+                    $(element).removeClass('open');
+                }else {
+                    $(element).addClass('open');
+                }
                 $(element.children()[1]).slideToggle();
             };
-            // $scope.isPost = true;
+
+
             $scope.isSelected = function (id) {
                 return id === $rootScope.selectedTeamId;
             };
@@ -264,7 +271,7 @@
             $scope.changeID = function(id){
               $rootScope.selectedTeamId = id;
             };
-            $scope.clear = function () {
+            $rootScope.clear = function () {
                 delete $rootScope.selectedTeamId;
             };
 
@@ -425,7 +432,8 @@
     // ]);
     module.controller('chatController', [
         '$scope',
-        function ($scope) {
+        '$rootScope',
+        function ($scope, $rootScope) {
 
         }
     ]);
