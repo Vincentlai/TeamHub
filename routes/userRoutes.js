@@ -117,7 +117,7 @@ router.get('/verify', function (req, res) {
     console.log("-> verify called");
 
     if (req.param("id")) {
-        var id = req.param("id");
+        var id = req.query.id;
         user.verify(id, function (found) {
             console.log(found);
             res.json(found);
@@ -147,7 +147,7 @@ router.get('/is_exist', function (req, res) {
     console.log("-> is_exist called");
 
     if (req.param("email")) {
-        var email = req.param("email");
+        var email = req.query.email;
         user.isExist(email, function (found) {
             console.log(found);
             res.json(found);

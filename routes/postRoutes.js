@@ -65,7 +65,7 @@ router.get('/get_posts', function (req, res) {
     console.log("-> get_posts called");
 
     var sess = req.session;
-    var team_id = req.param("team_id");
+    var team_id = req.query.team_id;
 
     post.getPost(sess, team_id, function (found) {
         console.log(found);

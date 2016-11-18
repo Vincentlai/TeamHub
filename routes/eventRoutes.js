@@ -70,7 +70,7 @@ router.get('/get', function (req, res) {
 
     console.log("-> create called");
 
-    var team_id = req.param("team_id");
+    var team_id = req.query.team_id;
     var sess = req.session;
 
     event.getEvents(sess, team_id, function (found) {
