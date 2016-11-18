@@ -156,3 +156,57 @@ exports.getEvents = function(sess, team_id, callback) {
 
     });
 }
+
+exports.delete = function(sess, event_id, callback) {
+
+    var user_id = sess.user_id;
+
+    if (!user_id) {
+        callback({
+            'code': "-9",
+            'msg': "No session, login required"
+        });
+        return;
+    }
+
+    if (!event_id) {
+        callback({
+            'code': "-10",
+            'msg': "event_id is missing"
+        });
+        return;
+    }
+
+    models.Event.findOne({ _id: event_id }, function(err, event_obj) {
+
+        if (!event_obj) {
+
+            callback({
+                'code': '-1',
+                'msg': 'Invalid team_id'
+            });
+            return;
+        
+        } else {
+
+            // check if user is the creator of this to event
+            if (user_id != event_obj.creator_id) {
+
+                callback({
+                    'code': '-2',
+                    'msg': 'You are not the creator of this event'
+                });
+            
+            }else{
+
+                event_obj.remove();
+
+                callback({
+                    'code': '1',
+                    'msg': 'Event ' + event_obj.title + ' has been deleted successfully'
+                });
+            }
+        }
+
+    });
+}
