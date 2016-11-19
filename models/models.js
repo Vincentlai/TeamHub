@@ -23,6 +23,14 @@ var teamSchema = mongoose.Schema({
     users: [{
         id: String,
         nickname: String
+    }],
+    news: [{
+        user_id: String,
+        user_nickname: String,
+        action_name: String,
+        action_target: String,
+        target_team_id: String,
+        target_team_name: String,
     }]
 });
 

@@ -65,10 +65,21 @@ exports.post = function (sess, team_id, text, callback) {
                 user_id: user_id,
                 text: text,
                 likes: []
-            })
-
+            });
             newPost.save();
 
+            team_obj.news.unshift(
+                {
+                    user_id: user_id,
+                    user_nickname: sess.nickname,
+                    action_name: 'created new ',
+                    action_target: 'post',
+                    target_team_id: team_id,
+                    target_team_name: team_obj.name
+                }
+            );
+            team_obj.save();
+            console.log('save new');
             callback({
                 'code': '1',
                 'msg': 'Post success'
@@ -158,7 +169,7 @@ exports.getPost = function (sess, team_id, callback) {
                         }
 
                         for (var k = 0; k < posts[i].likes.length; k++) {
-                            if(posts[i].likes[k].user_id == user_id){
+                            if (posts[i].likes[k].user_id == user_id) {
                                 isLiked = true;
                                 break;
                             }
@@ -333,7 +344,7 @@ exports.likeOrUnlike = function (sess, post_id, flag, callback) {
         });
         return;
     }
-    if (!post_id || typeof(flag)==undefined ) {
+    if (!post_id || typeof(flag) == undefined) {
         callback({
             'code': "-10",
             'msg': "Missing fields"
@@ -364,7 +375,7 @@ exports.likeOrUnlike = function (sess, post_id, flag, callback) {
                     }
 
                     if (found) {
-                        if(!flag){
+                        if (!flag) {
                             //flag = false --> like
                             post_obj.likes.unshift({
                                 'user_id': user_id,
@@ -376,7 +387,7 @@ exports.likeOrUnlike = function (sess, post_id, flag, callback) {
                                 'msg': 'like success'
                             });
                             return;
-                        }else{
+                        } else {
                             //flag = true --> unlike
                             post_obj.likes.shift({
                                 'user_id': user_id,
@@ -389,7 +400,6 @@ exports.likeOrUnlike = function (sess, post_id, flag, callback) {
                             });
                             return;
                         }
-
 
 
                     } else {
@@ -406,3 +416,4 @@ exports.likeOrUnlike = function (sess, post_id, flag, callback) {
 
 
 };
+

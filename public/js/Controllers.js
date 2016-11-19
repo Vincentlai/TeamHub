@@ -350,6 +350,47 @@
         }
     ]);
 
+    module.controller('overviewController',[
+        '$scope',
+        '$rootScope',
+        '$state',
+        '$timeout',
+        '$http',
+        function ($scope, $rootScope, $state, $timeout, $http) {
+            $scope.loadNews = function () {
+                $scope.news = [];
+                for(var i = 0; i < $scope.teams.length; i++){
+                    $scope.team = $scope.teams[i];
+                    $http.get('/teams/news?team_id=' + $scope.team.id)
+                        .then(
+                            function (res) {
+                                if(res.data.code == 1){
+                                    console.log(res.data.news.length);
+                                    var news;
+                                    for(var j = 0; j < res.data.news.length; j++){
+                                        var timeStamp = res.data.news[j]._id.toString().substring(0,8);
+                                        var data = new Date( parseInt( timeStamp, 16 ) * 1000 );
+                                        news = {
+                                            user_id: res.data.news[j].user_id,
+                                            user_nickname: res.data.news[j].user_nickname,
+                                            action_name: res.data.news[j].action_name,
+                                            action_target: res.data.news[j].action_target,
+                                            time_in_mili:  res.data.news[j]._id,
+                                            time: data,
+                                            target_team: res.data.news[j].target_team_name
+                                        };
+                                        $scope.news.unshift(news);
+                                    }
+                                }
+                            }, function (error) {
+                                console.log('error in calling team new');
+                            }
+                        )
+                }
+
+            };
+        }
+    ]);
     module.controller('teamController', [
         '$http',
         '$scope',
@@ -372,6 +413,7 @@
                                         is_creator: res.data.r_u_creator,
                                         teammates: res.data.users
                                     };
+                                    console.log(typeof(res.data.users));
                                     $scope.teamsDetail[$scope.teamsDetail.length] = detail;
                                 } else {
                                     $scope.teamsDetail[$scope.teamsDetail.length] = {};
@@ -503,4 +545,5 @@
 
         }
     ]);
+
 }());

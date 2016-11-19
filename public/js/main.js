@@ -68,7 +68,8 @@
                     url: 'overview',
                     views: {
                         'contains': {
-                            templateUrl: 'pages/overview.html'
+                            templateUrl: 'pages/overview.html',
+                            controller: 'overviewController'
                         }
                     },
                     authenticated: true

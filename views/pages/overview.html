@@ -1,7 +1,6 @@
-<div class="cons">
-    <h1>
-
-        THIS PAGE IS UNDER CONSTRUCTION.
-
+<div class="cons" data-ng-init="loadNews()">
+    <h1 ng-repeat="item in news | orderBy : '-time_in_mili'">
+        {{item.user_nickname}}  {{item.action_name}}  {{item.action_target}}
+        to {{item.target_team}} on {{item.time}}
     </h1>
 </div>

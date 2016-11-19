@@ -196,6 +196,18 @@ router.get('/team_info',function(req, res)
     });
 });
 
+router.get('/news',function(req, res)
+{
+
+    var team_id = req.query.team_id;
+    var sess = req.session;
+    console.log(team_id);
+    team.getNews(sess, team_id, function (found) {
+        console.log(found);
+        res.json(found);
+    });
+});
+
 router.get('/chat_history',function(req, res)
 {
 
