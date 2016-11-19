@@ -21,10 +21,24 @@ The API is done, frontend still in progress.
 
 3.Sharing file API in progress, frontend in progress.
 ---------------------------------------------
+
+Test accounts provided:
+
+user name: test1@example.com
+password: 123456
+
+user name: test2@example.com
+password: 123456
+
+The two accounts above are for testing purpose which you can use to 
+test our functionalities.
+
+------------------------------------------------
 Feedback needed:
 
 We are kind of running out of ideas about what other functions can be added 
 to our project.Do you have any suggestions regarding what else can be implemented 
 in this project?
+
 
 
