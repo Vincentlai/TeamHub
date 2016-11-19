@@ -290,15 +290,21 @@ router.post('/upload_avatar', upload.single('file'), function (req, res, next) {
 /*
  * Login is required
  *
- * Input: None
+ * Input: 'user_id' : you may leave this field empty 
+ *                    if you want the avatar of logged in user
  * 
  * Output: JPEG file
  */
 router.get('/download_avatar', function (req, res) {
 
     var user_id = req.session.user_id;
+    var target_user_id = req.query.user_id;
 
     if (user_id) {
+
+        if(target_user_id){
+            user_id = target_user_id;
+        }
 
         models.Avatar.findOne({ user_id: user_id }, function (err, avatar_obj) {
 
@@ -310,7 +316,7 @@ router.get('/download_avatar', function (req, res) {
             } else {
                 res.json({
                     "code": "-1",
-                    "msg": "Invalid user_id"
+                    "msg": "Invalid user_id or this user has not yet uploaded an avatar"
                 });
             }
         });
