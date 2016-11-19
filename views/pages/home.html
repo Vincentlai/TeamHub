@@ -1,72 +1,80 @@
-<div class="main-container clearfix">
-    <div class="side-bar" data-ng-init="openTeam()">
-        <ul id="accordion" class="accordion">
-            <li id="teams">
-                <div class="link" ng-click="tagSlide('teams')">
-                    <i class="material-icons main-menu">group</i>
-                    Teams
-                    <i class="material-icons drop-down">expand_more</i>
-                </div>
-                <ul class="submenu">
-                    <li  ng-repeat="teamItem in teams" ng-click="showSndList(teamItem, $event)">
+<div class="main-container clearfix" ng-init="openTag()">
+    <div class="side-bar">
+
+        <div class="setting-list">
+            <ul class="accordion">
+                <li id="overview" ui-sref="home.overview" ng-click="clear()" ng-class="{'selected': isOverview}">
+                    <div class="link">
+                        <i class="material-icons">home</i>
+                        <a>Overview</a>
+                    </div>
+                </li>
+                <li id="manageTeams" ui-sref="home.teams" ng-if="!hasNoTeam" ng-click="clear()" ng-class="{'selected': isManage}">
+                    <div class="link">
+                        <i class="material-icons">build</i>
+                        <a>Manage Teams</a>
+                    </div>
+                </li>
+                <li id="createTeam" ng-if="hasNoTeam" ng-click="createForm('create-team')">
+                    <div class="link">
+                        <i class="material-icons">group_add</i>
+                        <a>Create A Team</a>
+                    </div>
+                </li>
+                <li>
+                    <div ui-sref="home.setting" class="link">
+                        <i class="material-icons">settings</i>
+                        <a>Setting</a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+        <!--<div class="link">-->
+            <!--<i class="material-icons main-menu">group</i>-->
+            <!--Teams-->
+        <!--</div>-->
+        <div class="team-list">
+            <ul id="accordion" class="accordion" ng-repeat="teamItem in teams">
+                <li id="teams{{$index}}" ng-class="{'selected': isSelected(teamItem.id)}">
+                    <div class="link" ng-click="tagSlide('teams'+$index)" >
                         <i class="material-icons" ng-if="teamItem.is_creator">person</i>
                         <i class="material-icons" ng-if="!teamItem.is_creator">person_outline</i>
                         <a >{{teamItem.name}}</a>
-                    </li>
-                    <li id="manageTeams" ui-sref="home.teams" ng-if="!hasNoTeam">
-                        <md-tooltip md-direction="right">
-                            See all your teams
-                        </md-tooltip>
-                        <i class="material-icons">build</i>
-                        <a>Manage Teams</a>
-                    </li>
-                    <li id="createTeam" ng-if="hasNoTeam" ng-click="createForm('create-team')">
-                        <i class="material-icons">group_add</i>
-                        <a>Create A Team</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+                        <!--<i class="material-icons main-menu">group</i>-->
+                        <!--Teams-->
+                        <i class="material-icons drop-down">expand_more</i>
+                    </div>
+                    <ul class="submenu">
+                        <li ui-sref="home.posts({team_id:teamItem.id})" ng-class="{'selected': isPost&&isSelected(teamItem.id)}">
+                                <i class="material-icons">assignment</i>
+                                <a>Post</a>
+                        </li>
+                        <li ui-sref="home.chat({team_id:teamItem.id})" ng-click="changeID(teamItem.id)" ng-class="{'selected': isChat&&isSelected(teamItem.id)}">
+                                <i class="material-icons">chat</i>
+                                <a> Chat Rooms</a>
+                        </li>
 
-        <ul id="second-list" class="accordion">
-            <li>
-                <div ui-sref="home.posts" class="link">
-                    <i class="material-icons">assignment</i>
-                    Post
-                </div>
-            </li>
-            <li id="chat">
-                <div class="link" ui-sref="home.chat" ng-click="tagSlide('chat')">
-                    <i class="material-icons main-menu">chat</i>
-                    Chat Rooms
-                </div>
-            </li>
+                        <li ui-sref="home.events({team_id:teamItem.id})" ng-click="changeID(teamItem.id)" ng-class="{'selected': isEvent&&isSelected(teamItem.id)}">
+                                <i class="material-icons">event</i>
+                                <a>Event</a>
+                        </li>
 
-            <li>
-                <div ui-sref="home.events" class="link">
-                    <i class="material-icons">event</i>
-                    Event
-                </div>
-            </li>
+                        <li ui-sref="home.files({team_id:teamItem.id})" ng-click="changeID(teamItem.id)" ng-class="{'selected': isFile&&isSelected(teamItem.id)}">
+                                <i class="material-icons">folder</i>
+                                <a>File</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
 
-            <li>
-                <div ui-sref="home.files" class="link">
-                    <i class="material-icons">folder</i>
-                    File
-                </div>
-            </li>
-            <li>
-                <div ui-sref="home.setting" class="link">
-                    <i class="material-icons">settings</i>
-                    Setting
-                </div>
-            </li>
-        </ul>
+
     </div>
     <div class="content">
         <div ui-view="contains"></div>
     </div>
-    <div id="create-team" class="popUpWindow" role="alert"  ng-cloak>
+    <div id="create-team" class="popUpWindow" role="alert" ng-cloak>
 
         <div class="popUpWindow-container">
             <h1>Create Team</h1>
@@ -117,8 +125,11 @@
                     </md-input-container>
                     <ul class="cd-buttons clearfix">
                         <li type="submit" ng-click="createTeam('create-team')">
-                            <button ng-disabled="teamCreateForm.$invalid" class="agree inpop">Create</button></li>
-                        <li><button class="inpop" ng-click="closeForm('create-team')">Cancel</button></li>
+                            <button ng-disabled="teamCreateForm.$invalid" class="agree inpop">Create</button>
+                        </li>
+                        <li>
+                            <button class="inpop" ng-click="closeForm('create-team')">Cancel</button>
+                        </li>
                     </ul>
                 </form>
 

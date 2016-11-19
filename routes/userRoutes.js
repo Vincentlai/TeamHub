@@ -30,7 +30,7 @@ router.get('/', function (req, res, next) {
  * -10 -> Missing field
  */
 router.post('/register', function (req, res) {
-    console.log("-> register called");
+
     var email = req.body.email;
     var password = req.body.password;
     var nickname = req.body.nickname;
@@ -61,8 +61,8 @@ router.post('/register', function (req, res) {
  * -10 -> Missing field
  */
 router.post('/login', function (req, res) {
+
     var sess = req.session;
-    console.log("-> login called");
     console.log("** session_id: " + sess.id);
 
     var email = req.body.email;
@@ -89,10 +89,9 @@ router.post('/login', function (req, res) {
  *  -1 -> You haven't been logged in yet
  */
 router.post('/logout', function (req, res) {
+
     var sess = req.session;
-    console.log("-> logout is called");
     console.log("** session_id: " + sess.id);
-    console.log("** user_id: " + sess.user_id + " destroyed" + "\n");
 
     user.logout(sess, function (found) {
         res.json(found);
@@ -114,10 +113,9 @@ router.post('/logout', function (req, res) {
  * -1 -> Invalid id
  */
 router.get('/verify', function (req, res) {
-    console.log("-> verify called");
 
     if (req.param("id")) {
-        var id = req.param("id");
+        var id = req.query.id;
         user.verify(id, function (found) {
             console.log(found);
             res.json(found);
@@ -144,10 +142,9 @@ router.get('/verify', function (req, res) {
  * -1 -> User not found
  */
 router.get('/is_exist', function (req, res) {
-    console.log("-> is_exist called");
 
     if (req.param("email")) {
-        var email = req.param("email");
+        var email = req.query.email;
         user.isExist(email, function (found) {
             console.log(found);
             res.json(found);
@@ -177,7 +174,6 @@ router.get('/is_exist', function (req, res) {
  * -9 -> No session
  */
 router.get('/my_info', function (req, res) {
-    console.log("-> myinfo called");
 
     var sess = req.session;
 
@@ -209,8 +205,6 @@ router.post('/cpass', function (req, res) {
     var user_id = req.session.user_id;
     var opass = req.body.old_pwd;
     var npass = req.body.new_pwd;
-
-    console.log("-> cpass is called");
 
     user.cpass(user_id, opass, npass, function (found) {
         res.json(found);

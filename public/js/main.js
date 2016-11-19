@@ -14,7 +14,9 @@
         'ngPassword',
         'socket.io',
         'chat',
-        'ngStorage'
+        'event',
+        'material.components.eventCalendar',
+        //'material.components.expansionPanels'
     ]);
     module
         .config(function ($stateProvider, $urlRouterProvider) {
@@ -24,12 +26,11 @@
                     url: "/",
                     views: {
                         'navigation': {templateUrl: 'partials/header.html',
-                            controller: 'homeController'
+                            controller: 'headerController'
                         },
                         'container': {
                             templateUrl: 'pages/home.html',
                             controller: 'homeController'
-
                         }
                     },
                     resolve: {
@@ -41,11 +42,11 @@
                                             var info = {
                                                 user: {
                                                     email: res.data.email,
-                                                    nickname: res.data.nickname
+                                                    nickname: res.data.nickname,
+                                                    user_id: res.data.user_id
                                                 },
                                                 teams: res.data.teams
                                             };
-                                            console.log(info);
                                             return info;
                                         }else{
                                             Auth.removeCookie();
@@ -93,9 +94,12 @@
                 })
 
                 .state('home.chat', {
-                    url: 'chat',
+                    url: ':team_id/chat',
                     views: {
-                        'contains': {templateUrl: 'pages/chat.html'}
+                        'contains': {
+                            templateUrl: 'pages/chat.html',
+                            controller: 'Ctrl'
+                        }
                     },
                     authenticated: true
                 })
@@ -103,7 +107,10 @@
                     url: "/login",
                     views: {
                         'navigation': {templateUrl: 'partials/header.html'},
-                        'container': {templateUrl: 'pages/login.html'}
+                        'container': {
+                            templateUrl: 'pages/login.html',
+                            controller: 'login'
+                        }
                     },
                     authenticated: false
                 })
@@ -112,12 +119,15 @@
                     url: "/signup",
                     views: {
                         'navigation': {templateUrl: 'partials/header.html'},
-                        'container': {templateUrl: 'pages/signup.html'}
+                        'container': {
+                            templateUrl: 'pages/signup.html',
+                            controller: 'signup'
+                        }
                     },
                     authenticated: false
                 })
                 .state('home.posts', {
-                    url: "posts",
+                    url: ":team_id/posts",
                     views: {
                         'contains': {
                             templateUrl: 'pages/post.html',
@@ -125,11 +135,12 @@
                         }
                     },
                     resolve : {
-                        postList : function ($localStorage, $http) {
-                            return $http.get('posts/get_posts?team_id=' + $localStorage.selectedTeam.id)
+                        postList : function ($http, $stateParams, $rootScope) {
+                            return $http.get('posts/get_posts?team_id=' + $stateParams.team_id)
                                 .then(
                                     function (res) {
                                         if(res.data.code == 1){
+                                            $rootScope.selectedTeamId = $stateParams.team_id;
                                             return res.data.posts;
                                         }
                                     }, function (error) {
@@ -141,14 +152,17 @@
                     authenticated: true
                 })
                 .state('home.events', {
-                    url: "events",
+                    url: ":team_id/events",
                     views: {
-                        'contains': {templateUrl: 'pages/events.html'}
+                        'contains': {
+                            templateUrl: 'pages/events.html',
+                            controller: 'calendarController'
+                        }
                     },
                     authenticated: true
                 })
                 .state('home.files', {
-                    url: "files",
+                    url: ":team_id/files",
                     views: {
                         'contains': {templateUrl: 'pages/files.html'}
                     },

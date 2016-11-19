@@ -14,7 +14,7 @@
 @mid-size-screen-width: 768px;
 @important: #fc7169;
 .convert-color(@bg,@ft){
-  background: @bg;
+  background-color: @bg;
   color: @ft;
 }
 .primary-border() {
@@ -29,3 +29,21 @@
 .white-bg() {
   background-color: rgba(255, 255, 255,.5);
 }
+
+.card-float(){
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  -webkit-transition: all .2s linear;
+  -moz-transition: all .2s linear;
+  -ms-transition: all .2s linear;
+  -o-transition: all .2s linear;
+  transition: all .2s linear;
+  &:hover {
+    -webkit-transform: translateY(-5px) ;
+    -moz-transform: translateY(-5px) ;
+    -ms-transform: translateY(-5px) ;
+    -o-transform: translateY(-5px) ;
+    transform: translateY(-5px) ;
+    box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.2);
+  }
+}
+

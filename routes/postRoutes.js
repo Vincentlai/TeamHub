@@ -22,8 +22,6 @@ var post = require('../controllers/post.js');
  */
 router.post('/post', function (req, res) {
 
-    console.log("-> post called");
-
     var text = req.body.text;
     var team_id = req.body.team_id;
     var sess = req.session;
@@ -47,7 +45,8 @@ router.post('/post', function (req, res) {
  *      'post_id': id of each post
  *      'nickname': publisher name
  *      'text': content
- *      'like': number of likes
+ *      'likes': number of likes
+ *      'isLiked: is the current user liked this post or not
  *      'time': date_time posted
  *      'comments': [{ (from old to new)
  *              nickname: commenter nickname
@@ -62,12 +61,48 @@ router.post('/post', function (req, res) {
  */
 router.get('/get_posts', function (req, res) {
 
-    console.log("-> get_posts called");
-
     var sess = req.session;
-    var team_id = req.param("team_id");
+    var team_id = req.query.team_id;
 
     post.getPost(sess, team_id, function (found) {
+        console.log(found);
+        res.json(found);
+    });
+});
+
+/* PATH: host_url:8080/posts/delete?post_id=123456789 (DELETE)
+ *
+ * INPUT: 'post_id' : post to delete
+ * 
+ * OUTPUT:
+ *  JSON Object that contains
+ *  'code' : respond code
+ *  'msg' : respond message
+ *      
+ *   1 -> Delete post successfully
+ *  -1 -> Invalid post_id
+ *  -2 -> You are not the poster of this post
+ *  -9 -> No session, login required
+ *  -10 -> Missing fields
+ * 
+ */
+router.delete('/delete', function (req, res) {
+
+    var sess = req.session;
+    var post_id = req.query.post_id;
+
+    post.delete(sess, post_id, function (found) {
+        console.log(found);
+        res.json(found);
+    });
+});
+
+router.post('/likeOrUnlike', function (req, res) {
+    var post_id = req.body.post_id;
+    var sess = req.session;
+    var flag = req.body.flag;
+
+    post.likeOrUnlike(sess, post_id, flag, function (found) {
         console.log(found);
         res.json(found);
     });
@@ -93,8 +128,6 @@ router.get('/get_posts', function (req, res) {
  */
 router.post('/comment', function (req, res) {
 
-    console.log("-> comment called");
-
     var comment = req.body.comment;
     var post_id = req.body.post_id;
     var sess = req.session;
@@ -104,5 +137,7 @@ router.post('/comment', function (req, res) {
         res.json(found);
     });
 });
+
+
 
 module.exports = router;

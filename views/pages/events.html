@@ -1,6 +1,125 @@
-<div>
-    <h1>
-        hi , i am events
-    </h1>
+<div class="calendarContainer">
+    <div class="calendarMainPart">
+        <md-event-calendar
+                auto-height="40"
+                ng-model="selected"
+                md-events="events"
+                md-event-click="eventClicked($selectedEvent)"
+                md-create-event-click="createClicked($date)"
+                md-label="title"
+                md-show-create-link
+                md-create-disabled="dis"
+                class="md-primary"
+        >
+            <md-event-calendar-header>
+                <div flex></div>
+                <md-event-calendar-prev></md-event-calendar-prev>
+                <md-event-calendar-title></md-event-calendar-title>
+                <md-event-calendar-next></md-event-calendar-next>
+                <div flex layout="row">
+                    <span flex></span>
+                    <md-event-calendar-today></md-event-calendar-today>
+                </div>
+            </md-event-calendar-header>
+        </md-event-calendar>
+    </div>
+
+
+    <div class="calendarCreate">
+        <div id="create-event" ng-cloak>
+            <div ng-show="showCreateEventForm">
+                <h1>Create Event</h1>
+                <label>Chosen day is <span ng-bind="result"></span></label>
+                <form name="eventCreateForm" class="md-title">
+
+                    <div>
+                        <label>Event Title</label>
+                        <input required type="text" name="newEventTitle" ng-model="newEventTitle"/>
+                        <div ng-messages="eventCreateForm.newEventTitle.$error" role="alert"
+                             ng-show="eventCreateForm.newEventTitle.$dirty || eventCreateForm.newEventTitle.$touched">
+                            <div ng-message="required">
+                                name cannot be empty.
+                            </div>
+                        </div>
+                        <label>All Day Event</label>
+                        <input type="checkbox" name="ifAllDay" ng-init="allDayEvent=false"  ng-model="allDayEvent" ng-click="resetTime()"/>
+                    </div>
+
+
+                    <div>
+                        <label>Event Start time: </label>
+                        <label>date</label>
+                        <input required type="date" name="eventStartDate" ng-model="eventStartDate"/>
+
+                        <label>hour</label>
+                        <input type="number" name="newEventStartHour" min="0" max="23" ng-init="eventStartTimeHour=0" ng-model="eventStartTimeHour" ng-disabled="allDayEvent"/>
+
+                        <div ng-messages="eventCreateForm.newEventStartHour.$error" role="alert"
+                             ng-show="eventCreateForm.newEventStartHour.$dirty || eventCreateForm.newEventStartHour.$touched">
+                            <div ng-message="min">
+                                hour cannot less than 0.
+                            </div>
+                            <div ng-message="max">
+                                hour cannot greater than 23.
+                            </div>
+                        </div>
+
+                        <label>min</label>
+                        <input type="number" name="newEventStartMin" min="0" max="59" ng-init="eventStartTimeMin=0" ng-model="eventStartTimeMin" ng-disabled="allDayEvent"/>
+                        <div ng-messages="eventCreateForm.newEventStartMin.$error" role="alert"
+                             ng-show="eventCreateForm.newEventStartMin.$dirty || eventCreateForm.newEventStartMin.$touched">
+                            <div ng-message="min">
+                                min cannot less than 0.
+                            </div>
+                            <div ng-message="max">
+                                min cannot greater than 59.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label>Event End time: </label>
+                        <label>date</label>
+                        <input required type="date" name="eventEndDate" ng-model="eventEndDate"/>
+
+                        <label>hour</label>
+                        <input type="number" name="newEventEndHour" min="0" max="23" ng-init="eventEndTimeHour=0" ng-model="eventEndTimeHour" ng-disabled="allDayEvent"/>
+
+                        <div ng-messages="eventCreateForm.newEventEndHour.$error" role="alert"
+                             ng-show="eventCreateForm.newEventEndHour.$dirty || eventCreateForm.newEventEndHour.$touched">
+                            <div ng-message="min">
+                                hour cannot less than 0.
+                            </div>
+                            <div ng-message="max">
+                                hour cannot greater than 23.
+                            </div>
+                        </div>
+
+                        <label>min</label>
+                        <input type="number" name="newEventEndMin" min="0" max="59" ng-init="eventEndTimeMin=0" ng-model="eventEndTimeMin" ng-disabled="allDayEvent"/>
+                        <div ng-messages="eventCreateForm.newEventEndMin.$error" role="alert"
+                             ng-show="eventCreateForm.newEventEndMin.$dirty || eventCreateForm.newEventEndMin.$touched">
+                            <div ng-message="min">
+                                min cannot less than 0.
+                            </div>
+                            <div ng-message="max">
+                                min cannot greater than 59.
+                            </div>
+                        </div>
+                    </div>
+
+                    <label>Event description: </label>
+                    <div>
+                        <textarea cols="40" rows="10" name="eventDescription" ng-model="eventDescription"></textarea>
+                    </div>
+                    <div>
+                        <button ng-click="createEvent()">Create！</button>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
 
 </div>

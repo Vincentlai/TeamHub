@@ -1,305 +1,293 @@
 <style>
-    @import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700);
-    @import url(http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
-    html,
-    body {
-        background: #e5e5e5;
-        font-family: 'Lato', sans-serif;
-        margin: 0px auto;
-    }
+	@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700);
+	@import url(http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
+	html,
+	body {
+		background: #e5e5e5;
+		font-family: 'Lato', sans-serif;
+		margin: 0px auto;
+	}
+	
+	::selection {
+		background: rgba(82, 179, 217, 0.3);
+		color: inherit;
+	}
+	
+	a {
+		color: rgba(82, 179, 217, 0.9);
+	}
+	
+	.back {
+		position: absolute;
+		width: 90px;
+		height: 50px;
+		top: 0px;
+		left: 0px;
+		color: #fff;
+		line-height: 50px;
+		font-size: 30px;
+		padding-left: 10px;
+		cursor: pointer;
+	}
+	
+	.back img {
+		position: absolute;
+		top: 5px;
+		left: 30px;
+		width: 40px;
+		height: 40px;
+		background-color: rgba(255, 255, 255, 0.98);
+		border-radius: 100%;
+		-webkit-border-radius: 100%;
+		-moz-border-radius: 100%;
+		-ms-border-radius: 100%;
+		margin-left: 15px;
+	}
+	
+	.back:active {
+		background: rgba(255, 255, 255, 0.2);
+	}
+	
+	.name {
+		position: absolute;
+		top: 3px;
+		left: 110px;
+		font-family: 'Lato';
+		font-size: 25px;
+		font-weight: 300;
+		color: rgba(255, 255, 255, 0.98);
+		cursor: default;
+	}
+	
+	.last {
+		position: absolute;
+		top: 30px;
+		left: 115px;
+		font-family: 'Lato';
+		font-size: 11px;
+		font-weight: 400;
+		color: rgba(255, 255, 255, 0.6);
+		cursor: default;
+	}
+	/* M E S S A G E S */
+	
+	.chat {
+		list-style: none;
+		background: none;
+		padding: 0 0 50px 0;
+		/*margin-top: 60px;*/
+		margin-bottom: 10px;
+	}
+	
+	.chat li {
+		padding: 0.5rem;
+		overflow: hidden;
+		display: flex;
+	}
+	
+	.chat .avatar {
+		width: 40px;
+		height: 40px;
+		position: relative;
+		display: block;
+		z-index: 2;
+		border-radius: 100%;
+		-webkit-border-radius: 100%;
+		-moz-border-radius: 100%;
+		-ms-border-radius: 100%;
+		background-color: rgba(255, 255, 255, 0.9);
+	}
+	
+	.chat .avatar img {
+		width: 40px;
+		height: 40px;
+		border-radius: 100%;
+		-webkit-border-radius: 100%;
+		-moz-border-radius: 100%;
+		-ms-border-radius: 100%;
+		background-color: rgba(255, 255, 255, 0.9);
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+	}
+	
+	.chat .day {
+		position: relative;
+		display: block;
+		text-align: center;
+		color: #c0c0c0;
+		height: 20px;
+		text-shadow: 7px 0px 0px #e5e5e5, 6px 0px 0px #e5e5e5, 5px 0px 0px #e5e5e5, 4px 0px 0px #e5e5e5, 3px 0px 0px #e5e5e5, 2px 0px 0px #e5e5e5, 1px 0px 0px #e5e5e5, 1px 0px 0px #e5e5e5, 0px 0px 0px #e5e5e5, -1px 0px 0px #e5e5e5, -2px 0px 0px #e5e5e5, -3px 0px 0px #e5e5e5, -4px 0px 0px #e5e5e5, -5px 0px 0px #e5e5e5, -6px 0px 0px #e5e5e5, -7px 0px 0px #e5e5e5;
+		box-shadow: inset 20px 0px 0px #e5e5e5, inset -20px 0px 0px #e5e5e5, inset 0px -2px 0px #d7d7d7;
+		line-height: 38px;
+		margin-top: 5px;
+		margin-bottom: 20px;
+		cursor: default;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+	}
+	
+	.other .msg {
+		order: 1;
+		border-top-left-radius: 0px;
+		box-shadow: -1px 2px 0px #D4D4D4;
+	}
+	
+	.other:before {
+		content: "";
+		position: relative;
+		top: 0px;
+		right: 0px;
+		left: 40px;
+		width: 0px;
+		height: 0px;
+		border: 5px solid #fff;
+		border-left-color: transparent;
+		border-bottom-color: transparent;
+	}
+	
+	.self {
+		justify-content: flex-end;
+		align-items: flex-end;
+	}
+	
+	.self .msg {
+		order: 1;
+		border-bottom-right-radius: 0px;
+		box-shadow: 1px 2px 0px #D4D4D4;
+	}
+	
+	.self .avatar {
+		order: 2;
+	}
+	
+	.self .avatar:after {
+		content: "";
+		position: relative;
+		display: inline-block;
+		bottom: 19px;
+		right: 0px;
+		width: 0px;
+		height: 0px;
+		border: 5px solid #fff;
+		border-right-color: transparent;
+		border-top-color: transparent;
+		box-shadow: 0px 2px 0px #D4D4D4;
+	}
+	
+	
+	.msg p {
+		font-size: 15px;
+		margin: 0 0 0.2rem 0;
+		color: #777;
+	}
+	
+	.msg img {
+		position: relative;
+		display: block;
+		width: 450px;
+		border-radius: 5px;
+		box-shadow: 0px 0px 3px #eee;
+		transition: all .4s cubic-bezier(0.565, -0.260, 0.255, 1.410);
+		cursor: default;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+	}
+	
+	@media screen and (max-width: 800px) {
+		.msg img {
+			width: 300px;
+		}
+	}
+	
+	@media screen and (max-width: 550px) {
+		.msg img {
+			width: 200px;
+		}
+	}
+	
+	time {
+		font-size: 0.7rem;
+		color: #ccc;
+		float: left;
+		cursor: default;
+		-webkit-touch-callout: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+	}
+	
+	time:before {
+		content: "\f017";
+		color: #ddd;
+		font-family: FontAwesome;
+		display: inline-block;
+		margin-left: 6px;
+		margin-right: 2px;
+		float: left;
+	}
+	/* T Y P E */
+	
+	input.textarea {
+		position: fixed;
+		bottom: 0px;
+		left: 249px;
+		right: 0px;
+		width: 100%;
+		height: 50px;
+		z-index: 99;
+		background: #444359;
+		border: none;
+		outline: none;
+		padding-left: 10px;
+		padding-right: 310px;
+		color: #ffffff;
+		font-weight: 400;
+		font-size: 25px;
+	}
+	
+	button.send_button {
+		position: fixed;
+		right: 0px;
+		bottom: 0px;
+		width: 100px;
+		height: 50px;
+		display: inline-block;
+		z-index: 100;
+	}
 
-    ::selection {
-        background: rgba(82, 179, 217, 0.3);
-        color: inherit;
-    }
+	.msg {
+		background: white;
+		min-width: 50px;
+		padding: 10px;
+		border-radius: 2px;
+		box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.07);
+		float: left;
+		clear: left;
+		margin-top: 2px;
+	}
 
-    a {
-        color: rgba(82, 179, 217, 0.9);
-    }
+	.chat  .nickname {
+		position: relative;
+		font-size: 12px;
+		float: left;
+		color: #ccc;
+	}
 
-    .back {
-        position: absolute;
-        width: 90px;
-        height: 50px;
-        top: 0px;
-        left: 0px;
-        color: #fff;
-        line-height: 50px;
-        font-size: 30px;
-        padding-left: 10px;
-        cursor: pointer;
-    }
-
-    .back img {
-        position: absolute;
-        top: 5px;
-        left: 30px;
-        width: 40px;
-        height: 40px;
-        background-color: rgba(255, 255, 255, 0.98);
-        border-radius: 100%;
-        -webkit-border-radius: 100%;
-        -moz-border-radius: 100%;
-        -ms-border-radius: 100%;
-        margin-left: 15px;
-    }
-
-    .back:active {
-        background: rgba(255, 255, 255, 0.2);
-    }
-
-    .name {
-        position: absolute;
-        top: 3px;
-        left: 110px;
-        font-family: 'Lato';
-        font-size: 25px;
-        font-weight: 300;
-        color: rgba(255, 255, 255, 0.98);
-        cursor: default;
-    }
-
-    .last {
-        position: absolute;
-        top: 30px;
-        left: 115px;
-        font-family: 'Lato';
-        font-size: 11px;
-        font-weight: 400;
-        color: rgba(255, 255, 255, 0.6);
-        cursor: default;
-    }
-    /* M E S S A G E S */
-
-    .chat {
-        list-style: none;
-        background: none;
-        margin: 0;
-        padding: 0 0 50px 0;
-        margin-top: 60px;
-        margin-bottom: 10px;
-    }
-
-    .chat li {
-        padding: 0.5rem;
-        overflow: hidden;
-        display: flex;
-    }
-
-    .chat .avatar {
-        width: 40px;
-        height: 40px;
-        position: relative;
-        display: block;
-        z-index: 2;
-        border-radius: 100%;
-        -webkit-border-radius: 100%;
-        -moz-border-radius: 100%;
-        -ms-border-radius: 100%;
-        background-color: rgba(255, 255, 255, 0.9);
-    }
-
-    .chat .avatar img {
-        width: 40px;
-        height: 40px;
-        border-radius: 100%;
-        -webkit-border-radius: 100%;
-        -moz-border-radius: 100%;
-        -ms-border-radius: 100%;
-        background-color: rgba(255, 255, 255, 0.9);
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-    }
-
-    .chat .day {
-        position: relative;
-        display: block;
-        text-align: center;
-        color: #c0c0c0;
-        height: 20px;
-        text-shadow: 7px 0px 0px #e5e5e5, 6px 0px 0px #e5e5e5, 5px 0px 0px #e5e5e5, 4px 0px 0px #e5e5e5, 3px 0px 0px #e5e5e5, 2px 0px 0px #e5e5e5, 1px 0px 0px #e5e5e5, 1px 0px 0px #e5e5e5, 0px 0px 0px #e5e5e5, -1px 0px 0px #e5e5e5, -2px 0px 0px #e5e5e5, -3px 0px 0px #e5e5e5, -4px 0px 0px #e5e5e5, -5px 0px 0px #e5e5e5, -6px 0px 0px #e5e5e5, -7px 0px 0px #e5e5e5;
-        box-shadow: inset 20px 0px 0px #e5e5e5, inset -20px 0px 0px #e5e5e5, inset 0px -2px 0px #d7d7d7;
-        line-height: 38px;
-        margin-top: 5px;
-        margin-bottom: 20px;
-        cursor: default;
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-    }
-
-    .other .msg {
-        order: 1;
-        border-top-left-radius: 0px;
-        box-shadow: -1px 2px 0px #D4D4D4;
-    }
-
-    .other:before {
-        content: "";
-        position: relative;
-        top: 0px;
-        right: 0px;
-        left: 40px;
-        width: 0px;
-        height: 0px;
-        border: 5px solid #fff;
-        border-left-color: transparent;
-        border-bottom-color: transparent;
-    }
-
-    .self {
-        justify-content: flex-end;
-        align-items: flex-end;
-    }
-
-    .self .msg {
-        order: 1;
-        border-bottom-right-radius: 0px;
-        box-shadow: 1px 2px 0px #D4D4D4;
-    }
-
-    .self .avatar {
-        order: 2;
-    }
-
-    .self .avatar:after {
-        content: "";
-        position: relative;
-        display: inline-block;
-        bottom: 19px;
-        right: 0px;
-        width: 0px;
-        height: 0px;
-        border: 5px solid #fff;
-        border-right-color: transparent;
-        border-top-color: transparent;
-        box-shadow: 0px 2px 0px #D4D4D4;
-    }
-
-    .msg {
-        background: white;
-        min-width: 50px;
-        padding: 10px;
-        border-radius: 2px;
-        box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.07);
-    }
-
-    .msg p {
-        font-size: 0.8rem;
-        margin: 0 0 0.2rem 0;
-        color: #777;
-    }
-
-    .msg img {
-        position: relative;
-        display: block;
-        width: 450px;
-        border-radius: 5px;
-        box-shadow: 0px 0px 3px #eee;
-        transition: all .4s cubic-bezier(0.565, -0.260, 0.255, 1.410);
-        cursor: default;
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-    }
-
-    @media screen and (max-width: 800px) {
-        .msg img {
-            width: 300px;
-        }
-    }
-
-    @media screen and (max-width: 550px) {
-        .msg img {
-            width: 200px;
-        }
-    }
-
-    .msg time {
-        font-size: 0.7rem;
-        color: #ccc;
-        margin-top: 3px;
-        float: right;
-        cursor: default;
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-    }
-
-    .msg time:before {
-        content: "\f017";
-        color: #ddd;
-        font-family: FontAwesome;
-        display: inline-block;
-        margin-right: 4px;
-    }
-    /* T Y P E */
-
-    input.textarea {
-        position: fixed;
-        bottom: 0px;
-        left: 200px;
-        right: 0px;
-        width: 100%;
-        height: 50px;
-        z-index: 99;
-        background: #fafafa;
-        border: none;
-        outline: none;
-        padding-left: 10px;
-        padding-right: 310px;
-        color: #666;
-        font-weight: 400;
-    }
-
-    button.send_button {
-        position: fixed;
-        right: 0px;
-        bottom: 0px;
-        width: 100px;
-        height: 50px;
-        display: inline-block;
-        z-index: 100;
-    }
+	#wrapper{
+		margin-left:10px;
+		height:auto; 
+		width:auto;
+	}
 </style>
+<div class="page-container" ng-cloak>
 
-<div id="" style="overflow-y: scroll; height:93vh;">
-    <!--<div class="menu">
-            <div class="back"><i class="fa fa-chevron-left"></i> <img src="http://i.imgur.com/DY6gND0.png" draggable="false"/></div>
-            <div class="name">Alex</div>
-            <div class="last">18:09</div>
-        </div>
-
-    <ol class="chat">
-    <li class="other">
-        <div class="avatar"><img src="http://i.imgur.com/DY6gND0.png" draggable="false"/></div>
-      <div class="msg">
-        <p>Hello</p>
-        <p>How are you?</p>
-        <time>20:17</time>
-      </div>
-    </li>
-    <li class="self">
-        <div class="avatar"><img src="http://i.imgur.com/HYcn9xO.png" draggable="false"/></div>
-      <div class="msg">
-        <p>Puff...</p>
-        <p>I am very good</p>
-        <p>byebye</p>
-        <time>20:18</time>
-      </div>
-    </li>
-    </ol>
-
-    -->
-
-
-
-    <div ng-controller="Ctrl">
+    <scroll-section id="chatBox" style="overflow-y: auto; overflow-x: hidden; height:93vh;" scroll-bottom="msg_list">
 
         <input ng-model="dataToSend" class="textarea" type="text" placeholder="Enter a message here..." onkeydown="if (event.keyCode == 13) document.getElementById('send').click()"
         />
@@ -308,24 +296,20 @@
 
         <ol class="chat">
 
-            <li ng-repeat="json in msg_list" ng-class="getClass($index)">
+            <li ng-repeat="json in msg_list" ng-class="getClass($index)" ng-attr-id="{{ 'msg_' + $index }}">
                 <div class="avatar"><img ng-src="{{getSrc($index)}}" draggable="false" /></div>
-                <div class="msg">
-                    <p>{{json.msg}}</p>
-                    <time>{{json.time}}</time>
-                </div>
+
+				<div id="wrapper">
+					<div class="nickname">{{json.nickname}}</div>
+					<time>{{json.time}}</time>
+					<div class="msg">
+						<p>{{json.msg}}</p>
+					</div>
+				</div>
             </li>
 
         </ol>
 
-    </div>
+    </scroll-section>
 
 </div>
-
-<!--<div ng-controller="Ctrl">
-    <input ng-model="dataToSend">
-    <button ng-click="emitBasic()">Send</button>
-    <button ng-click="emitACK()">Send (ACK)</button>
-    <div>Server Response: {{ serverResponse }}</div>
-    <div>Server Response (ACK): {{ serverResponseACK }}</div>
-</div>-->

@@ -32,7 +32,10 @@ var postSchema = mongoose.Schema({
     user_id: String,
     text: String,
     pic_id: String,
-    like: Number,
+    likes: [{
+        user_id: String,
+        nickname: String
+    }],
     comments: [{
         user_id: String,
         nickname: String,
@@ -40,31 +43,35 @@ var postSchema = mongoose.Schema({
     }]
 });
 
-//var chatContactSchema = mongoose.Schema({
-//    my_user_id: String,
-//    other_user_id: String,
-//    last_msg: String,
-//    last_msg_date_time: String,
-//    number_of_unread_msg: Number
-//});
+var eventSchema = mongoose.Schema({
+    team_id: String,
+    title: String,
+    description: String,
+    start: String,
+    end: String,
+    creator_id: String,
+    creator_nickname: String
+});
 
-//var chatHistorySchema = mongoose.Schema({
-//    sender_user_id: String,
-//    receiver_user_id: String,
-//    message: String
-//});
+var chatHistorySchema = mongoose.Schema({
+    team_id: String,
+    nickname: String,
+    user_id: String,
+    time: String,
+    message: String
+});
 
 mongoose.connect('mongodb://dev:cmpt470@ec2-52-40-59-253.us-west-2.compute.amazonaws.com:27017/cmpt470db');
 var User = mongoose.model('user', userSchema);
 var Team = mongoose.model('team', teamSchema);
 var Post = mongoose.model('post', postSchema);
-//var ChatContact = mongoose.model('chat_contact', chatContactSchema);
-//var ChatHistory = mongoose.model('chat_history', chatHistorySchema);
+var Event = mongoose.model('event', eventSchema);
+var ChatHistory = mongoose.model('chat_history', chatHistorySchema);
 
 module.exports = {
     User: User,
     Team: Team,
-    Post: Post
-    //ChatHistory: ChatHistory,
-    //ChatContact: ChatContact
+    Post: Post,
+    Event: Event,
+    ChatHistory: ChatHistory,
 };

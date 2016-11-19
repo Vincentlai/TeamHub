@@ -1,7 +1,8 @@
 <div class="page-container" ng-cloak data-ng-init="loadTeamDetail()">
 
-    <md-button ng-click="createForm('create-team')" class="control-btn"><i class="material-icons">group_add</i>Create A
-        Team
+    <md-button ng-click="createForm('create-team')" >
+        <!--<i class="material-icons">group_add</i>-->
+        Create A Team
     </md-button>
 
     <div class="card-container clearfix">
@@ -36,7 +37,7 @@
                     <span>{{msg}}</span>
                 </div>
             </div>
-            <h1>Are you sure you want to delete team <span>"{{selectedTeamName}}"</span> ?</h1>
+            <h1>Are you sure you want to delete team <span>"{{selectedName}}"</span> ?</h1>
             <ul class="cd-buttons clearfix">
                 <li type="submit" ng-click="deleteTeam()"><button class="agree inpop">Yes</button></li>
                 <li><button class="inpop" ng-click="closeForm('delete-team')">No</button></li>
@@ -173,7 +174,7 @@
                     <span>{{msg}}</span>
                 </div>
             </div>
-            <h1>Are you sure you want to quit from team <span>"{{selectedTeamName}}"</span> ?</h1>
+            <h1>Are you sure you want to quit from team <span>"{{selectedName}}"</span> ?</h1>
             <ul class="cd-buttons clearfix">
                 <li type="submit" ng-click="quitTeam()">
                     <button class="agree inpop">Yes</button></li>

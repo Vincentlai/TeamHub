@@ -85,37 +85,47 @@
             }
         }
     ]);
-    // module.controller('headerCtrl', [
-    //     '$scope',
-    //     'Auth',
-    //     '$state',
-    //     '$http',
-    //     '$rootScope',
-    //     function ($scope, Auth, $state, $http, $rootScope) {
-    //
-    //     }
-    // ]);
+    module.controller('headerController', [
+        '$scope',
+        'Auth',
+        '$state',
+        '$http',
+        '$rootScope',
+        function ($scope, Auth, $state, $http, $rootScope) {
+        }
+    ]);
     module.controller('postController', [
             '$scope',
             'postList',
-            '$localStorage',
             '$state',
             '$http',
             '$timeout',
-            function ($scope, postList, $localStorage, $state, $http, $timeout) {
+            '$rootScope',
+            function ($scope, postList, $state, $http, $timeout, $rootScope) {
+                /*
+                 keys in post list item
+                 comments   Array
+                 like
+                 nickname
+                 creator_id
+                 post_id
+                 text
+                 time
+                 */
                 $scope.postList = postList;
-                console.log(typeof(postList[0].time));
+                $scope.numOfPosts = $scope.postList.length;
                 $scope.createPost = function () {
-                    $http.post('/posts/post',{
+                    $http.post('/posts/post', {
                         text: $scope.input.description,
-                        team_id: $localStorage.selectedTeam.id})
+                        team_id: $rootScope.selectedTeamId
+                    })
                         .then(
                             function (res) {
                                 if (res.data.code == 1) {
                                     $scope.closeForm('create-post');
                                     $timeout(
                                         function () {
-                                            $state.transitionTo($state.current.name, null,
+                                            $state.transitionTo($state.current.name, {team_id: $rootScope.selectedTeamId},
                                                 {reload: $state.current.name, inherit: false, notify: true});
                                             delete $scope.input;
                                         }, 500);
@@ -131,11 +141,72 @@
                                 console.log('error in creating post ' + error);
                             }
                         )
+                };
+                $scope.deletePost = function (id) {
+                    console.log('delete post clicked' + id);
+                    $http.delete('/posts/delete?post_id=' + id)
+                        .then(
+                            function (res) {
+                                if (res.data.code == 1) {
+                                    $scope.closeForm('delete-post');
+                                    $timeout(function () {
+                                        $state.transitionTo($state.current.name, {team_id: $rootScope.selectedTeamId},
+                                            {reload: $state.current.name, inherit: false, notify: true});
+                                        delete $scope.selectedId;
+                                    }, 500);
+                                } else {
+                                    $scope.msg = res.data.msg;
+                                    $scope.error = true;
+                                    $timeout(function () {
+                                        $scope.error = false;
+                                        delete $scope.msg;
+                                    }, 4000);
+                                    console.log('cannot delete post');
+                                }
+                            }, function (error) {
+                                console.log('error in delete post ' + error);
+                            }
+                        )
+                };
+                $scope.likeOrUnlike = function (id, flag, index) {
+                    $scope.index = index;
+                    $http.post('/posts/likeOrUnlike', {
+                        post_id: id,
+                        flag: flag })
+                        .then(
+                            function (res) {
+                                if (res.data.code == 1){
+                                    $scope.postList[$scope.index].likes.unshift(
+                                        {
+                                            user_id: $scope.user.user_id,
+                                            nickname: $scope.user.nickname
+                                        }
+                                    );
+                                    $scope.postList[$scope.index].isLiked = true;
+                                }else if(res.data.code == 2){
+                                    // unlike confirmed
+                                    var j;
+                                    for(var i = 0; i <= $scope.postList[$scope.index].likes.length; i++){
+                                        if($scope.postList[$scope.index].likes[i].user_id == $scope.user.user_id){
+                                            j = i;
+                                            break;
+                                        }
+                                    }
+                                    $scope.postList[$scope.index].likes.splice(j, 1);
+                                    $scope.postList[$scope.index].isLiked = false;
+                                }else {
+                                    console.log('cannot like or unlike');
+                                }
+                            }, function (error) {
+                                console.log('error in like or unlike ' + error);
+                            }
+                        )
                 }
-
+    
             }
         ]
     );
+
     module.controller('homeController', [
         '$scope',
         '$rootScope',
@@ -144,101 +215,82 @@
         '$timeout',
         'Auth',
         '$http',
-        '$localStorage',
-        function ($scope, $rootScope, $state, information, $timeout, Auth, $http, $localStorage) {
-
-
-            // $scope.$watch(function () {
-            //     return $state.$current.name;
-            // }, function (newState, oldState) {
-            //     var element = newState.replace('home.', '');
-            //     var openElement = angular.element(document.querySelector('#' + element));
-            //     $(openElement).addClass('open');
-            //     if (newState !== oldState) {
-            //         element = oldState.replace('home.', '');
-            //         var closeElement = angular.element(document.querySelector('#' + element));
-            //         $(closeElement).removeClass('open');
-            //         $(closeElement.children()[1]).slideToggle();
-            //     } else {
-            //         $(openElement.children()[1]).slideToggle();
-            //     }
-            // }, true);
+        function ($scope, $rootScope, $state, information, $timeout, Auth, $http) {
             $scope.teams = information.teams;
             $scope.hasNoTeam = ($scope.teams.length === 0);
             $rootScope.user = information.user;
-            $scope.isLoggedin = $rootScope.user;
+            $rootScope.isLoggedin = $rootScope.user;
+            $scope.openTag = function () {
+                for(var i = 0; i < $scope.teams.length ; i++){
+                    if($scope.teams[i].id == $rootScope.selectedTeamId){
+                        // var element = angular.element(document.querySelector('#team' + i));
+                        // $(element.children()[1]).slideToggle();
+                        $scope.index = i;
+                        $timeout(function () {
+                            $scope.tagSlide('teams' + $scope.index);
+                        },10);
+                        break;
+                    }
+                }
+            };
+
+            $scope.$watch(function () {
+                return $state.$current.name;
+            }, function (newState, oldState) {
+                $scope.isManage = (newState.includes('teams'));
+                $scope.isOverview = (newState.includes('overview'));
+                $scope.isPost = (newState.includes('post'));
+                $scope.isEvent = (newState.includes('event'));
+                $scope.isChat = (newState.includes('chat'));
+                $scope.isFile = (newState.includes('file'));
+
+            });
             /*
              Log out
              */
-            $scope.logout = function () {
+            $rootScope.logout = function () {
+
                 $http.post('/users/logout')
                     .then(
                         function (res) {
                             if (res.data.code == 1) {
                                 Auth.removeCookie();
+                                $scope.clear();
                                 $state.go('login');
                                 console.log('remove user');
                             }
                             Auth.removeCookie();
                             $state.go('login');
+                            return res.data.code;
                         }, function (error) {
                             console.log('Error occurs in Logout' + error);
                         }
                     )
             };
             /*
-             * Open teams tag when page load
-             * */
-            $scope.openTeam = function () {
-                var openElement = angular.element(document.querySelector('#' + 'teams'));
-                $(openElement).addClass('open');
-                $timeout(function () {
-                    $(openElement.children()[1]).slideToggle();
-                }, 300);
-                $timeout(function () {
-                    if($localStorage.selectedTeam){
-                        $('#second-list').addClass('is-visible');
-                    }
-                }, 800);
-            };
-            /*
              Open or close tag
              */
             $scope.tagSlide = function (tagName) {
                 var element = angular.element(document.querySelector('#' + tagName));
-                if ($(element).hasClass('open')) {
+                if( $(element).hasClass('open')){
                     $(element).removeClass('open');
-                } else {
+                }else {
                     $(element).addClass('open');
                 }
                 $(element.children()[1]).slideToggle();
-                // var openElement;
-                // if (lastOpen != null) {
-                //     var closeElement = angular.element(document.querySelector('#' + lastOpen));
-                //     $(closeElement).removeClass('open');
-                //     $(closeElement.children()[1]).slideToggle();
-                //     if (open != lastOpen) {
-                //         openElement = angular.element(document.querySelector('#' + open));
-                //         $(openElement).addClass('open');
-                //         $(openElement.children()[1]).slideToggle();
-                //         lastOpen = open;
-                //     } else {
-                //         lastOpen = null;
-                //     }
-                // } else {
-                //     openElement = angular.element(document.querySelector('#' + open));
-                //     $(openElement).addClass('open');
-                //     $(openElement.children()[1]).slideToggle();
-                //     lastOpen = open;
-                // }
+            };
+
+
+            $scope.isSelected = function (id) {
+                return id === $rootScope.selectedTeamId;
             };
 
             /*
              Show team form
              */
-            $scope.createForm = function (tag, team_id, name, teammates) {
-                $scope.selectedTeamId = team_id;
-                $scope.selectedTeamName = name;
+            $scope.createForm = function (tag, id, name, teammates) {
+                $scope.selectedId = id;
+                $scope.selectedName = name;
                 $scope.selectedTeamTeammates = teammates;
                 $('#' + tag).addClass('is-visible');
             };
@@ -249,8 +301,8 @@
                 if (flag) {
                     delete $scope.input;
                 }
-                delete $scope.selectedTeamId;
-                delete $scope.selectedTeamName;
+                delete $scope.selectedId;
+                delete $scope.selectedName;
                 delete $scope.selectedTeamTeammates;
                 $('#' + tag).removeClass('is-visible');
             };
@@ -280,15 +332,13 @@
                         }
                     )
             };
-
-            /*
-              Show secondary list
-             */
-            $scope.showSndList = function (selected_team, event) {
-                $localStorage.selectedTeam = selected_team;
-                $('#second-list').addClass('is-visible');
-                $(event.target).addClass('important');
+            $scope.changeID = function(id){
+              $rootScope.selectedTeamId = id;
             };
+            $rootScope.clear = function () {
+                delete $rootScope.selectedTeamId;
+            };
+
             /*
              Reload side bar when add or delete team
              */
@@ -298,6 +348,7 @@
                 });
         }
     ]);
+
     module.controller('teamController', [
         '$http',
         '$scope',
@@ -312,7 +363,7 @@
                         .then(
                             function (res) {
                                 var detail;
-                                if(res.data.code == 1){
+                                if (res.data.code == 1) {
                                     detail = {
                                         name: res.data.name,
                                         team_id: res.data.team_id,
@@ -321,7 +372,7 @@
                                         teammates: res.data.users
                                     };
                                     $scope.teamsDetail[$scope.teamsDetail.length] = detail;
-                                }else {
+                                } else {
                                     $scope.teamsDetail[$scope.teamsDetail.length] = {};
                                 }
                             }, function (error) {
@@ -332,7 +383,7 @@
             };
             $scope.deleteTeam = function () {
                 console.log('delete');
-                $http.delete('/teams/delete?team_id=' + $scope.selectedTeamId)
+                $http.delete('/teams/delete?team_id=' + $scope.selectedId)
                     .then(
                         function (res) {
                             if (res.data.code == 1) {
@@ -356,7 +407,7 @@
             };
             $scope.addUser = function () {
                 console.log('addUSER');
-                $scope.input.team_id = $scope.selectedTeamId;
+                $scope.input.team_id = $scope.selectedId;
                 $http.post('/teams/add_user', $scope.input)
                     .then(
                         function (res) {
@@ -381,9 +432,9 @@
             };
             $scope.removeUser = function () {
                 console.log('remove user');
-                $scope.input.team_id = $scope.selectedTeamId;
+                $scope.input.team_id = $scope.selectedId;
                 $http.delete('/teams/remove_user?team_id=' + $scope.input.team_id
-                + '&user_id=' + $scope.input.user_id + '&message=' + $scope.input.message)
+                    + '&user_id=' + $scope.input.user_id + '&message=' + $scope.input.message)
                     .then(
                         function (res) {
                             if (res.data.code == 1) {
@@ -407,7 +458,7 @@
             };
             $scope.quitTeam = function () {
                 console.log('quit');
-                $http.delete('/teams/quit?team_id=' + $scope.selectedTeamId)
+                $http.delete('/teams/quit?team_id=' + $scope.selectedId)
                     .then(
                         function (res) {
                             if (res.data.code == 1) {
@@ -446,7 +497,8 @@
     // ]);
     module.controller('chatController', [
         '$scope',
-        function ($scope) {
+        '$rootScope',
+        function ($scope, $rootScope) {
 
         }
     ]);
