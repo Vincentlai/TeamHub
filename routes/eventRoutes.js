@@ -46,7 +46,7 @@ router.post('/create', function (req, res) {
  *  'code' : respond code
  *  'msg' : respond message
  *  'events' :{ // event json array
- *               '_id' : post_id (use this to delete post )
+ *               '_id' : event_id (use this to delete event later)
  *               'title'
  *               'description' 
  *               'start'
@@ -74,9 +74,9 @@ router.get('/get', function (req, res) {
     });
 });
 
-/* PATH: host_url:8080/events/delete?post_id=1234567890 (DELETE)
+/* PATH: host_url:8080/events/delete?event_id=1234567890 (DELETE)
  *
- * INPUT: 'post_id' : post 
+ * INPUT: 'event_id' : specific event to delete 
  * 
  * OUTPUT: JSON Object that contains
  *  'code' : respond code
