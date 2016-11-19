@@ -138,12 +138,12 @@ exports.getPost = function (sess, team_id, callback) {
                     respond.msg = 'Get posts of ' + team_obj.name + ' successfully';
 
                     var posts_arr = [];
-                    var isLiked = false;
+                    var isLiked;
 
                     for (var i = 0; i < posts.length; i++) {
 
                         var post_time = new Date(posts[i]._id.getTimestamp());
-
+                        isLiked = false;
                         // comments
                         var comments_arr = [];
                         var comments = posts[i].comments;
