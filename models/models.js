@@ -43,6 +43,7 @@ var postSchema = mongoose.Schema({
     }]
 });
 
+
 var eventSchema = mongoose.Schema({
     team_id: String,
     title: String,
@@ -52,6 +53,12 @@ var eventSchema = mongoose.Schema({
     creator_id: String,
     creator_nickname: String
 });
+
+var avatarSchema = mongoose.Schema({
+    user_id: String,
+    data: Buffer,
+    content_type: String
+})
 
 var chatHistorySchema = mongoose.Schema({
     team_id: String,
@@ -67,6 +74,7 @@ var Team = mongoose.model('team', teamSchema);
 var Post = mongoose.model('post', postSchema);
 var Event = mongoose.model('event', eventSchema);
 var ChatHistory = mongoose.model('chat_history', chatHistorySchema);
+var Avatar = mongoose.model('avatar', avatarSchema);
 
 module.exports = {
     User: User,
@@ -74,4 +82,5 @@ module.exports = {
     Post: Post,
     Event: Event,
     ChatHistory: ChatHistory,
+    Avatar: Avatar
 };

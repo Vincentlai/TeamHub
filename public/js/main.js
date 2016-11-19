@@ -17,6 +17,7 @@
         'event',
         'file',
         'material.components.eventCalendar',
+        'iconUpload'
         //'material.components.expansionPanels'
     ]);
     module
