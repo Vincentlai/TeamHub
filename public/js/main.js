@@ -15,6 +15,7 @@
         'socket.io',
         'chat',
         'event',
+        'file',
         'material.components.eventCalendar',
         //'material.components.expansionPanels'
     ]);
@@ -164,7 +165,9 @@
                 .state('home.files', {
                     url: ":team_id/files",
                     views: {
-                        'contains': {templateUrl: 'pages/files.html'}
+                        'contains': {
+                            templateUrl: 'pages/files.html'
+                        }
                     },
                     authenticated: true
                 });

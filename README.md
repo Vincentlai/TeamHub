@@ -1,5 +1,6 @@
 # CMPT 470 FINAL PROJECT GROUP-6
 
+# For Project Checkpoint readme, please see file "readme.txt"
 ## Team Collaboration Web Application
 
 > A web application that helps project teams to collaborate in a fast, dynamic and real-time environment. The primary technologies that we are going to use will be Express.js, Node.js, Angular.js and MongoDB.

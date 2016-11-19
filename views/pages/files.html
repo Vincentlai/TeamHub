@@ -1,5 +1,11 @@
-<div>
-    <h1>
-        hi , i am files.
-    </h1>
-</div>
+	<form ng-controller ="upload"  >
+		<input type="file" 
+			   file-input="files"
+			   multiple/>
+		<button ng-click="upload()">Upload</button>
+		<li ng-repeat="file in files">{{file.name}}</li>
+		
+		{{message}}
+		
+	</form>
+	
