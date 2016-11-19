@@ -11,3 +11,5 @@ node_modules
 .idea
 .vscode
 .DS_Store
+bower_components
+avatars
