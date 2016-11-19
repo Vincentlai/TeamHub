@@ -260,6 +260,7 @@
                                 console.log('remove user');
                             }
                             Auth.removeCookie();
+                            delete $rootScope.isLoggedin;
                             $state.go('login');
                             return res.data.code;
                         }, function (error) {
