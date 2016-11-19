@@ -19,7 +19,8 @@ The "like" function is done, but needs debugging.
 2.Event is partially done (now you can only see the calender printed). 
 The API is done, frontend still in progress.
 
-3.Sharing file API in progress, frontend in progress.
+3.File sharing's API is in progress, frontend in progress while only the buttons 
+are done and selecting files are done(locally).
 ---------------------------------------------
 
 Test accounts provided:
