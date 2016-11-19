@@ -75,7 +75,7 @@
                 console.log(" working ");
                 var createdEvent = {};
 
-                createdEvent.team_id = "???????"
+                createdEvent.team_id = "???????";
                 createdEvent.title = $scope.newEventTitle;
                 createdEvent.start = new Date($scope.eventStartDate.getTime()
                     + $scope.eventStartTimeHour*60*60*1000
@@ -107,7 +107,7 @@
                             console.log('error in create events' + error);
                         }
                     )
-            };
+            }
 
             function currentDay(date){
                 var tempDate = date.getTime();
