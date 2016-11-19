@@ -107,6 +107,7 @@
                  comments   Array
                  like
                  nickname
+                 creator_id
                  post_id
                  text
                  time
@@ -142,28 +143,64 @@
                         )
                 };
                 $scope.deletePost = function (id) {
-                    console.log('delete post clicked');
-                    // $http.delete('/posts/delete?post_id=' + id)
-                    //     .then(
-                    //         function (res) {
-                    //             if (res.data.code == 1) {
-                    //                 $scope.closeForm('delete-team');
-                    //                 $timeout(function () {
-                    //                     $scope.$emit('ChangeTeam', 'home.teams');
-                    //                 }, 500);
-                    //             } else {
-                    //                 $scope.msg = res.data.msg;
-                    //                 $scope.error = true;
-                    //                 $timeout(function () {
-                    //                     $scope.error = false;
-                    //                     delete $scope.msg;
-                    //                 }, 4000);
-                    //                 console.log('cannot delete team');
-                    //             }
-                    //         }, function (error) {
-                    //             console.log('error in delete team ' + error);
-                    //         }
-                    //     )
+                    console.log('delete post clicked' + id);
+                    $http.delete('/posts/delete?post_id=' + id)
+                        .then(
+                            function (res) {
+                                if (res.data.code == 1) {
+                                    $scope.closeForm('delete-post');
+                                    $timeout(function () {
+                                        $state.transitionTo($state.current.name, {team_id: $rootScope.selectedTeamId},
+                                            {reload: $state.current.name, inherit: false, notify: true});
+                                        delete $scope.selectedId;
+                                    }, 500);
+                                } else {
+                                    $scope.msg = res.data.msg;
+                                    $scope.error = true;
+                                    $timeout(function () {
+                                        $scope.error = false;
+                                        delete $scope.msg;
+                                    }, 4000);
+                                    console.log('cannot delete post');
+                                }
+                            }, function (error) {
+                                console.log('error in delete post ' + error);
+                            }
+                        )
+                };
+                $scope.likeOrUnlike = function (id, flag, index) {
+                    $scope.index = index;
+                    $http.post('/posts/likeOrUnlike', {
+                        post_id: id,
+                        flag: flag })
+                        .then(
+                            function (res) {
+                                if (res.data.code == 1){
+                                    $scope.postList[$scope.index].likes.unshift(
+                                        {
+                                            user_id: $scope.user.user_id,
+                                            nickname: $scope.user.nickname
+                                        }
+                                    );
+                                    $scope.postList[$scope.index].isLiked = true;
+                                }else if(res.data.code == 2){
+                                    // unlike confirmed
+                                    var j;
+                                    for(var i = 0; i <= $scope.postList[$scope.index].likes.length; i++){
+                                        if($scope.postList[$scope.index].likes[i].user_id == $scope.user.user_id){
+                                            j = i;
+                                            break;
+                                        }
+                                    }
+                                    $scope.postList[$scope.index].likes.splice(j, 1);
+                                    $scope.postList[$scope.index].isLiked = false;
+                                }else {
+                                    console.log('cannot like or unlike');
+                                }
+                            }, function (error) {
+                                console.log('error in like or unlike ' + error);
+                            }
+                        )
                 }
     
             }
@@ -251,8 +288,8 @@
             /*
              Show team form
              */
-            $scope.createForm = function (tag, team_id, name, teammates) {
-                $scope.selectedId = team_id;
+            $scope.createForm = function (tag, id, name, teammates) {
+                $scope.selectedId = id;
                 $scope.selectedName = name;
                 $scope.selectedTeamTeammates = teammates;
                 $('#' + tag).addClass('is-visible');
@@ -265,7 +302,7 @@
                     delete $scope.input;
                 }
                 delete $scope.selectedId;
-                delete $scope.selectedTeamName;
+                delete $scope.selectedName;
                 delete $scope.selectedTeamTeammates;
                 $('#' + tag).removeClass('is-visible');
             };

@@ -45,7 +45,8 @@ router.post('/post', function (req, res) {
  *      'post_id': id of each post
  *      'nickname': publisher name
  *      'text': content
- *      'like': number of likes
+ *      'likes': number of likes
+ *      'isLiked: is the current user liked this post or not
  *      'time': date_time posted
  *      'comments': [{ (from old to new)
  *              nickname: commenter nickname
@@ -96,6 +97,17 @@ router.delete('/delete', function (req, res) {
     });
 });
 
+router.post('/likeOrUnlike', function (req, res) {
+    var post_id = req.body.post_id;
+    var sess = req.session;
+    var flag = req.body.flag;
+
+    post.likeOrUnlike(sess, post_id, flag, function (found) {
+        console.log(found);
+        res.json(found);
+    });
+});
+
 /* PATH: host_url:8080/posts/comment (POST)
  *
  * INPUT: 'post_id' : specific post to comment
@@ -125,5 +137,7 @@ router.post('/comment', function (req, res) {
         res.json(found);
     });
 });
+
+
 
 module.exports = router;
