@@ -308,10 +308,9 @@ router.get('/download_avatar', function (req, res) {
                 res.send(avatar_obj.data);
 
             } else {
-                res.json({
-                    "code": "-1",
-                    "msg": "Invalid user_id or this user has not yet uploaded an avatar"
-                });
+                var path = require('path');
+                var appDir = path.dirname(require.main.filename);
+                res.sendFile(appDir + "/public/images/default_avatar.jpg");
             }
         });
 
