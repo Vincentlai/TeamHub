@@ -26,7 +26,7 @@ app.controller('MyCtrl', ['$scope', 'Upload', '$timeout', '$http', '$rootScope',
     $scope.upload = function (dataUrl, name) {
         //console.log("upload-> dataUrl: " + dataUrl + " name: " + name);
         Upload.upload({
-            url: 'http://localhost:8080/users/upload_avatar',
+            url: '/users/upload_avatar',
             data: {
                 file: Upload.dataUrltoBlob(dataUrl, name)
             },
