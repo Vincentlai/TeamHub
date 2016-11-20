@@ -430,7 +430,7 @@ a.control-btn {
 }
 a.control-btn i {
   position: absolute;
-  top: 6px;
+  top: 8px;
   left: 10px;
 }
 a.control-btn:hover {
