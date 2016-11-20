@@ -100,7 +100,7 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $http) {
         $scope.dataToSend = "";
 
         $scope.msg_list.push({ index, nickname, msg, time });
-        role_arr.push({ class: "other", src: self_icon });
+        role_arr.push({ class: "self", src: self_icon });
         index++;
     };
 
@@ -126,7 +126,7 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $http) {
                             var time = history[i].time;
                             $scope.msg_list.push({ i, nickname, msg, time });
                             if(history[i].user_id == user_id){
-                                role_arr.push({ class: "other", src: self_icon });
+                                role_arr.push({ class: "self", src: self_icon });
                             
                             }else{
                                 var url = GET_AVATAR_URL + history[i].user_id;

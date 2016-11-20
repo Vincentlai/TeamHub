@@ -91,6 +91,7 @@
 		position: relative;
 		display: block;
 		z-index: 2;
+		margin-top: 11px;
 	}
 	
 	.chat .avatar img {
@@ -121,7 +122,15 @@
 		border-top-left-radius: 0px;
 		box-shadow: -1px 2px 0px #D4D4D4;
 	}
+
+	.self .msg {
+		order: 1;
+		border-top-left-radius: 0px;
+		box-shadow: -1px 2px 0px #D4D4D4;
+		background: #B0E46E;
+	}
 	
+	/*
 	.other:before {
 		content: "";
 		position: relative;
@@ -134,6 +143,7 @@
 		border-left-color: transparent;
 		border-bottom-color: transparent;
 	}
+
 	
 	.self {
 		justify-content: flex-end;
@@ -163,12 +173,13 @@
 		border-top-color: transparent;
 		box-shadow: 0px 2px 0px #D4D4D4;
 	}
+	*/
 	
 	
 	.msg p {
 		font-size: 15px;
 		margin: 0 0 0.2rem 0;
-		color: #777;
+		color: black;
 	}
 	
 	.msg img {
@@ -199,7 +210,7 @@
 	
 	time {
 		font-size: 0.7rem;
-		color: #ccc;
+		color: #b3b3b3;
 		float: left;
 		cursor: default;
 		-webkit-touch-callout: none;
@@ -210,7 +221,7 @@
 	
 	time:before {
 		content: "\f017";
-		color: #ddd;
+		color: #b3b3b3;
 		font-family: FontAwesome;
 		display: inline-block;
 		margin-left: 6px;
@@ -262,7 +273,7 @@
 		position: relative;
 		font-size: 12px;
 		float: left;
-		color: #ccc;
+		color: #b3b3b3;
 	}
 
 	#wrapper{
