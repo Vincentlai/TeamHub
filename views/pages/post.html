@@ -62,15 +62,10 @@
 
         <div class="popUpWindow-container">
             <h1>New Post</h1>
-            <div class="notify " ng-if="error">
-                <div class="notify-msg">
-                    <i class="material-icons">info_outline</i>
-                    <span>{{msg}}</span>
-                </div>
-            </div>
+            <error-notify >
+            </error-notify>
             <div class="pop-form">
                 <form name="postCreateForm" class="md-title">
-
                     <md-input-container class="md-block">
                         <label>Description</label>
                         <textarea type="text" required
@@ -100,14 +95,12 @@
             <a class="popUpWindow-close " ng-click="closeForm('create-post')"><i class="material-icons">clear</i></a>
         </div>
     </div>
+
+
     <div id="delete-post" class="popUpWindow" role="alert" ng-cloak>
         <div class="popUpWindow-container">
-            <div class="notify" ng-if="error">
-                <div class="notify-msg">
-                    <i class="material-icons">info_outline</i>
-                    <span>{{msg}}</span>
-                </div>
-            </div>
+            <error-notify >
+            </error-notify>
             <h1>Are you sure you want to delete this post?</h1>
             <ul class="cd-buttons clearfix">
                 <li type="submit" ng-click="deletePost(selectedId)">

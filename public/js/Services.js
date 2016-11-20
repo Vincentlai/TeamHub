@@ -4,7 +4,6 @@
 (function () {
     var module = angular.module('Services', []);
 
-
     module.factory('Auth', [
         '$http',
         '$cookies',
@@ -70,25 +69,184 @@
                         console.log(e.data);
                     });
             };
-
-        }
-    ]);
-    module.service('PostService',[
-        '$http',
-        '$timeout',
-        '$state',
-        function($http, $timeout, $state){
-            var me = this;
-            me.data = {};
-            me.CreatePost = function (){
-                console.log('CreatePost');
-                // $http.post('/users/post', me.data)
-                //     .then(function (r) {
-                // }
-
-
-
+            me.logout = function (callback) {
+                var url = '/users/logout';
+                $http.post(url)
+                    .then(
+                        function (res) {
+                            Auth.removeCookie();
+                            callback();
+                        }, function (error) {
+                            console.log('Error occurs in Logout' + error);
+                        }
+                    )
             }
+
         }
     ]);
+
+    module.factory('HomeService',[
+        function () {
+            var HomeService = {};
+            HomeService.test = function (a, b, callback) {
+
+                var s = a;
+                var c = b;
+                a = 5;
+                callback(s + c);
+            };
+
+            return HomeService;
+        }
+    ]);
+
+    module.factory('CallApi',[
+        '$http',
+        function ($http) {
+            var CallApi = {};
+
+            var successFun = function (code, msg, callback) {
+                if (code == 1) {
+                    callback(1);
+                } else {
+                    callback(0, msg);
+                }
+            };
+
+            var getApiSuccessFun = function (data, callback) {
+                if (data.code == 1) {
+                    callback(1, data);
+                } else {
+                    callback(0, data.msg);
+                }
+            };
+
+            CallApi.getApi = function (url, callback) {
+                $http.get(url)
+                    .then(
+                        function (res) {
+                            getApiSuccessFun(res.data, function (code, data) {
+                                callback(code, data)
+                            })
+                        }, function (error) {
+                            console.log('error in ' + url + " " + error);
+                        }
+                    )
+            };
+
+            CallApi.postApi = function (url, data, callback) {
+                $http.post(url, data)
+                    .then(
+                        function (res) {
+                            successFun(res.data.code, res.data.msg, function (code, msg) {
+                                callback(code, msg)
+                            })
+                        }, function (error) {
+                            console.log('error in ' + url + " " + error);
+                        }
+                    )
+            };
+
+            CallApi.deleteApi = function (url, callback) {
+                $http.delete(url)
+                    .then(
+                        function (res) {
+                            successFun(res.data.code, res.data.msg, function (code, msg) {
+                                callback(code, msg)
+                            })
+                        }, function (error) {
+                            console.log('error in ' + url + " " + error);
+                        }
+                    )
+            };
+
+            return CallApi;
+        }
+    ]);
+
+    module.service('ErrorService', [
+        '$timeout',
+        function ($timeout) {
+            var me = this;
+            me.displayError = function (msg) {
+                me.msg = msg;
+                me.error = true;
+                $timeout(function () {
+                    me.error = false;
+                    me.msg = null;
+                }, 4000);
+            };
+        }
+    ]);
+
+    module.service('TeamService', [
+        '$http',
+        'CallApi',
+        function ($http, CallApi) {
+            var me = this;
+
+            me.teamsDetail = function (data, callback) {
+                var url = '/teams/team_info?team_id=' + data;
+
+                CallApi.getApi(url, function (code, data) {
+                    var detail;
+                    detail = {
+                        name: data.name,
+                        team_id: data.team_id,
+                        description: data.description,
+                        is_creator: data.r_u_creator,
+                        teammates: data.users
+                    };
+                    if(code){
+                        callback(code, detail);
+                    }else {
+                        callback(code, data.msg);
+                    }
+                })
+            };
+
+            me.createTeam = function (data, callback) {
+                var url = '/teams/create';
+                CallApi.postApi(url, data, function (code, msg) {
+                    callback(code, msg);
+                });
+            };
+
+            me.addUser = function (data, callback) {
+                var url = '/teams/add_user';
+                CallApi.postApi(url, data, function (code, msg) {
+                    callback(code, msg);
+                })
+            };
+
+            me.deleteTeam = function (data, callback) {
+                var url = '/teams/delete?team_id=' + data;
+
+                CallApi.deleteApi(url, function (code, msg) {
+                    callback(code, msg);
+                });
+            };
+
+            me.removeUser = function (data, callback) {
+                var url = '/teams/remove_user?team_id=' + data.team_id
+                    + '&user_id=' + data.user_id + '&message=' + data.message;
+
+                CallApi.deleteApi(url, function (code, msg) {
+                    callback(code, msg);
+                });
+            };
+
+            me.quitTeam = function (data, callback) {
+                var url = '/teams/quit?team_id=' + data;
+
+                CallApi.deleteApi(url, function (code, msg) {
+                    callback(code, msg);
+                });
+            };
+
+
+        }
+    ]);
+
+
 })();

@@ -29,6 +29,7 @@ var teamSchema = mongoose.Schema({
         user_nickname: String,
         action_name: String,
         action_target: String,
+        action_target_id: String,
         target_team_id: String,
         target_team_name: String,
     }]

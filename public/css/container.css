@@ -281,7 +281,8 @@ popUp Window
   width: 50%;
   cursor: pointer;
 }
-.popUpWindow-container .cd-buttons li button.inpop {
+.popUpWindow-container .cd-buttons li button.inpop,
+.popUpWindow-container .cd-buttons li a.inpop {
   width: 100%;
   margin: 0;
   padding: 0;
@@ -298,19 +299,23 @@ popUp Window
   border-radius: 0 0 .25em 0;
   opacity: 1;
 }
-.popUpWindow-container .cd-buttons li button.inpop.agree {
+.popUpWindow-container .cd-buttons li button.inpop.agree,
+.popUpWindow-container .cd-buttons li a.inpop.agree {
   background: #fc7169;
   border-radius: 0 0 0 .25em;
 }
-.popUpWindow-container .cd-buttons li button.inpop:hover {
+.popUpWindow-container .cd-buttons li button.inpop:hover,
+.popUpWindow-container .cd-buttons li a.inpop:hover {
   opacity: .75;
 }
-.popUpWindow-container .cd-buttons li button.inpop:disabled {
+.popUpWindow-container .cd-buttons li button.inpop:disabled,
+.popUpWindow-container .cd-buttons li a.inpop:disabled {
   color: rgba(0, 0, 0, 0.38);
   cursor: default;
   opacity: .65;
 }
-.popUpWindow-container .cd-buttons li button.inpop:focus {
+.popUpWindow-container .cd-buttons li button.inpop:focus,
+.popUpWindow-container .cd-buttons li a.inpop:focus {
   outline: none;
 }
 .popUpWindow-container .popUpWindow-close {

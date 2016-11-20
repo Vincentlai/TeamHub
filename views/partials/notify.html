@@ -1,3 +1,6 @@
-<div class="notification">
-    asdfasdf
+<div class="notify " ng-if="errorNotify.error">
+    <div class="notify-msg">
+        <i class="material-icons">info_outline</i>
+        <span>{{errorNotify.msg}}</span>
+    </div>
 </div>

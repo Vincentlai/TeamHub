@@ -24,6 +24,8 @@ router.post('/create',function(req, res)
 
     var name = req.body.name;
     var description = req.body.description;
+    console.log(name);
+    console.log(description);
     var sess = req.session;
 
     team.create(sess, name, description, function (found) {

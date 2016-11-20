@@ -66,19 +66,23 @@ exports.post = function (sess, team_id, text, callback) {
                 text: text,
                 likes: []
             });
-            newPost.save();
-
-            team_obj.news.unshift(
-                {
-                    user_id: user_id,
-                    user_nickname: sess.nickname,
-                    action_name: 'created new ',
-                    action_target: 'post',
-                    target_team_id: team_id,
-                    target_team_name: team_obj.name
+            newPost.save(function (err, obj) {
+                if(!err){
+                    team_obj.news.unshift(
+                        {
+                            user_id: user_id,
+                            user_nickname: sess.nickname,
+                            action_name: 'created new ',
+                            action_target: 'post',
+                            action_target_id: obj.id,
+                            target_team_id: team_id,
+                            target_team_name: team_obj.name,
+                        }
+                    );
+                    team_obj.save();
                 }
-            );
-            team_obj.save();
+            });
+
             console.log('save new');
             callback({
                 'code': '1',
@@ -177,6 +181,7 @@ exports.getPost = function (sess, team_id, callback) {
 
                         posts_arr.push({
                             'post_id': posts[i]._id,
+                            'team_id': team_id,
                             'nickname': posts[i].nickname,
                             'creator_id': posts[i].user_id,
                             'text': posts[i].text,
@@ -233,7 +238,11 @@ exports.delete = function (sess, post_id, callback) {
             // check if user is the creator of this team
             if (user_id == post_obj.user_id) {
 
-                post_obj.remove();
+                post_obj.remove(function (err, removed) {
+                    if(!err){
+                        console.log(removed);
+                    }
+                });
 
                 callback({
                     'code': '1',
@@ -377,7 +386,7 @@ exports.likeOrUnlike = function (sess, post_id, flag, callback) {
                     if (found) {
                         if (!flag) {
                             //flag = false --> like
-                            post_obj.likes.unshift({
+                            post_obj.likes.push({
                                 'user_id': user_id,
                                 'nickname': sess.nickname,
                             });
@@ -389,10 +398,12 @@ exports.likeOrUnlike = function (sess, post_id, flag, callback) {
                             return;
                         } else {
                             //flag = true --> unlike
-                            post_obj.likes.shift({
-                                'user_id': user_id,
-                                'nickname': sess.nickname,
-                            });
+                            for(var j = 0; j < post_obj.likes.length; j++){
+                                if(post_obj.likes[j].user_id == user_id){
+                                    break;
+                                }
+                            }
+                            post_obj.likes.splice(j, 1);
                             post_obj.save();
                             callback({
                                 'code': '2',

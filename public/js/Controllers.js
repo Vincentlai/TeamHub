@@ -64,8 +64,6 @@
 
                     scope.$watch(attrs.ngModel, function (n, o) {
                         if (n !== o) {
-                            console.log(n);
-                            console.log(o);
                             var url = '/users/is_exist?email=' + n;
                             $http.get(url)
                                 .then(
@@ -91,7 +89,14 @@
         '$state',
         '$http',
         '$rootScope',
-        function ($scope, Auth, $state, $http, $rootScope) {
+        'UserService',
+        function ($scope, Auth, $state, $http, $rootScope, UserService) {
+            $rootScope.logout = function () {
+                UserService.logout(function () {
+                    delete $rootScope.user;
+                    $state.go('login');
+                });
+            };
         }
     ]);
     module.controller('postController', [
@@ -101,7 +106,8 @@
             '$http',
             '$timeout',
             '$rootScope',
-            function ($scope, postList, $state, $http, $timeout, $rootScope) {
+            'ErrorService',
+            function ($scope, postList, $state, $http, $timeout, $rootScope, ErrorService) {
                 /*
                  keys in post list item
                  comments   Array
@@ -114,6 +120,7 @@
                  */
                 $scope.postList = postList;
                 $scope.numOfPosts = $scope.postList.length;
+
                 $scope.createPost = function () {
                     $http.post('/posts/post', {
                         text: $scope.input.description,
@@ -127,15 +134,10 @@
                                         function () {
                                             $state.transitionTo($state.current.name, {team_id: $rootScope.selectedTeamId},
                                                 {reload: $state.current.name, inherit: false, notify: true});
-                                            delete $scope.input;
                                         }, 500);
                                 } else {
-                                    $scope.msg = res.data.msg;
-                                    $scope.error = true;
-                                    $timeout(function () {
-                                        $scope.error = false;
-                                        $scope.msg = null;
-                                    }, 4000);
+                                    $scope.errorNotify = ErrorService;
+                                    ErrorService.displayError(res.data.msg);
                                 }
                             }, function (error) {
                                 console.log('error in creating post ' + error);
@@ -172,10 +174,11 @@
                     $scope.index = index;
                     $http.post('/posts/likeOrUnlike', {
                         post_id: id,
-                        flag: flag })
+                        flag: flag
+                    })
                         .then(
                             function (res) {
-                                if (res.data.code == 1){
+                                if (res.data.code == 1) {
                                     $scope.postList[$scope.index].likes.unshift(
                                         {
                                             user_id: $scope.user.user_id,
@@ -183,18 +186,18 @@
                                         }
                                     );
                                     $scope.postList[$scope.index].isLiked = true;
-                                }else if(res.data.code == 2){
+                                } else if (res.data.code == 2) {
                                     // unlike confirmed
                                     var j;
-                                    for(var i = 0; i <= $scope.postList[$scope.index].likes.length; i++){
-                                        if($scope.postList[$scope.index].likes[i].user_id == $scope.user.user_id){
+                                    for (var i = 0; i <= $scope.postList[$scope.index].likes.length; i++) {
+                                        if ($scope.postList[$scope.index].likes[i].user_id == $scope.user.user_id) {
                                             j = i;
                                             break;
                                         }
                                     }
                                     $scope.postList[$scope.index].likes.splice(j, 1);
                                     $scope.postList[$scope.index].isLiked = false;
-                                }else {
+                                } else {
                                     console.log('cannot like or unlike');
                                 }
                             }, function (error) {
@@ -202,7 +205,7 @@
                             }
                         )
                 }
-    
+
             }
         ]
     );
@@ -213,22 +216,20 @@
         '$state',
         'information',
         '$timeout',
-        'Auth',
-        '$http',
-        function ($scope, $rootScope, $state, information, $timeout, Auth, $http) {
+        'ErrorService',
+        'TeamService',
+        function ($scope, $rootScope, $state, information, $timeout, ErrorService, TeamService) {
             $scope.teams = information.teams;
             $scope.hasNoTeam = ($scope.teams.length === 0);
             $rootScope.user = information.user;
-            $rootScope.isLoggedin = $rootScope.user;
+
             $scope.openTag = function () {
-                for(var i = 0; i < $scope.teams.length ; i++){
-                    if($scope.teams[i].id == $rootScope.selectedTeamId){
-                        // var element = angular.element(document.querySelector('#team' + i));
-                        // $(element.children()[1]).slideToggle();
+                for (var i = 0; i < $scope.teams.length; i++) {
+                    if ($scope.teams[i].id == $rootScope.selectedTeamId) {
                         $scope.index = i;
                         $timeout(function () {
                             $scope.tagSlide('teams' + $scope.index);
-                        },10);
+                        }, 10);
                         break;
                     }
                 }
@@ -243,39 +244,16 @@
                 $scope.isEvent = (newState.includes('event'));
                 $scope.isChat = (newState.includes('chat'));
                 $scope.isFile = (newState.includes('file'));
-
             });
-            /*
-             Log out
-             */
-            $rootScope.logout = function () {
 
-                $http.post('/users/logout')
-                    .then(
-                        function (res) {
-                            if (res.data.code == 1) {
-                                Auth.removeCookie();
-                                $scope.clear();
-                                $state.go('login');
-                                console.log('remove user');
-                            }
-                            Auth.removeCookie();
-                            delete $rootScope.isLoggedin;
-                            $state.go('login');
-                            return res.data.code;
-                        }, function (error) {
-                            console.log('Error occurs in Logout' + error);
-                        }
-                    )
-            };
             /*
              Open or close tag
              */
             $scope.tagSlide = function (tagName) {
                 var element = angular.element(document.querySelector('#' + tagName));
-                if( $(element).hasClass('open')){
+                if ($(element).hasClass('open')) {
                     $(element).removeClass('open');
-                }else {
+                } else {
                     $(element).addClass('open');
                 }
                 $(element.children()[1]).slideToggle();
@@ -290,7 +268,12 @@
              Show team form
              */
             $scope.createForm = function (tag, id, name, teammates) {
-                $scope.selectedId = id;
+                $scope.input = {};
+                if (tag.includes('post')) {
+                    $scope.selectedId = id;
+                } else {
+                    $scope.input.team_id = id;
+                }
                 $scope.selectedName = name;
                 $scope.selectedTeamTeammates = teammates;
                 $('#' + tag).addClass('is-visible');
@@ -298,43 +281,33 @@
             /*
              Close team form
              */
-            $scope.closeForm = function (tag, flag) {
-                if (flag) {
-                    delete $scope.input;
-                }
-                delete $scope.selectedId;
-                delete $scope.selectedName;
-                delete $scope.selectedTeamTeammates;
+            $scope.closeForm = function (tag, reset) {
                 $('#' + tag).removeClass('is-visible');
+                if (reset) {
+                    reset.$setPristine();
+                    reset.$setUntouched();
+                }
             };
 
             $scope.createTeam = function () {
-                console.log('createTeam clicked');
-                $http.post('/teams/create', $scope.team)
-                    .then(
-                        function (res) {
-                            if (res.data.code == 1) {
-                                $scope.closeForm('create-team');
-                                $timeout(
-                                    function () {
-                                        $scope.$emit('ChangeTeam', $state.$current);
-                                        delete $scope.team;
-                                    }, 500);
-                            } else {
-                                $scope.msg = res.data.msg;
-                                $scope.error = true;
-                                $timeout(function () {
-                                    $scope.error = false;
-                                    $scope.msg = null;
-                                }, 4000);
-                            }
-                        }, function (error) {
-                            console.log('error in create teams ' + error);
-                        }
-                    )
+
+                TeamService.createTeam($scope.input, function (r, msg) {
+                    if (r) {
+                        $scope.closeForm('create-team');
+                        $timeout(
+                            function () {
+                                $scope.$emit('ChangeTeam', $state.$current);
+                            }, 500);
+                    } else {
+                        $scope.errorNotify = ErrorService;
+                        ErrorService.displayError(msg);
+                    }
+                });
             };
-            $scope.changeID = function(id){
-              $rootScope.selectedTeamId = id;
+
+
+            $scope.changeID = function (id) {
+                $rootScope.selectedTeamId = id;
             };
             $rootScope.clear = function () {
                 delete $rootScope.selectedTeamId;
@@ -350,32 +323,34 @@
         }
     ]);
 
-    module.controller('overviewController',[
+    module.controller('overviewController', [
         '$scope',
         '$rootScope',
         '$state',
         '$timeout',
         '$http',
-        function ($scope, $rootScope, $state, $timeout, $http) {
+        'HomeService',
+        function ($scope, $rootScope, $state, $timeout, $http, HomeService) {
+
             $scope.loadNews = function () {
                 $scope.news = [];
-                for(var i = 0; i < $scope.teams.length; i++){
+                for (var i = 0; i < $scope.teams.length; i++) {
                     $scope.team = $scope.teams[i];
                     $http.get('/teams/news?team_id=' + $scope.team.id)
                         .then(
                             function (res) {
-                                if(res.data.code == 1){
-                                    console.log(res.data.news.length);
+                                if (res.data.code == 1) {
                                     var news;
-                                    for(var j = 0; j < res.data.news.length; j++){
-                                        var timeStamp = res.data.news[j]._id.toString().substring(0,8);
-                                        var data = new Date( parseInt( timeStamp, 16 ) * 1000 );
+                                    for (var j = 0; j < res.data.news.length; j++) {
+                                        var timeStamp = res.data.news[j]._id.toString().substring(0, 8);
+                                        var data = new Date(parseInt(timeStamp, 16) * 1000);
                                         news = {
                                             user_id: res.data.news[j].user_id,
                                             user_nickname: res.data.news[j].user_nickname,
                                             action_name: res.data.news[j].action_name,
                                             action_target: res.data.news[j].action_target,
-                                            time_in_mili:  res.data.news[j]._id,
+                                            action_target_id: res.data.news[j].action_target_id,
+                                            time_in_mili: res.data.news[j]._id,
                                             time: data,
                                             target_team: res.data.news[j].target_team_name
                                         };
@@ -387,142 +362,94 @@
                             }
                         )
                 }
+                $scope.a = 2;
+                $scope.b = 1;
+                HomeService.test($scope.a, $scope.b, function (r) {
+                    console.log($scope.a);
+                    $scope.c = r;
+                });
 
             };
         }
     ]);
     module.controller('teamController', [
-        '$http',
         '$scope',
         '$timeout',
         '$state',
-        function ($http, $scope, $timeout, $state) {
+        'ErrorService',
+        'TeamService',
+        function ($scope, $timeout, $state, ErrorService, TeamService) {
             $scope.team = {};
+
             $scope.loadTeamDetail = function () {
                 $scope.teamsDetail = [];
                 for (var i = 0; i < $scope.teams.length; i++) {
-                    $http.get('/teams/team_info?team_id=' + $scope.teams[i].id)
-                        .then(
-                            function (res) {
-                                var detail;
-                                if (res.data.code == 1) {
-                                    detail = {
-                                        name: res.data.name,
-                                        team_id: res.data.team_id,
-                                        description: res.data.description,
-                                        is_creator: res.data.r_u_creator,
-                                        teammates: res.data.users
-                                    };
-                                    console.log(typeof(res.data.users));
-                                    $scope.teamsDetail[$scope.teamsDetail.length] = detail;
-                                } else {
-                                    $scope.teamsDetail[$scope.teamsDetail.length] = {};
-                                }
-                            }, function (error) {
-                                console.log('error in get team info ' + error);
-                            }
-                        );
+                    TeamService.teamsDetail($scope.teams[i].id, function (r, data) {
+                        if (r) {
+                            $scope.teamsDetail.push(data);
+                        } else {
+                            $scope.teamsDetail.push({});
+                        }
+                    });
                 }
             };
+
+            /**
+             * Close open form and refresh page when success
+             * @param tag the id of the pop window
+             */
+            var successFunc = function (tag) {
+                $scope.closeForm(tag);
+                $timeout(function () {
+                    $scope.$emit('ChangeTeam', $state.current);
+                }, 500);
+            };
+
             $scope.deleteTeam = function () {
-                console.log('delete');
-                $http.delete('/teams/delete?team_id=' + $scope.selectedId)
-                    .then(
-                        function (res) {
-                            if (res.data.code == 1) {
-                                $scope.closeForm('delete-team');
-                                $timeout(function () {
-                                    $scope.$emit('ChangeTeam', 'home.teams');
-                                }, 500);
-                            } else {
-                                $scope.msg = res.data.msg;
-                                $scope.error = true;
-                                $timeout(function () {
-                                    $scope.error = false;
-                                    delete $scope.msg;
-                                }, 4000);
-                                console.log('cannot delete team');
-                            }
-                        }, function (error) {
-                            console.log('error in delete team ' + error);
-                        }
-                    )
+                TeamService.deleteTeam($scope.input.team_id, function (r, msg) {
+                    if (r) {
+                        successFunc('delete-team');
+                    } else {
+                        $scope.errorNotify = ErrorService;
+                        ErrorService.displayError(msg);
+                    }
+                });
             };
+
             $scope.addUser = function () {
-                console.log('addUSER');
-                $scope.input.team_id = $scope.selectedId;
-                $http.post('/teams/add_user', $scope.input)
-                    .then(
-                        function (res) {
-                            if (res.data.code == 1) {
-                                $scope.closeForm('add-user');
-                                $timeout(function () {
-                                    $scope.$emit('ChangeTeam', 'home.teams');
-                                }, 500);
-                            } else {
-                                $scope.msg = res.data.msg;
-                                $scope.error = true;
-                                $timeout(function () {
-                                    $scope.error = false;
-                                    delete $scope.msg;
-                                }, 4000);
-                                console.log('cannot add user');
-                            }
-                        }, function (error) {
-                            console.log('error in add user ' + error);
-                        }
-                    );
+                TeamService.addUser($scope.input, function (r, msg) {
+                    if (r) {
+                        successFunc('add-user');
+                    } else {
+                        $scope.errorNotify = ErrorService;
+                        ErrorService.displayError(msg);
+                    }
+                });
             };
+
             $scope.removeUser = function () {
-                console.log('remove user');
-                $scope.input.team_id = $scope.selectedId;
-                $http.delete('/teams/remove_user?team_id=' + $scope.input.team_id
-                    + '&user_id=' + $scope.input.user_id + '&message=' + $scope.input.message)
-                    .then(
-                        function (res) {
-                            if (res.data.code == 1) {
-                                $scope.closeForm('remove-user');
-                                $timeout(function () {
-                                    $scope.$emit('ChangeTeam', 'home.teams');
-                                }, 500);
-                            } else {
-                                $scope.msg = res.data.msg;
-                                $scope.error = true;
-                                $timeout(function () {
-                                    $scope.error = false;
-                                    delete $scope.msg;
-                                }, 4000);
-                                console.log('cannot remove user');
-                            }
-                        }, function (error) {
-                            console.log('error in remove user ' + error);
-                        }
-                    );
+                console.log($scope.input);
+                TeamService.removeUser($scope.input, function (r, msg) {
+                    if (r) {
+                        successFunc('remove-user');
+                    } else {
+                        $scope.errorNotify = ErrorService;
+                        ErrorService.displayError(msg);
+                    }
+                });
             };
+
             $scope.quitTeam = function () {
-                console.log('quit');
-                $http.delete('/teams/quit?team_id=' + $scope.selectedId)
-                    .then(
-                        function (res) {
-                            if (res.data.code == 1) {
-                                $scope.closeForm('quit-team');
-                                $timeout(function () {
-                                    $scope.$emit('ChangeTeam', 'home.teams');
-                                }, 500);
-                            } else {
-                                $scope.msg = res.data.msg;
-                                $scope.error = true;
-                                $timeout(function () {
-                                    $scope.error = false;
-                                    delete $scope.msg;
-                                }, 4000);
-                                console.log('cannot quit team');
-                            }
-                        }, function (error) {
-                            console.log('error in quit team ' + error);
-                        }
-                    )
+                TeamService.quitTeam($scope.input.team_id, function (r, msg) {
+                    if (r) {
+                        successFunc('quit-team');
+                    } else {
+                        $scope.errorNotify = ErrorService;
+                        ErrorService.displayError(msg);
+                    }
+                });
             };
+
 
         }
     ]);
@@ -545,5 +472,11 @@
 
         }
     ]);
+
+    module.directive('errorNotify', function () {
+        return {
+            templateUrl: '/partials/notify.html'
+        }
+    })
 
 }());

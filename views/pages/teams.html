@@ -16,44 +16,46 @@
                     Total teammates: {{teamCard.teammates.length}}
                 </h2>
                 <ul class="card-btn clearfix">
-                    <li ng-if=teamCard.is_creator ng-click="createForm('add-user', teamCard.team_id, teamCard.name)">
+                    <li ng-if=teamCard.is_creator
+                        ng-click="createForm('add-user', teamCard.team_id, teamCard.name)">
                         <a>Add User</a></li>
-                    <li ng-if=teamCard.is_creator ng-click="createForm('remove-user', teamCard.team_id, teamCard.name, teamCard.teammates)">
+                    <li ng-if=teamCard.is_creator
+                        ng-click="createForm('remove-user', teamCard.team_id, teamCard.name, teamCard.teammates)">
                         <a class="important">Remove User</a></li>
-                    <li ng-if=teamCard.is_creator ng-click="createForm('delete-team', teamCard.team_id, teamCard.name)">
+                    <li ng-if=teamCard.is_creator
+                        ng-click="createForm('delete-team', teamCard.team_id, teamCard.name)">
                         <a class="important">Delete Team</a></li>
-                    <li ng-if=!teamCard.is_creator ng-click="createForm('quit-team', teamCard.team_id, teamCard.name)">
+                    <li ng-if=!teamCard.is_creator
+                        ng-click="createForm('quit-team', teamCard.team_id, teamCard.name)">
                         <a class="important">Quit from Team</a></li>
                 </ul>
             </div>
 
         </div>
     </div>
+
+    <!-- Delete team form-->
     <div id="delete-team" class="popUpWindow" role="alert" ng-cloak>
         <div class="popUpWindow-container">
-            <div class="notify" ng-if="error">
-                <div class="notify-msg">
-                    <i class="material-icons">info_outline</i>
-                    <span>{{msg}}</span>
-                </div>
-            </div>
             <h1>Are you sure you want to delete team <span>"{{selectedName}}"</span> ?</h1>
+            <error-notify >
+            </error-notify>
             <ul class="cd-buttons clearfix">
-                <li type="submit" ng-click="deleteTeam()"><button class="agree inpop">Yes</button></li>
-                <li><button class="inpop" ng-click="closeForm('delete-team')">No</button></li>
+                <li ng-click="deleteTeam()"><button type="submit" class="agree inpop">Yes</button></li>
+                <li><button type="reset" class="inpop" ng-click="closeForm('delete-team')">No</button></li>
             </ul>
             <a class="popUpWindow-close " ng-click="closeForm('delete-team')"><i class="material-icons">clear</i></a>
         </div>
     </div>
+
+    <!-- Add user form-->
     <div id="add-user" class="popUpWindow" role="alert" ng-cloak>
         <div class="popUpWindow-container">
-            <div class="notify" ng-if="error">
-                <div class="notify-msg">
-                    <i class="material-icons">info_outline</i>
-                    <span>{{msg}}</span>
-                </div>
-            </div>
             <h1>Add User</h1>
+            {{input.email}}
+            {{input.message}}
+            <error-notify >
+            </error-notify>
             <div class="pop-form">
                 <form name="addUserForm" class="md-title">
 
@@ -99,24 +101,22 @@
                         <li type="submit" ng-click="addUser()">
                             <button ng-disabled="addUserForm.$invalid" class="agree inpop">Add</button>
                         </li>
-                        <li><button class="inpop" ng-click="closeForm('add-user', true)">Cancel</button></li>
+                        <li><button class="inpop" ng-click="closeForm('add-user', addUserForm)">Cancel</button></li>
                     </ul>
                 </form>
 
             </div>
-            <a class="popUpWindow-close " ng-click="closeForm('add-user', true)"><i class="material-icons">clear</i></a>
+            <a class="popUpWindow-close " ng-click="closeForm('add-user', addUserForm)"><i class="material-icons">clear</i></a>
         </div>
     </div>
 
+    <!-- Remove user form-->
     <div id="remove-user" class="popUpWindow" role="alert" ng-cloak>
         <div class="popUpWindow-container">
-            <div class="notify" ng-if="error">
-                <div class="notify-msg">
-                    <i class="material-icons">info_outline</i>
-                    <span>{{msg}}</span>
-                </div>
-            </div>
+
             <h1>Remove User</h1>
+            <error-notify >
+            </error-notify>
             <div class="pop-form">
                 <form name="removeUserForm" class="md-title">
 
@@ -155,26 +155,25 @@
                     </md-input-container>
                     <ul class="cd-buttons clearfix">
                         <li type="submit" ng-click="removeUser()">
-                            <button ng-disabled="removeUserForm.$invalid" class="agree inpop">Remove</button></li>
-                        <li><button class="inpop" ng-click="closeForm('remove-user', true)">Cancel</button></li>
+                            <button ng-disabled="removeUserForm.$invalid" class="agree inpop">Remove</button>
+                        </li>
+                        <li><button class="inpop" ng-click="closeForm('remove-user', removeUserForm)">Cancel</button>
+                        </li>
                     </ul>
                 </form>
-
             </div>
-            <a class="popUpWindow-close " ng-click="closeForm('remove-user', true)"><i class="material-icons">clear</i></a>
+            <a class="popUpWindow-close " ng-click="closeForm('remove-user', removeUserForm)"><i class="material-icons">clear</i></a>
         </div>
 
     </div>
 
+    <!---->
     <div id="quit-team" class="popUpWindow" role="alert" ng-cloak>
         <div class="popUpWindow-container">
-            <div class="notify" ng-if="error">
-                <div class="notify-msg">
-                    <i class="material-icons">info_outline</i>
-                    <span>{{msg}}</span>
-                </div>
-            </div>
+
             <h1>Are you sure you want to quit from team <span>"{{selectedName}}"</span> ?</h1>
+            <error-notify >
+            </error-notify>
             <ul class="cd-buttons clearfix">
                 <li type="submit" ng-click="quitTeam()">
                     <button class="agree inpop">Yes</button></li>
