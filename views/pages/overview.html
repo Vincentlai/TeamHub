@@ -1,8 +1,29 @@
-<div class="cons" data-ng-init="loadNews()">
-    <h1 ng-repeat="item in news | orderBy : '-time_in_mili'">
-        {{item.user_nickname}}  {{item.action_name}}  {{item.action_target}}
-        to {{item.target_team}} on {{item.time}}
-        <br>
-        {{item.action_target_id}}
-    </h1>
+<div class="page-container clearfix" data-ng-init="loadNews()">
+
+    <div class="news-container">
+        <ul>
+            <li class="news clearfix" ng-repeat="item in news | orderBy : '-time_in_mili'">
+                <div class="news-content">
+                    <span class="name">
+                        {{item.user_nickname}}&nbsp
+                    </span>
+                    {{item.action_name}} a
+                    <a class="link">
+                        {{item.action_target}}
+                    </a>
+                    to
+                    <span class="team">
+                        {{item.target_team}}
+                    </span>
+                     {{item.time_in_mili | date}}
+                </div>
+
+            </li>
+        </ul>
+    </div>
+
+    <div class="reminder">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur, error, illum! Cum error, voluptatum. Ad
+        blanditiis dolorem labore maxime pariatur possimus quas qui similique sint. Cum earum eum excepturi itaque?
+    </div>
 </div>

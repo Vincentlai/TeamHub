@@ -67,7 +67,7 @@ var avatarSchema = mongoose.Schema({
     user_id: String,
     data: Buffer,
     content_type: String
-})
+});
 
 var chatHistorySchema = mongoose.Schema({
     team_id: String,

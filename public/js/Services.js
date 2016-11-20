@@ -180,24 +180,23 @@
     ]);
 
     module.service('TeamService', [
-        '$http',
         'CallApi',
-        function ($http, CallApi) {
+        function (CallApi) {
             var me = this;
 
             me.teamsDetail = function (data, callback) {
                 var url = '/teams/team_info?team_id=' + data;
 
                 CallApi.getApi(url, function (code, data) {
-                    var detail;
-                    detail = {
-                        name: data.name,
-                        team_id: data.team_id,
-                        description: data.description,
-                        is_creator: data.r_u_creator,
-                        teammates: data.users
-                    };
                     if(code){
+                        var detail;
+                        detail = {
+                            name: data.name,
+                            team_id: data.team_id,
+                            description: data.description,
+                            is_creator: data.r_u_creator,
+                            teammates: data.users
+                        };
                         callback(code, detail);
                     }else {
                         callback(code, data.msg);
@@ -247,6 +246,5 @@
 
         }
     ]);
-
 
 })();

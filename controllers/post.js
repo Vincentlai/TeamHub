@@ -67,12 +67,12 @@ exports.post = function (sess, team_id, text, callback) {
                 likes: []
             });
             newPost.save(function (err, obj) {
-                if(!err){
+                if (!err) {
                     team_obj.news.unshift(
                         {
                             user_id: user_id,
                             user_nickname: sess.nickname,
-                            action_name: 'created new ',
+                            action_name: 'created',
                             action_target: 'post',
                             action_target_id: obj.id,
                             target_team_id: team_id,
@@ -239,8 +239,21 @@ exports.delete = function (sess, post_id, callback) {
             if (user_id == post_obj.user_id) {
 
                 post_obj.remove(function (err, removed) {
-                    if(!err){
-                        console.log(removed);
+                    if (!err) {
+                        models.Team.findOne({_id: post_obj.team_id}, function (err, team_obj) {
+                                team_obj.news.unshift(
+                                    {
+                                        user_id: user_id,
+                                        user_nickname: sess.nickname,
+                                        action_name: 'deleted',
+                                        action_target: 'post',
+                                        action_target_id: '',
+                                        target_team_id: team_obj._id,
+                                        target_team_name: team_obj.name,
+                                    }
+                                );
+                            team_obj.save();
+                        });
                     }
                 });
 
@@ -398,8 +411,8 @@ exports.likeOrUnlike = function (sess, post_id, flag, callback) {
                             return;
                         } else {
                             //flag = true --> unlike
-                            for(var j = 0; j < post_obj.likes.length; j++){
-                                if(post_obj.likes[j].user_id == user_id){
+                            for (var j = 0; j < post_obj.likes.length; j++) {
+                                if (post_obj.likes[j].user_id == user_id) {
                                     break;
                                 }
                             }

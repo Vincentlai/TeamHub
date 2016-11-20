@@ -1,12 +1,16 @@
 <div class="page-container" ng-cloak data-ng-init="loadTeamDetail()">
-
-    <md-button ng-click="createForm('create-team')" >
-        <!--<i class="material-icons">group_add</i>-->
-        Create A Team
-    </md-button>
+    <div class="page-title">
+        <h1 class="title">
+            Teams: {{numOfTeams}} of {{numOfTeams}}
+        </h1>
+        <a ng-click="createForm('create-team')" class="control-btn">
+            <i class="material-icons">mode_edit</i>
+            New Team
+        </a>
+    </div>
 
     <div class="card-container clearfix">
-        <div class="col-lg-4 col-md-6 col-sm-12 card" ng-repeat="teamCard in teamsDetail" id="{{teamCard.name}}">
+        <div class="card" ng-repeat="teamCard in teamsDetail" id="{{teamCard.name}}">
             <div class="card-content">
                 <h1>{{teamCard.name}}</h1>
                 <h2>

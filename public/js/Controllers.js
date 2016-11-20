@@ -83,6 +83,51 @@
             }
         }
     ]);
+    module.filter('date', [
+        function () {
+            return function (millisecond) {
+                var now = new Date();
+                var timeStamp = millisecond.substring(0, 8);
+                var date = new Date(parseInt(timeStamp, 16) * 1000);
+                if(now.getFullYear() > date.getFullYear()){
+                    if(now.getFullYear() - date.getFullYear() == 1){
+                        return "in 1 year ago";
+                    }else {
+                        return "in " + (now.getFullYear() - date.getFullYear()) + ' years ago';
+                    }
+                }
+                if(now.getMonth() > date.getMonth()){
+                    if(now.getMonth() - date.getMonth() == 1){
+                        return "in 1 month ago";
+                    }else {
+                        return "in " + (now.getMonth() - date.getMonth()) + ' months ago';
+                    }
+                }
+                if(now.getDay() > date.getDay()){
+                    if(now.getDay() - date.getDay() == 1){
+                        return "in 1 day ago";
+                    }else {
+                        return "in " + (now.getDay() - date.getDay()) + ' days ago';
+                    }
+                }
+                if(now.getHours() > date.getHours()){
+                    if(now.getHours() - date.getHours() == 1){
+                        return "in 1 hour ago";
+                    }else {
+                        return "in " + (now.getHours() - date.getHours()) + ' hours ago';
+                    }
+                }
+                if(now.getMinutes() > date.getMinutes()){
+                    if(now.getMinutes() - date.getMinutes() == 1){
+                        return "in 1 minute ago";
+                    }else {
+                        return "in " + (now.getMinutes() - date.getMinutes()) + ' minutes ago';
+                    }
+                }
+                return "just now";
+            }
+        }
+    ]);
     module.controller('headerController', [
         '$scope',
         'Auth',
@@ -335,23 +380,25 @@
             $scope.loadNews = function () {
                 $scope.news = [];
                 for (var i = 0; i < $scope.teams.length; i++) {
-                    $scope.team = $scope.teams[i];
-                    $http.get('/teams/news?team_id=' + $scope.team.id)
+                    $http.get('/teams/news?team_id=' + $scope.teams[i].id)
                         .then(
                             function (res) {
                                 if (res.data.code == 1) {
                                     var news;
                                     for (var j = 0; j < res.data.news.length; j++) {
-                                        var timeStamp = res.data.news[j]._id.toString().substring(0, 8);
-                                        var data = new Date(parseInt(timeStamp, 16) * 1000);
+                                        var time;
+                                        if(res.data.news[j].action_target_id == ''){
+                                            time = res.data.news[j]._id;
+                                        }else{
+                                            time = res.data.news[j].action_target_id;
+                                        }
                                         news = {
                                             user_id: res.data.news[j].user_id,
                                             user_nickname: res.data.news[j].user_nickname,
                                             action_name: res.data.news[j].action_name,
                                             action_target: res.data.news[j].action_target,
                                             action_target_id: res.data.news[j].action_target_id,
-                                            time_in_mili: res.data.news[j]._id,
-                                            time: data,
+                                            time_in_mili: time.toString(),
                                             target_team: res.data.news[j].target_team_name
                                         };
                                         $scope.news.unshift(news);
@@ -362,12 +409,6 @@
                             }
                         )
                 }
-                $scope.a = 2;
-                $scope.b = 1;
-                HomeService.test($scope.a, $scope.b, function (r) {
-                    console.log($scope.a);
-                    $scope.c = r;
-                });
 
             };
         }
@@ -380,7 +421,7 @@
         'TeamService',
         function ($scope, $timeout, $state, ErrorService, TeamService) {
             $scope.team = {};
-
+            $scope.numOfTeams = $scope.teams.length;
             $scope.loadTeamDetail = function () {
                 $scope.teamsDetail = [];
                 for (var i = 0; i < $scope.teams.length; i++) {
