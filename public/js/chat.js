@@ -19,8 +19,20 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $http) {
 
     var index = 0;
     var role_arr = [];
-    var self_icon = "http://i.imgur.com/HYcn9xO.png";
-    var other_icon = "http://i.imgur.com/DY6gND0.png";
+    var self_icon = "/images/default_avatar.jpg";
+    const GET_AVATAR_URL = "/users/download_avatar?user_id=";
+
+    // check if user has avatar
+    $http.get('/users/download_avatar')
+        .then(
+        function (res) {
+            if(!res.data.code){
+                self_icon = '/users/download_avatar';
+            }
+        }, function (error) {
+            console.log('error in get team info ' + error);
+        }
+    );
     // generate a GUID
     var uuid = guid();
     // initialize msg list
@@ -46,7 +58,8 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $http) {
             var time = json.time;
 
             $scope.msg_list.push({ index, nickname, msg, time });
-            role_arr.push({ class: "other", src: other_icon });
+            var url = GET_AVATAR_URL + json.user_id;
+            role_arr.push({ class: "other", src: url });
             index++;
         }
     });
@@ -87,15 +100,8 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $http) {
         $scope.dataToSend = "";
 
         $scope.msg_list.push({ index, nickname, msg, time });
-        role_arr.push({ class: "other", src: self_icon });
+        role_arr.push({ class: "self", src: self_icon });
         index++;
-    };
-
-    $scope.emitACK = function emitACK() {
-        $socket.emit('echo-ack', $scope.dataToSend, function (data) {
-            $scope.serverResponseACK = data;
-        });
-        $scope.dataToSend = '';
     };
 
     // check when selected team changes
@@ -119,10 +125,13 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $http) {
                             var msg = history[i].message;
                             var time = history[i].time;
                             $scope.msg_list.push({ i, nickname, msg, time });
-                            if(history[i].user_id == user_id)
-                                role_arr.push({ class: "other", src: self_icon });
-                            else
-                                role_arr.push({ class: "other", src: other_icon });
+                            if(history[i].user_id == user_id){
+                                role_arr.push({ class: "self", src: self_icon });
+                            
+                            }else{
+                                var url = GET_AVATAR_URL + history[i].user_id;
+                                role_arr.push({ class: "other", src: url });
+                            }
                         }
 
                     } else {

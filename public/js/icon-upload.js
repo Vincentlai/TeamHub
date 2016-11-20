@@ -1,20 +1,10 @@
 var app = angular.module('iconUpload', ['ngFileUpload', 'ngImgCrop']);
 
-app.controller('MyCtrl', ['$scope', 'Upload', '$timeout', '$http', function ($scope, Upload, $timeout, $http) {
+app.controller('MyCtrl', ['$scope', 'Upload', '$timeout', '$http', '$rootScope',
+ function ($scope, Upload, $timeout, $http, $rootScope) {
 
-    /* Check whether user already has avatar */
-    $http.get('/users/download_avatar')
-        .then(
-        function (res) {
-            if(!res.data.code){ //
-                $scope.current_avatar = '/users/download_avatar';
-            }else{
-                $scope.current_avatar = '/images/default_avatar.jpg';
-            }
-        }, function (error) {
-            console.log('error in get team info ' + error);
-        }
-    );
+    /* Default */
+    $scope.current_avatar = '/users/download_avatar?user_id=' + $rootScope.user.user_id;
 
     /* Crop */
     $scope.myCroppedImage = '';
@@ -36,7 +26,7 @@ app.controller('MyCtrl', ['$scope', 'Upload', '$timeout', '$http', function ($sc
     $scope.upload = function (dataUrl, name) {
         //console.log("upload-> dataUrl: " + dataUrl + " name: " + name);
         Upload.upload({
-            url: 'http://localhost:8080/users/upload_avatar',
+            url: '/users/upload_avatar',
             data: {
                 file: Upload.dataUrltoBlob(dataUrl, name)
             },

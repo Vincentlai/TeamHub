@@ -644,9 +644,9 @@ exports.getChatHistory = function(sess, team_id, callback) {
 
             models.ChatHistory.find({ team_id: team_id }, function(err, history) {
 
-                // temp solution get 20 message only
-                if(history.length > 20){
-                    history = history.slice(history.length - 20, history.length);
+                // temp solution get 50 message only
+                if(history.length > 50){
+                    history = history.slice(history.length - 50, history.length);
                 }
 
                 if(history.length != 0){
