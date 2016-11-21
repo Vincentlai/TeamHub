@@ -53,7 +53,7 @@ exports.create = function(sess, team_id, title, description, start, end, callbac
             if (!found) {
                 callback({
                     'code': '-2',
-                    'msg': 'You are not belong to this team'
+                    'msg': 'Permission denied'
                 });
                 return;
             }
@@ -124,7 +124,7 @@ exports.getEvents = function(sess, team_id, callback) {
             if (!found) {
                 callback({
                     'code': '-2',
-                    'msg': 'You are not belong to this team'
+                    'msg': 'Permission denied'
                 });
                 return;
             }
@@ -194,7 +194,7 @@ exports.delete = function(sess, event_id, callback) {
 
                 callback({
                     'code': '-2',
-                    'msg': 'You are not the creator of this event'
+                    'msg': 'Permission denied'
                 });
             
             }else{

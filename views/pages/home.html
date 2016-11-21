@@ -78,17 +78,15 @@
 
         <div class="popUpWindow-container">
             <h1>Create Team</h1>
-            <div class="notify " ng-if="error">
-                <div class="notify-msg">
-                    <i class="material-icons">info_outline</i>
-                    <span>{{msg}}</span>
-                </div>
-            </div>
+            <error-notify >
+            </error-notify>
             <div class="pop-form">
                 <form name="teamCreateForm" class="md-title">
                     <md-input-container class="md-block">
                         <label>Name</label>
-                        <input required type="text" name="name" ng-model="team.name"
+                        <input required type="text"
+                               name="name"
+                               ng-model="input.name"
                                ng-minlength="6"
                                md-maxlength="36"
                         />
@@ -109,7 +107,7 @@
                         <label>Description</label>
                         <textarea type="text" required
                                   name="description"
-                                  ng-model="team.description"
+                                  ng-model="input.description"
                                   rows="2"
                                   max-rows="5" md-maxlength="256">
                             </textarea>
@@ -124,11 +122,11 @@
                         </div>
                     </md-input-container>
                     <ul class="cd-buttons clearfix">
-                        <li type="submit" ng-click="createTeam('create-team')">
-                            <button ng-disabled="teamCreateForm.$invalid" class="agree inpop">Create</button>
+                        <li ng-click="createTeam('create-team', teamCreateForm)">
+                            <button type="submit" ng-disabled="teamCreateForm.$invalid" class="agree inpop">Create</button>
                         </li>
                         <li>
-                            <button class="inpop" ng-click="closeForm('create-team')">Cancel</button>
+                            <button class="inpop" ng-click="closeForm('create-team', teamCreateForm)">Cancel</button>
                         </li>
                     </ul>
                 </form>

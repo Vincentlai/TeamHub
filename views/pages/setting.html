@@ -50,7 +50,7 @@
 <div ng-controller="MyCtrl">
     <form name="myForm">
 
-        <input class="input" type="file" id="fileInput" />
+        <input class="input" type="file" accept="image/*" id="fileInput" />
         <div class="old_avatar">
             <div><text class="old_avatar_text"> Current Avatar </text></div>
             <div><img ng-src="{{current_avatar}}" /></div>
@@ -63,7 +63,7 @@
         <div>New Avatar</div>
         <div><img class="result" ng-src="{{myCroppedImage}}" /></div>
 
-        <button ng-click="upload(myCroppedImage, picFile.name)">Upload</button>
+        <button ng-click="upload(myCroppedImage)">Upload</button>
 
         <span class="progress" ng-show="progress >= 0">
           <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>

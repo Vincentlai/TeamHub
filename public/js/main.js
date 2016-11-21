@@ -15,7 +15,7 @@
         'socket.io',
         'chat',
         'event',
-        'file',
+        'fileUpload',
         'material.components.eventCalendar',
         'iconUpload'
         //'material.components.expansionPanels'
@@ -69,7 +69,8 @@
                     url: 'overview',
                     views: {
                         'contains': {
-                            templateUrl: 'pages/overview.html'
+                            templateUrl: 'pages/overview.html',
+                            controller: 'overviewController'
                         }
                     },
                     authenticated: true
