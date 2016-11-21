@@ -200,104 +200,178 @@ router.get('/download', function(req, res) {
     });
 });
 
+router.delete('/delete', function(req, res) {
+
+    var user_id = req.session.user_id;
+    var nickname = req.session.nickname;
+    var file_id = req.query.file_id;
+
+    if (!user_id) {
+        res.json({
+            "code": "-1",
+            "msg": "No session, login required"
+        });
+        return;
+    }
+
+    if (!file_id) {
+        res.json({
+            "code": "-10",
+            "msg": "Missing fields"
+        });
+        return;
+    }
+
+    models.File.findOne({ _id: file_id }, function(err, file_obj) {
+
+        if (!file_obj) {
+
+            res.json({
+                "code": "-2",
+                "msg": "Invalid file_id"
+            });
+
+        } else {
+            // check if user has permission to this file
+            models.Team.findOne({ _id: file_obj.team_id }, function(err, team_obj) {
+
+                if (team_obj) {
+
+                    // check if user is owner to this file
+                    if (file_obj.owner_user_id == user_id) {
+
+                        // push NEW to team
+                        team_obj.news.unshift(
+                            {
+                                user_id: user_id,
+                                user_nickname: nickname,
+                                action_name: 'deleted',
+                                action_target: 'file',
+                                action_target_id: '',
+                                target_team_id: team_obj._id,
+                                target_team_name: team_obj.name,
+                            }
+                        );
+                        team_obj.save();
+
+                        // delete file
+                        file_obj.remove();
+
+                        res.json({
+                            "code": "1",
+                            "msg": "File has been deleted"
+                        });
+                    } else {
+                        res.json({
+                            "code": "-3",
+                            "msg": "Permission denied"
+                        });
+                    }
+
+                }
+            });
+        }
+    });
+});
+
 router.get('/all', function(req, res) {
 
-        var user_id = req.session.user_id;
-        var team_id = req.query.team_id;
+    var user_id = req.session.user_id;
+    var team_id = req.query.team_id;
 
-        if (!user_id) {
-            res.json({
-                "code": "-1",
-                "msg": "No session, login required"
-            });
-            return;
-        }
-
-        if (!team_id) {
-            res.json({
-                "code": "-10",
-                "msg": "Missing fields"
-            });
-            return;
-        }
-
-        models.Team.findOne({ _id: team_id }, function(err, team_obj) {
-
-            if (!team_obj) {
-
-                res.json({
-                    "code": "-2",
-                    "msg": "Invalid team_id"
-                });
-
-            } else {
-
-                // check if user is belong to this team
-                var found = false;
-                for (var i = 0; i < team_obj.users.length; i++) {
-                    if (team_obj.users[i].id == user_id) {
-                        found = true;
-                        break;
-                    }
-                }
-                if (!found) {
-                    console.log("-> file upload failed 3\n");
-                    res.json({
-                        'code': '-3',
-                        'msg': 'Permission denied'
-                    });
-                    return;
-                }
-
-                models.File.find({ team_id: team_id }, function(err, files) {
-
-                    if(files){
-                        
-                        var list = [];
-
-                        for(var i=0; i<files.length; i++){
-
-                            var upload_time = new Date(files[i]._id.getTimestamp());
-
-                            list.push({
-                                file_id: files[i]._id,
-                                owner_user_id: files[i].owner_user_id,
-                                owner_nickname: files[i].owner_nickname,
-                                file_name: files[i].file_name, // full name including suffix
-                                file_size: files[i].file_size, // in Bytes
-                                time: upload_time.toDateString() + " " + upload_time.toTimeString().substring(0, 8)
-                            });
-                        }
-
-                        res.json({
-                            'code': '1',
-                            'msg': 'Get file list successfully',
-                            'files': list
-                        });
-
-                    }else{
-                        res.json({
-                            'code': '-4',
-                            'msg': 'No file found'
-                        });
-                    }
-                });
-            }
+    if (!user_id) {
+        res.json({
+            "code": "-1",
+            "msg": "No session, login required"
         });
+        return;
+    }
+
+    if (!team_id) {
+        res.json({
+            "code": "-10",
+            "msg": "Missing fields"
+        });
+        return;
+    }
+
+    models.Team.findOne({ _id: team_id }, function(err, team_obj) {
+
+        if (!team_obj) {
+
+            res.json({
+                "code": "-2",
+                "msg": "Invalid team_id"
+            });
+
+        } else {
+
+            // check if user is belong to this team
+            var found = false;
+            for (var i = 0; i < team_obj.users.length; i++) {
+                if (team_obj.users[i].id == user_id) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                console.log("-> file upload failed 3\n");
+                res.json({
+                    'code': '-3',
+                    'msg': 'Permission denied'
+                });
+                return;
+            }
+
+            models.File.find({ team_id: team_id }, function(err, files) {
+
+                if (files) {
+
+                    var list = [];
+
+                    for (var i = 0; i < files.length; i++) {
+
+                        var upload_time = new Date(files[i]._id.getTimestamp());
+
+                        list.push({
+                            file_id: files[i]._id,
+                            owner_user_id: files[i].owner_user_id,
+                            owner_nickname: files[i].owner_nickname,
+                            file_name: files[i].file_name, // full name including suffix
+                            file_size: files[i].file_size, // in Bytes
+                            time: upload_time.toDateString() + " " + upload_time.toTimeString().substring(0, 8)
+                        });
+                    }
+
+                    res.json({
+                        'code': '1',
+                        'msg': 'Get file list successfully',
+                        'files': list
+                    });
+
+                } else {
+                    res.json({
+                        'code': '-4',
+                        'msg': 'No file found'
+                    });
+                }
+            });
+        }
     });
+});
 
-    // TODO: get file list for one team
+// TODO: get file list for one team
 
-    // TODO: Check whether file already exist
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
-    //
+// TODO: Check whether file already exist
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 module.exports = router;

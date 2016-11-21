@@ -14,6 +14,29 @@
         background: limegreen;
         width: 0;
     }
+    
+    .list {
+        margin-top: 50px;
+    }
+    
+    .icon {
+        width: 50px;
+        height: 50px;
+        margin-left: 20px;
+    }
+    
+    .wrapper {
+        position: relative;
+    }
+
+    .w1 { 
+        float: left; 
+    }
+
+    .file{
+        margin-bottom: 50px;
+    }
+
 </style>
 
 <div ng-controller="FileCtrl">
@@ -29,4 +52,29 @@
         <span ng-show="result">Upload Successful</span>
         <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
     </form>
+
+    <div class="list">
+
+                <div class="file" ng-repeat="json in file_list" ng-attr-id="{{ 'file_' + $index }}">
+
+                    <div class="w1">
+                        <img class="icon" ng-src="{{getSrc($index)}}" draggable="false" />
+                    </div>
+
+                    <div class="w2">
+                        <div>
+                            <text>{{json.file_name}}</text>
+                            <text>| Size:</text>
+                            <text>{{json.file_size}}</text>
+                            <text>| Uploaded on</text>
+                            <text>{{json.time}}</text>
+                        </div>
+                        <div>
+                            <a class="view_file" ng-click="viewFile($index)" style="cursor: pointer;"> Open </a>
+                            <a download="{{getFileName($index)}}" ng-href="{{getFilePath($index)}}"> Download </a>
+                            <a ng-click="deleteFile($index)" ng-show="showDelete($index)" style="cursor: pointer;"> Delete </a>
+                        </div>
+                    </div>
+                </div>
+    </div>
 </div>
