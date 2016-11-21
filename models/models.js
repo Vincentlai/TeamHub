@@ -68,6 +68,16 @@ var chatHistorySchema = mongoose.Schema({
     message: String
 });
 
+var fileSchema = mongoose.Schema({
+    team_id: String,
+    owner_user_id: String,
+    owner_nickname: String,
+    file_name: String,
+    file_size: Number,
+    data: Buffer,
+    content_type: String
+});
+
 mongoose.connect('mongodb://dev:cmpt470@ec2-52-40-59-253.us-west-2.compute.amazonaws.com:27017/cmpt470db');
 var User = mongoose.model('user', userSchema);
 var Team = mongoose.model('team', teamSchema);
@@ -75,6 +85,7 @@ var Post = mongoose.model('post', postSchema);
 var Event = mongoose.model('event', eventSchema);
 var ChatHistory = mongoose.model('chat_history', chatHistorySchema);
 var Avatar = mongoose.model('avatar', avatarSchema);
+var File = mongoose.model('file', fileSchema);
 
 module.exports = {
     User: User,
@@ -82,5 +93,5 @@ module.exports = {
     Post: Post,
     Event: Event,
     ChatHistory: ChatHistory,
-    Avatar: Avatar
+    File: File
 };

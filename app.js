@@ -31,16 +31,18 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 //create a new route file
-var userRoutes = require('./routes/userRoutes');// a route file that manage the user api
+var userRoutes = require('./routes/userRoutes');
 var teamRoutes = require('./routes/teamRoutes'); 
 var postRoutes = require('./routes/postRoutes'); 
 var eventRoutes = require('./routes/eventRoutes');
+var fileRoutes = require('./routes/fileRoutes');
 
 //set prefix url of route file
-app.use('/users', userRoutes);// all api url starts with /users will config in users.js
+app.use('/users', userRoutes);
 app.use('/teams', teamRoutes);
 app.use('/posts', postRoutes);
 app.use('/events', eventRoutes);
+app.use('/files', fileRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
