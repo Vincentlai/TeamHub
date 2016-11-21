@@ -1,74 +1,64 @@
-<style>
-    .cropArea {
-        background: #E4E4E4;
-        overflow: hidden;
-        width: 500px;
-        height: 500px;
-        position: relative;
-    }
-    
-    .result {
-        position: relative;
-        float: left;
-    }
-    
-    form .progress {
-        line-height: 15px;
-    }
-    
-    .progress {
-        display: inline-block;
-        width: 200px;
-        border: 3px groove #CCC;
-    }
-    
-    .progress div {
-        font-size: smaller;
-        background: limegreen;
-        width: 0;
-    }
-    
-    img-crop {
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width: 100%;
-        height: 100%;
-    }
-    
-    canvas {
-        margin: 0!important;
-    }
-    
-    .old_avatar {
-        float: right;
-        margin-right: 10px;
-    }
-</style>
+<div class="page-container clearfix" ng-controller="settingController" data-ng-init="initeFun()">
 
-
-<div ng-controller="MyCtrl">
-    <form name="myForm">
-
-        <input class="input" type="file" id="fileInput" />
-        <div class="old_avatar">
-            <div><text class="old_avatar_text"> Current Avatar </text></div>
-            <div><img ng-src="{{current_avatar}}" /></div>
+    <div class="setting-container">
+        <div class="current-avatar">
+            <img ng-src="{{current_avatar}}" />
+            <a class="ava" ng-click="openTab=!openTab">
+                Upload Avatar
+            </a>
+            <!--<div class="fileUpload ava">-->
+                <!--<span>Upload Avatar</span>-->
+                <!--<input type="file" id="fileInput" class="upload" />-->
+            <!--</div>-->
         </div>
 
-        <div class="cropArea">
-            <img-crop image="myImage" result-image="myCroppedImage" area-type="square"></img-crop>
+        <div class="account">
+
+            <h1>
+                Profile
+            </h1>
+
+            <div class="username">
+               <span class="label">
+                   NickName
+               </span>
+                {{user.nickname}}
+            </div>
+
+            <div class="email">
+                <span class="label">
+                    Email
+                </span>
+                {{user.email}}
+            </div>
+
         </div>
+        <div class="avatar-tab is-visible" >
+             <!--ng-class="{'is-visible': openTab}">-->
+                <h1>
+                    Change Avatar
+                </h1>
 
-        <div>New Avatar</div>
-        <div><img class="result" ng-src="{{myCroppedImage}}" /></div>
+                <div class="cropArea">
+                    <img-crop image="myImage" result-image="myCroppedImage" area-type="square"></img-crop>
+                </div>
 
-        <button ng-click="upload(myCroppedImage, picFile.name)">Upload</button>
+                <div>New Avatar</div>
+                <div><img class="result" ng-src="{{myCroppedImage}}" /></div>
+                 <div class="ava tab-ava">
+                    <span>Select File</span>
+                    <input type="file" id="fileInput" class="upload" />
+                </div>
+                <button ng-click="upload(myCroppedImage, picFile.name)">Upload</button>
 
-        <span class="progress" ng-show="progress >= 0">
-          <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
-        </span>
-        <span ng-show="result">Upload Successful</span>
-        <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
-    </form>
+                <span class="progress" ng-show="progress >= 0">
+                <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
+             </span>
+                <span ng-show="result">Upload Successful</span>
+                <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+        </div>
+    </div>
+
+
+
 </div>

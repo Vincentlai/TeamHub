@@ -344,7 +344,7 @@ popUp Window
 }
 @media only screen and (min-width: 1170px) {
   .popUpWindow-container {
-    margin: 300px auto;
+    margin: 100px auto;
   }
 }
 .page-container {
@@ -650,4 +650,156 @@ a.control-btn:hover {
 .filter:hover .filter-options {
   visibility: visible;
   opacity: 1;
+}
+.setting-container {
+  margin: 30px auto 0 auto;
+  background-color: white;
+  position: relative;
+  height: 700px;
+  width: 900px;
+  border-radius: .25em .25em .4em .4em;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+.setting-container .current-avatar {
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  width: 150px;
+  height: 200px;
+  text-align: center;
+}
+.setting-container .current-avatar img {
+  width: 150px;
+  height: auto;
+  margin-bottom: 25px;
+}
+.setting-container .account {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 650px;
+  height: 500px;
+  padding: 4%;
+}
+.setting-container .account h1 {
+  font-size: 1.5em;
+}
+.setting-container .account div.username,
+.setting-container .account div.email {
+  margin-top: 40px;
+  font-size: 20px;
+}
+.setting-container .account span.label {
+  text-align: left;
+  display: inline-block;
+  width: 150px;
+  padding: 0;
+  font-size: 20px;
+  font-weight: 100;
+  color: #8f9cb5;
+}
+.setting-container .avatar-tab {
+  opacity: 0;
+  visibility: visible;
+  background-color: white;
+  position: absolute;
+  top: 30px;
+  left: 50px;
+  width: 520px;
+  height: 600px;
+  border-radius: .25em .25em .4em .4em;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  -webkit-transform: translate3d(400px, 0, 400px);
+  -moz-transform: translate3d(400px, 0, 400px);
+  -ms-transform: translate3d(400px, 0, 400px);
+  -o-transform: translate3d(400px, 0, 400px);
+  transform: translate3d(400px, 0, 400px);
+  -webkit-transition: all .6s linear;
+  -moz-transition: all .6s linear;
+  -ms-transition: all .6s linear;
+  -o-transition: all .6s linear;
+  transition: all .6s linear;
+}
+.setting-container .avatar-tab.is-visible {
+  opacity: 1;
+  visibility: visible;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+.ava {
+  position: relative;
+  cursor: pointer;
+  display: block;
+  height: 30px;
+  line-height: 30px;
+  overflow: hidden;
+  color: #4D4D4D;
+  border: 0.5px solid #4D4D4D;
+  border-radius: 2px;
+  -webkit-transition: all .5s;
+  -moz-transition: all .5s;
+  -ms-transition: all .5s;
+  -o-transition: all .5s;
+  transition: all .5s;
+}
+.ava:hover {
+  color: white;
+  background-color: teal;
+  border-color: teal;
+}
+.ava input.upload {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.tab-ava {
+  width: 100px;
+}
+.cropArea {
+  overflow: hidden;
+  width: 300px;
+  height: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img-crop {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  height: 100%;
+}
+canvas {
+  margin: 0 auto 0 auto !important;
+}
+.result {
+  position: relative;
+  float: left;
+}
+form .progress {
+  line-height: 15px;
+}
+.progress {
+  display: inline-block;
+  width: 200px;
+  border: 3px groove #CCC;
+}
+.progress div {
+  font-size: smaller;
+  background: limegreen;
+  width: 0;
+}
+.old_avatar {
+  float: right;
+  margin-right: 10px;
 }

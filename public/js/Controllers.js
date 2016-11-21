@@ -83,7 +83,7 @@
             }
         }
     ]);
-    module.filter('date', [
+    module.filter('dateFilter', [
         function () {
             return function (millisecond) {
                 var now = new Date();
