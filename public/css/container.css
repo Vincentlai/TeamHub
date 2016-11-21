@@ -567,6 +567,13 @@ a.control-btn:hover {
 .news-container {
   float: left;
   width: 64%;
+  min-height: 500px;
+  position: relative;
+}
+.news-container .news-header {
+  display: block;
+  height: 50px;
+  margin-top: -2%;
 }
 .news-container ul li.news {
   display: block;
@@ -582,7 +589,65 @@ a.control-btn:hover {
 .news-container ul li.news a.link {
   cursor: pointer;
 }
+.news-container .news-btn {
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  margin: 0;
+  margin-left: -50px;
+  width: 100px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  padding: 0;
+}
 .reminder {
   float: right;
   width: 20%;
+}
+.filter {
+  height: 50px;
+  margin-left: 5px;
+  font-size: 1.2em;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #4D4D4D;
+  display: inline-block;
+  position: relative;
+}
+.filter .filter-name {
+  cursor: pointer;
+  line-height: 50px;
+}
+.filter .filter-options {
+  background-color: white;
+  display: block;
+  position: absolute;
+  right: -50%;
+  border-radius: .25em .25em .4em .4em;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  visibility: hidden;
+  opacity: 0;
+  width: auto;
+  overflow: visible;
+}
+.filter .filter-options a {
+  color: #4D4D4D;
+  min-width: 150px;
+  font-size: .9em;
+  cursor: pointer;
+  padding: 5%;
+  display: block;
+  line-height: 30px;
+  border-bottom: 0.5px solid rgba(225, 225, 225, 0.8);
+}
+.filter .filter-options a:hover {
+  color: teal;
+}
+.filter .filter-options a.selected {
+  color: #fc7169;
+}
+.filter:hover .filter-options {
+  visibility: visible;
+  opacity: 1;
 }

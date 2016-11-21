@@ -1,8 +1,25 @@
 <div class="page-container clearfix" data-ng-init="loadNews()">
 
     <div class="news-container">
+
+        <div class="news-header">
+            <div class="filter">
+                <div class="filter-name">
+                    {{filter_team_name}}
+                    <i class="material-icons drop-down">expand_more</i>
+                </div>
+                <div class="filter-options">
+                    <a ng-click="selectFilter('')">All Teams</a>
+                    <a ng-repeat="team in teams"
+                       ng-click="selectFilter(team.id, team.name)"
+                        ng-class="{'selected': team.id==filter_team_id}">
+                        {{team.name}}
+                    </a>
+                </div>
+            </div>
+        </div>
         <ul>
-            <li class="news clearfix" ng-repeat="item in news | orderBy : '-time_in_mili'">
+            <li class="news clearfix" ng-repeat="item in news | orderBy : '-time_in_mili'  | filter: filterTeam ">
                 <div class="news-content">
                     <span class="name">
                         {{item.user_nickname}}&nbsp
@@ -17,9 +34,14 @@
                     </span>
                      {{item.time_in_mili | date}}
                 </div>
-
             </li>
         </ul>
+        <!--<a class="control-btn news-btn"-->
+           <!--ng-click="loadMore()"-->
+           <!--ng-if="filter_limite>=number_of_selected_filter">-->
+            <!--Load More-->
+        <!--</a>-->
+
     </div>
 
     <div class="reminder">

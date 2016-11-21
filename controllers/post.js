@@ -241,17 +241,17 @@ exports.delete = function (sess, post_id, callback) {
                 post_obj.remove(function (err, removed) {
                     if (!err) {
                         models.Team.findOne({_id: post_obj.team_id}, function (err, team_obj) {
-                                team_obj.news.unshift(
-                                    {
-                                        user_id: user_id,
-                                        user_nickname: sess.nickname,
-                                        action_name: 'deleted',
-                                        action_target: 'post',
-                                        action_target_id: '',
-                                        target_team_id: team_obj._id,
-                                        target_team_name: team_obj.name,
-                                    }
-                                );
+                            team_obj.news.unshift(
+                                {
+                                    user_id: user_id,
+                                    user_nickname: sess.nickname,
+                                    action_name: 'deleted',
+                                    action_target: 'post',
+                                    action_target_id: '',
+                                    target_team_id: team_obj._id,
+                                    target_team_name: team_obj.name,
+                                }
+                            );
                             team_obj.save();
                         });
                     }

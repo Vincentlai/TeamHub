@@ -219,6 +219,9 @@ Header  Navigation
   float: left;
   margin: 13.5px 30px;
 }
+.nav-bar .logo img {
+  cursor: pointer;
+}
 .nav-bar ul {
   float: right;
 }
