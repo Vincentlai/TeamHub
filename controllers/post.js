@@ -54,7 +54,7 @@ exports.post = function (sess, team_id, text, callback) {
             if (!found) {
                 callback({
                     'code': '-2',
-                    'msg': 'You are not belong to this team'
+                    'msg': 'Permission denied'
                 });
                 return;
             }
@@ -138,7 +138,7 @@ exports.getPost = function (sess, team_id, callback) {
             if (!found) {
                 callback({
                     'code': '-2',
-                    'msg': 'You are not belong to this team'
+                    'msg': 'Permission denied'
                 });
                 return;
             }
@@ -266,7 +266,7 @@ exports.delete = function (sess, post_id, callback) {
 
                 callback({
                     'code': '-2',
-                    'msg': 'You are not the poster of this post'
+                    'msg': 'Permission denied'
                 });
 
             }

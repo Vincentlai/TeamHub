@@ -15,7 +15,7 @@
         'socket.io',
         'chat',
         'event',
-        'file',
+        'fileUpload',
         'material.components.eventCalendar',
         'iconUpload'
         //'material.components.expansionPanels'

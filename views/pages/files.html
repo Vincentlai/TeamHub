@@ -1,11 +1,91 @@
-	<form ng-controller ="upload"  >
-		<input type="file" 
-			   file-input="files"
-			   multiple/>
-		<button ng-click="upload()">Upload</button>
-		<li ng-repeat="file in files">{{file.name}}</li>
-		
-		{{message}}
-		
-	</form>
-	
+<style>
+    form .progress {
+        line-height: 15px;
+    }
+    
+    .progress {
+        display: inline-block;
+        width: 200px;
+        border: 3px groove #CCC;
+    }
+    
+    .progress div {
+        font-size: smaller;
+        background: limegreen;
+        width: 0;
+    }
+    
+    .list {
+        margin-top: 50px;
+    }
+    
+    .icon {
+        width: 50px;
+        height: 50px;
+        margin-left: 20px;
+    }
+    
+    .wrapper {
+        position: relative;
+    }
+
+    .w1 { 
+        float: left; 
+    }
+
+    .a {
+        margin-top: 5px;
+    }
+
+    .file{
+        margin-bottom: 50px;
+    }
+
+    .file_name{
+        font-weight: bold;
+        font-size: 17px;
+    }
+
+</style>
+
+<div ng-controller="FileCtrl">
+    <form name="myForm">
+
+        <input class="input" type="file" id="fileInput" />
+
+        <button ng-click="upload()">Upload</button>
+
+        <span class="progress" ng-show="progress >= 0">
+          <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
+        </span>
+        <span ng-show="result">Upload Successful</span>
+        <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+    </form>
+
+    <div class="list">
+
+                <div class="file" ng-repeat="json in file_list" ng-attr-id="{{ 'file_' + $index }}">
+
+                    <div class="w1">
+                        <img class="icon" ng-src="{{getSrc($index)}}" draggable="false" />
+                    </div>
+
+                    <div class="w2">
+                        <div>
+                            <text class="file_name">{{json.file_name}}</text>
+                            <text>| Size:</text>
+                            <text>{{json.file_size}}</text>
+                            <text>| Uploaded by </text>
+                            <text>{{json.owner_nickname}}</text>
+                            <text>on</text>
+                            <text>{{json.time}}</text>
+                        </div>
+                        <div class="a">
+                            <a class="view_file" ng-click="viewFile($index)" style="cursor: pointer;"> Open </a>
+                            <a download="{{getFileName($index)}}" ng-href="{{getFilePath($index)}}"> Download </a>
+                            <a ng-click="deleteFile($index)" ng-show="showDelete($index)" style="cursor: pointer;"> Delete </a>
+                        </div>
+                    </div>
+                </div>
+    </div>
+</div>
