@@ -1,11 +1,32 @@
-	<form ng-controller ="upload"  >
-		<input type="file" 
-			   file-input="files"
-			   multiple/>
-		<button ng-click="upload()">Upload</button>
-		<li ng-repeat="file in files">{{file.name}}</li>
-		
-		{{message}}
-		
-	</form>
-	
+<style>
+    form .progress {
+        line-height: 15px;
+    }
+    
+    .progress {
+        display: inline-block;
+        width: 200px;
+        border: 3px groove #CCC;
+    }
+    
+    .progress div {
+        font-size: smaller;
+        background: limegreen;
+        width: 0;
+    }
+</style>
+
+<div ng-controller="FileCtrl">
+    <form name="myForm">
+
+        <input class="input" type="file" id="fileInput" />
+
+        <button ng-click="upload()">Upload</button>
+
+        <span class="progress" ng-show="progress >= 0">
+          <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
+        </span>
+        <span ng-show="result">Upload Successful</span>
+        <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+    </form>
+</div>

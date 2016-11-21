@@ -72,8 +72,8 @@ var fileSchema = mongoose.Schema({
     team_id: String,
     owner_user_id: String,
     owner_nickname: String,
-    file_name: String,
-    file_size: Number,
+    file_name: String, // full name including suffix
+    file_size: Number, // in Bytes
     data: Buffer,
     content_type: String
 });
@@ -93,5 +93,6 @@ module.exports = {
     Post: Post,
     Event: Event,
     ChatHistory: ChatHistory,
+    Avatar: Avatar,
     File: File
 };
