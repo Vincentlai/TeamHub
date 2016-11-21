@@ -33,8 +33,17 @@
         float: left; 
     }
 
+    .a {
+        margin-top: 5px;
+    }
+
     .file{
         margin-bottom: 50px;
+    }
+
+    .file_name{
+        font-weight: bold;
+        font-size: 17px;
     }
 
 </style>
@@ -63,13 +72,15 @@
 
                     <div class="w2">
                         <div>
-                            <text>{{json.file_name}}</text>
+                            <text class="file_name">{{json.file_name}}</text>
                             <text>| Size:</text>
                             <text>{{json.file_size}}</text>
-                            <text>| Uploaded on</text>
+                            <text>| Uploaded by </text>
+                            <text>{{json.owner_nickname}}</text>
+                            <text>on</text>
                             <text>{{json.time}}</text>
                         </div>
-                        <div>
+                        <div class="a">
                             <a class="view_file" ng-click="viewFile($index)" style="cursor: pointer;"> Open </a>
                             <a download="{{getFileName($index)}}" ng-href="{{getFilePath($index)}}"> Download </a>
                             <a ng-click="deleteFile($index)" ng-show="showDelete($index)" style="cursor: pointer;"> Delete </a>

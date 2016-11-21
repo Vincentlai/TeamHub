@@ -30,6 +30,7 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout', '$http', '$rootScope
                                 $scope.file_list.push({
                                     file_id: file.file_id,
                                     owner_user_id: file.owner_user_id,
+                                    owner_nickname: file.owner_nickname,
                                     file_name: file.file_name,
                                     file_size: bytesToSize(file.file_size),
                                     time: file.time
@@ -118,6 +119,11 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout', '$http', '$rootScope
             var file = evt.currentTarget.files[0];
             file_name = file.name; console.log('name: ' + file.name);
             file_size = file.size; console.log('size: ' + file.size + ' Bytes');
+
+            // reset progress bar & message
+            $scope.progress = 0;
+            $scope.result = false;
+
             var reader = new FileReader();
             reader.onload = function (evt) {
                 $scope.$apply(function ($scope) {
