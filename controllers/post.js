@@ -65,10 +65,25 @@ exports.post = function (sess, team_id, text, callback) {
                 user_id: user_id,
                 text: text,
                 likes: []
-            })
+            });
+            newPost.save(function (err, obj) {
+                if (!err) {
+                    team_obj.news.unshift(
+                        {
+                            user_id: user_id,
+                            user_nickname: sess.nickname,
+                            action_name: 'created',
+                            action_target: 'post',
+                            action_target_id: obj.id,
+                            target_team_id: team_id,
+                            target_team_name: team_obj.name,
+                        }
+                    );
+                    team_obj.save();
+                }
+            });
 
-            newPost.save();
-
+            console.log('save new');
             callback({
                 'code': '1',
                 'msg': 'Post success'
@@ -138,12 +153,12 @@ exports.getPost = function (sess, team_id, callback) {
                     respond.msg = 'Get posts of ' + team_obj.name + ' successfully';
 
                     var posts_arr = [];
-                    var isLiked = false;
+                    var isLiked;
 
                     for (var i = 0; i < posts.length; i++) {
 
                         var post_time = new Date(posts[i]._id.getTimestamp());
-
+                        isLiked = false;
                         // comments
                         var comments_arr = [];
                         var comments = posts[i].comments;
@@ -158,7 +173,7 @@ exports.getPost = function (sess, team_id, callback) {
                         }
 
                         for (var k = 0; k < posts[i].likes.length; k++) {
-                            if(posts[i].likes[k].user_id == user_id){
+                            if (posts[i].likes[k].user_id == user_id) {
                                 isLiked = true;
                                 break;
                             }
@@ -166,6 +181,7 @@ exports.getPost = function (sess, team_id, callback) {
 
                         posts_arr.push({
                             'post_id': posts[i]._id,
+                            'team_id': team_id,
                             'nickname': posts[i].nickname,
                             'creator_id': posts[i].user_id,
                             'text': posts[i].text,
@@ -222,7 +238,24 @@ exports.delete = function (sess, post_id, callback) {
             // check if user is the creator of this team
             if (user_id == post_obj.user_id) {
 
-                post_obj.remove();
+                post_obj.remove(function (err, removed) {
+                    if (!err) {
+                        models.Team.findOne({_id: post_obj.team_id}, function (err, team_obj) {
+                                team_obj.news.unshift(
+                                    {
+                                        user_id: user_id,
+                                        user_nickname: sess.nickname,
+                                        action_name: 'deleted',
+                                        action_target: 'post',
+                                        action_target_id: '',
+                                        target_team_id: team_obj._id,
+                                        target_team_name: team_obj.name,
+                                    }
+                                );
+                            team_obj.save();
+                        });
+                    }
+                });
 
                 callback({
                     'code': '1',
@@ -333,7 +366,7 @@ exports.likeOrUnlike = function (sess, post_id, flag, callback) {
         });
         return;
     }
-    if (!post_id || typeof(flag)==undefined ) {
+    if (!post_id || typeof(flag) == undefined) {
         callback({
             'code': "-10",
             'msg': "Missing fields"
@@ -364,9 +397,9 @@ exports.likeOrUnlike = function (sess, post_id, flag, callback) {
                     }
 
                     if (found) {
-                        if(!flag){
+                        if (!flag) {
                             //flag = false --> like
-                            post_obj.likes.unshift({
+                            post_obj.likes.push({
                                 'user_id': user_id,
                                 'nickname': sess.nickname,
                             });
@@ -376,12 +409,14 @@ exports.likeOrUnlike = function (sess, post_id, flag, callback) {
                                 'msg': 'like success'
                             });
                             return;
-                        }else{
+                        } else {
                             //flag = true --> unlike
-                            post_obj.likes.shift({
-                                'user_id': user_id,
-                                'nickname': sess.nickname,
-                            });
+                            for (var j = 0; j < post_obj.likes.length; j++) {
+                                if (post_obj.likes[j].user_id == user_id) {
+                                    break;
+                                }
+                            }
+                            post_obj.likes.splice(j, 1);
                             post_obj.save();
                             callback({
                                 'code': '2',
@@ -389,7 +424,6 @@ exports.likeOrUnlike = function (sess, post_id, flag, callback) {
                             });
                             return;
                         }
-
 
 
                     } else {
@@ -406,3 +440,4 @@ exports.likeOrUnlike = function (sess, post_id, flag, callback) {
 
 
 };
+

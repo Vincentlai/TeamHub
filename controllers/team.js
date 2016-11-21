@@ -41,7 +41,8 @@ exports.create = function(sess, name, description, callback) {
                 users: [{
                     id: user_id,
                     nickname: nickname
-                }]
+                }],
+                news: []
             });
 
             newTeam.save(function(err, newTeam) {
@@ -82,7 +83,7 @@ exports.create = function(sess, name, description, callback) {
             return;
         }
     });
-}
+};
 
 exports.delete = function(sess, team_id, callback) {
 
@@ -168,7 +169,7 @@ exports.delete = function(sess, team_id, callback) {
             }
         }
     });
-}
+};
 
 exports.addUser = function(sess, team_id, user_id, email, nickname, message, callback) {
 
@@ -262,7 +263,7 @@ exports.addUser = function(sess, team_id, user_id, email, nickname, message, cal
                             // push new notifaction 
                             var nickname = sess.nickname;
 
-                            var msg = "None"
+                            var msg = "None";
                             if (message) {
                                 msg = message;
                             }
@@ -290,7 +291,7 @@ exports.addUser = function(sess, team_id, user_id, email, nickname, message, cal
             }
         }
     });
-}
+};
 
 exports.removeUser = function(sess, team_id, user_id, email, nickname, message, callback) {
 
@@ -419,7 +420,7 @@ exports.removeUser = function(sess, team_id, user_id, email, nickname, message, 
             }
         }
     });
-}
+};
 
 exports.quit = function(sess, team_id, callback) {
 
@@ -515,7 +516,7 @@ exports.quit = function(sess, team_id, callback) {
             }
         }
     });
-}
+};
 
 exports.teamInfo = function(sess, team_id, callback) {
 
@@ -658,6 +659,78 @@ exports.getChatHistory = function(sess, team_id, callback) {
                     callback({
                         'code': '-2',
                         'msg': 'No chat history found'
+                    });
+                }
+            });
+        }
+    });
+};
+
+exports.getNews = function (sess, team_id, callback) {
+    var user_id = sess.user_id;
+
+    if (!user_id) {
+
+        callback({
+            'code': '-9',
+            'msg': 'No session, login required'
+        });
+        return;
+    }
+
+    if (!team_id) {
+
+        callback({
+            'code': '-10',
+            'msg': 'Missing team_id'
+        });
+        return;
+    }
+
+    models.Team.findOne({ _id: team_id }, function(err, team_obj) {
+
+        if (!team_obj) {
+
+            callback({
+                'code': '-1',
+                'msg': 'Invalid team_id'
+            });
+
+        } else {
+
+            models.User.findOne({ _id: user_id }, function(err, user_obj) {
+
+                // check whether user is in the team
+                var found = false;
+                for (var i = 0; i < team_obj.users.length; i++) {
+                    if (team_obj.users[i].id == user_id) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (found) {
+                    if(team_obj.news.length !== 0){
+                        callback({
+                            'code': '1',
+                            'msg': 'Get team news successfully',
+                            'name': team_obj.name,
+                            'team_id': team_id,
+                            'news': team_obj.news
+                        });
+                    }else{
+                        callback({
+                            'code': '2',
+                            'msg': 'no news in this team'
+                        });
+                    }
+
+
+                } else {
+
+                    callback({
+                        'code': '-2',
+                        'msg': 'Permission denied, you are not in this team'
                     });
                 }
             });

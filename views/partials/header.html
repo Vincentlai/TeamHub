@@ -5,11 +5,11 @@
     <div class="logo">
         <img src="/images/logo.png" alt="logo">
     </div>
-    <ul ng-if="!(isLoggedin)">
+    <ul ng-if="!(user)">
         <li><a class="nav-link" ui-sref="login">LOG IN</a></li>
         <li><a class="important" ui-sref="signup">SIGN UP</a></li>
     </ul>
-    <ul ng-if="isLoggedin">
+    <ul ng-if="user">
         <li>
             <md-tooltip md-direction="bottom">
                 Click me to Log out

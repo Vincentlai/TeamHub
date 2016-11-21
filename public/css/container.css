@@ -281,7 +281,8 @@ popUp Window
   width: 50%;
   cursor: pointer;
 }
-.popUpWindow-container .cd-buttons li button.inpop {
+.popUpWindow-container .cd-buttons li button.inpop,
+.popUpWindow-container .cd-buttons li a.inpop {
   width: 100%;
   margin: 0;
   padding: 0;
@@ -298,19 +299,23 @@ popUp Window
   border-radius: 0 0 .25em 0;
   opacity: 1;
 }
-.popUpWindow-container .cd-buttons li button.inpop.agree {
+.popUpWindow-container .cd-buttons li button.inpop.agree,
+.popUpWindow-container .cd-buttons li a.inpop.agree {
   background: #fc7169;
   border-radius: 0 0 0 .25em;
 }
-.popUpWindow-container .cd-buttons li button.inpop:hover {
+.popUpWindow-container .cd-buttons li button.inpop:hover,
+.popUpWindow-container .cd-buttons li a.inpop:hover {
   opacity: .75;
 }
-.popUpWindow-container .cd-buttons li button.inpop:disabled {
+.popUpWindow-container .cd-buttons li button.inpop:disabled,
+.popUpWindow-container .cd-buttons li a.inpop:disabled {
   color: rgba(0, 0, 0, 0.38);
   cursor: default;
   opacity: .65;
 }
-.popUpWindow-container .cd-buttons li button.inpop:focus {
+.popUpWindow-container .cd-buttons li button.inpop:focus,
+.popUpWindow-container .cd-buttons li a.inpop:focus {
   outline: none;
 }
 .popUpWindow-container .popUpWindow-close {
@@ -346,10 +351,12 @@ popUp Window
   background-color: #eeeeee;
 }
 .card-container {
-  margin-top: 1.5em;
-  padding: 1em 3em;
+  margin: 0 auto;
 }
 .card-container .card {
+  display: inline-block;
+  width: 40%;
+  margin: 0 5%;
   padding: 2em 1em;
   cursor: default;
 }
@@ -423,7 +430,7 @@ a.control-btn {
 }
 a.control-btn i {
   position: absolute;
-  top: 6px;
+  top: 8px;
   left: 10px;
 }
 a.control-btn:hover {
@@ -548,7 +555,34 @@ a.control-btn:hover {
     width: 70%;
   }
 }
-.cons img {
-  width: 100%;
-  height: auto;
+.news-container,
+.reminder {
+  margin: 20px 4% 0 4%;
+  padding: 2%;
+  background-color: white;
+  overflow: auto;
+  border-radius: .25em .25em .4em .4em;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+.news-container {
+  float: left;
+  width: 64%;
+}
+.news-container ul li.news {
+  display: block;
+  min-height: 50px;
+  line-height: 50px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(225, 225, 225, 0.8);
+}
+.news-container ul li.news span.name,
+.news-container ul li.news span.team {
+  font-weight: bold;
+}
+.news-container ul li.news a.link {
+  cursor: pointer;
+}
+.reminder {
+  float: right;
+  width: 20%;
 }

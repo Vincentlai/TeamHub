@@ -23,6 +23,15 @@ var teamSchema = mongoose.Schema({
     users: [{
         id: String,
         nickname: String
+    }],
+    news: [{
+        user_id: String,
+        user_nickname: String,
+        action_name: String,
+        action_target: String,
+        action_target_id: String,
+        target_team_id: String,
+        target_team_name: String,
     }]
 });
 
@@ -58,7 +67,7 @@ var avatarSchema = mongoose.Schema({
     user_id: String,
     data: Buffer,
     content_type: String
-})
+});
 
 var chatHistorySchema = mongoose.Schema({
     team_id: String,

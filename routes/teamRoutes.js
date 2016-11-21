@@ -24,6 +24,8 @@ router.post('/create',function(req, res)
 
     var name = req.body.name;
     var description = req.body.description;
+    console.log(name);
+    console.log(description);
     var sess = req.session;
 
     team.create(sess, name, description, function (found) {
@@ -191,6 +193,18 @@ router.get('/team_info',function(req, res)
     var sess = req.session;
 
     team.teamInfo(sess, team_id, function (found) {
+        console.log(found);
+        res.json(found);
+    });
+});
+
+router.get('/news',function(req, res)
+{
+
+    var team_id = req.query.team_id;
+    var sess = req.session;
+    console.log(team_id);
+    team.getNews(sess, team_id, function (found) {
         console.log(found);
         res.json(found);
     });

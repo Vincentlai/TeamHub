@@ -1,7 +1,29 @@
-<div class="cons">
-    <h1>
+<div class="page-container clearfix" data-ng-init="loadNews()">
 
-        THIS PAGE IS UNDER CONSTRUCTION.
+    <div class="news-container">
+        <ul>
+            <li class="news clearfix" ng-repeat="item in news | orderBy : '-time_in_mili'">
+                <div class="news-content">
+                    <span class="name">
+                        {{item.user_nickname}}&nbsp
+                    </span>
+                    {{item.action_name}} a
+                    <a class="link">
+                        {{item.action_target}}
+                    </a>
+                    to
+                    <span class="team">
+                        {{item.target_team}}
+                    </span>
+                     {{item.time_in_mili | date}}
+                </div>
 
-    </h1>
+            </li>
+        </ul>
+    </div>
+
+    <div class="reminder">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur, error, illum! Cum error, voluptatum. Ad
+        blanditiis dolorem labore maxime pariatur possimus quas qui similique sint. Cum earum eum excepturi itaque?
+    </div>
 </div>
