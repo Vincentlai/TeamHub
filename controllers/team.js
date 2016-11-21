@@ -131,7 +131,7 @@ exports.delete = function(sess, team_id, callback) {
 
                 callback({
                     'code': '-2',
-                    'msg': 'You are not the creator of this team'
+                    'msg': 'Permission denied'
                 });
                 return;
 
@@ -214,7 +214,7 @@ exports.addUser = function(sess, team_id, user_id, email, nickname, message, cal
 
                 callback({
                     'code': '-2',
-                    'msg': 'You are not the creator of this team'
+                    'msg': 'Permission denied'
                 });
                 return;
 
@@ -336,7 +336,7 @@ exports.removeUser = function(sess, team_id, user_id, email, nickname, message, 
 
                 callback({
                     'code': '-2',
-                    'msg': 'You are not the creator of this team'
+                    'msg': 'Permission denied'
                 });
                 return;
 
@@ -508,7 +508,7 @@ exports.quit = function(sess, team_id, callback) {
                     } else {
                         callback({
                             'code': '-2',
-                            'msg': 'You are not in this team'
+                            'msg': 'Permission denied'
                         });
                         return;
                     }
@@ -583,7 +583,7 @@ exports.teamInfo = function(sess, team_id, callback) {
 
                     callback({
                         'code': '-2',
-                        'msg': 'Permission denied, you are not in this team'
+                        'msg': 'Permission denied'
                     });
                 }
             });
@@ -636,7 +636,7 @@ exports.getChatHistory = function(sess, team_id, callback) {
             if(!found){
                 callback({
                     'code': '-3',
-                    'msg': 'You are not in this team'
+                    'msg': 'Permission denied'
                 });
                 return;
             }
@@ -730,7 +730,7 @@ exports.getNews = function (sess, team_id, callback) {
 
                     callback({
                         'code': '-2',
-                        'msg': 'Permission denied, you are not in this team'
+                        'msg': 'Permission denied'
                     });
                 }
             });

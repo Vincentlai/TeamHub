@@ -21,13 +21,13 @@ var fs = require('fs');
 
 var storage = multer.diskStorage({
     destination: 'tmp/',
-    filename: function (req, file, cb) {
+    filename: function(req, file, cb) {
         cb(null, req.session.user_id)
     }
 });
 var upload = multer({ storage: storage });
 
-router.post('/upload', upload.single('file'), function (req, res, next) {
+router.post('/upload', upload.single('file'), function(req, res, next) {
     // req.file is the `avatar` file
     // req.body will hold the text fields, if there were any
     var mime = require('mime');
@@ -61,7 +61,7 @@ router.post('/upload', upload.single('file'), function (req, res, next) {
         return;
     }
 
-    models.Team.findOne({ _id: team_id }, function (err, team_obj) {
+    models.Team.findOne({ _id: team_id }, function(err, team_obj) {
 
         if (!team_obj) {
             console.log("-> file upload failed 2\n");
@@ -84,7 +84,7 @@ router.post('/upload', upload.single('file'), function (req, res, next) {
                 console.log("-> file upload failed 3\n");
                 res.json({
                     'code': '-3',
-                    'msg': 'You are not belong to this team'
+                    'msg': 'Permission denied'
                 });
                 return;
             }
@@ -99,9 +99,24 @@ router.post('/upload', upload.single('file'), function (req, res, next) {
                 content_type: content_type
             });
 
-            newFile.save(function (err, obj) {
+            newFile.save(function(err, obj) {
 
                 if (!err) {
+
+                    // push NEW to team
+                    team_obj.news.unshift(
+                        {
+                            user_id: user_id,
+                            user_nickname: nickname,
+                            action_name: 'uploaded',
+                            action_target: 'file',
+                            action_target_id: obj.id,
+                            target_team_id: team_id,
+                            target_team_name: team_obj.name,
+                        }
+                    );
+                    team_obj.save();
+
                     console.log("-> File uploaded successfully \n");
                     res.json({
                         "code": "1",
@@ -121,7 +136,7 @@ router.post('/upload', upload.single('file'), function (req, res, next) {
  * 
  * Output: one single file of any kind
  */
-router.get('/download', function (req, res) {
+router.get('/download', function(req, res) {
 
     var user_id = req.session.user_id;
     var file_id = req.query.file_id;
@@ -142,7 +157,7 @@ router.get('/download', function (req, res) {
         return;
     }
 
-    models.File.findOne({ _id: file_id }, function (err, file_obj) {
+    models.File.findOne({ _id: file_id }, function(err, file_obj) {
 
         if (!file_obj) {
 
@@ -152,26 +167,137 @@ router.get('/download', function (req, res) {
             });
 
         } else {
-            // send file over
-            res.contentType(file_obj.content_type);
-            res.send(file_obj.data);
+            // check if user has permission to this file
+            models.Team.findOne({ _id: file_obj.team_id }, function(err, team_obj) {
 
+                if (team_obj) {
+
+                    // check if user is belong to this team
+                    var found = false;
+                    for (var i = 0; i < team_obj.users.length; i++) {
+                        if (team_obj.users[i].id == user_id) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        console.log("-> file upload failed 3\n");
+                        res.json({
+                            'code': '-3',
+                            'msg': 'Permission denied'
+                        });
+                        return;
+
+                    } else {
+
+                        // send file over
+                        res.contentType(file_obj.content_type);
+                        res.send(file_obj.data);
+                    }
+                }
+            });
         }
     });
 });
 
-// TODO: get file list for one team
+router.get('/all', function(req, res) {
 
-// TODO: Check whether file already exist
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+        var user_id = req.session.user_id;
+        var team_id = req.query.team_id;
+
+        if (!user_id) {
+            res.json({
+                "code": "-1",
+                "msg": "No session, login required"
+            });
+            return;
+        }
+
+        if (!team_id) {
+            res.json({
+                "code": "-10",
+                "msg": "Missing fields"
+            });
+            return;
+        }
+
+        models.Team.findOne({ _id: team_id }, function(err, team_obj) {
+
+            if (!team_obj) {
+
+                res.json({
+                    "code": "-2",
+                    "msg": "Invalid team_id"
+                });
+
+            } else {
+
+                // check if user is belong to this team
+                var found = false;
+                for (var i = 0; i < team_obj.users.length; i++) {
+                    if (team_obj.users[i].id == user_id) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    console.log("-> file upload failed 3\n");
+                    res.json({
+                        'code': '-3',
+                        'msg': 'Permission denied'
+                    });
+                    return;
+                }
+
+                models.File.find({ team_id: team_id }, function(err, files) {
+
+                    if(files){
+                        
+                        var list = [];
+
+                        for(var i=0; i<files.length; i++){
+
+                            var upload_time = new Date(files[i]._id.getTimestamp());
+
+                            list.push({
+                                file_id: files[i]._id,
+                                owner_user_id: files[i].owner_user_id,
+                                owner_nickname: files[i].owner_nickname,
+                                file_name: files[i].file_name, // full name including suffix
+                                file_size: files[i].file_size, // in Bytes
+                                time: upload_time.toDateString() + " " + upload_time.toTimeString().substring(0, 8)
+                            });
+                        }
+
+                        res.json({
+                            'code': '1',
+                            'msg': 'Get file list successfully',
+                            'files': list
+                        });
+
+                    }else{
+                        res.json({
+                            'code': '-4',
+                            'msg': 'No file found'
+                        });
+                    }
+                });
+            }
+        });
+    });
+
+    // TODO: get file list for one team
+
+    // TODO: Check whether file already exist
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
+    //
 
 module.exports = router;
