@@ -164,8 +164,9 @@
                  time
                  */
                 $scope.postList = postList;
+                console.log($scope.postList);
                 $scope.numOfPosts = $scope.postList.length;
-
+                $scope.input = {};
                 $scope.createPost = function () {
                     $http.post('/posts/post', {
                         text: $scope.input.description,
@@ -212,6 +213,31 @@
                                 }
                             }, function (error) {
                                 console.log('error in delete post ' + error);
+                            }
+                        )
+                };
+
+                $scope.createComment = function (id,index) {
+                    console.log('create comment');
+                    $scope.index = index;
+                    $http.post('/posts/comment', {
+                        comment: $scope.input.comment,
+                        post_id: id
+                    })
+                        .then(
+                            function (res) {
+                                if (res.data.code == 1) {
+                                    $scope.postList[$scope.index].comments.push(
+                                        {
+                                            user_id: $scope.user.user_id,
+                                            nickname: $scope.user.nickname
+                                        }
+                                    );
+                                } else {
+                                    console.log(res.data.msg);
+                                }
+                            }, function (error) {
+                                console.log('error in adding comment ' + error);
                             }
                         )
                 };

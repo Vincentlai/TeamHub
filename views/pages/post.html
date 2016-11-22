@@ -50,12 +50,18 @@
                     <i class="material-icons likes">thumb_up</i>
                     <a>{{postCard.likes.length}}</a>
                 </md-button>
+                <ul>
+                    <li ng-repeat="comment in postCard.comments">
+                        <p>
+                            {{comment.nickname}}
+                        </p>
+                        {{comment.comment}}
+                    </li>
+                </ul>ls
                 <div id="create-comment" class="comment" ng-cloak>
 
                     <div class="comment-container">
 
-                        <error-notify >
-                        </error-notify>
                         <div class="comment">
                             <form name="commentCreateForm" class="md-title">
                                 <md-input-container class="md-block">
@@ -65,7 +71,7 @@
                                               ng-model="input.comment"
                                               rows="1"
                                               max-rows="10">
-                            </textarea>
+                                    </textarea>
                                     <div ng-messages="commentCreateForm.comment.$error"
                                          ng-show="commentCreateForm.comment.$dirty || commentCreateForm.comment.$touched">
                                         <div ng-message="required">
@@ -74,15 +80,15 @@
                                     </div>
                                 </md-input-container>
                                 <ul class="cd-buttons clearfix">
-                                    <li type="submit" ng-click="createComment('create-comment')">
-                                        <button ng-disabled="commentCreateForm.$invalid" class="agree inpop">Submit</button>
+                                    <li type="submit" ng-click="createComment(postCard.post_id,$index)" >
+                                        <button ng-disabled="commentCreateForm.$invalid">Submit</button>
                                     </li>
 
                                 </ul>
                             </form>
 
                         </div>
-                        
+
                     </div>
                 </div>
                 <h2>

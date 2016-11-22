@@ -168,7 +168,8 @@ exports.getPost = function (sess, team_id, callback) {
 
                             comments_arr.push({
                                 'nickname': comments[j].nickname,
-                                'time': comment_time.toDateString() + " " + comment_time.toTimeString().substring(0, 8)
+                                'time': comment_time.toDateString() + " " + comment_time.toTimeString().substring(0, 8),
+                                'comment': comments[j].comment
                             });
                         }
 
