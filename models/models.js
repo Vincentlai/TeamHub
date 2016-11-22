@@ -82,7 +82,11 @@ var fileSchema = mongoose.Schema({
     owner_user_id: String,
     owner_nickname: String,
     file_name: String, // full name including suffix
-    file_size: Number, // in Bytes
+    file_size: Number // in Bytes
+});
+
+var fileDataSchema = mongoose.Schema({
+    file_id: String,
     data: Buffer,
     content_type: String
 });
@@ -95,6 +99,7 @@ var Event = mongoose.model('event', eventSchema);
 var ChatHistory = mongoose.model('chat_history', chatHistorySchema);
 var Avatar = mongoose.model('avatar', avatarSchema);
 var File = mongoose.model('file', fileSchema);
+var FileData = mongoose.model('file_data', fileDataSchema);
 
 module.exports = {
     User: User,
@@ -103,5 +108,6 @@ module.exports = {
     Event: Event,
     ChatHistory: ChatHistory,
     Avatar: Avatar,
-    File: File
+    File: File,
+    FileData: FileData
 };

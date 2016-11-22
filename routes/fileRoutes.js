@@ -89,39 +89,74 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
                 return;
             }
 
-            var newFile = new models.File({
-                team_id: team_id,
-                owner_user_id: user_id,
-                owner_nickname: nickname,
-                file_name: file_name,
-                file_size: file_size,
-                data: fs.readFileSync(req.file.path),
-                content_type: content_type
-            });
+            models.File.findOne({ $and: [{ file_name: file_name }, { team_id: team_id }, { owner_user_id: user_id }] }, function(err, file_obj) {
 
-            newFile.save(function(err, obj) {
-
-                if (!err) {
-
-                    // push NEW to team
-                    team_obj.news.unshift(
-                        {
-                            user_id: user_id,
-                            user_nickname: nickname,
-                            action_name: 'uploaded',
-                            action_target: 'file',
-                            action_target_id: obj.id,
-                            target_team_id: team_id,
-                            target_team_name: team_obj.name,
-                        }
-                    );
-                    team_obj.save();
-
-                    console.log("-> File uploaded successfully \n");
+                if (file_obj) {
                     res.json({
-                        "code": "1",
-                        "msg": "File is uploaded to " + team_obj.name
+                        'code': '-4',
+                        'msg': 'You cannot upload the same file twice'
                     });
+                    return;
+
+                } else {
+
+
+                    var newFile = new models.File({
+                        team_id: team_id,
+                        owner_user_id: user_id,
+                        owner_nickname: nickname,
+                        file_name: file_name,
+                        file_size: file_size
+                    });
+
+                    newFile.save(function(err, obj) {
+
+                        if (!err) {
+
+                            var newFileData = new models.FileData({
+                                file_id: obj.id,
+                                data: fs.readFileSync(req.file.path),
+                                content_type: content_type
+                            });
+
+                            newFileData.save(function(err, file_data_obj) {
+
+                                if (!err) {
+
+                                    var upload_time = new Date();
+
+                                    // push NEW to team
+                                    team_obj.news.unshift(
+                                        {
+                                            user_id: user_id,
+                                            user_nickname: nickname,
+                                            action_name: 'uploaded',
+                                            action_target: 'file',
+                                            action_target_id: obj.id,
+                                            target_team_id: team_id,
+                                            target_team_name: team_obj.name,
+                                        }
+                                    );
+                                    team_obj.save();
+
+                                    console.log("-> File uploaded successfully \n");
+
+                                    res.json({
+                                        "code": "1",
+                                        "msg": "File is uploaded to " + team_obj.name,
+                                        "file_id": obj.id,
+                                        "file_name": obj.file_name,
+                                        "owner_user_id": obj.owner_user_id,
+                                        "owner_nickname": obj.owner_nickname,
+                                        "file_size": obj.file_size,
+                                        "time": upload_time.toDateString() + " " + upload_time.toTimeString().substring(0, 8)
+                                    });
+                                }
+
+                            });
+                        }
+                    });
+
                 }
             });
         }
@@ -190,9 +225,15 @@ router.get('/download', function(req, res) {
 
                     } else {
 
-                        // send file over
-                        res.contentType(file_obj.content_type);
-                        res.send(file_obj.data);
+                        models.FileData.findOne({ file_id: file_id }, function(err, file_data_obj) {
+
+                            if (file_data_obj) {
+                                // send file over
+                                res.contentType(file_data_obj.content_type);
+                                res.send(file_data_obj.data);
+                            }
+                        });
+
                     }
                 }
             });
@@ -256,6 +297,14 @@ router.delete('/delete', function(req, res) {
 
                         // delete file
                         file_obj.remove();
+
+                        models.FileData.findOne({ file_id: file_id }, function(err, file_data_obj) {
+
+                            if (file_data_obj) {
+                                // delete file over
+                                file_data_obj.remove();
+                            }
+                        });
 
                         res.json({
                             "code": "1",
@@ -359,19 +408,5 @@ router.get('/all', function(req, res) {
         }
     });
 });
-
-// TODO: get file list for one team
-
-// TODO: Check whether file already exist
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 module.exports = router;
