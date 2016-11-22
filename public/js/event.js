@@ -14,12 +14,45 @@
         function($http,Auth,$state,$scope,$timeout,$rootScope){
             //for event test, after passing the test, using database to access events.
             var newEventDate = new Date(1478592000000);
-            $scope.events = [
-                /*{
+            $scope.events = [];
+            var teamID = $rootScope.selectedTeamId;
+            console.log(teamID);
+            function receiveEventListFromDataBase(){
+                console.log("load event.");
+                console.log($rootScope.selectedTeamId);
+                $http.get('/events/get?team_id=' + teamID)
+                .then(
+                function(response){
+                    if(response.data.code == 1){
+                        console.log("Got event list");
+                        
+                        response.data.events.forEach(function(event){
+                            console.log(event.start);
+                            $scope.events.push({
+                                start: new Date(event.start),
+                                end: new Date(event.end),
+                                title: event.title
+                            });
+                        });
+                        //console.log($scope.events[0]);
+
+                    } else {
+                        console.log("error message in response");
+                        console.log(response.data.code);
+                    }
+                }, function(error) {
+                    console.log('error in get event info' + error);
+                });
+
+            }
+            receiveEventListFromDataBase();
+            console.log($scope.events[0]);
+            /*$scope.events = [
+                {
                     start: newEventDate,
                     end: getDate(0, 0),
                     title: 'Event test'
-                },*/
+                },
                 {
                     start: getDate(0, 10),
                     end: getDate(1, 11),
@@ -55,7 +88,7 @@
                     allDay: true,
                     title: 'Event 7'
                 }
-            ];
+            ];*/
 
             $scope.selected = $scope.events[0];
             $scope.showCreateEventForm = false;
@@ -111,6 +144,8 @@
                         }
                     )
             }
+
+            
 
             function currentDay(date){
                 var tempDate = date.getTime();
