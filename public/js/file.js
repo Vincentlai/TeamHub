@@ -156,6 +156,7 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout', '$http', '$rootScope
             // reset progress bar & message
             $scope.progress = 0;
             $scope.result = false;
+            $scope.errorMsg = false;
 
             var reader = new FileReader();
             reader.onload = function(evt) {
@@ -177,6 +178,8 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout', '$http', '$rootScope
                 return;
             }
 
+            $scope.result = false;
+            $scope.errorMsg = false;
             show_uploading = true;
 
             Upload.upload({
@@ -189,11 +192,13 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout', '$http', '$rootScope
                 },
             }).then(function(response) {
                 $timeout(function() {
+
                     show_uploading = false;
                     var data = response.data;
-                    $scope.result = data;
 
                     if (data.code == '1') {
+
+                        $scope.result = true;
 
                         $scope.file_list.push({
                             file_id: data.file_id,
@@ -204,12 +209,18 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout', '$http', '$rootScope
                             time: data.time,
                             is_deleting: false
                         });
+                    }else{
+                        $scope.errorMsg = true;
+                        $scope.upload_error = data.msg;
                     }
                 });
                 console.log(response.data);
             }, function(response) {
-                if (response.status > 0) $scope.errorMsg = response.status
-                    + ': ' + response.data;
+                if (response.status > 0) {
+                    $scope.errorMsg = true;
+                    $scope.upload_error = "Upload Failed";
+                }
+                
 
             }, function(evt) {
 
