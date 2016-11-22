@@ -283,7 +283,7 @@ exports.addUser = function(sess, team_id, user_id, email, nickname, message, cal
                                             action_target: user_obj.nickname,
                                             action_target_id: user_id,
                                             target_team_id: team_id,
-                                            target_team_name: team_obj.name,
+                                            target_team_name: team_obj.name
                                         }
                                     );
                                     team_obj.save();
@@ -427,7 +427,7 @@ exports.removeUser = function(sess, team_id, user_id, email, nickname, message, 
                                             action_target: user_obj.nickname,
                                             action_target_id: '',
                                             target_team_id: team_obj._id,
-                                            target_team_name: team_obj.name,
+                                            target_team_name: team_obj.name
                                         }
                                     );
                                     team_obj.save();

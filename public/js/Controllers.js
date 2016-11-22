@@ -164,7 +164,6 @@
                  time
                  */
                 $scope.postList = postList;
-                console.log($scope.postList);
                 $scope.numOfPosts = $scope.postList.length;
                 $scope.input = {};
                 $scope.createPost = function () {
@@ -229,8 +228,10 @@
                                 if (res.data.code == 1) {
                                     $scope.postList[$scope.index].comments.push(
                                         {
-                                            user_id: $scope.user.user_id,
-                                            nickname: $scope.user.nickname
+                                            user_id: res.data.user_id,
+                                            nickname: res.data.nickname,
+                                            comment: res.data.comment,
+                                            time: res.data.time
                                         }
                                     );
                                 } else {
@@ -275,7 +276,12 @@
                                 console.log('error in like or unlike ' + error);
                             }
                         )
-                }
+                };
+
+                //click button to show comments
+                $scope.showComments = function(index){
+
+                };
 
             }
         ]

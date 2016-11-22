@@ -138,6 +138,15 @@ router.post('/comment', function (req, res) {
     });
 });
 
+router.get('/get_comments', function (req, res) {
+    var sess = req.session;
+    var post_id = req.query.post_id;
+
+    post.getComments(sess, post_id, function (found) {
+        console.log(found);
+        res.json(found);
+    });
+});
 
 
 module.exports = router;
