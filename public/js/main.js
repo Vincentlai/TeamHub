@@ -99,11 +99,16 @@
                 })
 
                 .state('home.chat', {
-                    url: ':team_id/chat',
+                    url: ':team_id/chat{.*}',
                     views: {
                         'contains': {
                             templateUrl: 'pages/chat.html',
-                            controller: 'Ctrl'
+                            controller: 'ChatController'
+                        }
+                    },
+                    resolve: {
+                        'title': function($rootScope, $stateParams){
+                            $rootScope.selectedTeamId = $stateParams.team_id;
                         }
                     },
                     authenticated: true

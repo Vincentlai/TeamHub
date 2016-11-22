@@ -316,7 +316,6 @@
             $scope.teams = information.teams;
             $scope.hasNoTeam = ($scope.teams.length === 0);
             $rootScope.user = information.user;
-
             $scope.openTag = function () {
                 for (var i = 0; i < $scope.teams.length; i++) {
                     if ($scope.teams[i].id == $rootScope.selectedTeamId) {
