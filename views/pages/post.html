@@ -43,6 +43,7 @@
                 <p class="description">
                     {{postCard.text}}
                 </p>
+
                 <!--like button-->
                 <md-button
                         ng-click="likeOrUnlike(postCard.post_id, postCard.isLiked, $index)"
@@ -51,10 +52,12 @@
                     <i class="material-icons likes">thumb_up</i>
                     <a>{{postCard.likes.length}}</a>
                 </md-button>
+
                 <!--comment button-->
                 <md-button
-                        ng-click="showComments($index)"
+                        ng-click="showComments($index, postCard.post_id)"
                         class="comments-btn">
+                    <i class="material-icons likes">comment</i>
                     <a>{{postCard.comments}}</a>
                 </md-button>
 
@@ -62,81 +65,57 @@
                 <div class="comment-container">
                     <!--create comment input-->
                     <div class="create-comment">
-                        <textarea name="comment" id="" cols="30" rows="10"
+                        <textarea name="comment"
+                                  rows="1"
                                   type="text"
                                   required
-                                  ng-model="input.comment">
-                            add comment
-                        </textarea>
-                        <!--<div type="submit" ng-click="createComment(postCard.post_id,$index)">-->
-                            <!--<button ng-disabled="commentCreateForm.$invalid">Submit</button>-->
-                            <button ng-click="createComment(postCard.post_id,$index)">Submit</button>
-                        <!--</div>-->
+                                  placeholder="Add Comment"
+                                  ng-attr-id="{{'comment-input'+$index}}"></textarea>
+                        <md-button class="md-primary md-raised" ng-click="createComment(postCard.post_id,$index)">Submit</md-button>
                     </div>
                     <!--comment list-->
-                    <!--<div class="comment" ng-repeat="comment in postCard.comments | orderBy : -comment.time">-->
+                    <div class="comment-box" ng-show="postCard.visibleComment">
+                        <div class="comment-list" ng-repeat="comment in postCard.commentList | orderBy: '-time'">
+                            <img class="avatar " src="/images/avatar.png" alt="nickname">
+                            <span class="post-creater">
+                            {{comment.nickname}}
+                            </span>
+                            <span class="create-time">
+                            {{comment.time | dateFilter}}
+                            </span>
+                            <p class="description">
+                            {{comment.comment}}
+                            </p>
+                        </div>
+                    </div>
 
-                        <!--<img class="avatar" src="/images/avatar.png" alt="nickname">-->
-                        <!--<span class="post-creater">-->
-                            <!--{{comment.nickname}}-->
-                        <!--</span>-->
-
-                        <!--<div class="more">-->
-                            <!--<ul>-->
-                                <!--<li ng-if="comment.nickname==user.nickname">-->
-                                    <!--<md-button class="md-icon-button" aria-label="More">-->
-                                        <!--<i class="material-icons">mode_edit</i>-->
-                                    <!--</md-button>-->
-                                    <!--<md-tooltip md-direction="top">-->
-                                        <!--Edit-->
-                                    <!--</md-tooltip>-->
-                                <!--</li>-->
-                                <!--<li ng-if="comment.nickname==user.nickname">-->
-                                    <!--<md-button class="md-icon-button" aria-label="More"-->
-                                               <!--ng-click="createForm('delete-post', postCard.post_id)">-->
-                                        <!--<i class="material-icons delete">delete</i>-->
-                                    <!--</md-button>-->
-                                    <!--<md-tooltip md-direction="top">-->
-                                        <!--Delete-->
-                                    <!--</md-tooltip>-->
-                                <!--</li>-->
-                            <!--</ul>-->
-                        <!--</div>-->
-
-                        <!--<span class="create-time">-->
-                            <!--{{comment.time}}-->
-                        <!--</span>-->
-                        <!--<p class="description">-->
-                            <!--{{comment.comment}}-->
-                        <!--</p>-->
-                    <!--</div>-->
 
                 </div>
                 <!--<div class="comment-container" ng-attr-id="{{'postCommentBox' + $index}}">-->
-                    <!--<div id="create-comment" class="comment" ng-cloak>-->
-                        <!--<div class="comment-container">-->
-                            <!--<form name="commentCreateForm" class="md-title">-->
-                                <!--<md-input-container class="md-block">-->
-                                    <!--<label>Comment</label>-->
-                                    <!--<textarea type="text" required-->
-                                              <!--name="comment"-->
-                                              <!--ng-model="input.comment"-->
-                                              <!--rows="1"-->
-                                              <!--max-rows="10">-->
+                <!--<div id="create-comment" class="comment" ng-cloak>-->
+                <!--<div class="comment-container">-->
+                <!--<form name="commentCreateForm" class="md-title">-->
+                <!--<md-input-container class="md-block">-->
+                <!--<label>Comment</label>-->
+                <!--<textarea type="text" required-->
+                <!--name="comment"-->
+                <!--ng-model="input.comment"-->
+                <!--rows="1"-->
+                <!--max-rows="10">-->
                 <!--</textarea>-->
-                                    <!--<div ng-messages="commentCreateForm.comment.$error"-->
-                                         <!--ng-show="commentCreateForm.comment.$dirty || commentCreateForm.comment.$touched">-->
-                                        <!--<div ng-message="required">-->
-                                            <!--comment cannot be empty.-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                <!--</md-input-container>-->
-                                <!--<div type="submit" ng-click="createComment(postCard.post_id,$index)">-->
-                                    <!--<button ng-disabled="commentCreateForm.$invalid">Submit</button>-->
-                                <!--</div>-->
-                            <!--</form>-->
-                        <!--</div>-->
-                    <!--</div>-->
+                <!--<div ng-messages="commentCreateForm.comment.$error"-->
+                <!--ng-show="commentCreateForm.comment.$dirty || commentCreateForm.comment.$touched">-->
+                <!--<div ng-message="required">-->
+                <!--comment cannot be empty.-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</md-input-container>-->
+                <!--<div type="submit" ng-click="createComment(postCard.post_id,$index)">-->
+                <!--<button ng-disabled="commentCreateForm.$invalid">Submit</button>-->
+                <!--</div>-->
+                <!--</form>-->
+                <!--</div>-->
+                <!--</div>-->
                 <!--</div>-->
             </div>
 

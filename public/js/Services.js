@@ -247,4 +247,33 @@
         }
     ]);
 
+    module.service('PostService', [
+        '$http',
+        'CallApi',
+       function ($http, CallApi) {
+           var me = this;
+           me.getComments = function (id, callback) {
+               var url = '/posts/get_comments?post_id=' + id;
+               CallApi.getApi(url, function (code, data) {
+                   if(code == 1){
+                       var commentArray = [];
+                       data.comments.forEach(function (comment) {
+                           commentArray.push(
+                               {
+                                   user_id : comment.user_id,
+                                   nickname : comment.nickname,
+                                   comment : comment.comment,
+                                   time: comment._id.toString()
+                               }
+                           );
+                       });
+                       callback(commentArray);
+                   }else{
+                       console.log(data.msg);
+                   }
+               });
+           }
+       }
+    ]);
+
 })();

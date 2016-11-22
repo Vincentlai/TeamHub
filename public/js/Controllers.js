@@ -91,21 +91,21 @@
                 var date = new Date(parseInt(timeStamp, 16) * 1000);
                 if (now.getFullYear() > date.getFullYear()) {
                     if (now.getFullYear() - date.getFullYear() == 1) {
-                        return "in 1 year ago";
+                        return "last year";
                     } else {
                         return "in " + (now.getFullYear() - date.getFullYear()) + ' years ago';
                     }
                 }
                 if (now.getMonth() > date.getMonth()) {
                     if (now.getMonth() - date.getMonth() == 1) {
-                        return "in 1 month ago";
+                        return "last month";
                     } else {
                         return "in " + (now.getMonth() - date.getMonth()) + ' months ago';
                     }
                 }
                 if (now.getDay() > date.getDay()) {
                     if (now.getDay() - date.getDay() == 1) {
-                        return "in 1 day ago";
+                        return "yesterday";
                     } else {
                         return "in " + (now.getDay() - date.getDay()) + ' days ago';
                     }
@@ -152,20 +152,25 @@
             '$timeout',
             '$rootScope',
             'ErrorService',
-            function ($scope, postList, $state, $http, $timeout, $rootScope, ErrorService) {
-                /*
-                 keys in post list item
-                 comments   Array
-                 like
-                 nickname
-                 creator_id
-                 post_id
-                 text
-                 time
-                 */
+            'PostService',
+            function ($scope, postList, $state, $http, $timeout, $rootScope, ErrorService, PostService) {
+
                 $scope.postList = postList;
+                $scope.postList.forEach(function (post) {
+                    post.visibleComment = false;
+                });
                 $scope.numOfPosts = $scope.postList.length;
                 $scope.input = {};
+                var addNewComment = function (data, index) {
+                    var comment = {
+                        user_id : data.user_id,
+                        nickname : data.nickname,
+                        comment : data.comment,
+                        time: data.time
+                    };
+                    $scope.postList[index].commentList.push(comment);
+                    $scope.postList[index].comments++;
+                };
                 $scope.createPost = function () {
                     $http.post('/posts/post', {
                         text: $scope.input.description,
@@ -215,25 +220,26 @@
                             }
                         )
                 };
-
-                $scope.createComment = function (id,index) {
+                $scope.createComment = function (id, index) {
                     console.log('create comment');
+                    var input = document.getElementById('comment-input'+index).value;
+                    if(input == '')
+                        return;
                     $scope.index = index;
                     $http.post('/posts/comment', {
-                        comment: $scope.input.comment,
+                        comment: input,
                         post_id: id
                     })
                         .then(
                             function (res) {
                                 if (res.data.code == 1) {
-                                    $scope.postList[$scope.index].comments.push(
-                                        {
-                                            user_id: res.data.user_id,
-                                            nickname: res.data.nickname,
-                                            comment: res.data.comment,
-                                            time: res.data.time
-                                        }
-                                    );
+                                    document.getElementById('comment-input'+index).value = '';
+                                    if(angular.isUndefined($scope.postList[index].commentList)){
+                                        $scope.getComments(index, id);
+                                        $scope.postList[index].visibleComment = true;
+                                    }else{
+                                        addNewComment(res.data, index);
+                                    }
                                 } else {
                                     console.log(res.data.msg);
                                 }
@@ -242,6 +248,7 @@
                             }
                         )
                 };
+
                 $scope.likeOrUnlike = function (id, flag, index) {
                     $scope.index = index;
                     $http.post('/posts/likeOrUnlike', {
@@ -278,11 +285,20 @@
                         )
                 };
 
-                //click button to show comments
-                $scope.showComments = function(index){
-
+                $scope.getComments = function (index, id) {
+                    console.log('load comments');
+                    PostService.getComments(id, function (comments) {
+                        $scope.postList[index].commentList = comments;
+                        $scope.postList[index].comments = $scope.postList[index].commentList.length;
+                    });
                 };
-
+                //click button to show comments
+                $scope.showComments = function (index, id) {
+                    $scope.postList[index].visibleComment = !$scope.postList[index].visibleComment;
+                    if(angular.isUndefined($scope.postList[index].commentList)){
+                        $scope.getComments(index, id);
+                    }
+                };
             }
         ]
     );

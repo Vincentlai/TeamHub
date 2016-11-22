@@ -65,7 +65,8 @@ router.post('/login', function (req, res) {
 
     var sess = req.session;
     console.log("** session_id: " + sess.id);
-
+    console.log(req.body.email);
+    console.log(req.body.password);
     var email = req.body.email;
     var password = req.body.password;
 
