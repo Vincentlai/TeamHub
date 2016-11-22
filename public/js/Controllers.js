@@ -83,51 +83,7 @@
             }
         }
     ]);
-    module.filter('date', [
-        function () {
-            return function (millisecond) {
-                var now = new Date();
-                var timeStamp = millisecond.substring(0, 8);
-                var date = new Date(parseInt(timeStamp, 16) * 1000);
-                if(now.getFullYear() > date.getFullYear()){
-                    if(now.getFullYear() - date.getFullYear() == 1){
-                        return "in 1 year ago";
-                    }else {
-                        return "in " + (now.getFullYear() - date.getFullYear()) + ' years ago';
-                    }
-                }
-                if(now.getMonth() > date.getMonth()){
-                    if(now.getMonth() - date.getMonth() == 1){
-                        return "in 1 month ago";
-                    }else {
-                        return "in " + (now.getMonth() - date.getMonth()) + ' months ago';
-                    }
-                }
-                if(now.getDay() > date.getDay()){
-                    if(now.getDay() - date.getDay() == 1){
-                        return "in 1 day ago";
-                    }else {
-                        return "in " + (now.getDay() - date.getDay()) + ' days ago';
-                    }
-                }
-                if(now.getHours() > date.getHours()){
-                    if(now.getHours() - date.getHours() == 1){
-                        return "in 1 hour ago";
-                    }else {
-                        return "in " + (now.getHours() - date.getHours()) + ' hours ago';
-                    }
-                }
-                if(now.getMinutes() > date.getMinutes()){
-                    if(now.getMinutes() - date.getMinutes() == 1){
-                        return "in 1 minute ago";
-                    }else {
-                        return "in " + (now.getMinutes() - date.getMinutes()) + ' minutes ago';
-                    }
-                }
-                return "just now";
-            }
-        }
-    ]);
+    
     module.controller('headerController', [
         '$scope',
         'Auth',

@@ -10,15 +10,16 @@
         '$state',
         '$scope',
         '$timeout',
-        function($http,Auth,$state,$scope,$timeout){
+        '$rootScope',
+        function($http,Auth,$state,$scope,$timeout,$rootScope){
             //for event test, after passing the test, using database to access events.
             var newEventDate = new Date(1478592000000);
             $scope.events = [
-                {
+                /*{
                     start: newEventDate,
                     end: getDate(0, 0),
                     title: 'Event test'
-                },
+                },*/
                 {
                     start: getDate(0, 10),
                     end: getDate(1, 11),
@@ -74,8 +75,8 @@
             $scope.createEvent = function(){
                 console.log(" working ");
                 var createdEvent = {};
-
-                createdEvent.team_id = "???????";
+                console.log($rootScope.selectedTeamId);
+                createdEvent.team_id = $rootScope.selectedTeamId;
                 createdEvent.title = $scope.newEventTitle;
                 createdEvent.start = new Date($scope.eventStartDate.getTime()
                     + $scope.eventStartTimeHour*60*60*1000
@@ -95,6 +96,7 @@
             };
 
             function sendToDataBase(createdEvent){
+                console.log(createdEvent.team_id);
                 $http.post('/events/create', createdEvent)
                     .then(
                         function(response){
@@ -102,6 +104,7 @@
                                 console.log("seccessfully");
                             } else{
                                 console.log("error message in response");
+                                console.log(response.data.code);
                             }
                         }, function(error){
                             console.log('error in create events' + error);
