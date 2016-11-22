@@ -50,6 +50,41 @@
                     <i class="material-icons likes">thumb_up</i>
                     <a>{{postCard.likes.length}}</a>
                 </md-button>
+                <div id="create-comment" class="comment" ng-cloak>
+
+                    <div class="comment-container">
+
+                        <error-notify >
+                        </error-notify>
+                        <div class="comment">
+                            <form name="commentCreateForm" class="md-title">
+                                <md-input-container class="md-block">
+                                    <label>Comment</label>
+                                    <textarea type="text" required
+                                              name="comment"
+                                              ng-model="input.comment"
+                                              rows="1"
+                                              max-rows="10">
+                            </textarea>
+                                    <div ng-messages="commentCreateForm.comment.$error"
+                                         ng-show="commentCreateForm.comment.$dirty || commentCreateForm.comment.$touched">
+                                        <div ng-message="required">
+                                            comment cannot be empty.
+                                        </div>
+                                    </div>
+                                </md-input-container>
+                                <ul class="cd-buttons clearfix">
+                                    <li type="submit" ng-click="createComment('create-comment')">
+                                        <button ng-disabled="commentCreateForm.$invalid" class="agree inpop">Submit</button>
+                                    </li>
+
+                                </ul>
+                            </form>
+
+                        </div>
+                        
+                    </div>
+                </div>
                 <h2>
 
                 </h2>
