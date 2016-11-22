@@ -102,6 +102,7 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
             newFile.save(function(err, obj) {
 
                 if (!err) {
+                    var upload_time = new Date();
 
                     // push NEW to team
                     team_obj.news.unshift(
@@ -118,9 +119,16 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
                     team_obj.save();
 
                     console.log("-> File uploaded successfully \n");
+
                     res.json({
                         "code": "1",
-                        "msg": "File is uploaded to " + team_obj.name
+                        "msg": "File is uploaded to " + team_obj.name,
+                        "file_id": obj.id,
+                        "file_name" : obj.file_name,
+                        "owner_user_id": obj.owner_user_id,
+                        "owner_nickname": obj.owner_nickname,
+                        "file_size": obj.file_size,
+                        "time": upload_time.toDateString() + " " + upload_time.toTimeString().substring(0, 8)
                     });
                 }
             });
