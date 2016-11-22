@@ -299,6 +299,7 @@
                         $scope.getComments(index, id);
                     }
                 };
+
             }
         ]
     );

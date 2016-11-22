@@ -513,7 +513,7 @@ a.control-btn:hover {
 }
 .post-container .post-content .description {
   margin-top: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   font-size: 1.1em;
   line-height: 1.2em;
 }
@@ -572,6 +572,8 @@ a.control-btn:hover {
 }
 .post-container .post-content .comment-container .comment-box .comment-list {
   position: relative;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(225, 225, 225, 0.8);
 }
 .avatar {
   border: 1px solid rgba(225, 225, 225, 0.8);

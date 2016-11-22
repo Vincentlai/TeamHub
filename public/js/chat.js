@@ -57,9 +57,10 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $http) {
             var msg = json.msg;
             var time = json.time;
 
-            $scope.msg_list.push({ index, nickname, msg, time });
+            //noinspection JSAnnotator
+            $scope.msg_list.push({index, nickname, msg, time});
             var url = GET_AVATAR_URL + json.user_id;
-            role_arr.push({ class: "other", src: url });
+            role_arr.push({class: "other", src: url});
             index++;
         }
     });
@@ -99,6 +100,7 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $http) {
         // update ui
         $scope.dataToSend = "";
 
+        //noinspection JSAnnotator
         $scope.msg_list.push({ index, nickname, msg, time });
         role_arr.push({ class: "self", src: self_icon });
         index++;
@@ -124,6 +126,7 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $http) {
                             var nickname = history[i].nickname;
                             var msg = history[i].message;
                             var time = history[i].time;
+                            //noinspection JSAnnotator
                             $scope.msg_list.push({ i, nickname, msg, time });
                             if(history[i].user_id == user_id){
                                 role_arr.push({ class: "self", src: self_icon });

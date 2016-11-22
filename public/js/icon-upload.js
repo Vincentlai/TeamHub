@@ -6,7 +6,7 @@ app.controller('settingController', ['$scope', 'Upload', '$timeout', '$http', '$
             $scope.openTab = false;
         };
         /* Default */
-        $scope.current_avatar = '/users/download_avatar?user_id=' + $rootScope.user.user_id;
+        // $scope.current_avatar = '/users/download_avatar?user_id=' + $rootScope.user.user_id;
 
         /* Crop */
         $scope.myCroppedImage = '';

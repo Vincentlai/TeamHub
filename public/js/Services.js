@@ -80,6 +80,9 @@
                             console.log('Error occurs in Logout' + error);
                         }
                     )
+            };
+            me.getAvatar = function (id, callback) {
+                var url = '/users/download_avatar?user_id=' + id;
             }
 
         }
@@ -275,5 +278,6 @@
            }
        }
     ]);
+
 
 })();
