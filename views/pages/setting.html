@@ -2,13 +2,13 @@
 
     <div class="setting-container">
         <div class="current-avatar">
-            <img ng-src="{{user.current_avatar}}" />
+            <img ng-src="{{user.current_avatar}}"/>
             <a class="ava" ng-click="openTab=!openTab">
                 Upload Avatar
             </a>
             <!--<div class="fileUpload ava">-->
-                <!--<span>Upload Avatar</span>-->
-                <!--<input type="file" id="fileInput" class="upload" />-->
+            <!--<span>Upload Avatar</span>-->
+            <!--<input type="file" id="fileInput" class="upload" />-->
             <!--</div>-->
         </div>
 
@@ -33,32 +33,41 @@
             </div>
 
         </div>
-        <div class="avatar-tab is-visible" >
-             <!--ng-class="{'is-visible': openTab}">-->
-                <h1>
-                    Change Avatar
-                </h1>
-
+        <div class="avatar-tab " ng-class="{'is-visible': openTab}">
+            <h1>
+                Change Avatar
+            </h1>
+            <div class="crop">
                 <div class="cropArea">
                     <img-crop image="myImage" result-image="myCroppedImage" area-type="square"></img-crop>
                 </div>
 
-                <div>New Avatar</div>
-                <div><img class="result" ng-src="{{myCroppedImage}}" /></div>
-                 <div class="ava tab-ava">
-                    <span>Select File</span>
-                    <input type="file" id="fileInput" class="upload" />
+                <div>
+                    <img class="result" ng-src="{{myCroppedImage}}"/>
                 </div>
-                <button ng-click="upload(myCroppedImage)">Upload</button>
+                <div class="select-file">
+                    <label for="fileInput" class="custom-file-upload">
+                        Select File
+                    </label>
+                    <input id="fileInput" type="file"/>
+                </div>
+                <div class="ava-btn">
+                    <a class="ava upload" ng-click="upload(myCroppedImage)">
+                        Upload
+                    </a>
+                </div>
+                <div class="progress" ng-show="progress >= 0">
+                    <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
+                </div>
+                <div class="msg" >
+                    <span ng-show="result">Upload Successful</span>
+                    <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+                </div>
 
-                <span class="progress" ng-show="progress >= 0">
-                <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
-             </span>
-                <span ng-show="result">Upload Successful</span>
-                <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+            </div>
+
         </div>
     </div>
-
 
 
 </div>

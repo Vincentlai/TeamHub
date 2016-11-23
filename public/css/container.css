@@ -735,13 +735,13 @@ a.control-btn:hover {
 }
 .setting-container .avatar-tab {
   opacity: 0;
-  visibility: visible;
+  visibility: hidden;
   background-color: white;
   position: absolute;
   top: 30px;
   left: 50px;
   width: 520px;
-  height: 600px;
+  height: 500px;
   border-radius: .25em .25em .4em .4em;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   text-align: center;
@@ -755,6 +755,102 @@ a.control-btn:hover {
   -ms-transition: all .6s linear;
   -o-transition: all .6s linear;
   transition: all .6s linear;
+}
+.setting-container .avatar-tab h1 {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+  padding: 2em 1em 1em 1em;
+  color: #8f9cb5;
+}
+.setting-container .avatar-tab .crop {
+  position: relative;
+  height: 400px;
+}
+.setting-container .avatar-tab .select-file {
+  position: absolute;
+  bottom: 3px;
+  left: 108px;
+}
+.setting-container .avatar-tab .select-file input[type="file"] {
+  display: none;
+}
+.setting-container .avatar-tab .select-file .custom-file-upload {
+  width: 150px;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  height: 30px;
+  color: #4D4D4D;
+  border: 0.5px solid #4D4D4D;
+  border-radius: 2px;
+  -webkit-transition: all .5s;
+  -moz-transition: all .5s;
+  -ms-transition: all .5s;
+  -o-transition: all .5s;
+  transition: all .5s;
+}
+.setting-container .avatar-tab .select-file .custom-file-upload:hover {
+  color: white;
+  background-color: teal;
+  border-color: teal;
+}
+.setting-container .avatar-tab .ava-btn {
+  position: absolute;
+  bottom: 0;
+  right: 108px;
+}
+.setting-container .avatar-tab .ava-btn input {
+  display: inline-block;
+}
+.setting-container .avatar-tab .upload {
+  width: 150px;
+  display: inline-block;
+}
+.setting-container .avatar-tab .cropArea {
+  position: absolute;
+  left: 3px;
+  overflow: hidden;
+  width: 300px;
+  height: 300px;
+  border: 0.5px solid rgba(225, 225, 225, 0.8);
+}
+.setting-container .avatar-tab img-crop {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  height: 100%;
+}
+.setting-container .avatar-tab canvas {
+  margin: 0 auto 0 auto !important;
+}
+.setting-container .avatar-tab .result {
+  position: absolute;
+  right: 3px;
+  border: 0.5px solid rgba(225, 225, 225, 0.8);
+}
+.setting-container .avatar-tab .progress {
+  position: absolute;
+  margin: 0;
+  left: 160px;
+  bottom: 35px;
+  line-height: 15px;
+  display: inline-block;
+  width: 200px;
+  border: 3px groove #CCC;
+}
+.setting-container .avatar-tab .progress div {
+  font-size: smaller;
+  background: limegreen;
+  width: 0;
+}
+.setting-container .avatar-tab .msg {
+  position: absolute;
+  display: block;
+  text-align: center;
+  width: 100%;
+  bottom: 57px;
 }
 .setting-container .avatar-tab.is-visible {
   opacity: 1;
@@ -771,7 +867,6 @@ a.control-btn:hover {
   display: block;
   height: 30px;
   line-height: 30px;
-  overflow: hidden;
   color: #4D4D4D;
   border: 0.5px solid #4D4D4D;
   border-radius: 2px;
@@ -780,59 +875,12 @@ a.control-btn:hover {
   -ms-transition: all .5s;
   -o-transition: all .5s;
   transition: all .5s;
+  overflow: hidden;
 }
 .ava:hover {
   color: white;
   background-color: teal;
   border-color: teal;
-}
-.ava input.upload {
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 0;
-  padding: 0;
-  font-size: 20px;
-  cursor: pointer;
-  opacity: 0;
-  filter: alpha(opacity=0);
-}
-.tab-ava {
-  width: 100px;
-}
-.cropArea {
-  overflow: hidden;
-  width: 300px;
-  height: 300px;
-  margin-left: auto;
-  margin-right: auto;
-}
-img-crop {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  height: 100%;
-}
-canvas {
-  margin: 0 auto 0 auto !important;
-}
-.result {
-  position: relative;
-  float: left;
-}
-form .progress {
-  line-height: 15px;
-}
-.progress {
-  display: inline-block;
-  width: 200px;
-  border: 3px groove #CCC;
-}
-.progress div {
-  font-size: smaller;
-  background: limegreen;
-  width: 0;
 }
 .old_avatar {
   float: right;
