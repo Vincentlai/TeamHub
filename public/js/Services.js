@@ -266,7 +266,7 @@
                                    user_id : comment.user_id,
                                    nickname : comment.nickname,
                                    comment : comment.comment,
-                                   time: comment._id.toString()
+                                   time: new Date(parseInt(comment._id.toString().substring(0, 8), 16) * 1000)
                                }
                            );
                        });

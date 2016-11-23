@@ -52,7 +52,12 @@
                     <i class="material-icons likes">thumb_up</i>
                     <a>{{postCard.likes.length}}</a>
                     <md-tooltip md-direction="top">
-                        Like this post
+                        <span ng-if="!postCard.isLiked">
+                            Like this post
+                        </span>
+                        <span ng-if="postCard.isLiked">
+                            Unlike this post
+                        </span>
                     </md-tooltip>
                 </md-button>
 
@@ -84,7 +89,9 @@
                                   ng-attr-id="{{'comment-input'+$index}}"></textarea>
                         <md-button
                                 class="md-primary md-raised"
-                                ng-click="createComment(postCard.post_id,$index)">Submit</md-button>
+                                ng-click="createComment(postCard.post_id,$index)">Submit
+                        </md-button>
+
                     </div>
                     <!--comment list-->
                     <div class="comment-box" ng-show="postCard.visibleComment">
@@ -94,7 +101,14 @@
                             {{comment.nickname}}
                             </span>
                             <span class="create-time">
-                            added comment {{comment.time | dateFilter}}
+
+                            added comment
+                                <span>
+                                     <md-tooltip md-direction="top">
+                                    {{comment.time | date:'yyyy-MM-dd HH:mm:ss'}}
+                                </md-tooltip>
+                                    {{comment.time | dateFilter}}
+                                </span>
                             </span>
                             <p class="description">
                             {{comment.comment}}

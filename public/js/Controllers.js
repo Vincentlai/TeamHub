@@ -85,10 +85,10 @@
     ]);
     module.filter('dateFilter', [
         function () {
-            return function (millisecond) {
+            return function (date) {
                 var now = new Date();
-                var timeStamp = millisecond.substring(0, 8);
-                var date = new Date(parseInt(timeStamp, 16) * 1000);
+                // var timeStamp = millisecond.substring(0, 8);
+                // var date = new Date(parseInt(timeStamp, 16) * 1000);
                 if (now.getFullYear() > date.getFullYear()) {
                     if (now.getFullYear() - date.getFullYear() == 1) {
                         return "last year";
@@ -166,7 +166,7 @@
                         user_id : data.user_id,
                         nickname : data.nickname,
                         comment : data.comment,
-                        time: data.time
+                        time: new Date(parseInt(data.time.toString().substring(0, 8), 16) * 1000)
                     };
                     $scope.postList[index].commentList.push(comment);
                     $scope.postList[index].comments++;
@@ -439,7 +439,7 @@
                                             action_name: res.data.news[j].action_name,
                                             action_target: res.data.news[j].action_target,
                                             action_target_id: res.data.news[j].action_target_id,
-                                            time_in_mili: res.data.news[j]._id.toString(),
+                                            time_in_mili: new Date(parseInt(res.data.news[j]._id.toString().substring(0, 8), 16) * 1000),
                                             target_team: res.data.news[j].target_team_name
                                         };
                                         $scope.news.unshift(news);

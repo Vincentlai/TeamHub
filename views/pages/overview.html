@@ -32,7 +32,12 @@
                     <span class="team">
                         {{item.target_team}}
                     </span>
-                     {{item.time_in_mili | dateFilter}}
+                     <span>
+                    <md-tooltip md-direction="top">
+                         {{item.time_in_mili | date:'yyyy-MM-dd HH:mm:ss'}}
+                    </md-tooltip>
+                         {{item.time_in_mili | dateFilter}}
+                     </span>
                 </div>
             </li>
         </ul>
