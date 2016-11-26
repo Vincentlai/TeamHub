@@ -31,7 +31,8 @@
                             $scope.events.push({
                                 start: new Date(event.start),
                                 end: new Date(event.end),
-                                title: event.title
+                                title: event.title,
+                                event_id: event._id 
                             });
                         });
                         //console.log($scope.events[0]);
@@ -92,6 +93,7 @@
 
             $scope.selected = $scope.events[0];
             $scope.showCreateEventForm = false;
+            $scope.showDeleteEventForm = false;
 
             function getDate(offsetDays, hour) {
                 offsetDays = offsetDays || 0;
@@ -104,6 +106,30 @@
             function setDate(time){
                 time = time || 0;
             }
+
+            function deleteEventFromDatabase(deleteEventID){
+                $http.delete('/events/delete?event_id=' + deleteEventID)
+                .then(
+                function(response){
+                    if(response.data.code == 1){
+                        console.log("Delete event successfully");
+                        //console.log($scope.events[0]);
+
+                    } else {
+                        console.log("error message in response");
+                        console.log(response.data.code);
+                    }
+                }, function(error) {
+                    console.log('error in delete event info' + error);
+                });
+            }
+
+            $scope.deleteEvent = function(){
+                console.log("deleteEvent working");
+                
+                deleteEventFromDatabase(deleteEventID);
+            };
+
 
             $scope.createEvent = function(){
                 console.log(" working ");
@@ -153,8 +179,12 @@
                 $scope.eventEndDate = new Date(tempDate);
                 return date.toDateString();
             }
-
+            var deleteEventID;
             $scope.eventClicked = function (item) {
+                $scope.result = item.start.toDateString();
+                //console.log($scope.result);
+                $scope.showDeleteEventForm = true;
+                deleteEventID = item.event_id;
                 console.log(item);
             };
 
