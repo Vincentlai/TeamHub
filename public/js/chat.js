@@ -61,6 +61,7 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
             var url = GET_AVATAR_URL + json.user_id;
             role_arr.push({class: "other", src: url});
             index++;
+            console.log('i got msg' + msg);
         }
     });
 
@@ -141,7 +142,6 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
                 });
     })
 });
-
 // scroll list to bottom when type in or receive a new message
 app.directive('scrollSection',
     ['$location', '$timeout', '$anchorScroll',

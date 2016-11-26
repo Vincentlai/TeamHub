@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var models = require('../models/models.js');
 
-exports.post = function (sess, team_id, text, callback) {
+exports.post = function (sess, team_id, text, fileIds, callback) {
 
     var user_id = sess.user_id;
 
@@ -64,7 +64,8 @@ exports.post = function (sess, team_id, text, callback) {
                 nickname: sess.nickname,
                 user_id: user_id,
                 text: text,
-                likes: []
+                likes: [],
+                files: []
             });
             newPost.save(function (err, obj) {
                 if (!err) {
@@ -76,7 +77,7 @@ exports.post = function (sess, team_id, text, callback) {
                             action_target: 'post',
                             action_target_id: obj.id,
                             target_team_id: team_id,
-                            target_team_name: team_obj.name,
+                            target_team_name: team_obj.name
                         }
                     );
                     team_obj.save();
