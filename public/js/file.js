@@ -1,8 +1,10 @@
 var app = angular.module('fileUpload', ['ngFileUpload']);
 
-app.controller('FileCtrl', ['$scope', 'Upload', '$timeout', '$http', '$rootScope', '$window', 'FileService',
-    function($scope, Upload, $timeout, $http, $rootScope, $window, FileService) {
+app.controller('FileCtrl', ['$scope', 'Upload', '$timeout',
+    '$http', '$rootScope', '$window', 'FileService', '$stateParams',
+    function($scope, Upload, $timeout, $http, $rootScope, $window, FileService, $stateParams) {
 
+        $rootScope.selectedTeamId = $stateParams.team_id;
         // Bytes conversion
         function bytesToSize(bytes) {
             return FileService.getSize(bytes);
@@ -109,6 +111,7 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout', '$http', '$rootScope
 
         var handleFileSelect = function(evt) {
             var file = evt.currentTarget.files[0];
+            console.log(evt.currentTarget.files);
             file_name = file.name; console.log('name: ' + file.name);
             file_size = file.size; console.log('size: ' + file.size + ' Bytes');
 

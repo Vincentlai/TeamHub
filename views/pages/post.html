@@ -144,10 +144,14 @@
                             </div>
                         </div>
                     </md-input-container>
-                    <md-input-container class="md-block">
-                        <label>file</label>
-                        <input class="input" type="file" multiple="multiple"  />
-                    </md-input-container>
+
+                    <div class="select-file">
+                        <label for="fileInput" class="custom-file-upload">
+                            Select File
+                        </label>
+                        <input id="fileInput" type="file"/>
+                    </div>
+
                     <ul class="cd-buttons clearfix">
                         <li type="submit" ng-click="createPost('create-post')">
                             <button ng-disabled="postCreateForm.$invalid" class="agree inpop">Create</button>
