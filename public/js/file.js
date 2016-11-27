@@ -27,9 +27,9 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout',
 
         $scope.showDeleting = function(index) {
             var file = $scope.file_list[index];
-            if(file){
+            if (file) {
                 return file.is_deleting;
-            }else{
+            } else {
                 return false;
             }
         };
@@ -55,7 +55,7 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout',
                                     owner_nickname: file.owner_nickname,
                                     file_name: file.file_name,
                                     file_size: bytesToSize(file.file_size),
-                                    time: file.time,
+                                    time: new Date(parseInt(file.file_id.toString().substring(0, 8), 16) * 1000),
                                     is_deleting: false
                                 });
                             });
@@ -97,10 +97,10 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout',
 
             $scope.file_list[index].is_deleting = true;
 
-            FileService.deleteFile($scope.file_list[index].file_id, function (code, msg) {
-                if(code == 1){
+            FileService.deleteFile($scope.file_list[index].file_id, function(code, msg) {
+                if (code == 1) {
                     $scope.file_list[index].is_deleting = false; // remove deleting icon
-                    for (var i=0; i<$scope.file_list.length; i++) {
+                    for (var i = 0; i < $scope.file_list.length; i++) {
                         if ($scope.file_list[i].file_id == $scope.file_list[index].file_id) {
                             $scope.file_list.splice(i, 1);
                         }
@@ -109,8 +109,92 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout',
             });
         };
 
+        $scope.files = [];
+        $scope.$watch('files', function() {
+            if ($scope.files.length > 0) {
+                $scope.uploadMultipleFiles($scope.files);
+            }
+        });
+
+        /* Drag and Drop - Upload Multiple Files */
+        $scope.uploadMultipleFiles = function(files) {
+
+            for (var i = 0; i < files.length; i++) {
+                // file size limit check
+                if (files[i].size > 16000000) {
+                    $window.alert("Maximum allowance size of one file is 16 MB");
+                    return;
+                }
+            }
+
+            $scope.result = false;
+            $scope.errorMsg = false;
+            show_uploading = true;
+
+            var num_uploaded = 0;
+
+            for (var i = 0; i < files.length; i++) {
+
+                Upload.upload({
+                    url: '/files/upload',
+                    data: {
+                        team_id: team_id,
+                        file: files[i],//Upload.dataUrltoBlob(dataUrl, file_name),
+                        file_name: files[i].name,
+                        file_size: files[i].size
+                    }
+                }).then(function(response) {
+                    $timeout(function() {
+
+                        var data = response.data;
+
+                        num_uploaded++;
+                        if (num_uploaded == files.length) {
+                            show_uploading = false;
+                        }
+                        
+                        if (data.code == '1') {
+
+                            $scope.result = true;
+                            $scope.upload_result = data.file_name + " has been uploaded successfully";
+
+                            $scope.file_list.unshift({
+                                file_id: data.file_id,
+                                owner_user_id: data.owner_user_id,
+                                owner_nickname: data.owner_nickname,
+                                file_name: data.file_name,
+                                file_size: bytesToSize(data.file_size),
+                                time: new Date(parseInt(data.file_id.toString().substring(0, 8), 16) * 1000),
+                                is_deleting: false
+                            });
+                        } else {
+                            $scope.errorMsg = true;
+                            $scope.upload_error = data.msg;
+                        }
+                    });
+                    console.log(response.data);
+                }, function(response) {
+                    if (response.status > 0) {
+                        $scope.errorMsg = true;
+                        $scope.upload_error = "Upload Failed";
+                    }
+                }, function(evt) { });
+            }
+        }
+
+        /* Select single File 
         var handleFileSelect = function(evt) {
+
             var file = evt.currentTarget.files[0];
+
+
+            if (!file) {
+                $scope.show_upload_button = false;
+                return;
+            }
+            $scope.show_upload_button = true;
+
+
             console.log(evt.currentTarget.files);
             file_name = file.name; console.log('name: ' + file.name);
             file_size = file.size; console.log('size: ' + file.size + ' Bytes');
@@ -130,13 +214,13 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout',
         };
         angular.element(document.querySelector('#fileInput')).on('change', handleFileSelect);
 
-        /* Upload */
+        /* Upload 
         $scope.upload = function() {
             //console.log("upload-> dataUrl: " + dataUrl + " name: " + file_name);
 
             // file size limit check
             if (file_size > 16000000) {
-                $window.alert("Maximum file size allow is 16 MB");
+                $window.alert("Maximum allowance size of one file is 16 MB");
                 return;
             }
 
@@ -148,7 +232,7 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout',
                 url: '/files/upload',
                 data: {
                     team_id: team_id,
-                    file: Upload.dataUrltoBlob(dataUrl, file_name),
+                    file: Upload.dataUrltoBlob(dataUrl),
                     file_name: file_name,
                     file_size: file_size
                 }
@@ -171,7 +255,7 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout',
                             time: data.time,
                             is_deleting: false
                         });
-                    }else{
+                    } else {
                         $scope.errorMsg = true;
                         $scope.upload_error = data.msg;
                     }
@@ -182,12 +266,13 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout',
                     $scope.errorMsg = true;
                     $scope.upload_error = "Upload Failed";
                 }
-                
+
 
             }, function(evt) {
 
             });
         }
+        */
 
 
     }]);
