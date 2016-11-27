@@ -1147,3 +1147,26 @@ a.control-btn:hover {
   top: 10px;
   right: 20%;
 }
+img.big {
+  width: 90%;
+  margin-left: 5%;
+  margin-right: 5%;
+  height: auto;
+  cursor: zoom-out;
+}
+.post-files-list {
+  border-top: 0.5px solid rgba(225, 225, 225, 0.8);
+  padding-top: 5px;
+}
+.post-files-list .small {
+  cursor: zoom-in;
+  display: inline-block;
+  overflow: hidden;
+  width: 18%;
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+}
+.post-files-list .small img {
+  width: 100%;
+  height: auto;
+}

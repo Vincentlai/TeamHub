@@ -1,10 +1,9 @@
 var mongoose = require('mongoose');
 var models = require('../models/models.js');
 
-exports.post = function (sess, team_id, text, callback) {
+exports.post = function (sess, team_id, text, files, callback) {
 
     var user_id = sess.user_id;
-
     if (!user_id) {
         callback({
             'code': "-9",
@@ -58,6 +57,15 @@ exports.post = function (sess, team_id, text, callback) {
                 });
                 return;
             }
+            var fileArray = [];
+            files.forEach(function (item) {
+                var file = {
+                    file_name: item.file_name,
+                    file_id: item.file_id
+                };
+                fileArray.push(file);
+            });
+            console.log(fileArray);
 
             var newPost = new models.Post({
                 team_id: team_id,
@@ -65,6 +73,7 @@ exports.post = function (sess, team_id, text, callback) {
                 user_id: user_id,
                 text: text,
                 likes: [],
+                files: fileArray
             });
             newPost.save(function (err, obj) {
                 if (!err) {
@@ -159,21 +168,6 @@ exports.getPost = function (sess, team_id, callback) {
 
                         var post_time = new Date(posts[i]._id.getTimestamp());
                         isLiked = false;
-                        // comments
-                        var comments_arr = [];
-                        var comments = posts[i].comments;
-                        for (var j = 0; j < comments.length; j++) {
-
-                            var comment_time = new Date(comments[j]._id.getTimestamp());
-
-                            comments_arr.push({
-                                'nickname': comments[j].nickname,
-                                'user_id': comments[j].user_id,
-                                'time' : comments[j]._id.toString(),
-                                // 'time': comment_time.toDateString() + " " + comment_time.toTimeString().substring(0, 8),
-                                'comment': comments[j].comment
-                            });
-                        }
 
                         for (var k = 0; k < posts[i].likes.length; k++) {
                             if (posts[i].likes[k].user_id == user_id) {
@@ -191,7 +185,8 @@ exports.getPost = function (sess, team_id, callback) {
                             'likes': posts[i].likes,
                             'isLiked': isLiked,
                             'time': post_time.toTimeString().substring(0, 8) + " " + post_time.toDateString(),
-                            'comments': posts[i].comments.length
+                            'comments': posts[i].comments.length,
+                            'files': posts[i].files
                         });
                     }
 

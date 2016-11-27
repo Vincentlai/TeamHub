@@ -162,13 +162,16 @@
                     post.visibleComment = false;
                 });
                 $scope.isPosting = false;
+                $scope.isDeleting = false;
                 $scope.numOfPosts = $scope.postList.length;
 
 
                 //initialize file upload array
                 $scope.files = [];
+                $scope.invalid_input = false;
 
                 $scope.input = {};
+                $scope.errorNotify = ErrorService;
                 var addNewComment = function (data, index) {
                     var comment = {
                         user_id: data.user_id,
@@ -187,8 +190,9 @@
                     $scope.isPosting = true;
                     var promises = [];
 
-                    angular.forEach($scope.files, function (file) {
-                        file.isloading = true;
+                    angular.forEach($scope.files, function (file, index) {
+                        $scope.files[index].isLoading = true;
+
                         var deferred = $q.defer();
                         Upload.upload({
                             url: '/files/upload',
@@ -199,12 +203,12 @@
                                 file_size: file.file_size
                             }
                         }).then(function (res) {
-                            file.isLoading = false;
+                            $scope.files[index].isLoading = false;
                             if (res.data.code == 1) {
-                                console.log('here');
                                 file.file_id = res.data.file_id;
-                                deferred.resolve(res.data);
+                                deferred.resolve(res.data.msg);
                             } else {
+                                deferred.reject(res.data.msg);
                                 console.log(res.data.msg);
                             }
                         }, function (error) {
@@ -214,38 +218,41 @@
                     });
                     $q.all(promises).then(
                         function (res) {
-                            console.log($scope.files[0]);
-                            console.log($scope.files[1]);
+                            $http.post('/posts/post', {
+                                text: $scope.input.description,
+                                team_id: $rootScope.selectedTeamId,
+                                files: $scope.files
+                            })
+                                .then(
+                                    function (res) {
+                                        if (res.data.code == 1) {
+                                            $timeout(
+                                                function () {
+                                                    $scope.isPosting = false;
+                                                    $scope.closeForm('create-post');
+                                                    $state.transitionTo($state.current.name, {team_id: $rootScope.selectedTeamId},
+                                                        {reload: $state.current.name, inherit: false, notify: true});
+                                                }, 3000);
+                                        } else {
+                                            ErrorService.displayError(res.data.msg);
+                                        }
+                                    }, function (error) {
+                                        console.log('error in creating post ' + error);
+                                    }
+                                )
                         }, function (error) {
                             console.log(error);
                         }
                     );
-
-                    // $http.post('/posts/post', {
-                    //     text: $scope.input.description,
-                    //     team_id: $rootScope.selectedTeamId
-                    // })
-                    //     .then(
-                    //         function (res) {
-                    //             if (res.data.code == 1) {
-                    //
-                    //                 $timeout(
-                    //                     function () {
-                    //                         $scope.isPosting = false;
-                    //                         $scope.closeForm('create-post');
-                    //                         $state.transitionTo($state.current.name, {team_id: $rootScope.selectedTeamId},
-                    //                             {reload: $state.current.name, inherit: false, notify: true});
-                    //                     }, 3000);
-                    //             } else {
-                    //                 $scope.errorNotify = ErrorService;
-                    //                 ErrorService.displayError(res.data.msg);
-                    //             }
-                    //         }, function (error) {
-                    //             console.log('error in creating post ' + error);
-                    //         }
-                    //     )
                 };
                 $scope.deletePost = function (id) {
+                    if($scope.isDeleting){
+                        return;
+                    }
+                    var promises = [];
+                    angular.forEach($scope.files, function (file, index) {
+
+                    });
                     console.log('delete post clicked' + id);
                     $http.delete('/posts/delete?post_id=' + id)
                         .then(
@@ -353,7 +360,6 @@
                 //get file name and size from input
 
                 var handleFileSelect = function (event) {
-                    console.log(event.currentTarget.files);
                     var input_files = event.currentTarget.files;
                     angular.forEach(input_files, function (v) {
                         var input = v;
@@ -361,25 +367,29 @@
                         file.file_name = input.name;
                         file.file_size = input.size;
                         file.file_type = input.type;
-                        console.log(file);
-                        var index = $scope.files.push(file);
-                        var reader = new FileReader();
-                        reader.onload = function (f) {
-                            return function (e) {
-                                $scope.$apply(function () {
-                                    f.file_url = e.target.result;
-                                });
-                            };
-                        }($scope.files[index - 1]);
-                        reader.readAsDataURL(v);
+                        file.isLoading = false;
+                        if (file.file_type.includes('image')) {
+                            var index = $scope.files.push(file);
+                            var reader = new FileReader();
+                            reader.onload = function (f) {
+                                return function (e) {
+                                    $scope.$apply(function () {
+                                        f.file_url = e.target.result;
+                                    });
+                                };
+                            }($scope.files[index - 1]);
+                            reader.readAsDataURL(v);
+                        }
                     });
                 };
                 angular.element(document.querySelector('#addFile')).on('change', handleFileSelect);
 
-                $scope.checkfiles = function () {
-                    console.log($scope.files);
+                $scope.selectUrl = function (post, id) {
+                    post.selectedUrl = '/files/download?file_id=' + id;
                 };
-
+                $scope.unselectUrl = function (post) {
+                    post.selectedUrl = null;
+                };
                 $scope.cancelFile = function (index) {
                     $scope.files.splice(index, 1);
                 }

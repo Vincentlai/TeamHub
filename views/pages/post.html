@@ -45,7 +45,12 @@
                 </p>
 
                 <div class="post-files-list">
-                    <!--Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet eligendi eos error incidunt iste itaque necessitatibus nemo nostrum, officia perspiciatis porro sit ut velit! Animi asperiores at explicabo facilis rem.-->
+                    <img id="bigImg" class="big" ng-show="postCard.selectedUrl" ng-click="unselectUrl(postCard)" ng-src="{{postCard.selectedUrl}}"/>
+                    <ul>
+                        <li class="small" ng-repeat="file in postCard.files" ng-click="selectUrl(postCard, file.file_id)">
+                            <img ng-src="/files/download?file_id={{file.file_id}}">
+                        </li>
+                    </ul>
                 </div>
 
                 <!--like button-->
@@ -155,9 +160,9 @@
                         <div class="select-file">
                             <label for="addFile" class="custom-file-upload">
                                 <i class="material-icons">add</i>
-                                Add Files or Pictures
+                                Add Images
                             </label>
-                            <input id="addFile" type="file"/>
+                            <input id="addFile" multiple accept="image/*" type="file"/>
                         </div>
                     </div>
 
@@ -187,7 +192,7 @@
                             <md-progress-circular md-mode="indeterminate"
                                                   ng-show="isPosting"
                                                   md-diameter="20" class="post-upload"></md-progress-circular>
-                            <button ng-disabled="postCreateForm.$invalid" class="agree inpop">
+                            <button ng-disabled="postCreateForm.$invalid || invalide_input" class="agree inpop">
                                 <span ng-show="isPosting">
                                     Posting..
                                 </span>
