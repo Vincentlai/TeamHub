@@ -344,7 +344,7 @@ popUp Window
 }
 @media only screen and (min-width: 1170px) {
   .popUpWindow-container {
-    margin: 300px auto;
+    margin: 100px auto;
   }
 }
 .page-container {
@@ -466,79 +466,114 @@ a.control-btn:hover {
 .post-container {
   margin: 0 auto;
 }
-.post-container .post {
-  margin-bottom: 10px;
-}
-.post-container .post .post-content {
+.post-container .post-content {
   position: relative;
+  margin-bottom: 10px;
   background-color: white;
   padding: 1.2em;
   border-radius: .25em .25em .4em .4em;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  overflow: visible;
+  height: auto;
 }
-.post-container .post .post-content .post-creater {
+.post-container .post-content .post-creater {
   position: absolute;
   margin: 5px 7px;
   font-size: 1.3em;
   font-weight: 500;
 }
-.post-container .post .post-content .more {
+.post-container .post-content .more {
   position: absolute;
   right: 0;
   left: auto;
   margin-top: -8px;
   display: inline-block;
 }
-.post-container .post .post-content .more ul li {
+.post-container .post-content .more ul li {
   display: inline-block;
   opacity: .5;
   -webkit-transition: all .2s ease;
   -o-transition: all .2s ease;
   transition: all .2s ease;
 }
-.post-container .post .post-content .more ul li:hover {
+.post-container .post-content .more ul li:hover {
   opacity: 1;
 }
-.post-container .post .post-content .more ul li:hover i {
+.post-container .post-content .more ul li:hover i {
   color: teal;
 }
-.post-container .post .post-content .more ul li:hover i.delete {
+.post-container .post-content .more ul li:hover i.delete {
   color: #fc7169;
 }
-.post-container .post .post-content .create-time {
+.post-container .post-content .create-time {
   position: absolute;
   margin-top: 35px;
   margin-left: 7px;
   color: gray;
 }
-.post-container .post .post-content .description {
+.post-container .post-content .description {
   margin-top: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   font-size: 1.1em;
   line-height: 1.2em;
 }
-.post-container .post .post-content .likes-btn {
+.post-container .post-content .likes-btn,
+.post-container .post-content .comments-btn {
   margin: 0;
 }
-.post-container .post .post-content .likes-btn .likes {
+.post-container .post-content .likes-btn .likes,
+.post-container .post-content .comments-btn .likes {
   position: absolute;
   top: 9px;
   left: 9px;
   font-size: 18px;
 }
-.post-container .post .post-content .likes-btn a {
+.post-container .post-content .likes-btn a,
+.post-container .post-content .comments-btn a {
   color: black;
   font-weight: bold;
 }
-.post-container .post .post-content .likes-btn a,
-.post-container .post .post-content .likes-btn i {
+.post-container .post-content .likes-btn a,
+.post-container .post-content .comments-btn a,
+.post-container .post-content .likes-btn i,
+.post-container .post-content .comments-btn i {
   -webkit-transition: all .3s ease;
   -o-transition: all .3s ease;
   transition: all .3s ease;
 }
-.post-container .post .post-content .likes-btn.liked a,
-.post-container .post .post-content .likes-btn.liked i {
+.post-container .post-content .likes-btn.liked a,
+.post-container .post-content .comments-btn.liked a,
+.post-container .post-content .likes-btn.liked i,
+.post-container .post-content .comments-btn.liked i {
   color: #fc7169;
+}
+.post-container .post-content .comment-container {
+  margin-top: 10px;
+  border-top: 1px solid rgba(225, 225, 225, 0.8);
+}
+.post-container .post-content .comment-container .create-comment textarea {
+  margin-top: 5px;
+  width: 100%;
+  resize: vertical;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  line-height: 1.4em;
+  outline: none;
+  border: 1px solid rgba(225, 225, 225, 0.8);
+}
+.post-container .post-content .comment-container .create-comment textarea:focus {
+  border-color: teal;
+}
+.post-container .post-content .comment-container .comment-box {
+  margin-top: 5px;
+  padding-top: 5px;
+  max-height: 400px;
+  border-top: 1px solid rgba(225, 225, 225, 0.8);
+  overflow-y: scroll;
+}
+.post-container .post-content .comment-container .comment-box .comment-list {
+  position: relative;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(225, 225, 225, 0.8);
 }
 .avatar {
   border: 1px solid rgba(225, 225, 225, 0.8);
@@ -567,6 +602,13 @@ a.control-btn:hover {
 .news-container {
   float: left;
   width: 64%;
+  min-height: 500px;
+  position: relative;
+}
+.news-container .news-header {
+  display: block;
+  height: 50px;
+  margin-top: -2%;
 }
 .news-container ul li.news {
   display: block;
@@ -582,7 +624,265 @@ a.control-btn:hover {
 .news-container ul li.news a.link {
   cursor: pointer;
 }
+.news-container .news-btn {
+  display: inline-block;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  margin: 0;
+  margin-left: -50px;
+  width: 100px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  padding: 0;
+}
 .reminder {
   float: right;
   width: 20%;
+}
+.filter {
+  height: 50px;
+  margin-left: 5px;
+  font-size: 1.2em;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
+  color: #4D4D4D;
+  display: inline-block;
+  position: relative;
+}
+.filter .filter-name {
+  cursor: pointer;
+  line-height: 50px;
+}
+.filter .filter-options {
+  background-color: white;
+  display: block;
+  position: absolute;
+  right: -50%;
+  border-radius: .25em .25em .4em .4em;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  visibility: hidden;
+  opacity: 0;
+  width: auto;
+  overflow: visible;
+}
+.filter .filter-options a {
+  color: #4D4D4D;
+  min-width: 150px;
+  font-size: .9em;
+  cursor: pointer;
+  padding: 5%;
+  display: block;
+  line-height: 30px;
+  border-bottom: 0.5px solid rgba(225, 225, 225, 0.8);
+}
+.filter .filter-options a:hover {
+  color: teal;
+}
+.filter .filter-options a.selected {
+  color: #fc7169;
+}
+.filter:hover .filter-options {
+  visibility: visible;
+  opacity: 1;
+}
+.setting-container {
+  margin: 30px auto 0 auto;
+  background-color: white;
+  position: relative;
+  height: 700px;
+  width: 900px;
+  border-radius: .25em .25em .4em .4em;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+.setting-container .current-avatar {
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  width: 150px;
+  height: 200px;
+  text-align: center;
+}
+.setting-container .current-avatar img {
+  width: 150px;
+  height: auto;
+  margin-bottom: 25px;
+}
+.setting-container .account {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 650px;
+  height: 500px;
+  padding: 4%;
+}
+.setting-container .account h1 {
+  font-size: 1.5em;
+}
+.setting-container .account div.username,
+.setting-container .account div.email {
+  margin-top: 40px;
+  font-size: 20px;
+}
+.setting-container .account span.label {
+  text-align: left;
+  display: inline-block;
+  width: 150px;
+  padding: 0;
+  font-size: 20px;
+  font-weight: 100;
+  color: #8f9cb5;
+}
+.setting-container .avatar-tab {
+  opacity: 0;
+  visibility: hidden;
+  background-color: white;
+  position: absolute;
+  top: 30px;
+  left: 50px;
+  width: 520px;
+  height: 500px;
+  border-radius: .25em .25em .4em .4em;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  -webkit-transform: translate3d(400px, 0, 400px);
+  -moz-transform: translate3d(400px, 0, 400px);
+  -ms-transform: translate3d(400px, 0, 400px);
+  -o-transform: translate3d(400px, 0, 400px);
+  transform: translate3d(400px, 0, 400px);
+  -webkit-transition: all .6s linear;
+  -moz-transition: all .6s linear;
+  -ms-transition: all .6s linear;
+  -o-transition: all .6s linear;
+  transition: all .6s linear;
+}
+.setting-container .avatar-tab h1 {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+  padding: 2em 1em 1em 1em;
+  color: #8f9cb5;
+}
+.setting-container .avatar-tab .crop {
+  position: relative;
+  height: 400px;
+}
+.setting-container .avatar-tab .select-file {
+  position: absolute;
+  bottom: 3px;
+  left: 108px;
+}
+.setting-container .avatar-tab .select-file input[type="file"] {
+  display: none;
+}
+.setting-container .avatar-tab .select-file .custom-file-upload {
+  width: 150px;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  height: 30px;
+  color: #4D4D4D;
+  border: 0.5px solid #4D4D4D;
+  border-radius: 2px;
+  -webkit-transition: all .5s;
+  -moz-transition: all .5s;
+  -ms-transition: all .5s;
+  -o-transition: all .5s;
+  transition: all .5s;
+}
+.setting-container .avatar-tab .select-file .custom-file-upload:hover {
+  color: white;
+  background-color: teal;
+  border-color: teal;
+}
+.setting-container .avatar-tab .ava-btn {
+  position: absolute;
+  bottom: 0;
+  right: 108px;
+}
+.setting-container .avatar-tab .ava-btn input {
+  display: inline-block;
+}
+.setting-container .avatar-tab .upload {
+  width: 150px;
+  display: inline-block;
+}
+.setting-container .avatar-tab .cropArea {
+  position: absolute;
+  left: 3px;
+  overflow: hidden;
+  width: 300px;
+  height: 300px;
+  border: 0.5px solid rgba(225, 225, 225, 0.8);
+}
+.setting-container .avatar-tab img-crop {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  height: 100%;
+}
+.setting-container .avatar-tab canvas {
+  margin: 0 auto 0 auto !important;
+}
+.setting-container .avatar-tab .result {
+  position: absolute;
+  right: 3px;
+  border: 0.5px solid rgba(225, 225, 225, 0.8);
+}
+.setting-container .avatar-tab .progress {
+  position: absolute;
+  margin: 0;
+  left: 160px;
+  bottom: 35px;
+  line-height: 15px;
+  display: inline-block;
+  width: 200px;
+  border: 3px groove #CCC;
+}
+.setting-container .avatar-tab .progress div {
+  font-size: smaller;
+  background: limegreen;
+  width: 0;
+}
+.setting-container .avatar-tab .msg {
+  position: absolute;
+  display: block;
+  text-align: center;
+  width: 100%;
+  bottom: 57px;
+}
+.setting-container .avatar-tab.is-visible {
+  opacity: 1;
+  visibility: visible;
+  -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+}
+.ava {
+  position: relative;
+  cursor: pointer;
+  display: block;
+  height: 30px;
+  line-height: 30px;
+  color: #4D4D4D;
+  border: 0.5px solid #4D4D4D;
+  border-radius: 2px;
+  -webkit-transition: all .5s;
+  -moz-transition: all .5s;
+  -ms-transition: all .5s;
+  -o-transition: all .5s;
+  transition: all .5s;
+  overflow: hidden;
+}
+.ava:hover {
+  color: white;
+  background-color: teal;
+  border-color: teal;
+}
+.old_avatar {
+  float: right;
+  margin-right: 10px;
 }

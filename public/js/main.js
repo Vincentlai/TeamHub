@@ -41,11 +41,13 @@
                                 .then(
                                     function (res) {
                                         if(res.data.code == 1){
+                                            var url = '/users/download_avatar?user_id=' + res.data.user_id;
                                             var info = {
                                                 user: {
                                                     email: res.data.email,
                                                     nickname: res.data.nickname,
-                                                    user_id: res.data.user_id
+                                                    user_id: res.data.user_id,
+                                                    current_avatar: url
                                                 },
                                                 teams: res.data.teams
                                             };
@@ -97,11 +99,16 @@
                 })
 
                 .state('home.chat', {
-                    url: ':team_id/chat',
+                    url: ':team_id/chat{.*}',
                     views: {
                         'contains': {
                             templateUrl: 'pages/chat.html',
-                            controller: 'Ctrl'
+                            controller: 'ChatController'
+                        }
+                    },
+                    resolve: {
+                        'title': function($rootScope, $stateParams){
+                            $rootScope.selectedTeamId = $stateParams.team_id;
                         }
                     },
                     authenticated: true

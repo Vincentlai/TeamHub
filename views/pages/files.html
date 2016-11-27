@@ -252,7 +252,7 @@
     }
     
     .upload_area {
-        margin-bottom: 50px;
+        margin-bottom: 10px;
     }
     
     .upload_button {
@@ -296,27 +296,61 @@
         left: 24px;
         bottom: 19px;
     }
+    /* Drag and drop */
+    
+    .drop-box {
+        width: 95%;
+        height: 150px;
+        border: 3px dotted #ccc;
+        background-color: #eee;
+        text-align: center;
+        padding-top: 30px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 50px;
+    }
+    
+    .drop-box.dragover {
+        border-color: #0e0;
+        background-color: #b2fab2;
+    }
+    
+    .drop-box.dragover-err {
+        border-color: #f00;
+        background-color: #ffb2b2;
+    }
+
+    .uploadingdiv {
+        margin-top: 20px;
+    }
+
+    .uploadresult{
+        margin-top: 20px;
+    }
 </style>
 <div class="page-container" ng-cloak>
     <scroll-section id="scroll" style="overflow-y: auto; overflow-x: hidden; height:100vh;">
         <div ng-controller="FileCtrl">
             <form class="upload_area" name="myForm">
 
-                <input class="input" type="file" id="fileInput" />
+                <!--<input class="input" type="file" multiple="multiple" id="fileInput" />
+                <button class="upload_button" ng-click="upload()" ng-show="show_upload_button">Upload</button>-->
 
-                <button class="upload_button" ng-click="upload()">Upload</button>
-
-                <div ng-show="showUploading()">
+                <div class="uploadingdiv" ng-show="showUploading()">
                     <div class="spinner"></div>
                     <text>Uploading...</text>
                 </div>
 
-                <div>
-                    <span ng-show="result" style="margin-left:20px;">Upload Completed</span>
-                    <span class="err" ng-show="errorMsg" style="margin-left:20px;" >{{upload_error}}</span>
+                <div class="uploadresult">
+                    <span ng-show="result" style="margin-left:20px;">{{upload_result}}</span>
+                    <span class="err" ng-show="errorMsg" style="margin-left:20px;">{{upload_error}}</span>
                 </div>
 
             </form>
+
+            <div ngf-select="" ngf-drop="" ng-model="files" class="drop-box" ngf-drag-over-class="{ accept:'dragover', reject:'dragover-err', delay:100}"
+                ngf-multiple="true" ngf-allow-dir="false">Drag and drop files here or click here to choose files to upload</div>
 
             <div class="list">
 
@@ -344,7 +378,7 @@
                             <text>| by </text>
                             <text>{{json.owner_nickname}}</text>
                             <text>|</text>
-                            <text>{{json.time}}</text>
+                            <text>{{json.time | date:'yyyy-MM-dd HH:mm:ss'}}</text>
                         </div>
                         <div class="a">
                             <text>|</text>
