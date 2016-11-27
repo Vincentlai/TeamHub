@@ -13,7 +13,7 @@
         '$rootScope',
         function($http,Auth,$state,$scope,$timeout,$rootScope){
             //for event test, after passing the test, using database to access events.
-            var newEventDate = new Date(1478592000000);
+            //var newEventDate = new Date(1478592000000);
             $scope.events = [];
             var teamID = $rootScope.selectedTeamId;
             console.log(teamID);
@@ -32,7 +32,9 @@
                                 start: new Date(event.start),
                                 end: new Date(event.end),
                                 title: event.title,
-                                event_id: event._id 
+                                event_id: event._id ,
+                                description: event.description,
+                                creator_id: event.creator_id
                             });
                         });
                         //console.log($scope.events[0]);
@@ -128,6 +130,7 @@
                 console.log("deleteEvent working");
                 
                 deleteEventFromDatabase(deleteEventID);
+                $scope.closeForm('display-event');
             };
 
 
@@ -152,6 +155,7 @@
                 console.log(createdEvent.allDayEvent);
                 console.log(createdEvent);
                 sendToDataBase(createdEvent);
+                $scope.closeForm('create-event');
             };
 
             function sendToDataBase(createdEvent){
@@ -180,11 +184,24 @@
                 return date.toDateString();
             }
             var deleteEventID;
+            //var chosenEventTitle;
+            //var chosenEventStart;
+            //var chosenEventEnd;
+            //var chosenEventDescription;
             $scope.eventClicked = function (item) {
                 $scope.result = item.start.toDateString();
                 //console.log($scope.result);
+                $scope.showEventInformation = true;
                 $scope.showDeleteEventForm = true;
                 deleteEventID = item.event_id;
+                $scope.chosenEventTitle = item.title;
+                $scope.chosenEventStart = item.start.toString();
+                $scope.chosenEventEnd = item.end.toString();
+                $scope.chosenEventDescription = item.description;
+                $scope.chosenEventCreatorID = item.creator_id;
+                $scope.createForm('display-event');
+
+
                 console.log(item);
             };
 
@@ -201,7 +218,33 @@
                 $scope.result = currentDay(date);
                 $scope.showCreateEventForm = true;
                 console.log(date.getTime());
+                $scope.createForm('create-event');
             };
+
+
+
+
+            //try popupwindow
+            $scope.createForm = function (tag, id, name, teammates) {
+                $scope.input = {};
+                if (tag.includes('post')) {
+                    $scope.selectedId = id;
+                } else {
+                    $scope.input.team_id = id;
+                }
+                $scope.selectedName = name;
+                $scope.selectedTeamTeammates = teammates;
+                $('#' + tag).addClass('is-visible');
+            };
+
+            $scope.closeForm = function (tag, reset) {
+                $('#' + tag).removeClass('is-visible');
+                if (reset) {
+                    reset.$setPristine();
+                    reset.$setUntouched();
+                }
+            };
+
 
             $scope.dis = false;
 
