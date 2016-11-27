@@ -341,13 +341,20 @@
                 }
             };
 
+            var generateResult2 = function (data) {
+                return {
+                    file_id: data.file_id,
+                    file_name: data.file_name
+                }
+            };
+
             me.uploadFile = function (data, callback) {
                 Upload.upload({
                     url: url,
                     data: data
                 }).then(function (res) {
                     if(res.data.code == 1){
-                        callback(res.data.code, generateResult(res.data));
+                        callback(res.data.code);
                     }else{
                         callback(res.data.code, res.data.msg);
                     }

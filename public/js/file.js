@@ -124,8 +124,10 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout',
             reader.onload = function(evt) {
                 $scope.$apply(function($scope) {
                     dataUrl = evt.target.result;
+                    console.log(dataUrl);
                 });
             };
+
             reader.readAsDataURL(file);
         };
         angular.element(document.querySelector('#fileInput')).on('change', handleFileSelect);
@@ -148,7 +150,7 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout',
                 url: '/files/upload',
                 data: {
                     team_id: team_id,
-                    file: Upload.dataUrltoBlob(dataUrl, file_name),
+                    file: Upload.dataUrltoBlob(dataUrl),
                     file_name: file_name,
                     file_size: file_size
                 }

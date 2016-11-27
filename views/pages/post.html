@@ -44,6 +44,10 @@
                     {{postCard.text}}
                 </p>
 
+                <div class="post-files-list">
+                    <!--Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet eligendi eos error incidunt iste itaque necessitatibus nemo nostrum, officia perspiciatis porro sit ut velit! Animi asperiores at explicabo facilis rem.-->
+                </div>
+
                 <!--like button-->
                 <md-button
                         ng-click="likeOrUnlike(postCard.post_id, postCard.isLiked, $index)"
@@ -96,7 +100,8 @@
                     <!--comment list-->
                     <div class="comment-box" ng-show="postCard.visibleComment">
                         <div class="comment-list" ng-repeat="comment in postCard.commentList | orderBy: '-time'">
-                            <img class="avatar " ng-src="{{'/users/download_avatar?user_id='+ comment.user_id}}" alt="nickname">
+                            <img class="avatar " ng-src="{{'/users/download_avatar?user_id='+ comment.user_id}}"
+                                 alt="nickname">
                             <span class="post-creater">
                             {{comment.nickname}}
                             </span>
@@ -111,7 +116,7 @@
                                 </span>
                             </span>
                             <p class="description">
-                            {{comment.comment}}
+                                {{comment.comment}}
                             </p>
                         </div>
                     </div>
@@ -127,6 +132,7 @@
             <h1>New Post</h1>
             <error-notify>
             </error-notify>
+
             <div class="pop-form">
                 <form name="postCreateForm" class="md-title">
                     <md-input-container class="md-block">
@@ -145,16 +151,50 @@
                         </div>
                     </md-input-container>
 
-                    <div class="select-file">
-                        <label for="fileInput" class="custom-file-upload">
-                            Select File
-                        </label>
-                        <input id="fileInput" type="file"/>
+                    <div class="input-files">
+                        <div class="select-file">
+                            <label for="addFile" class="custom-file-upload">
+                                <i class="material-icons">add</i>
+                                Add Files or Pictures
+                            </label>
+                            <input id="addFile" type="file"/>
+                        </div>
+                    </div>
+
+                    <div class="files-list">
+                        <div class="file" ng-repeat="file in files">
+                            {{file.file_name}}
+                            <!--<span class="loading" ng-show="file.loading">-->
+                                <!--loading...-->
+                            <!--</span>-->
+                            <md-progress-circular md-mode="indeterminate"
+                                                  md-diameter="20"
+                                                  ng-show="file.isLoading"
+                                                  class="single-file-loading">
+                            </md-progress-circular>
+                            <a class="delete" ng-click="cancelFile($index)">
+                                <i class="material-icons">clear</i>
+                                <md-tooltip md-direction="top">
+                                    Cancel
+                                </md-tooltip>
+                            </a>
+
+                        </div>
                     </div>
 
                     <ul class="cd-buttons clearfix">
                         <li type="submit" ng-click="createPost('create-post')">
-                            <button ng-disabled="postCreateForm.$invalid" class="agree inpop">Create</button>
+                            <md-progress-circular md-mode="indeterminate"
+                                                  ng-show="isPosting"
+                                                  md-diameter="20" class="post-upload"></md-progress-circular>
+                            <button ng-disabled="postCreateForm.$invalid" class="agree inpop">
+                                <span ng-show="isPosting">
+                                    Posting..
+                                </span>
+                                <span ng-show="!isPosting">
+                                    Create
+                                </span>
+                            </button>
                         </li>
                         <li>
                             <button class="inpop" ng-click="closeForm('create-post')">Cancel</button>
