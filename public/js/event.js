@@ -141,6 +141,12 @@
                 $scope.closeForm('display-event');
             };
 
+            $scope.eventStartDate = new Date(0);
+            $scope.eventStartTimeHour = 0;
+            $scope.eventStartTimeMin = 0;
+            $scope.eventEndDate = new Date(0);
+            $scope.eventEndTimeHour = 0;
+            $scope.eventEndTimeMin = 0;
 
             $scope.createEvent = function(){
                 console.log(" working ");
