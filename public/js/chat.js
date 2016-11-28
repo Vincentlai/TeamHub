@@ -5,8 +5,7 @@ app.config(function ($socketProvider) {
 });
 
 
-app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $http) {
-
+app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $http) {
     function guid() {
         function s4() {
             return Math.floor((1 + Math.random()) * 0x10000)
@@ -21,7 +20,8 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $http) {
     var role_arr = [];
     var self_icon = "/images/default_avatar.jpg";
     const GET_AVATAR_URL = "/users/download_avatar?user_id=";
-
+    // initialize msg list
+    $scope.msg_list = [];
     // check if user has avatar
     $http.get('/users/download_avatar')
         .then(
@@ -35,8 +35,7 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $http) {
     );
     // generate a GUID
     var uuid = guid();
-    // initialize msg list
-    $scope.msg_list = [];
+
 
     $scope.getClass = function (index) {
         return role_arr[index].class;
@@ -57,10 +56,12 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $http) {
             var msg = json.msg;
             var time = json.time;
 
-            $scope.msg_list.push({ index, nickname, msg, time });
+            //noinspection JSAnnotator
+            $scope.msg_list.push({index, nickname, msg, time});
             var url = GET_AVATAR_URL + json.user_id;
-            role_arr.push({ class: "other", src: url });
+            role_arr.push({class: "other", src: url});
             index++;
+            console.log('i got msg' + msg);
         }
     });
 
@@ -99,6 +100,7 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $http) {
         // update ui
         $scope.dataToSend = "";
 
+        //noinspection JSAnnotator
         $scope.msg_list.push({ index, nickname, msg, time });
         role_arr.push({ class: "self", src: self_icon });
         index++;
@@ -113,27 +115,23 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $http) {
                 function (res) {
                     var detail;
                     if (res.data.code == 1) {
-
                         var history = res.data.history;
                         var user_id = $rootScope.user.user_id;
-
                         $scope.msg_list = [];
                         role_arr = [];
-
                         for (var i = 0; i < history.length; i++) {
                             var nickname = history[i].nickname;
                             var msg = history[i].message;
                             var time = history[i].time;
+                            //noinspection JSAnnotator
                             $scope.msg_list.push({ i, nickname, msg, time });
                             if(history[i].user_id == user_id){
                                 role_arr.push({ class: "self", src: self_icon });
-                            
                             }else{
                                 var url = GET_AVATAR_URL + history[i].user_id;
                                 role_arr.push({ class: "other", src: url });
                             }
                         }
-
                     } else {
                         // clear arrays
                         $scope.msg_list = [];
@@ -144,7 +142,6 @@ app.controller('Ctrl', function Ctrl($scope, $socket, $rootScope, $http) {
                 });
     })
 });
-
 // scroll list to bottom when type in or receive a new message
 app.directive('scrollSection',
     ['$location', '$timeout', '$anchorScroll',

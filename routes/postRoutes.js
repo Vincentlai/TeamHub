@@ -25,8 +25,8 @@ router.post('/post', function (req, res) {
     var text = req.body.text;
     var team_id = req.body.team_id;
     var sess = req.session;
-
-    post.post(sess, team_id, text, function (found) {
+    var files = req.body.files;
+    post.post(sess, team_id, text, files, function (found) {
         console.log(found);
         res.json(found);
     });
@@ -138,6 +138,15 @@ router.post('/comment', function (req, res) {
     });
 });
 
+router.get('/get_comments', function (req, res) {
+    var sess = req.session;
+    var post_id = req.query.post_id;
+
+    post.getComments(sess, post_id, function (found) {
+        console.log(found);
+        res.json(found);
+    });
+});
 
 
 module.exports = router;

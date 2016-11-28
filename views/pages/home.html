@@ -50,17 +50,17 @@
                                 <i class="material-icons">assignment</i>
                                 <a>Post</a>
                         </li>
-                        <li ui-sref="home.chat({team_id:teamItem.id})" ng-click="changeID(teamItem.id)" ng-class="{'selected': isChat&&isSelected(teamItem.id)}">
+                        <li ui-sref="home.chat({team_id:teamItem.id})"  ng-class="{'selected': isChat&&isSelected(teamItem.id)}">
                                 <i class="material-icons">chat</i>
                                 <a> Chat Rooms</a>
                         </li>
 
-                        <li ui-sref="home.events({team_id:teamItem.id})" ng-click="changeID(teamItem.id)" ng-class="{'selected': isEvent&&isSelected(teamItem.id)}">
+                        <li ui-sref="home.events({team_id:teamItem.id})" ng-class="{'selected': isEvent&&isSelected(teamItem.id)}">
                                 <i class="material-icons">event</i>
                                 <a>Event</a>
                         </li>
 
-                        <li ui-sref="home.files({team_id:teamItem.id})" ng-click="changeID(teamItem.id)" ng-class="{'selected': isFile&&isSelected(teamItem.id)}">
+                        <li ui-sref="home.files({team_id:teamItem.id})"  ng-class="{'selected': isFile&&isSelected(teamItem.id)}">
                                 <i class="material-icons">folder</i>
                                 <a>File</a>
                         </li>

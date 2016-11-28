@@ -83,7 +83,52 @@
             }
         }
     ]);
-    
+
+    module.filter('dateFilter', [
+        function () {
+            return function (date) {
+                var now = new Date();
+                // var timeStamp = millisecond.substring(0, 8);
+                // var date = new Date(parseInt(timeStamp, 16) * 1000);
+                if (now.getFullYear() > date.getFullYear()) {
+                    if (now.getFullYear() - date.getFullYear() == 1) {
+                        return "last year";
+                    } else {
+                        return "in " + (now.getFullYear() - date.getFullYear()) + ' years ago';
+                    }
+                }
+                if (now.getMonth() > date.getMonth()) {
+                    if (now.getMonth() - date.getMonth() == 1) {
+                        return "last month";
+                    } else {
+                        return "in " + (now.getMonth() - date.getMonth()) + ' months ago';
+                    }
+                }
+                if (now.getDay() > date.getDay()) {
+                    if (now.getDay() - date.getDay() == 1) {
+                        return "yesterday";
+                    } else {
+                        return "in " + (now.getDay() - date.getDay()) + ' days ago';
+                    }
+                }
+                if (now.getHours() > date.getHours()) {
+                    if (now.getHours() - date.getHours() == 1) {
+                        return "in 1 hour ago";
+                    } else {
+                        return "in " + (now.getHours() - date.getHours()) + ' hours ago';
+                    }
+                }
+                if (now.getMinutes() > date.getMinutes()) {
+                    if (now.getMinutes() - date.getMinutes() == 1) {
+                        return "in 1 minute ago";
+                    } else {
+                        return "in " + (now.getMinutes() - date.getMinutes()) + ' minutes ago';
+                    }
+                }
+                return "just now";
+            }
+        }
+    ]);
     module.controller('headerController', [
         '$scope',
         'Auth',
@@ -108,44 +153,107 @@
             '$timeout',
             '$rootScope',
             'ErrorService',
-            function ($scope, postList, $state, $http, $timeout, $rootScope, ErrorService) {
-                /*
-                 keys in post list item
-                 comments   Array
-                 like
-                 nickname
-                 creator_id
-                 post_id
-                 text
-                 time
-                 */
+            'PostService',
+            'Upload',
+            '$q',
+            function ($scope, postList, $state, $http, $timeout, $rootScope, ErrorService, PostService, Upload, $q) {
+
                 $scope.postList = postList;
+                $scope.postList.forEach(function (post) {
+                    post.visibleComment = false;
+                });
+                $scope.isPosting = false;
+                $scope.isDeleting = false;
                 $scope.numOfPosts = $scope.postList.length;
 
+
+                //initialize file upload array
+                $scope.files = [];
+                $scope.invalid_input = false;
+
+                $scope.input = {};
+                $scope.errorNotify = ErrorService;
+                var addNewComment = function (data, index) {
+                    var comment = {
+                        user_id: data.user_id,
+                        nickname: data.nickname,
+                        comment: data.comment,
+                        time: new Date(parseInt(data.time.toString().substring(0, 8), 16) * 1000)
+                    };
+                    $scope.postList[index].commentList.push(comment);
+                    $scope.postList[index].comments++;
+                };
                 $scope.createPost = function () {
-                    $http.post('/posts/post', {
-                        text: $scope.input.description,
-                        team_id: $rootScope.selectedTeamId
-                    })
-                        .then(
-                            function (res) {
-                                if (res.data.code == 1) {
-                                    $scope.closeForm('create-post');
-                                    $timeout(
-                                        function () {
-                                            $state.transitionTo($state.current.name, {team_id: $rootScope.selectedTeamId},
-                                                {reload: $state.current.name, inherit: false, notify: true});
-                                        }, 500);
-                                } else {
-                                    $scope.errorNotify = ErrorService;
-                                    ErrorService.displayError(res.data.msg);
-                                }
-                            }, function (error) {
-                                console.log('error in creating post ' + error);
+                    console.log('create post');
+                    if ($scope.isPosting) {
+                        return;
+                    }
+                    $scope.isPosting = true;
+                    var promises = [];
+
+                    angular.forEach($scope.files, function (file, index) {
+                        $scope.files[index].isLoading = true;
+
+                        var deferred = $q.defer();
+                        Upload.upload({
+                            url: '/files/upload',
+                            data: {
+                                team_id: $rootScope.selectedTeamId,
+                                file: Upload.dataUrltoBlob(file.file_url),
+                                file_name: file.file_name,
+                                file_size: file.file_size
                             }
-                        )
+                        }).then(function (res) {
+                            $scope.files[index].isLoading = false;
+                            if (res.data.code == 1) {
+                                file.file_id = res.data.file_id;
+                                deferred.resolve(res.data.msg);
+                            } else {
+                                deferred.reject(res.data.msg);
+                                console.log(res.data.msg);
+                            }
+                        }, function (error) {
+                            console.error(error);
+                        });
+                        promises.push(deferred.promise);
+                    });
+                    $q.all(promises).then(
+                        function (res) {
+                            $http.post('/posts/post', {
+                                text: $scope.input.description,
+                                team_id: $rootScope.selectedTeamId,
+                                files: $scope.files
+                            })
+                                .then(
+                                    function (res) {
+                                        if (res.data.code == 1) {
+                                            $timeout(
+                                                function () {
+                                                    $scope.isPosting = false;
+                                                    $scope.closeForm('create-post');
+                                                    $state.transitionTo($state.current.name, {team_id: $rootScope.selectedTeamId},
+                                                        {reload: $state.current.name, inherit: false, notify: true});
+                                                }, 3000);
+                                        } else {
+                                            ErrorService.displayError(res.data.msg);
+                                        }
+                                    }, function (error) {
+                                        console.log('error in creating post ' + error);
+                                    }
+                                )
+                        }, function (error) {
+                            console.log(error);
+                        }
+                    );
                 };
                 $scope.deletePost = function (id) {
+                    if($scope.isDeleting){
+                        return;
+                    }
+                    var promises = [];
+                    angular.forEach($scope.files, function (file, index) {
+
+                    });
                     console.log('delete post clicked' + id);
                     $http.delete('/posts/delete?post_id=' + id)
                         .then(
@@ -171,6 +279,35 @@
                             }
                         )
                 };
+                $scope.createComment = function (id, index) {
+                    console.log('create comment');
+                    var input = document.getElementById('comment-input' + index).value;
+                    if (input == '')
+                        return;
+                    $scope.index = index;
+                    $http.post('/posts/comment', {
+                        comment: input,
+                        post_id: id
+                    })
+                        .then(
+                            function (res) {
+                                if (res.data.code == 1) {
+                                    document.getElementById('comment-input' + index).value = '';
+                                    if (angular.isUndefined($scope.postList[index].commentList)) {
+                                        $scope.getComments(index, id);
+                                        $scope.postList[index].visibleComment = true;
+                                    } else {
+                                        addNewComment(res.data, index);
+                                    }
+                                } else {
+                                    console.log(res.data.msg);
+                                }
+                            }, function (error) {
+                                console.log('error in adding comment ' + error);
+                            }
+                        )
+                };
+
                 $scope.likeOrUnlike = function (id, flag, index) {
                     $scope.index = index;
                     $http.post('/posts/likeOrUnlike', {
@@ -205,6 +342,57 @@
                                 console.log('error in like or unlike ' + error);
                             }
                         )
+                };
+
+                $scope.getComments = function (index, id) {
+                    console.log('load comments');
+                    PostService.getComments(id, function (comments) {
+                        $scope.postList[index].commentList = comments;
+                        $scope.postList[index].comments = $scope.postList[index].commentList.length;
+                    });
+                };
+                //click button to show comments
+                $scope.showComments = function (index, id) {
+                    $scope.postList[index].visibleComment = !$scope.postList[index].visibleComment;
+                    if (angular.isUndefined($scope.postList[index].commentList)) {
+                        $scope.getComments(index, id);
+                    }
+                };
+                //get file name and size from input
+
+                var handleFileSelect = function (event) {
+                    var input_files = event.currentTarget.files;
+                    angular.forEach(input_files, function (v) {
+                        var input = v;
+                        var file = {};
+                        file.file_name = input.name;
+                        file.file_size = input.size;
+                        file.file_type = input.type;
+                        file.isLoading = false;
+                        if (file.file_type.includes('image')) {
+                            var index = $scope.files.push(file);
+                            var reader = new FileReader();
+                            reader.onload = function (f) {
+                                return function (e) {
+                                    $scope.$apply(function () {
+                                        f.file_url = e.target.result;
+                                    });
+                                };
+                            }($scope.files[index - 1]);
+                            reader.readAsDataURL(v);
+                        }
+                    });
+                };
+                angular.element(document.querySelector('#addFile')).on('change', handleFileSelect);
+
+                $scope.selectUrl = function (post, id) {
+                    post.selectedUrl = '/files/download?file_id=' + id;
+                };
+                $scope.unselectUrl = function (post) {
+                    post.selectedUrl = null;
+                };
+                $scope.cancelFile = function (index) {
+                    $scope.files.splice(index, 1);
                 }
 
             }
@@ -223,7 +411,6 @@
             $scope.teams = information.teams;
             $scope.hasNoTeam = ($scope.teams.length === 0);
             $rootScope.user = information.user;
-
             $scope.openTag = function () {
                 for (var i = 0; i < $scope.teams.length; i++) {
                     if ($scope.teams[i].id == $rootScope.selectedTeamId) {
@@ -235,7 +422,6 @@
                     }
                 }
             };
-
             $scope.$watch(function () {
                 return $state.$current.name;
             }, function (newState, oldState) {
@@ -330,8 +516,7 @@
         '$state',
         '$timeout',
         '$http',
-        'HomeService',
-        function ($scope, $rootScope, $state, $timeout, $http, HomeService) {
+        function ($scope, $rootScope, $state, $timeout, $http) {
 
             $scope.loadNews = function () {
                 $scope.news = [];
@@ -342,19 +527,13 @@
                                 if (res.data.code == 1) {
                                     var news;
                                     for (var j = 0; j < res.data.news.length; j++) {
-                                        var time;
-                                        if(res.data.news[j].action_target_id == ''){
-                                            time = res.data.news[j]._id;
-                                        }else{
-                                            time = res.data.news[j].action_target_id;
-                                        }
                                         news = {
                                             user_id: res.data.news[j].user_id,
                                             user_nickname: res.data.news[j].user_nickname,
                                             action_name: res.data.news[j].action_name,
                                             action_target: res.data.news[j].action_target,
                                             action_target_id: res.data.news[j].action_target_id,
-                                            time_in_mili: time.toString(),
+                                            time_in_mili: new Date(parseInt(res.data.news[j]._id.toString().substring(0, 8), 16) * 1000),
                                             target_team: res.data.news[j].target_team_name
                                         };
                                         $scope.news.unshift(news);
@@ -365,8 +544,42 @@
                             }
                         )
                 }
-
+                // $scope.number_of_selected_filter = $scope.news.length;
+                // $scope.current_number_of_selected_filter = 0;
+                // $scope.filter_limite = 10;
+                $scope.filter_team_name = 'All Teams';
+                $scope.filter_team_id = '';
             };
+            $scope.selectFilter = function (id, name) {
+                if (id == '') {
+                    $scope.filter_team_name = 'All Teams';
+                } else {
+                    $scope.filter_team_name = name;
+                }
+                $scope.filter_team_id = id;
+            };
+            $scope.filterTeam = function (item) {
+                if (($scope.filter_team_id == '')) {
+                    $scope.current_number_of_selected_filter++;
+                    return true;
+                }
+                if ($scope.filter_team_name == item.target_team) {
+                    return true;
+                }
+                return false;
+            };
+            // $scope.loadMore = function () {
+            //     $scope.filter_limite += 10;
+            // };
+            // $scope.$watch(function () {
+            //         return $scope.filter_team_name;
+            //     }, function (n, o) {
+            //         if(n != o){
+            //             $scope.current_number_of_selected_filter = 0;
+            //             $scope.filter_limite = 10;
+            //         }
+            //     }, true
+            // )
         }
     ]);
     module.controller('teamController', [
@@ -378,6 +591,7 @@
         function ($scope, $timeout, $state, ErrorService, TeamService) {
             $scope.team = {};
             $scope.numOfTeams = $scope.teams.length;
+
             $scope.loadTeamDetail = function () {
                 $scope.teamsDetail = [];
                 for (var i = 0; i < $scope.teams.length; i++) {

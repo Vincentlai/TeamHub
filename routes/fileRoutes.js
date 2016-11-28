@@ -22,7 +22,7 @@ var fs = require('fs');
 var storage = multer.diskStorage({
     destination: 'tmp/',
     filename: function(req, file, cb) {
-        cb(null, req.session.user_id)
+        cb(null, req.session.user_id+"_"+Math.random())
     }
 });
 var upload = multer({ storage: storage });
@@ -94,7 +94,7 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
                 if (file_obj) {
                     res.json({
                         'code': '-4',
-                        'msg': 'You cannot upload the same file twice'
+                        'msg': 'You cannot upload the same file twice: ' + file_name
                     });
                     return;
 
@@ -395,7 +395,7 @@ router.get('/all', function(req, res) {
                     res.json({
                         'code': '1',
                         'msg': 'Get file list successfully',
-                        'files': list
+                        'files': list.reverse()
                     });
 
                 } else {

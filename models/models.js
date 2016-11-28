@@ -31,7 +31,7 @@ var teamSchema = mongoose.Schema({
         action_target: String,
         action_target_id: String,
         target_team_id: String,
-        target_team_name: String,
+        target_team_name: String
     }]
 });
 
@@ -49,6 +49,10 @@ var postSchema = mongoose.Schema({
         user_id: String,
         nickname: String,
         comment: String
+    }],
+    files: [{
+        file_id: String,
+        file_name: String
     }]
 });
 
@@ -82,7 +86,8 @@ var fileSchema = mongoose.Schema({
     owner_user_id: String,
     owner_nickname: String,
     file_name: String, // full name including suffix
-    file_size: Number // in Bytes
+    file_size: Number, // in Bytes
+    post_id: String
 });
 
 var fileDataSchema = mongoose.Schema({

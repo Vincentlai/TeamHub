@@ -251,6 +251,8 @@ exports.addUser = function(sess, team_id, user_id, email, nickname, message, cal
                                 id: user_id,
                                 nickname: user_obj.nickname
                             });
+
+
                             // add team to team array in user doc
                             user_obj.teams.push({
                                 id: team_id,
@@ -270,7 +272,23 @@ exports.addUser = function(sess, team_id, user_id, email, nickname, message, cal
                             user_obj.notifications.push("You are added to " + team_obj.name + " by " + nickname
                                 + ". Message: " + msg);
                             //save
-                            team_obj.save();
+
+                            team_obj.save(function (err, obj) {
+                                if (!err) {
+                                    team_obj.news.unshift(
+                                        {
+                                            user_id: cid,
+                                            user_nickname: sess.nickname,
+                                            action_name: 'added',
+                                            action_target: user_obj.nickname,
+                                            action_target_id: user_id,
+                                            target_team_id: team_id,
+                                            target_team_name: team_obj.name
+                                        }
+                                    );
+                                    team_obj.save();
+                                }
+                            });
                             user_obj.save();
 
                             callback({
@@ -392,14 +410,29 @@ exports.removeUser = function(sess, team_id, user_id, email, nickname, message, 
                             // push new notifaction 
                             var nickname = sess.nickname;
 
-                            var msg = "None"
+                            var msg = "None";
                             if (message) {
                                 msg = message;
                             }
                             user_obj.notifications.push("You are removed from " + team_obj.name + " by " + nickname
                                 + ". Message: " + msg);
                             //save
-                            team_obj.save();
+                            team_obj.save(function (err, removed) {
+                                if(!err){
+                                    team_obj.news.unshift(
+                                        {
+                                            user_id: cid,
+                                            user_nickname: sess.nickname,
+                                            action_name: 'removed',
+                                            action_target: user_obj.nickname,
+                                            action_target_id: '',
+                                            target_team_id: team_obj._id,
+                                            target_team_name: team_obj.name
+                                        }
+                                    );
+                                    team_obj.save();
+                                }
+                            });
                             user_obj.save();
 
                             callback({
