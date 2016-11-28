@@ -946,6 +946,19 @@ a.control-btn:hover {
   -o-transition: all .6s linear;
   transition: all .6s linear;
 }
+.setting-container .avatar-tab .avatar-tab-header {
+  position: relative;
+}
+.setting-container .avatar-tab .avatar-tab-header a {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  color: #8f9cb5;
+}
+.setting-container .avatar-tab .avatar-tab-header a:hover {
+  color: teal;
+}
 .setting-container .avatar-tab h1 {
   font-size: 1.5em;
   font-weight: bold;
@@ -1169,4 +1182,70 @@ img.big {
 .post-files-list .small img {
   width: 100%;
   height: auto;
+}
+.change-pwd-form {
+  margin-top: 40px;
+  border-top: 1px solid rgba(225, 225, 225, 0.8);
+  padding-top: 40px;
+}
+.change-pwd-form form {
+  overflow: visible;
+}
+.change-pwd-form form .input-container {
+  position: relative;
+  margin-bottom: 60px;
+}
+.change-pwd-form form .input-container label {
+  display: block;
+  position: relative;
+  font-size: 20px;
+  font-weight: 100;
+  color: #8f9cb5;
+}
+.change-pwd-form form .input-container label input {
+  overflow: visible;
+  position: absolute;
+  left: 250px;
+  top: -5px;
+  outline: none !important;
+  border: 1px solid rgba(225, 225, 225, 0.8);
+}
+.change-pwd-form form .input-container label input:focus {
+  border: 1px solid teal;
+}
+.change-pwd-form form .input-container label input.error {
+  border-color: #fc7169;
+}
+.change-pwd-form form .input-container .error-msg {
+  position: absolute;
+  left: 250px;
+  top: 32px;
+  color: #fc7169;
+}
+.change-pwd-form form .btns a {
+  margin-right: auto;
+  margin-left: auto;
+  cursor: pointer;
+  display: block;
+  height: 30px;
+  width: 150px;
+  text-align: center;
+  line-height: 30px;
+  color: #4D4D4D;
+  border: 0.5px solid #4D4D4D;
+  border-radius: 2px;
+  -webkit-transition: all .5s;
+  -moz-transition: all .5s;
+  -ms-transition: all .5s;
+  -o-transition: all .5s;
+  transition: all .5s;
+}
+.change-pwd-form form .btns a.disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+.change-pwd-form form .btns a:hover {
+  color: white;
+  background-color: teal;
+  border-color: teal;
 }

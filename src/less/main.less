@@ -157,13 +157,27 @@ Header  Navigation
       display: inline-block;
       text-align: center;
       cursor: pointer;
+      -webkit-transition: all .5s ease-in-out;
+      -moz-transition: all .5s ease-in-out;
+      -ms-transition: all .5s ease-in-out;
+      -o-transition: all .5s ease-in-out;
+      transition: all .5s ease-in-out;
+      &:hover {
+        .convert-color(#009688, white);
+      }
       a {
         display: inline-block;
         color: white;
         font-weight: bold;
         width: 130px;
-        &.nav-link:hover {
-          .convert-color(#009688, white);
+        &.logout {
+          width: 50px;
+          position: relative;
+          i{
+            position: absolute;
+            left: 14px;
+            top: -16px;
+          }
         }
         &.important {
           color: @important;

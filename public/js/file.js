@@ -118,7 +118,6 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout',
 
         /* Drag and Drop - Upload Multiple Files */
         $scope.uploadMultipleFiles = function(files) {
-
             for (var i = 0; i < files.length; i++) {
                 // file size limit check
                 if (files[i].size > 16000000) {
@@ -152,7 +151,7 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout',
                         if (num_uploaded == files.length) {
                             show_uploading = false;
                         }
-                        
+
                         if (data.code == '1') {
 
                             $scope.result = true;
@@ -180,7 +179,7 @@ app.controller('FileCtrl', ['$scope', 'Upload', '$timeout',
                     }
                 }, function(evt) { });
             }
-        }
+        };
 
         /* Select single File 
         var handleFileSelect = function(evt) {

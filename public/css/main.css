@@ -418,6 +418,15 @@ Header  Navigation
   display: inline-block;
   text-align: center;
   cursor: pointer;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+.nav-bar ul li:hover {
+  background-color: #009688;
+  color: white;
 }
 .nav-bar ul li a {
   display: inline-block;
@@ -430,9 +439,14 @@ Header  Navigation
   -o-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
 }
-.nav-bar ul li a.nav-link:hover {
-  background-color: #009688;
-  color: white;
+.nav-bar ul li a.logout {
+  width: 50px;
+  position: relative;
+}
+.nav-bar ul li a.logout i {
+  position: absolute;
+  left: 14px;
+  top: -16px;
 }
 .nav-bar ul li a.important {
   color: #fc7169;

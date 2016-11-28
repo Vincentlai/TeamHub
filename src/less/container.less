@@ -778,6 +778,19 @@ a.control-btn {
     -ms-transition: all .6s linear;
     -o-transition: all .6s linear;
     transition: all .6s linear;
+    .avatar-tab-header {
+      position: relative;
+      a {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        cursor: pointer;
+        color: @secondary-text-color;
+        &:hover {
+          color: @primary-color;
+        }
+      }
+    }
     h1 {
       font-size: 1.5em;
       font-weight: bold;
@@ -933,21 +946,22 @@ a.control-btn {
       height: 30px;
       color: @primary-text-color;
       opacity: .7;
-      i{
+      i {
         position: absolute;
         left: 0;
         top: 2px;
       }
       &:hover {
         opacity: 1;
-    }
+      }
     }
   }
 }
+
 .files-list {
   margin-left: 5px;
   margin-right: 5px;
-  .file{
+  .file {
     position: relative;
     display: block;
     cursor: default;
@@ -957,7 +971,7 @@ a.control-btn {
     padding-right: 10%;
     padding-bottom: 5px;
     padding-top: 4px;
-    .single-file-loading{
+    .single-file-loading {
       position: absolute;
       display: inline-block;
       top: 2px;
@@ -978,19 +992,18 @@ a.control-btn {
       -o-transition: all .5s;
       transition: all .5s;
     }
-    &:hover .delete{
+    &:hover .delete {
       opacity: 1;
       visibility: visible;
     }
   }
 }
 
-
 .post-upload {
   display: inline-block;
   position: absolute;
   top: 10px;
-  right:20%;
+  right: 20%;
 }
 
 img.big {
@@ -1000,7 +1013,8 @@ img.big {
   height: auto;
   cursor: zoom-out;
 }
-.post-files-list{
+
+.post-files-list {
   border-top: .5px solid @light-gray-border;
   padding-top: 5px;
   .small {
@@ -1014,6 +1028,78 @@ img.big {
       width: 100%;
       height: auto;
     }
+  }
+}
+
+.change-pwd-form {
+  margin-top: 40px;
+  border-top: 1px solid @light-gray-border;
+  padding-top: 40px;
+  form {
+    .input-container {
+      position: relative;
+      margin-bottom: 60px;
+      label {
+        display: block;
+        position: relative;
+        font-size: 20px;
+        font-weight: 100;
+        color: @secondary-text-color;
+        input {
+          overflow: visible;
+          position: absolute;
+          left: 250px;
+          top: -5px;
+          outline: none !important;
+          border: 1px solid @light-gray-border;
+          &:focus {
+            border: 1px solid @primary-color;
+          }
+          &.error {
+            border-color: @important;
+          }
+        }
+      }
+      .error-msg {
+        position: absolute;
+        left: 250px;
+        top: 32px;
+        color: @important;
+        .error-msg {
+        }
+      }
+    }
+    .btns {
+      a {
+        margin-right: auto;
+        margin-left: auto;
+        cursor: pointer;
+        display: block;
+        height: 30px;
+        width: 150px;
+        text-align: center;
+        line-height: 30px;
+        color: @primary-text-color;
+        border: .5px solid @primary-text-color;
+        border-radius: 2px;
+        -webkit-transition: all .5s;
+        -moz-transition: all .5s;
+        -ms-transition: all .5s;
+        -o-transition: all .5s;
+        transition: all .5s;
+        &.disabled {
+          opacity: .5;
+          cursor: not-allowed;
+        }
+        &:hover {
+          color: white;
+          background-color: @primary-color;
+          border-color: @primary-color;
+        }
+      }
+
+    }
+    overflow: visible;
   }
 }
 

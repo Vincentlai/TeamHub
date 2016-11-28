@@ -11,10 +11,14 @@
     </ul>
     <ul ng-if="user">
         <li>
+            <a class="nav-link" >{{user.nickname}}</a>
+        </li>
+        <li ng-click="logout()">
             <md-tooltip md-direction="bottom">
                 Click me to Log out
             </md-tooltip>
-            <a class="nav-link" ng-click="logout()">{{user.nickname}}</a>
+            <a class="nav-link logout"><i class="material-icons">exit_to_app</i></a>
+
         </li>
     </ul>
 </div>

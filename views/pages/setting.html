@@ -32,8 +32,91 @@
                 {{user.email}}
             </div>
 
+            <div class="change-pwd-form">
+                <error-notify >
+                </error-notify>
+                <form name="changePasswordForm">
+                    <div class="input-container">
+                        <label>Current Password
+                            <input type="password"
+                                   name="currentPassword"
+                                   ng-model="currentPassword"
+                                   ng-class="{error: (changePasswordForm.currentPassword.$invalid
+                                   &&changePasswordForm.currentPassword.$touched)||pwdIsNotRight}"
+                                   required>
+                        </label>
+                        <div class="error-msgs" ng-messages="changePasswordForm.currentPassword.$error" role="alert">
+                            <div class="error-msg" ng-message="required"
+                                 ng-show="changePasswordForm.currentPassword.$touched || changePasswordForm.currentPassword.$dirty">
+                                Current Password cannot be empty
+                            </div>
+                            <div class="error-msg"
+                                 ng-show="pwdIsNotRight">
+                                Current Password is not corrected
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-container">
+                        <label>New Password
+                            <input type="password"
+                                   name="newPassword"
+                                   ng-class="{error: changePasswordForm.newPassword.$invalid&&changePasswordForm.newPassword.$touched}"
+                                   ng-model="newPassword"
+                                   ng-minlength="6"
+                                   ng-maxlength="36"
+                                   required>
+                        </label>
+                        <div class="error-msgs" ng-messages="changePasswordForm.newPassword.$error" role="alert">
+                            <div class="error-msg" ng-message="required"
+                                 ng-show="changePasswordForm.newPassword.$touched || changePasswordForm.newPassword.$dirty">
+                                New Password cannot be empty
+                            </div>
+                            <div class="error-msg" ng-message="minlength"
+                                 ng-show="changePasswordForm.confirmPassword.$touched || changePasswordForm.newPassword.$dirty">
+                                Minimum length of password is 6.
+                            </div>
+                            <div class="error-msg" ng-message="maxlength"
+                                 ng-show="changePasswordForm.confirmPassword.$touched || changePasswordForm.newPassword.$dirty">
+                                Maximum length of password is 36.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-container">
+                        <label>Confirm New Password
+                            <input type="password"
+                                   name="confirmPassword"
+                                   ng-class="{error: changePasswordForm.confirmPassword.$invalid&&changePasswordForm.confirmPassword.$touched}"
+                                   required
+                                   ng-model="newConfirmPassword"
+                                   match-password="newPassword">
+                        </label>
+                        <div class="error-msgs" ng-messages="changePasswordForm.confirmPassword.$error" role="alert">
+                            <div class="error-msg" ng-message="required"
+                                 ng-show="changePasswordForm.confirmPassword.$touched || changePasswordForm.confirmPassword.$dirty">
+                                New Password cannot be empty
+                            </div>
+                            <div class="error-msg" ng-message="passwordMatch"
+                                 ng-show="changePasswordForm.confirmPassword.$touched || changePasswordForm.confirmPassword.$dirty">
+                                Confirm password doesn't match.
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="btns">
+                        <a ng-click="changePassword()"
+                           ng-class="{disabled: changePasswordForm.$invalid}" >Submit</a>
+                    </div>
+                    <!--<a ng-click="reset()">reset</a>-->
+                </form>
+
+            </div>
+
         </div>
         <div class="avatar-tab " ng-class="{'is-visible': openTab}">
+            <div class="avatar-tab-header" ng-click="openTab=false">
+                <a><i class="material-icons">clear</i></a>
+            </div>
             <h1>
                 Change Avatar
             </h1>
@@ -61,7 +144,7 @@
                 <div class="progress" ng-show="progress >= 0">
                     <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
                 </div>
-                <div class="msg" >
+                <div class="msg">
                     <span ng-show="result">Upload Successful</span>
                     <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
                 </div>
