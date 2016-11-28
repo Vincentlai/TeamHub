@@ -11,9 +11,11 @@
         '$scope',
         '$timeout',
         '$rootScope',
-        function($http,Auth,$state,$scope,$timeout,$rootScope){
+        '$stateParams',
+        function($http,Auth,$state,$scope,$timeout,$rootScope,$stateParams){
             //for event test, after passing the test, using database to access events.
             //var newEventDate = new Date(1478592000000);
+            $rootScope.selectedTeamId = $stateParams.team_id;
             $scope.events = [];
             var teamID = $rootScope.selectedTeamId;
             console.log(teamID);
@@ -116,6 +118,12 @@
                     if(response.data.code == 1){
                         console.log("Delete event successfully");
                         //console.log($scope.events[0]);
+                        $timeout(function(){
+                            //console.log("working???")
+                            $state.transitionTo($state.current.name, {team_id: $rootScope.selectedTeamId},
+                                {reload: $state.current.name, inherit: false, notify: true});
+                            delete $scope.selectedId;
+                        }, 500);
 
                     } else {
                         console.log("error message in response");
@@ -165,6 +173,12 @@
                         function(response){
                             if(response.data.code == 1){
                                 console.log("seccessfully");
+                                $timeout(function(){
+                                    //console.log("working???")
+                                    $state.transitionTo($state.current.name, {team_id: $rootScope.selectedTeamId},
+                                        {reload: $state.current.name, inherit: false, notify: true});
+                                    delete $scope.selectedId;
+                                }, 500);
                             } else{
                                 console.log("error message in response");
                                 console.log(response.data.code);
@@ -184,6 +198,7 @@
                 return date.toDateString();
             }
             var deleteEventID;
+            var chosenEventCreatorID;
             //var chosenEventTitle;
             //var chosenEventStart;
             //var chosenEventEnd;
@@ -198,7 +213,7 @@
                 $scope.chosenEventStart = item.start.toString();
                 $scope.chosenEventEnd = item.end.toString();
                 $scope.chosenEventDescription = item.description;
-                $scope.chosenEventCreatorID = item.creator_id;
+                chosenEventCreatorID = item.creator_id;
                 $scope.createForm('display-event');
 
 
@@ -245,6 +260,9 @@
                 }
             };
 
+            $scope.isDisabled = function(){
+                return ($rootScope.user.user_id != chosenEventCreatorID); 
+            };
 
             $scope.dis = false;
 

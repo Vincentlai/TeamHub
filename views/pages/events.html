@@ -1,10 +1,29 @@
 <style>
 	.displayContent { 
-		text-align:center;
-		margin: 10px;
+		margin: 25px;
+		color: gray;
 	 }
+
+
+	.eventDetail th {
+		padding: 10px;
+		font-weight: bold;
+	}
+
+	.eventDetail td {
+		padding: 10px;
+		color: gray;
+	}
+
+	.displayContent label { font-weight: bold }
+	.eventTime { color: gray }
     #popcontainer { margin-top: 100px }
-    #dateinput { width: 170px }
+    #startDateinput { width: 170px }
+    #startHourInput { width: 50px }
+    #startMinInput { width: 50px }
+    #endDateinput { width: 170px }
+    #endHourInput { width: 50px }
+    #endMinInput { width: 50px }
 </style>
 
 <div class="page-container">
@@ -40,7 +59,8 @@
             <div id="create-event" class="popUpWindow" role="alert" ng-cloak>
                 <div id=popcontainer class="popUpWindow-container" ng-show="showCreateEventForm">
                     <h1>Create Event</h1>
-                    <label>Chosen day is <span ng-bind="result"></span></label>
+                    <a class="popUpWindow-close " ng-click="closeForm('create-event')"><i class="material-icons">clear</i></a>
+
                     <form name="eventCreateForm" class="md-title">
 
                         <div>
@@ -59,20 +79,16 @@
 
 
                         <div>
-                            <label>Event Start time: </label>
+                            <label class="eventTime">Event Start time: </label>
                         </div>
                         <div>
+                        	<md-input-container>
                             <label>date</label>
-                            <input id="dateinput" required type="date" name="eventStartDate" ng-model="eventStartDate"/>
-                        </div>
-                        <div>
+                            <input id="startDateinput" required type="date" name="eventStartDate" ng-model="eventStartDate"/>
+                            </md-input-container>
+                        	<md-input-container>
                             <label>hour</label>
-                            <input type="number" name="newEventStartHour" min="0" max="23" ng-init="eventStartTimeHour=0" ng-model="eventStartTimeHour" ng-disabled="allDayEvent"/>
-
-                            <label>min</label>
-                            <input type="number" name="newEventStartMin" min="0" max="59" ng-init="eventStartTimeMin=0" ng-model="eventStartTimeMin" ng-disabled="allDayEvent"/>
-                        </div>
-                        <div>
+                            <input id="startHourInput" type="number" name="newEventStartHour" min="0" max="23" ng-init="eventStartTimeHour=0" ng-model="eventStartTimeHour" ng-disabled="allDayEvent"/>
                             <div ng-messages="eventCreateForm.newEventStartHour.$error" role="alert"
                                  ng-show="eventCreateForm.newEventStartHour.$dirty || eventCreateForm.newEventStartHour.$touched">
                                 <div ng-message="min">
@@ -82,8 +98,11 @@
                                     hour cannot greater than 23.
                                 </div>
                             </div>
+                            </md-input-container>
 
-                            
+                            <md-input-container>
+                            <label>min</label>
+                            <input id="startMinInput" type="number" name="newEventStartMin" min="0" max="59" ng-init="eventStartTimeMin=0" ng-model="eventStartTimeMin" ng-disabled="allDayEvent"/>
                             <div ng-messages="eventCreateForm.newEventStartMin.$error" role="alert"
                                  ng-show="eventCreateForm.newEventStartMin.$dirty || eventCreateForm.newEventStartMin.$touched">
                                 <div ng-message="min">
@@ -93,23 +112,21 @@
                                     min cannot greater than 59.
                                 </div>
                             </div>
+                            </md-input-container>
                         </div>
-
+                        
                         <div>
-                            <label>Event End time: </label>
+                            <label class="eventTime">Event End time: </label>
                         </div>
                         <div>
+                        	<md-input-container>
                             <label>date</label>
-                            <input required type="date" name="eventEndDate" ng-model="eventEndDate"/>
-                        </div>
-                        <div>
+                            <input id="endDateinput" required type="date" name="eventEndDate" ng-model="eventEndDate"/>
+                            </md-input-container>
+                        
+                        	<md-input-container>
                             <label>hour</label>
-                            <input type="number" name="newEventEndHour" min="0" max="23" ng-init="eventEndTimeHour=0" ng-model="eventEndTimeHour" ng-disabled="allDayEvent"/>
-
-                            <label>min</label>
-                            <input type="number" name="newEventEndMin" min="0" max="59" ng-init="eventEndTimeMin=0" ng-model="eventEndTimeMin" ng-disabled="allDayEvent"/>
-                        </div>
-                        <div>
+                            <input id="endHourInput" type="number" name="newEventEndHour" min="0" max="23" ng-init="eventEndTimeHour=0" ng-model="eventEndTimeHour" ng-disabled="allDayEvent"/>
                             <div ng-messages="eventCreateForm.newEventEndHour.$error" role="alert"
                                  ng-show="eventCreateForm.newEventEndHour.$dirty || eventCreateForm.newEventEndHour.$touched">
                                 <div ng-message="min">
@@ -119,8 +136,11 @@
                                     hour cannot greater than 23.
                                 </div>
                             </div>
+                            </md-input-container>
 
-                            
+                            <md-input-container>
+                            <label>min</label>
+                            <input id="endMinInput" type="number" name="newEventEndMin" min="0" max="59" ng-init="eventEndTimeMin=0" ng-model="eventEndTimeMin" ng-disabled="allDayEvent"/>
                             <div ng-messages="eventCreateForm.newEventEndMin.$error" role="alert"
                                  ng-show="eventCreateForm.newEventEndMin.$dirty || eventCreateForm.newEventEndMin.$touched">
                                 <div ng-message="min">
@@ -130,13 +150,18 @@
                                     min cannot greater than 59.
                                 </div>
                             </div>
+                            </md-input-container>
                         </div>
-                        <md-input-container class="md-block">
-                        <label>Event description: </label>
+                        
+                        
+                        
                         <div>
+                        	<md-input-container class="md-block">
+                        	<label>Event description: </label>
                             <textarea max-rows="10" name="eventDescription" ng-model="eventDescription"></textarea>
+                            </md-input-container class="md-block">
                         </div>
-                        <md-input-container class="md-block">
+                        
                       
 
                         <ul class="cd-buttons clearfix">
@@ -148,7 +173,7 @@
 	                        </li>
 	                    </ul>
 
-	                <a class="popUpWindow-close " ng-click="closeForm('create-event')"><i class="material-icons">clear</i></a>
+	                
                     </form>
                 </div>
 
@@ -169,30 +194,36 @@
                 <div id=popcontainer class="popUpWindow-container" >
                     <h1>Event Details</h1>
 
-                        <div class="displayContent">
+                    	<table  class="eventDetail">
+                    		<tr>
+                    			<th>Event Title:</th>
+                    			<td>{{chosenEventTitle}}</td>
+                    		</tr>
+                    		<tr>
+                    			<th colspan="2">Event Start Time:</th>
+                    		</tr>
+                    		<tr>
+                    			<td colspan="2">{{chosenEventStart}}</td>
+                    		</tr>
+                    		<tr>
+                    			<th colspan="2">Event End Time:</th>
+                    		</tr>
+                    		<tr>
+                    			<td colspan="2">{{chosenEventEnd}}</td>
+                    		</tr>
+                    		<tr>
+                    			<th colspan="2">Event Description:</th>
+                    		</tr>
+                    		<tr>
+                    			<td colspan="2">{{chosenEventDescription}}</td>
+                    		</tr>
+                    	</table>
 
-                                <label>Event Title: {{chosenEventTitle}}</label>
-                                
-                        </div>
-                        <div class="displayContent">
-
-                                <label>Event Start Time: {{chosenEventStart}}</label>
-                                
-                        </div>
-                        <div class="displayContent">
-
-                                <label>Event End Time: {{chosenEventEnd}}</label>
-                                
-                        </div>
-                        <div class="displayContent">
-
-                                <label>Event Description: {{chosenEventDescription}}</label>
-                                
-                        </div>
+                        
 
                         <ul class="cd-buttons clearfix">
 	                        <li type="submit" ng-click="deleteEvent()">
-	                            <button class="agree inpop">Delete</button>
+	                            <button ng-disabled="isDisabled()" class="agree inpop">Delete</button>
 	                        </li>
 	                        <li>
 	                            <button class="inpop" ng-click="closeForm('display-event')">Cancel</button>
