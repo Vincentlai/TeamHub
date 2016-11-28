@@ -35,7 +35,7 @@ and open a new terminal to run next step**
 2. Clone this repository
 3. In terminal, run `$vagrant up`
 4. Wait for VM to finish booting up
-5. Browse http://localhost:8080/ to see the site 
+5. Browse http://localhost:3000/ to see the site 
 
 ## How to contribute  
 
