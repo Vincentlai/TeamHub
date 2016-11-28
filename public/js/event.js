@@ -166,6 +166,22 @@
                 $scope.closeForm('create-event');
             };
 
+            $scope.errorMessageShow = function(){
+                var startTime = $scope.eventStartDate.getTime()
+                    + $scope.eventStartTimeHour*60*60*1000
+                    + $scope.eventStartTimeMin*60*1000;
+                var endTime = $scope.eventEndDate.getTime()
+                    + $scope.eventEndTimeHour*60*60*1000
+                    + $scope.eventEndTimeMin*60*1000;
+                var result = endTime - startTime;
+                if(result < 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            };
+
             function sendToDataBase(createdEvent){
                 console.log(createdEvent.team_id);
                 $http.post('/events/create', createdEvent)

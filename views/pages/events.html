@@ -1,4 +1,17 @@
 <style>
+    .timeError {
+        color: red;
+        font-size: 0.5em;
+    }
+    .calendarCreate {
+        position: absolute;
+        z-index: 5;
+    }
+    .eventDisplay {
+        position: absolute;
+        z-index: 5;
+    }
+
 	.displayContent { 
 		margin: 25px;
 		color: gray;
@@ -158,6 +171,10 @@
                             </div>
                             </md-input-container>
                         </div>
+
+                        <div class="timeError" ng-show="errorMessageShow()">
+                            <p>End time cannot before start time.</p>
+                        </div>
                         
                         
                         
@@ -172,7 +189,7 @@
 
                         <ul class="cd-buttons clearfix">
 	                        <li type="submit" ng-click="createEvent()">
-	                            <button ng-disabled="eventCreateForm.$invalid" class="agree inpop">Create</button>
+	                            <button ng-disabled="eventCreateForm.$invalid || errorMessageShow()" class="agree inpop">Create</button>
 	                        </li>
 	                        <li>
 	                            <button class="inpop" ng-click="closeForm('create-event')">Cancel</button>
