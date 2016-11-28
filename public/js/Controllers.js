@@ -103,11 +103,12 @@
                         return "in " + (now.getMonth() - date.getMonth()) + ' months ago';
                     }
                 }
-                if (now.getDay() > date.getDay()) {
-                    if (now.getDay() - date.getDay() == 1) {
+                if (now.getDate() > date.getDate()) {
+
+                    if (now.getDate() - date.getDate() == 1) {
                         return "yesterday";
                     } else {
-                        return "in " + (now.getDay() - date.getDay()) + ' days ago';
+                        return "in " + (now.getDate() - date.getDate()) + ' days ago';
                     }
                 }
                 if (now.getHours() > date.getHours()) {

@@ -10,7 +10,10 @@
         <li><a class="important" ui-sref="signup">SIGN UP</a></li>
     </ul>
     <ul ng-if="user">
-        <li>
+        <li ui-sref="home.setting">
+            <md-tooltip md-direction="bottom">
+                Account Setting
+            </md-tooltip>
             <a class="nav-link" >{{user.nickname}}</a>
         </li>
         <li ng-click="logout()">
