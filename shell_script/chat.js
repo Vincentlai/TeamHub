@@ -1,16 +1,7 @@
-/************************************************
- * IMPORTANT-Please read before modify anything *
- * If you ever want to change this file,        *
- * YOU WILL ALSO NEED TO CHANGE chat.js         *
- * in /shell_scrpt/chat.js                      *
- * TO MATCH THIS ONE !!!                        *
- ************************************************/
-
-
 var app = angular.module('chat', []);
 
 app.config(function ($socketProvider) {
-    $socketProvider.setConnectionUrl('http://localhost:8080');
+    $socketProvider.setConnectionUrl('http://localhost:3000');
 });
 
 
