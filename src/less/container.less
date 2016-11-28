@@ -609,7 +609,7 @@ a.control-btn {
   }
 }
 
-.news-container, .reminder {
+.left-container, .right-container {
   margin: 20px 4% 0 4%;
   padding: 2%;
   background-color: white;
@@ -617,12 +617,13 @@ a.control-btn {
   .default-border;
 }
 
-.news-container {
+.left-container {
   float: left;
   width: 64%;
   min-height: 500px;
   position: relative;
-  .news-header {
+  overflow: visible;
+  .left-container-header {
     display: block;
     height: 50px;
     margin-top: -2%;
@@ -630,8 +631,9 @@ a.control-btn {
 
   ul {
 
-    li.news {
+    li.list {
       display: block;
+      position: relative;
       min-height: 50px;
       line-height: 50px;
       margin-bottom: 10px;
@@ -659,7 +661,7 @@ a.control-btn {
   }
 }
 
-.reminder {
+.right-container {
   float: right;
   width: 20%;
 }
@@ -685,7 +687,7 @@ a.control-btn {
     visibility: hidden;
     opacity: 0;
     width: auto;
-    overflow: visible;
+    z-index: 9999;
     a {
       color: @primary-text-color;
       min-width: 150px;
@@ -1103,3 +1105,211 @@ img.big {
   }
 }
 
+/**
+file html
+ */
+
+
+.upload_area {
+  margin-bottom: 10px;
+}
+
+.upload_button {
+  float: left;
+}
+
+.loading {
+  position: absolute;
+  left: 42%;
+  top: 40%;
+}
+
+/* uploading */
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  background-color: #444359;
+  -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
+  animation: sk-rotateplane 1.2s infinite ease-in-out;
+  float: left;
+  margin-left: 20px;
+  margin-right: 10px;
+}
+
+/* deleting */
+
+.sk-cube-grid {
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  margin-left: 2px;
+}
+
+.deleting {
+  position: relative;
+  float: left;
+}
+
+.delete_text {
+  position: relative;
+  float: left;
+  left: 24px;
+  bottom: 19px;
+}
+
+/* Drag and drop */
+
+.drop-box {
+  width: 95%;
+  height: 150px;
+  border: 3px dotted #ccc;
+  background-color: #eee;
+  text-align: center;
+  padding-top: 30px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 50px;
+}
+
+.drop-box.dragover {
+  border-color: #0e0;
+  background-color: #b2fab2;
+}
+
+.drop-box.dragover-err {
+  border-color: #f00;
+  background-color: #ffb2b2;
+}
+
+.uploadingdiv {
+  margin-top: 20px;
+}
+
+.result {
+  margin-top: 20px;
+  margin-left: 20px;
+  font-size: 1.3em;
+  .err {
+    color: @important;
+  }
+}
+
+li.list {
+  .file-icon {
+    .icon {
+
+    }
+  }
+  .file-description {
+
+  }
+}
+
+.bottom-container {
+  margin: 2em auto 0 auto;
+  width: 80%;
+  background-color: white;
+  .default-border;
+}
+
+.file-table {
+  margin: 1em 0;
+  width: 100%;
+  overflow: hidden;
+  tr {
+    height: 60px;
+    line-height: 60px;
+    cursor: default;
+  }
+  td {
+    padding-left: 5px;
+    border-bottom: .5px solid @light-gray-border;
+    outline: none!important;
+    &.name {
+      width: 500px;
+    }
+    &.order{
+      position: relative;
+      cursor: pointer;
+      i{
+        display: inline-block;
+        position: absolute;
+        top: 18px;
+        right: 5px;
+        opacity: 0;
+        visibility: hidden;
+        -webkit-transition: transform .2s ease;
+        -o-transition: transform  .2s ease;
+        transition: transform .2s ease;
+        &.reverse {
+          -webkit-transform: rotate(180deg);
+          -ms-transform: rotate(180deg);
+          -o-transform: rotate(180deg);
+          transform: rotate(180deg);
+        }
+        &.visible{
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+      &:hover{
+        color: @primary-color;
+      }
+    }
+  }
+  thead td {
+    border-bottom: 1px solid @primary-color;
+    color: @primary-text-color;
+    font-weight: 300;
+    font-size: 1.2em;
+  }
+  tbody tr {
+    &:hover {
+      background-color: rgba(225,225,225,.4);
+      td.operations i.delete,
+      td.operations i.download
+      {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+    td.name{
+      cursor: pointer;
+
+      &:hover{
+        color: @primary-color;
+      }
+    }
+    td.operations {
+      position: relative;
+      width: 70px;
+      cursor: pointer;
+      i.download, i.delete{
+        position: absolute;
+        top: 18px;
+        visibility: hidden;
+        opacity: 0;
+        -webkit-transition: all .2s ease;
+        -o-transition: all  .2s ease;
+        transition: all .2s ease;
+        right: 5px;
+      }
+      i.download {
+        right: 35px
+      }
+    }
+    td.file-icon {
+      position: relative;
+      .icon {
+        position: absolute;
+        display: inline-block;
+        top: 5px;
+        left: 0;
+        width: 50px;
+        height: 50px;
+      }
+    }
+  }
+}

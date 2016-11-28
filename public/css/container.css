@@ -780,8 +780,8 @@ a.control-btn:hover {
     width: 70%;
   }
 }
-.news-container,
-.reminder {
+.left-container,
+.right-container {
   margin: 20px 4% 0 4%;
   padding: 2%;
   background-color: white;
@@ -789,32 +789,34 @@ a.control-btn:hover {
   border-radius: .25em .25em .4em .4em;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
-.news-container {
+.left-container {
   float: left;
   width: 64%;
   min-height: 500px;
   position: relative;
+  overflow: visible;
 }
-.news-container .news-header {
+.left-container .left-container-header {
   display: block;
   height: 50px;
   margin-top: -2%;
 }
-.news-container ul li.news {
+.left-container ul li.list {
   display: block;
+  position: relative;
   min-height: 50px;
   line-height: 50px;
   margin-bottom: 10px;
   border-bottom: 1px solid rgba(225, 225, 225, 0.8);
 }
-.news-container ul li.news span.name,
-.news-container ul li.news span.team {
+.left-container ul li.list span.name,
+.left-container ul li.list span.team {
   font-weight: bold;
 }
-.news-container ul li.news a.link {
+.left-container ul li.list a.link {
   cursor: pointer;
 }
-.news-container .news-btn {
+.left-container .news-btn {
   display: inline-block;
   position: absolute;
   bottom: 0;
@@ -827,7 +829,7 @@ a.control-btn:hover {
   line-height: 50px;
   padding: 0;
 }
-.reminder {
+.right-container {
   float: right;
   width: 20%;
 }
@@ -854,7 +856,7 @@ a.control-btn:hover {
   visibility: hidden;
   opacity: 0;
   width: auto;
-  overflow: visible;
+  z-index: 9999;
 }
 .filter .filter-options a {
   color: #4D4D4D;
@@ -1248,4 +1250,181 @@ img.big {
   color: white;
   background-color: teal;
   border-color: teal;
+}
+/**
+file html
+ */
+.upload_area {
+  margin-bottom: 10px;
+}
+.upload_button {
+  float: left;
+}
+.loading {
+  position: absolute;
+  left: 42%;
+  top: 40%;
+}
+/* uploading */
+.spinner {
+  width: 20px;
+  height: 20px;
+  background-color: #444359;
+  -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
+  animation: sk-rotateplane 1.2s infinite ease-in-out;
+  float: left;
+  margin-left: 20px;
+  margin-right: 10px;
+}
+/* deleting */
+.sk-cube-grid {
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  margin-left: 2px;
+}
+.deleting {
+  position: relative;
+  float: left;
+}
+.delete_text {
+  position: relative;
+  float: left;
+  left: 24px;
+  bottom: 19px;
+}
+/* Drag and drop */
+.drop-box {
+  width: 95%;
+  height: 150px;
+  border: 3px dotted #ccc;
+  background-color: #eee;
+  text-align: center;
+  padding-top: 30px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 50px;
+}
+.drop-box.dragover {
+  border-color: #0e0;
+  background-color: #b2fab2;
+}
+.drop-box.dragover-err {
+  border-color: #f00;
+  background-color: #ffb2b2;
+}
+.uploadingdiv {
+  margin-top: 20px;
+}
+.result {
+  margin-top: 20px;
+  margin-left: 20px;
+  font-size: 1.3em;
+}
+.result .err {
+  color: #fc7169;
+}
+.bottom-container {
+  margin: 2em auto 0 auto;
+  width: 80%;
+  background-color: white;
+  border-radius: .25em .25em .4em .4em;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+.file-table {
+  margin: 1em 0;
+  width: 100%;
+  overflow: hidden;
+}
+.file-table tr {
+  height: 60px;
+  line-height: 60px;
+  cursor: default;
+}
+.file-table td {
+  padding-left: 5px;
+  border-bottom: 0.5px solid rgba(225, 225, 225, 0.8);
+  outline: none!important;
+}
+.file-table td.name {
+  width: 500px;
+}
+.file-table td.order {
+  position: relative;
+  cursor: pointer;
+}
+.file-table td.order i {
+  display: inline-block;
+  position: absolute;
+  top: 18px;
+  right: 5px;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: transform .2s ease;
+  -o-transition: transform  .2s ease;
+  transition: transform .2s ease;
+}
+.file-table td.order i.reverse {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.file-table td.order i.visible {
+  opacity: 1;
+  visibility: visible;
+}
+.file-table td.order:hover {
+  color: teal;
+}
+.file-table thead td {
+  border-bottom: 1px solid teal;
+  color: #4D4D4D;
+  font-weight: 300;
+  font-size: 1.2em;
+}
+.file-table tbody tr:hover {
+  background-color: rgba(225, 225, 225, 0.4);
+}
+.file-table tbody tr:hover td.operations i.delete,
+.file-table tbody tr:hover td.operations i.download {
+  visibility: visible;
+  opacity: 1;
+}
+.file-table tbody tr td.name {
+  cursor: pointer;
+}
+.file-table tbody tr td.name:hover {
+  color: teal;
+}
+.file-table tbody tr td.operations {
+  position: relative;
+  width: 70px;
+  cursor: pointer;
+}
+.file-table tbody tr td.operations i.download,
+.file-table tbody tr td.operations i.delete {
+  position: absolute;
+  top: 18px;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all .2s ease;
+  -o-transition: all  .2s ease;
+  transition: all .2s ease;
+  right: 5px;
+}
+.file-table tbody tr td.operations i.download {
+  right: 35px;
+}
+.file-table tbody tr td.file-icon {
+  position: relative;
+}
+.file-table tbody tr td.file-icon .icon {
+  position: absolute;
+  display: inline-block;
+  top: 5px;
+  left: 0;
+  width: 50px;
+  height: 50px;
 }
