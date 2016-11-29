@@ -29,7 +29,6 @@
                         console.log("Got event list");
                         
                         response.data.events.forEach(function(event){
-                            console.log(event.start);
                             $scope.events.push({
                                 start: new Date(event.start),
                                 end: new Date(event.end),
@@ -39,7 +38,6 @@
                                 creator_id: event.creator_id
                             });
                         });
-                        //console.log($scope.events[0]);
 
                     } else {
                         console.log("error message in response");
@@ -51,49 +49,6 @@
 
             }
             receiveEventListFromDataBase();
-            console.log($scope.events[0]);
-            /*$scope.events = [
-                {
-                    start: newEventDate,
-                    end: getDate(0, 0),
-                    title: 'Event test'
-                },
-                {
-                    start: getDate(0, 10),
-                    end: getDate(1, 11),
-                    title: 'Event 1'
-                },
-                {
-                    start: getDate(1, 11),
-                    end: getDate(2, 12),
-                    title: 'Event 2'
-                },
-                {
-                    start: getDate(2, 12),
-                    end: getDate(3, 13),
-                    title: 'Event 3'
-                },
-                {
-                    start: getDate(4, 12),
-                    end: getDate(5, 13),
-                    title: 'Event 4'
-                },
-                {
-                    start: getDate(5, 12),
-                    end: getDate(6, 13),
-                    title: 'Event 5'
-                },
-                {
-                    start: getDate(6, 12),
-                    end: getDate(6, 13),
-                    title: 'Event 6'
-                },
-                {
-                    start: getDate(6, 12),
-                    allDay: true,
-                    title: 'Event 7'
-                }
-            ];*/
 
             $scope.selected = $scope.events[0];
             $scope.showCreateEventForm = false;
@@ -162,12 +117,12 @@
                     + $scope.eventEndTimeMin*60*1000);
                 createdEvent.description = $scope.eventDescription;
                 //createdEvent.allDayEvent = $scope.allDayEvent;
-                console.log(createdEvent.start);
-                console.log(createdEvent.end);
-                console.log(createdEvent.title);
-                console.log(createdEvent.description);
-                console.log(createdEvent.allDayEvent);
-                console.log(createdEvent);
+                // console.log(createdEvent.start);
+                // console.log(createdEvent.end);
+                // console.log(createdEvent.title);
+                // console.log(createdEvent.description);
+                // console.log(createdEvent.allDayEvent);
+                // console.log(createdEvent);
                 sendToDataBase(createdEvent);
                 $scope.closeForm('create-event');
             };
@@ -254,33 +209,11 @@
                 console.log(date);
                 $scope.result = currentDay(date);
                 $scope.showCreateEventForm = true;
-                console.log(date.getTime());
                 $scope.createForm('create-event');
             };
 
-
-
-
             //try popupwindow
-            $scope.createForm = function (tag, id, name, teammates) {
-                $scope.input = {};
-                if (tag.includes('post')) {
-                    $scope.selectedId = id;
-                } else {
-                    $scope.input.team_id = id;
-                }
-                $scope.selectedName = name;
-                $scope.selectedTeamTeammates = teammates;
-                $('#' + tag).addClass('is-visible');
-            };
 
-            $scope.closeForm = function (tag, reset) {
-                $('#' + tag).removeClass('is-visible');
-                if (reset) {
-                    reset.$setPristine();
-                    reset.$setUntouched();
-                }
-            };
 
             $scope.isDisabled = function(){
                 return ($rootScope.user.user_id != chosenEventCreatorID); 
