@@ -337,10 +337,10 @@ exports.comment = function (sess, post_id, comment, callback) {
                         if(!err){
                             callback({
                                 'code': '1',
-                                'comment': obj.comment,
-                                'time': obj._id.toString(),
-                                'user_id': obj.user_id,
-                                'nickname': obj.nickname,
+                                'comment': comment,
+                                'time': obj.comments[obj.comments.length-1]._id.toString(),
+                                'user_id': user_id,
+                                'nickname': sess.nickname,
                                 'msg': 'Comment success'
                             });
                             return;

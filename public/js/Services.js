@@ -188,6 +188,10 @@
                     me.msg = null;
                 }, 4000);
             };
+            me.resetError = function () {
+              me.error = false;
+              me.msg = null;
+            };
         }
     ]);
 

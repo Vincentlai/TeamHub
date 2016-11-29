@@ -12,15 +12,29 @@ app.filter('sizeFilter', [
 );
 app.controller('fileController', ['$scope', 'Upload', '$timeout',
     '$http', '$rootScope', '$window', 'FileService', '$stateParams',
-    function ($scope, Upload, $timeout, $http, $rootScope, $window, FileService, $stateParams) {
+    'ErrorService', '$q',
+    function ($scope, Upload, $timeout, $http, $rootScope, $window, FileService,
+              $stateParams, ErrorService, $q) {
 
         //initialize
         $rootScope.selectedTeamId = $stateParams.team_id;
         var team_id = $rootScope.selectedTeamId;
-        $scope.sortType = 'file_name';
-        $scope.sortReverse = false;
+        $scope.sortType = 'time';
+        $scope.sortReverse = true;
         $scope.searchFile = '';
-
+        $scope.selected_creator = 'All Files';
+        $scope.creator_filter = '';
+        $scope.file_list = [];
+        $scope.errorNotify = ErrorService;
+        $scope.selectedFilter = function (flag) {
+            if(flag == 1){
+                $scope.selected_creator = 'My Files';
+                $scope.creator_filter = $rootScope.user.nickname;
+            }else{
+                $scope.selected_creator = 'All Files';
+                $scope.creator_filter = '';
+            }
+        };
         // Bytes conversion
         function bytesToSize(bytes) {
             return FileService.getSize(bytes);
@@ -41,7 +55,6 @@ app.controller('fileController', ['$scope', 'Upload', '$timeout',
         };
 
 
-
         function load_list() {
             console.log("load_list");
 
@@ -55,7 +68,7 @@ app.controller('fileController', ['$scope', 'Upload', '$timeout',
                         if (res.data) {
                             if (res.data.code == '1') {
                                 console.log("Got list");
-                                $scope.file_list = [];
+
                                 res.data.files.forEach(function (file) {
                                     $scope.file_list.push({
                                         file_id: file.file_id,
@@ -67,6 +80,7 @@ app.controller('fileController', ['$scope', 'Upload', '$timeout',
                                         is_deleting: false
                                     });
                                 });
+
                             }
                         }
                     }, function (error) {
@@ -107,8 +121,10 @@ app.controller('fileController', ['$scope', 'Upload', '$timeout',
         $scope.deleteFile = function (file) {
 
             file.is_deleting = true;
-
+            var name = file.file_name;
+            file.file_name = 'Deleting.....';
             FileService.deleteFile(file.file_id, function (code, msg) {
+                file.file_name = name;
                 if (code == 1) {
                     file.is_deleting = false; // remove deleting icon
                     for (var i = 0; i < $scope.file_list.length; i++) {
@@ -118,56 +134,45 @@ app.controller('fileController', ['$scope', 'Upload', '$timeout',
                     }
                 }
             });
+
         };
 
         $scope.files = [];
         $scope.$watch('files', function () {
             if ($scope.files.length > 0) {
-                $scope.uploadMultipleFiles($scope.files);
+                uploadMultipleFiles();
             }
         });
 
         /* Drag and Drop - Upload Multiple Files */
-        $scope.uploadMultipleFiles = function (files) {
-            for (var i = 0; i < files.length; i++) {
+        var uploadMultipleFiles = function () {
+            for (var i = 0; i < $scope.files.length; i++) {
                 // file size limit check
-                if (files[i].size > 16000000) {
-                    $window.alert("Maximum allowance size of one file is 16 MB");
+                if ($scope.files[i].size > 16000000) {
+                    ErrorService.displayError('Size of ' + $scope.files[i] + ' is over 16MB');
                     return;
                 }
             }
-
-            $scope.result = false;
-            $scope.errorMsg = false;
-            show_uploading = true;
-
-            var num_uploaded = 0;
-
-            for (var i = 0; i < files.length; i++) {
-
+            var promises = [];
+            angular.forEach($scope.files, function (file, index) {
+                var deferred = $q.defer();
+                file.is_uploading = true;
                 Upload.upload({
                     url: '/files/upload',
                     data: {
                         team_id: team_id,
-                        file: files[i],//Upload.dataUrltoBlob(dataUrl, file_name),
-                        file_name: files[i].name,
-                        file_size: files[i].size
+                        file: file,
+                        file_name: file.name,
+                        file_size: file.size
                     }
                 }).then(function (response) {
                     $timeout(function () {
 
                         var data = response.data;
-
-                        num_uploaded++;
-                        if (num_uploaded == files.length) {
-                            show_uploading = false;
-                        }
-
+                        file.is_uploading = false;
                         if (data.code == '1') {
-
-                            $scope.result = true;
-                            $scope.upload_result = data.file_name + " has been uploaded successfully";
-
+                            file.load_ok = true;
+                            deferred.resolve('ok');
                             $scope.file_list.unshift({
                                 file_id: data.file_id,
                                 owner_user_id: data.owner_user_id,
@@ -177,20 +182,88 @@ app.controller('fileController', ['$scope', 'Upload', '$timeout',
                                 time: new Date(parseInt(data.file_id.toString().substring(0, 8), 16) * 1000),
                                 is_deleting: false
                             });
+
                         } else {
-                            $scope.errorMsg = true;
-                            $scope.upload_error = data.msg;
+                            file.load_error = true;
+                            ErrorService.displayError(data.msg);
+                            deferred.reject(data.msg);
                         }
                     });
-                    console.log(response.data);
                 }, function (response) {
                     if (response.status > 0) {
-                        $scope.errorMsg = true;
-                        $scope.upload_error = "Upload Failed";
+                        file.load_error = true;
+                        ErrorService.displayError('Upload failed');
+                        deferred.reject('Upload failed');
                     }
                 }, function (evt) {
                 });
-            }
+                promises.push(deferred.promise);
+            });
+
+            $q.all(promises).then(
+                function (res) {
+                    $timeout(function () {
+                        $scope.closeForm('upload-file');
+                    }, 1000)
+                }, function (error) {
+                    console.log(error);
+                }
+            );
+
+            // $scope.result = false;
+            // $scope.errorMsg = false;
+            // show_uploading = true;
+            //
+            // var num_uploaded = 0;
+            //
+            // for (var i = 0; i < files.length; i++) {
+            //
+            //     Upload.upload({
+            //         url: '/files/upload',
+            //         data: {
+            //             team_id: team_id,
+            //             file: files[i],//Upload.dataUrltoBlob(dataUrl, file_name),
+            //             file_name: files[i].name,
+            //             file_size: files[i].size
+            //         }
+            //     }).then(function (response) {
+            //         $timeout(function () {
+            //
+            //             var data = response.data;
+            //
+            //             num_uploaded++;
+            //             if (num_uploaded == files.length) {
+            //                 show_uploading = false;
+            //             }
+            //
+            //             if (data.code == '1') {
+            //
+            //                 $scope.result = true;
+            //                 $scope.upload_result = data.file_name + " has been uploaded successfully";
+            //
+            //                 $scope.file_list.unshift({
+            //                     file_id: data.file_id,
+            //                     owner_user_id: data.owner_user_id,
+            //                     owner_nickname: data.owner_nickname,
+            //                     file_name: data.file_name,
+            //                     file_size: data.file_size,
+            //                     time: new Date(parseInt(data.file_id.toString().substring(0, 8), 16) * 1000),
+            //                     is_deleting: false
+            //                 });
+            //             } else {
+            //                 $scope.errorMsg = true;
+            //                 $scope.upload_error = data.msg;
+            //             }
+            //         });
+            //         console.log(response.data);
+            //     }, function (response) {
+            //         if (response.status > 0) {
+            //             $scope.errorMsg = true;
+            //             $scope.upload_error = "Upload Failed";
+            //         }
+            //     }, function (evt) {
+            //     });
+            // }
         };
 
         /* Select single File 
@@ -295,5 +368,81 @@ app.controller('fileController', ['$scope', 'Upload', '$timeout',
                 $scope.sortReverse = false;
             }
         };
+
+        $scope.querySearch = querySearch;
+        $scope.selectedItemChange = selectedItemChange;
+        $scope.searchTextChange = searchTextChange;
+        $scope.states = loadAll();
+
+        function querySearch(query) {
+            var results = query ? $scope.states.filter(createFilterFor(query)) : $scope.states;
+            return results;
+        }
+
+        function loadAll() {
+            return $scope.file_list.map(function (file) {
+                if($scope.creator_filter!=''){
+                    if($scope.creator_filter == file.owner_nickname){
+                        return {
+                            value: file.file_name.toLowerCase(),
+                            display: file.file_name
+                        }
+                    }else{
+
+                    }
+                }else{
+                    return {
+                        value: file.file_name.toLowerCase(),
+                        display: file.file_name
+                    }
+                }
+
+            })
+        }
+
+        function createFilterFor(query) {
+            console.log(query);
+            var lowercaseQuery = angular.lowercase(query);
+
+            return function filterFn(state) {
+                return (state.value.indexOf(lowercaseQuery) === 0);
+            };
+
+        }
+
+        function searchTextChange(text) {
+            // console.info('Text changed to ' + text);
+        }
+
+        function selectedItemChange(item) {
+            // console.info('Item changed to ' + JSON.stringify(item));
+            if (angular.isUndefined(item)) {
+                $scope.searchFile = '';
+            } else {
+                $scope.searchFile = item.value;
+            }
+        }
+
+        $scope.$watch(function () {
+            return $scope.file_list.length;
+        }, function (n, o) {
+            $scope.states = loadAll();
+        }, true);
+
+        $scope.$watch(function () {
+            return $scope.creator_filter;
+        }, function (n, o) {
+            $scope.states = loadAll();
+        }, true);
+
+        /*
+         Close team form
+         */
+        $scope.closeForm = function (tag) {
+            $('#' + tag).removeClass('is-visible');
+            $scope.files = [];
+            ErrorService.resetError();
+        };
+
 
     }]);

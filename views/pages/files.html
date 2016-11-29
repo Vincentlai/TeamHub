@@ -1,175 +1,202 @@
 <div class="page-container clearfix" ng-cloak>
 
-
-    <!--<div class="upload_area">-->
-    <!--<form name="myForm">-->
-
-    <!---->
-    <!---->
-    <!--</form>-->
-    <!--</div>-->
-    <!--<div class="uploadingdiv" ng-show="showUploading()">-->
-    <!--<div class="spinner"></div>-->
-    <!--<text>Uploading...</text>-->
-    <!--</div>-->
-    <!--<div class="result">-->
-    <!--&lt;!&ndash;<span ng-show="result">{{upload_result}}</span>&ndash;&gt;-->
-    <!--&lt;!&ndash;<span class="err" ng-show="errorMsg" >{{upload_error}}</span>&ndash;&gt;-->
-    <!--<div class="success">-->
-    <!--1231223123123123-->
-    <!--</div>-->
-    <!--<div class="err">-->
-    <!--sadfasdfasdf-->
-    <!--</div>-->
-
-    <!--</div>-->
-
-    <div class="bottom-container">
-
-        <!--<md-autocomplete-->
-                <!--md-selected-item="selectedItem"-->
-                <!--md-search-text="searchText"-->
-                <!--md-items="item in getMatches(searchText)"-->
-                <!--md-item-text="item.display">-->
-            <!--<md-item-template>-->
-                <!--<span md-highlight-text="searchText">{{item.display}}</span>-->
-            <!--</md-item-template>-->
-            <!--<md-not-found>-->
-                <!--No matches found.-->
-            <!--</md-not-found>-->
-        <!--</md-autocomplete>-->
-
-        <table class="file-table">
-
-            <thead>
-            <tr>
-                <td>
-                    Type
-                </td>
-                <td>
-
-                </td>
-                <td class="name order" ng-click="sort('file_name')">
-                    Name
-                    <md-tooltip md-direction="top">
-                        Sort By File Name
-                    </md-tooltip>
-                    <i ng-class="{reverse: (sortType=='file_name')&&(sortReverse==true), visible: sortType == 'file_name'}" class="material-icons">expand_more</i>
-                </td>
-
-                <td>
-                    Creator
-                </td>
-                <td class="order" ng-click="sort('file_size')">
-                    Size
-                    <md-tooltip md-direction="top">
-                        Sort By File Size
-                    </md-tooltip>
-                    <i ng-class="{reverse: (sortType=='file_size')&&(sortReverse==true), visible: sortType == 'file_size'}" class="material-icons">expand_more</i>
-                </td>
-                <td class="order" ng-click="sort('time')">
-                    Time
-                    <md-tooltip md-direction="top">
-                        Sort By Time
-                    </md-tooltip>
-                    <i ng-class="{reverse: (sortType=='time')&&(sortReverse==true), visible: sortType == 'time'}" class="material-icons">expand_more</i>
-                </td>
-
-
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr ng-repeat="item in file_list | orderBy:sortType:sortReverse ">
-                <td class="file-icon">
-                    <img class="icon" ng-src="{{getSrc(item.file_name)}}" draggable="false"/>
-                </td>
-                <td class="operations">
-                    <i class="material-icons download">
-                        get_app
-                        <md-tooltip md-direction="top">
-                            Download
-                        </md-tooltip>
-                    </i>
-                    <i class="material-icons delete"
-                       ng-click="deleteFile(item)"
-                       ng-show="item.owner_user_id==user.user_id">
-                        delete
-                        <md-tooltip md-direction="top">
-                            Delete
-                        </md-tooltip>
-                    </i>
-                    <div class="deleting" >
-                        <!--<div class="sk-cube-grid">-->
-                        <!--<div class="sk-cube sk-cube1"></div>-->
-                        <!--<div class="sk-cube sk-cube2"></div>-->
-                        <!--<div class="sk-cube sk-cube3"></div>-->
-                        <!--<div class="sk-cube sk-cube4"></div>-->
-                        <!--<div class="sk-cube sk-cube5"></div>-->
-                        <!--<div class="sk-cube sk-cube6"></div>-->
-                        <!--<div class="sk-cube sk-cube7"></div>-->
-                        <!--<div class="sk-cube sk-cube8"></div>-->
-                        <!--<div class="sk-cube sk-cube9"></div>-->
-                        <!--</div>-->
-                    </div>
-                </td>
-                <td class="name" ng-click="viewFile(item.file_id)">
-                    <md-tooltip md-direction="top">
-                        Open in new page
-                    </md-tooltip>
-                    {{ item.file_name }}
-                </td>
-
-                <td>{{ item.owner_nickname }}</td>
-                <td>{{ item.file_size | sizeFilter}}</td>
-                <td>
-                    <md-tooltip md-direction="top">
-                        {{item.time | date:'yyyy-MM-dd HH:mm:ss'}}
-                    </md-tooltip>
-                    {{item.time | dateFilter}}
-                </td>
-
-                <!--<a ng-click="deleteFile($index)" ng-show="showDelete($index)" style="cursor: pointer;"> Delete </a>-->
-                <!--<text ng-show="showDelete($index)">|</text>-->
-
-            </tr>
-            </tbody>
-
-        </table>
-
-        <!--<div class="file" ng-repeat="json in file_list" ng-attr-id="{{ 'file_' + $index }}">-->
-
-
-            <!--<div class="w2">-->
-                <!--<div class="a">-->
-                    <!--<text>|</text>-->
-                    <!--<a class="view_file" ng-click="viewFile($index)" style="cursor: pointer;"> Open </a>-->
-                    <!--<text>|</text>-->
-                    <!--<a download="{{getFileName($index)}}" ng-href="{{getFilePath($index)}}"> Download </a>-->
-                    <!--<text>|</text>-->
-                    <!--<a ng-click="deleteFile($index)" ng-show="showDelete($index)" style="cursor: pointer;"> Delete </a>-->
-                    <!--<text ng-show="showDelete($index)">|</text>-->
-                <!--</div>-->
-                <!---->
-            <!--</div>-->
-        <!--</div>-->
-    </div>
-
-    <!--<div class="right-container">-->
-    <!--<div ngf-select="" ngf-drop="" ng-model="files" class="drop-box"-->
-    <!--ngf-drag-over-class="{ accept:'dragover', reject:'dragover-err', delay:100}"-->
-    <!--ngf-multiple="true" ngf-allow-dir="false">Drag and drop files here or click here to choose files to upload-->
-    <!--</div>-->
-    <!--</div>-->
-    <div ng-show="showLoading()">
-        <div class="sk-folding-cube">
-            <div class="sk-cube1 sk-cube"></div>
-            <div class="sk-cube2 sk-cube"></div>
-            <div class="sk-cube4 sk-cube"></div>
-            <div class="sk-cube3 sk-cube"></div>
+    <div class="page-title">
+        <div class="filter file-filter">
+            <div class="filter-name">
+                {{selected_creator}} :
+                <i class="material-icons drop-down">expand_more</i>
+            </div>
+            <div class="filter-options">
+                <a ng-click="selectedFilter(0)">All Teams</a>
+                <a ng-click="selectedFilter(1)"
+                   ng-class="{'selected': selected_creator!='All Files'}">
+                    Only My Files
+                </a>
+            </div>
         </div>
-        <div class="loading"> Loading Files...</div>
+        <a ng-click="createForm('upload-file')" class="control-btn">
+            <i class="material-icons">publish</i>
+            Upload Files
+        </a>
     </div>
+    <div class="top-container">
+
+    </div>
+    <div class="upload_area">
+        <div class="bottom-container">
+
+            <div class="search-bar">
+                <md-autocomplete
+                        md-selected-item="selectedItem"
+                        md-search-text="searchText"
+                        md-search-text-change="searchTextChange(searchText)"
+                        md-selected-item-change="selectedItemChange(item)"
+                        md-items="item in querySearch(searchText)"
+                        md-min-length="0"
+                        placeholder="Search file by name"
+                        class="file-search"
+                        md-item-text="item.display">
+                    <md-item-template>
+                        <span md-highlight-text="searchText">{{item.display}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        No matches found.
+                    </md-not-found>
+                </md-autocomplete>
+            </div>
 
 
+            <table class="file-table">
+
+                <thead>
+                <tr>
+                    <td>
+                        Type
+                    </td>
+                    <td>
+
+                    </td>
+                    <td class="name order" ng-click="sort('file_name')" ng-class="{'sort-me': sortType=='file_name'}">
+                        Name
+                        <md-tooltip md-direction="top">
+                            Sort By File Name
+                        </md-tooltip>
+                        <i ng-class="{reverse: (sortType=='file_name')&&(sortReverse==true), visible: sortType == 'file_name'}"
+                           class="material-icons">expand_more</i>
+                    </td>
+
+                    <td>
+                        Creator
+                    </td>
+                    <td class="order" ng-click="sort('file_size')" ng-class="{'sort-me': sortType=='file_size'}">
+                        Size
+                        <md-tooltip md-direction="top">
+                            Sort By File Size
+                        </md-tooltip>
+                        <i ng-class="{reverse: (sortType=='file_size')&&(sortReverse==true), visible: sortType == 'file_size'}"
+                           class="material-icons">expand_more</i>
+                    </td>
+                    <td class="order" ng-click="sort('time')" ng-class="{'sort-me': sortType=='time'}">
+                        Time
+                        <md-tooltip md-direction="top">
+                            Sort By Time
+                        </md-tooltip>
+                        <i ng-class="{reverse: (sortType=='time')&&(sortReverse==true), visible: sortType == 'time'}"
+                           class="material-icons">expand_more</i>
+                    </td>
+
+
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr ng-repeat="item in file_list | orderBy:sortType:sortReverse | filter:searchFile | filter: creator_filter ">
+                    <td class="file-icon">
+                        <img class="icon" ng-src="{{getSrc(item.file_name)}}" draggable="false"/>
+                    </td>
+                    <td class="operations">
+                        <i class="material-icons download">
+                            get_app
+                            <md-tooltip md-direction="top">
+                                Download
+                            </md-tooltip>
+                        </i>
+                        <i class="material-icons delete"
+                           ng-click="deleteFile(item)"
+                           ng-show="item.owner_user_id==user.user_id && !item.is_deleting">
+                            delete
+                            <md-tooltip md-direction="top">
+                                Delete
+                            </md-tooltip>
+                        </i>
+                        <div class="deleting" ng-show="item.is_deleting">
+                            <div class="sk-cube-grid">
+                                <div class="sk-cube sk-cube1"></div>
+                                <div class="sk-cube sk-cube2"></div>
+                                <div class="sk-cube sk-cube3"></div>
+                                <div class="sk-cube sk-cube4"></div>
+                                <div class="sk-cube sk-cube5"></div>
+                                <div class="sk-cube sk-cube6"></div>
+                                <div class="sk-cube sk-cube7"></div>
+                                <div class="sk-cube sk-cube8"></div>
+                                <div class="sk-cube sk-cube9"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="name" ng-click="viewFile(item.file_id)">
+                        <md-tooltip md-direction="top">
+                            Open in new page
+                        </md-tooltip>
+                        {{ item.file_name }}
+                    </td>
+
+                    <td>{{ item.owner_nickname }}</td>
+                    <td>{{ item.file_size | sizeFilter}}</td>
+                    <td>
+                        <md-tooltip md-direction="top">
+                            {{item.time | date:'yyyy-MM-dd HH:mm:ss'}}
+                        </md-tooltip>
+                        {{item.time | dateFilter}}
+                    </td>
+
+                </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div ng-show="showLoading()">
+            <div class="sk-folding-cube">
+                <div class="sk-cube1 sk-cube"></div>
+                <div class="sk-cube2 sk-cube"></div>
+                <div class="sk-cube4 sk-cube"></div>
+                <div class="sk-cube3 sk-cube"></div>
+            </div>
+            <div class="loading"> Loading Files...</div>
+        </div>
+
+
+    </div>
+    <div id="upload-file" class="popUpWindow" role="alert" ng-cloak>
+        <div class="popUpWindow-container">
+
+            <h1>Upload Files</h1>
+            <error-notify>
+            </error-notify>
+            <div ngf-select=""
+                 ngf-drop=""
+                 ng-model="files" class="drop-box"
+                 ngf-drag-over-class="{ accept:'dragover', reject:'dragover-err', delay:100}"
+                 ngf-multiple="true"
+                 ngf-allow-dir="false">Drag and drop files here or click here to choose files to upload
+            </div>
+
+            <div class="files-list">
+                <div class="file" ng-repeat="file in files">
+                    {{file.name}}
+                    <md-progress-circular md-mode="indeterminate"
+                                          md-diameter="20"
+                                          ng-show="file.is_uploading"
+                                          class="single-file-loading in-file">
+                    </md-progress-circular>
+                    <i class="material-icons single-file-loading in-file load-ok"
+                       ng-show="file.load_ok">
+                        done</i>
+                    <i class="material-icons single-file-loading in-file load-error"
+                       ng-show="file.load_error">
+                        error</i>
+                </div>
+            </div>
+
+            <ul class="cd-buttons clearfix">
+                <li class="file-delete">
+                    <button class="inpop" ng-click="closeForm('upload-file')">Cancel</button>
+                </li>
+            </ul>
+            <a class="popUpWindow-close " ng-click="closeForm('upload-file')"><i
+                    class="material-icons">clear</i></a>
+        </div>
+    </div>
 </div>

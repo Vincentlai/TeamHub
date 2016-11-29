@@ -179,6 +179,11 @@
                             controller: 'fileController'
                         }
                     },
+                    resolve: {
+                        'title': function($rootScope, $stateParams){
+                            $rootScope.selectedTeamId = $stateParams.team_id;
+                        }
+                    },
                     authenticated: true
                 });
         });

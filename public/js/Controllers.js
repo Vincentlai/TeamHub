@@ -179,6 +179,7 @@
                         comment: data.comment,
                         time: new Date(parseInt(data.time.toString().substring(0, 8), 16) * 1000)
                     };
+                    console.log(comment);
                     $scope.postList[index].commentList.push(comment);
                     $scope.postList[index].comments++;
                 };
