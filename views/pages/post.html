@@ -167,14 +167,11 @@
                     </div>
 
                     <div class="files-list">
-                        <div class="file" ng-repeat="file in files">
-                            {{file.file_name}}
-                            <!--<span class="loading" ng-show="file.loading">-->
-                                <!--loading...-->
-                            <!--</span>-->
+                        <div class="file" ng-repeat="postFile in post_files">
+                            {{postFile.name}}
                             <md-progress-circular md-mode="indeterminate"
                                                   md-diameter="20"
-                                                  ng-show="file.isLoading"
+                                                  ng-show="postFile.isLoading"
                                                   class="single-file-loading">
                             </md-progress-circular>
                             <a class="delete" ng-click="cancelFile($index)">

@@ -290,7 +290,7 @@ router.delete('/delete', function(req, res) {
                                 action_target: 'file',
                                 action_target_id: '',
                                 target_team_id: team_obj._id,
-                                target_team_name: team_obj.name,
+                                target_team_name: team_obj.name
                             }
                         );
                         team_obj.save();

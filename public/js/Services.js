@@ -27,7 +27,8 @@
         '$timeout',
         'Auth',
         '$state',
-        function ($http, $timeout, Auth, $state) {
+        'CallApi',
+        function ($http, $timeout, Auth, $state, CallApi) {
             var me = this;
             me.data = {};
             me.login = function () {
@@ -81,6 +82,14 @@
                         }
                     )
             };
+            me.changePassword = function (data, callback) {
+                var url = '/users/cpass';
+                CallApi.postApi(url, data, function (code, msg) {
+                   callback(code, msg);
+                });
+
+            };
+
             me.getAvatar = function (id, callback) {
                 var url = '/users/download_avatar?user_id=' + id;
             }
@@ -112,7 +121,7 @@
                 if (code == 1) {
                     callback(1);
                 } else {
-                    callback(0, msg);
+                    callback(code, msg);
                 }
             };
 
@@ -178,6 +187,10 @@
                     me.error = false;
                     me.msg = null;
                 }, 4000);
+            };
+            me.resetError = function () {
+              me.error = false;
+              me.msg = null;
             };
         }
     ]);

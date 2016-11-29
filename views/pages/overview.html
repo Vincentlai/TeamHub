@@ -1,8 +1,8 @@
 <div class="page-container clearfix" data-ng-init="loadNews()">
 
-    <div class="news-container">
+    <div class="left-container">
 
-        <div class="news-header">
+        <div class="left-container-header">
             <div class="filter">
                 <div class="filter-name">
                     {{filter_team_name}}
@@ -19,8 +19,8 @@
             </div>
         </div>
         <ul>
-            <li class="news clearfix" ng-repeat="item in news | orderBy : '-time_in_mili'  | filter: filterTeam ">
-                <div class="news-content">
+            <li class="list clearfix" ng-repeat="item in news | orderBy : '-time_in_mili'  | filter: filterTeam ">
+                <div class="list-content">
                     <span class="name">
                         {{item.user_nickname}}&nbsp
                     </span>
@@ -41,7 +41,7 @@
                 </div>
             </li>
         </ul>
-        <!--<a class="control-btn news-btn"-->
+            <!--<a class="control-btn news-btn"-->
            <!--ng-click="loadMore()"-->
            <!--ng-if="filter_limite>=number_of_selected_filter">-->
             <!--Load More-->
@@ -49,7 +49,7 @@
 
     </div>
 
-    <div class="reminder">
+    <div class="right-container">
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur, error, illum! Cum error, voluptatum. Ad
         blanditiis dolorem labore maxime pariatur possimus quas qui similique sint. Cum earum eum excepturi itaque?
     </div>

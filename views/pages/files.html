@@ -1,395 +1,115 @@
-<style>
-    /* loading  */
-    
-    .sk-folding-cube {
-        width: 50px;
-        height: 50px;
-        -webkit-transform: rotateZ(45deg);
-        transform: rotateZ(45deg);
-        position: absolute;
-        left: 45%;
-        top: 30%;
-    }
-    
-    .sk-folding-cube .sk-cube {
-        float: left;
-        width: 50%;
-        height: 50%;
-        position: relative;
-        -webkit-transform: scale(1.1);
-        -ms-transform: scale(1.1);
-        transform: scale(1.1);
-    }
-    
-    .sk-folding-cube .sk-cube:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #444359;
-        -webkit-animation: sk-foldCubeAngle 2.4s infinite linear both;
-        animation: sk-foldCubeAngle 2.4s infinite linear both;
-        -webkit-transform-origin: 100% 100%;
-        -ms-transform-origin: 100% 100%;
-        transform-origin: 100% 100%;
-    }
-    
-    .sk-folding-cube .sk-cube2 {
-        -webkit-transform: scale(1.1) rotateZ(90deg);
-        transform: scale(1.1) rotateZ(90deg);
-    }
-    
-    .sk-folding-cube .sk-cube3 {
-        -webkit-transform: scale(1.1) rotateZ(180deg);
-        transform: scale(1.1) rotateZ(180deg);
-    }
-    
-    .sk-folding-cube .sk-cube4 {
-        -webkit-transform: scale(1.1) rotateZ(270deg);
-        transform: scale(1.1) rotateZ(270deg);
-    }
-    
-    .sk-folding-cube .sk-cube2:before {
-        -webkit-animation-delay: 0.3s;
-        animation-delay: 0.3s;
-    }
-    
-    .sk-folding-cube .sk-cube3:before {
-        -webkit-animation-delay: 0.6s;
-        animation-delay: 0.6s;
-    }
-    
-    .sk-folding-cube .sk-cube4:before {
-        -webkit-animation-delay: 0.9s;
-        animation-delay: 0.9s;
-    }
-    
-    @-webkit-keyframes sk-foldCubeAngle {
-        0%,
-        10% {
-            -webkit-transform: perspective(140px) rotateX(-180deg);
-            transform: perspective(140px) rotateX(-180deg);
-            opacity: 0;
-        }
-        25%,
-        75% {
-            -webkit-transform: perspective(140px) rotateX(0deg);
-            transform: perspective(140px) rotateX(0deg);
-            opacity: 1;
-        }
-        90%,
-        100% {
-            -webkit-transform: perspective(140px) rotateY(180deg);
-            transform: perspective(140px) rotateY(180deg);
-            opacity: 0;
-        }
-    }
-    
-    @keyframes sk-foldCubeAngle {
-        0%,
-        10% {
-            -webkit-transform: perspective(140px) rotateX(-180deg);
-            transform: perspective(140px) rotateX(-180deg);
-            opacity: 0;
-        }
-        25%,
-        75% {
-            -webkit-transform: perspective(140px) rotateX(0deg);
-            transform: perspective(140px) rotateX(0deg);
-            opacity: 1;
-        }
-        90%,
-        100% {
-            -webkit-transform: perspective(140px) rotateY(180deg);
-            transform: perspective(140px) rotateY(180deg);
-            opacity: 0;
-        }
-    }
-    
-    @-webkit-keyframes sk-rotateplane {
-        0% {
-            -webkit-transform: perspective(120px)
-        }
-        50% {
-            -webkit-transform: perspective(120px) rotateY(180deg)
-        }
-        100% {
-            -webkit-transform: perspective(120px) rotateY(180deg) rotateX(180deg)
-        }
-    }
-    
-    @keyframes sk-rotateplane {
-        0% {
-            transform: perspective(120px) rotateX(0deg) rotateY(0deg);
-            -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg)
-        }
-        50% {
-            transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
-            -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg)
-        }
-        100% {
-            transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
-            -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
-        }
-    }
-    
-    .sk-cube-grid .sk-cube {
-        width: 33%;
-        height: 33%;
-        background-color: #444359;
-        float: left;
-        -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
-        animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
-    }
-    
-    .sk-cube-grid .sk-cube1 {
-        -webkit-animation-delay: 0.2s;
-        animation-delay: 0.2s;
-    }
-    
-    .sk-cube-grid .sk-cube2 {
-        -webkit-animation-delay: 0.3s;
-        animation-delay: 0.3s;
-    }
-    
-    .sk-cube-grid .sk-cube3 {
-        -webkit-animation-delay: 0.4s;
-        animation-delay: 0.4s;
-    }
-    
-    .sk-cube-grid .sk-cube4 {
-        -webkit-animation-delay: 0.1s;
-        animation-delay: 0.1s;
-    }
-    
-    .sk-cube-grid .sk-cube5 {
-        -webkit-animation-delay: 0.2s;
-        animation-delay: 0.2s;
-    }
-    
-    .sk-cube-grid .sk-cube6 {
-        -webkit-animation-delay: 0.3s;
-        animation-delay: 0.3s;
-    }
-    
-    .sk-cube-grid .sk-cube7 {
-        -webkit-animation-delay: 0s;
-        animation-delay: 0s;
-    }
-    
-    .sk-cube-grid .sk-cube8 {
-        -webkit-animation-delay: 0.1s;
-        animation-delay: 0.1s;
-    }
-    
-    .sk-cube-grid .sk-cube9 {
-        -webkit-animation-delay: 0.2s;
-        animation-delay: 0.2s;
-    }
-    
-    @-webkit-keyframes sk-cubeGridScaleDelay {
-        0%,
-        70%,
-        100% {
-            -webkit-transform: scale3D(1, 1, 1);
-            transform: scale3D(1, 1, 1);
-        }
-        35% {
-            -webkit-transform: scale3D(0, 0, 1);
-            transform: scale3D(0, 0, 1);
-        }
-    }
-    
-    @keyframes sk-cubeGridScaleDelay {
-        0%,
-        70%,
-        100% {
-            -webkit-transform: scale3D(1, 1, 1);
-            transform: scale3D(1, 1, 1);
-        }
-        35% {
-            -webkit-transform: scale3D(0, 0, 1);
-            transform: scale3D(0, 0, 1);
-        }
-    }
-    
-    .page-container {
-        height: 100%;
-    }
-    
-    .list {
-        margin-top: 0px;
-    }
-    
-    .icon {
-        width: 50px;
-        height: 50px;
-        margin-left: 20px;
-    }
-    
-    .wrapper {
-        position: relative;
-    }
-    
-    .w1 {
-        float: left;
-    }
-    
-    .a {
-        margin-top: 5px;
-        float: left;
-    }
-    
-    .file {
-        margin-bottom: 50px;
-    }
-    
-    .file_name {
-        font-weight: bold;
-        font-size: 17px;
-    }
-    
-    .upload_area {
-        margin-bottom: 10px;
-    }
-    
-    .upload_button {
-        float: left;
-    }
-    
-    .loading {
-        position: absolute;
-        left: 42%;
-        top: 40%;
-    }
-    /* uploading */
-    
-    .spinner {
-        width: 20px;
-        height: 20px;
-        background-color: #444359;
-        -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
-        animation: sk-rotateplane 1.2s infinite ease-in-out;
-        float: left;
-        margin-left: 20px;
-        margin-right: 10px;
-    }
-    /* deleting */
-    
-    .sk-cube-grid {
-        width: 20px;
-        height: 20px;
-        margin-top: 3px;
-        margin-left: 2px;
-    }
-    
-    .deleting {
-        position: relative;
-        float: left;
-    }
-    
-    .delete_text {
-        position: relative;
-        float: left;
-        left: 24px;
-        bottom: 19px;
-    }
-    /* Drag and drop */
-    
-    .drop-box {
-        width: 95%;
-        height: 150px;
-        border: 3px dotted #ccc;
-        background-color: #eee;
-        text-align: center;
-        padding-top: 30px;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 50px;
-    }
-    
-    .drop-box.dragover {
-        border-color: #0e0;
-        background-color: #b2fab2;
-    }
-    
-    .drop-box.dragover-err {
-        border-color: #f00;
-        background-color: #ffb2b2;
-    }
+<div class="page-container clearfix" ng-cloak>
 
-    .uploadingdiv {
-        margin-top: 20px;
-    }
+    <div class="page-title">
+        <div class="filter file-filter">
+            <div class="filter-name">
+                {{selected_creator}} :
+                <i class="material-icons drop-down">expand_more</i>
+            </div>
+            <div class="filter-options">
+                <a ng-click="selectedFilter(0)">All Teams</a>
+                <a ng-click="selectedFilter(1)"
+                   ng-class="{'selected': selected_creator!='All Files'}">
+                    Only My Files
+                </a>
+            </div>
+        </div>
+        <a ng-click="createForm('upload-file')" class="control-btn">
+            <i class="material-icons">publish</i>
+            Upload Files
+        </a>
+    </div>
+    <div class="top-container">
 
-    .uploadresult{
-        margin-top: 20px;
-    }
-</style>
-<div class="page-container" ng-cloak>
-    <scroll-section id="scroll" style="overflow-y: auto; overflow-x: hidden; height:100vh;">
-        <div ng-controller="FileCtrl">
-            <form class="upload_area" name="myForm">
+    </div>
+    <div class="upload_area">
+        <div class="bottom-container">
 
-                <!--<input class="input" type="file" multiple="multiple" id="fileInput" />
-                <button class="upload_button" ng-click="upload()" ng-show="show_upload_button">Upload</button>-->
+            <div class="search-bar">
+                <md-autocomplete
+                        md-selected-item="selectedItem"
+                        md-search-text="searchText"
+                        md-search-text-change="searchTextChange(searchText)"
+                        md-selected-item-change="selectedItemChange(item)"
+                        md-items="item in querySearch(searchText)"
+                        md-min-length="0"
+                        placeholder="Search file by name"
+                        class="file-search"
+                        md-item-text="item.display">
+                    <md-item-template>
+                        <span md-highlight-text="searchText">{{item.display}}</span>
+                    </md-item-template>
+                    <md-not-found>
+                        No matches found.
+                    </md-not-found>
+                </md-autocomplete>
+            </div>
 
-                <div class="uploadingdiv" ng-show="showUploading()">
-                    <div class="spinner"></div>
-                    <text>Uploading...</text>
-                </div>
 
-                <div class="uploadresult">
-                    <span ng-show="result" style="margin-left:20px;">{{upload_result}}</span>
-                    <span class="err" ng-show="errorMsg" style="margin-left:20px;">{{upload_error}}</span>
-                </div>
+            <table class="file-table">
 
-            </form>
+                <thead>
+                <tr>
+                    <td>
+                        Type
+                    </td>
+                    <td>
 
-            <div ngf-select="" ngf-drop="" ng-model="files" class="drop-box" ngf-drag-over-class="{ accept:'dragover', reject:'dragover-err', delay:100}"
-                ngf-multiple="true" ngf-allow-dir="false">Drag and drop files here or click here to choose files to upload</div>
+                    </td>
+                    <td class="name order" ng-click="sort('file_name')" ng-class="{'sort-me': sortType=='file_name'}">
+                        Name
+                        <md-tooltip md-direction="top">
+                            Sort By File Name
+                        </md-tooltip>
+                        <i ng-class="{reverse: (sortType=='file_name')&&(sortReverse==true), visible: sortType == 'file_name'}"
+                           class="material-icons">expand_more</i>
+                    </td>
 
-            <div class="list">
+                    <td>
+                        Creator
+                    </td>
+                    <td class="order" ng-click="sort('file_size')" ng-class="{'sort-me': sortType=='file_size'}">
+                        Size
+                        <md-tooltip md-direction="top">
+                            Sort By File Size
+                        </md-tooltip>
+                        <i ng-class="{reverse: (sortType=='file_size')&&(sortReverse==true), visible: sortType == 'file_size'}"
+                           class="material-icons">expand_more</i>
+                    </td>
+                    <td class="order" ng-click="sort('time')" ng-class="{'sort-me': sortType=='time'}">
+                        Time
+                        <md-tooltip md-direction="top">
+                            Sort By Time
+                        </md-tooltip>
+                        <i ng-class="{reverse: (sortType=='time')&&(sortReverse==true), visible: sortType == 'time'}"
+                           class="material-icons">expand_more</i>
+                    </td>
 
-                <div ng-show="showLoading()">
-                    <div class="sk-folding-cube">
-                        <div class="sk-cube1 sk-cube"></div>
-                        <div class="sk-cube2 sk-cube"></div>
-                        <div class="sk-cube4 sk-cube"></div>
-                        <div class="sk-cube3 sk-cube"></div>
-                    </div>
-                    <div class="loading"> Loading Files...</div>
-                </div>
 
-                <div class="file" ng-repeat="json in file_list" ng-attr-id="{{ 'file_' + $index }}">
+                </tr>
+                </thead>
 
-                    <div class="w1">
-                        <img class="icon" ng-src="{{getSrc($index)}}" draggable="false" />
-                    </div>
-
-                    <div class="w2">
-                        <div>
-                            <text class="file_name">{{json.file_name}}</text>
-                            <text>|</text>
-                            <text>{{json.file_size}}</text>
-                            <text>| by </text>
-                            <text>{{json.owner_nickname}}</text>
-                            <text>|</text>
-                            <text>{{json.time | date:'yyyy-MM-dd HH:mm:ss'}}</text>
-                        </div>
-                        <div class="a">
-                            <text>|</text>
-                            <a class="view_file" ng-click="viewFile($index)" style="cursor: pointer;"> Open </a>
-                            <text>|</text>
-                            <a download="{{getFileName($index)}}" ng-href="{{getFilePath($index)}}"> Download </a>
-                            <text>|</text>
-                            <a ng-click="deleteFile($index)" ng-show="showDelete($index)" style="cursor: pointer;"> Delete </a>
-                            <text ng-show="showDelete($index)">|</text>
-                        </div>
-                        <div class="deleting" ng-show="showDeleting($index)">
+                <tbody>
+                <tr ng-repeat="item in file_list | orderBy:sortType:sortReverse | filter:searchFile | filter: creator_filter ">
+                    <td class="file-icon">
+                        <img class="icon" ng-src="{{getSrc(item.file_name)}}" draggable="false"/>
+                    </td>
+                    <td class="operations">
+                        <i class="material-icons download">
+                            get_app
+                            <md-tooltip md-direction="top">
+                                Download
+                            </md-tooltip>
+                        </i>
+                        <i class="material-icons delete"
+                           ng-click="deleteFile(item)"
+                           ng-show="item.owner_user_id==user.user_id && !item.is_deleting">
+                            delete
+                            <md-tooltip md-direction="top">
+                                Delete
+                            </md-tooltip>
+                        </i>
+                        <div class="deleting" ng-show="item.is_deleting">
                             <div class="sk-cube-grid">
                                 <div class="sk-cube sk-cube1"></div>
                                 <div class="sk-cube sk-cube2"></div>
@@ -401,11 +121,82 @@
                                 <div class="sk-cube sk-cube8"></div>
                                 <div class="sk-cube sk-cube9"></div>
                             </div>
-                            <text class="delete_text"> Deleting... </text>
                         </div>
-                    </div>
+                    </td>
+                    <td class="name" ng-click="viewFile(item.file_id)">
+                        <md-tooltip md-direction="top">
+                            Open in new page
+                        </md-tooltip>
+                        {{ item.file_name }}
+                    </td>
+
+                    <td>{{ item.owner_nickname }}</td>
+                    <td>{{ item.file_size | sizeFilter}}</td>
+                    <td>
+                        <md-tooltip md-direction="top">
+                            {{item.time | date:'yyyy-MM-dd HH:mm:ss'}}
+                        </md-tooltip>
+                        {{item.time | dateFilter}}
+                    </td>
+
+                </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div ng-show="showLoading()">
+            <div class="sk-folding-cube">
+                <div class="sk-cube1 sk-cube"></div>
+                <div class="sk-cube2 sk-cube"></div>
+                <div class="sk-cube4 sk-cube"></div>
+                <div class="sk-cube3 sk-cube"></div>
+            </div>
+            <div class="loading"> Loading Files...</div>
+        </div>
+
+
+    </div>
+    <div id="upload-file" class="popUpWindow" role="alert" ng-cloak>
+        <div class="popUpWindow-container">
+
+            <h1>Upload Files</h1>
+            <error-notify>
+            </error-notify>
+            <div ngf-select=""
+                 ngf-drop=""
+                 ng-model="files" class="drop-box"
+                 ngf-drag-over-class="{ accept:'dragover', reject:'dragover-err', delay:100}"
+                 ngf-multiple="true"
+                 ngf-allow-dir="false">Drag and drop files here or click here to choose files to upload
+            </div>
+
+            <div class="files-list">
+                <div class="file" ng-repeat="file in files">
+                    {{file.name}}
+                    <md-progress-circular md-mode="indeterminate"
+                                          md-diameter="20"
+                                          ng-show="file.is_uploading"
+                                          class="single-file-loading in-file">
+                    </md-progress-circular>
+                    <i class="material-icons single-file-loading in-file load-ok"
+                       ng-show="file.load_ok">
+                        done</i>
+                    <i class="material-icons single-file-loading in-file load-error"
+                       ng-show="file.load_error">
+                        error</i>
                 </div>
             </div>
+
+            <ul class="cd-buttons clearfix">
+                <li class="file-delete">
+                    <button class="inpop" ng-click="closeForm('upload-file')">Cancel</button>
+                </li>
+            </ul>
+            <a class="popUpWindow-close " ng-click="closeForm('upload-file')"><i
+                    class="material-icons">clear</i></a>
         </div>
-    </scroll-section>
+    </div>
 </div>

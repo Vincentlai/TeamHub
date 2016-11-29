@@ -175,7 +175,13 @@
                     url: ":team_id/files",
                     views: {
                         'contains': {
-                            templateUrl: 'pages/files.html'
+                            templateUrl: 'pages/files.html',
+                            controller: 'fileController'
+                        }
+                    },
+                    resolve: {
+                        'title': function($rootScope, $stateParams){
+                            $rootScope.selectedTeamId = $stateParams.team_id;
                         }
                     },
                     authenticated: true
