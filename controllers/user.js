@@ -84,7 +84,7 @@ exports.register = function (email, password, nickname, callback) {
                                 to: email, // list of receivers 
                                 subject: 'Please verify your email', // Subject line 
                                 //text: 'Please click on this link to verify your email', // plaintext body 
-                                html: '<b> To verify your email please open this URL using the host machine http://localhost:8080/users/verify?id=' + user_id + '</b>' // html body 
+                                html: '<b> To verify your email please open this URL using the host machine http://localhost:3000/users/verify?id=' + user_id + '</b>' // html body 
                             };
 
                             // send email verification
