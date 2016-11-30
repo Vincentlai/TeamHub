@@ -1,7 +1,9 @@
 var app = angular.module('chat', []);
 
 app.config(function ($socketProvider) {
-    $socketProvider.setConnectionUrl('http://localhost:8080');
+    $socketProvider.setConnectionUrl('http://localhost:8080'); // when using local machine
+    //$socketProvider.setConnectionUrl('http://localhost:3000'); // when using vagrant
+    //$socketProvider.setConnectionUrl('http://ec2-52-40-59-253.us-west-2.compute.amazonaws.com:8080'); // when using aws
 });
 
 
