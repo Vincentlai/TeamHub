@@ -622,7 +622,7 @@ a.control-btn {
 
 .left-container, .right-container {
   margin: 20px 4% 0 4%;
-  padding: 2%;
+  padding: 24px 20px 24px 24px;
   background-color: white;
   overflow: auto;
   .default-border;
@@ -634,14 +634,10 @@ a.control-btn {
   min-height: 500px;
   position: relative;
   overflow: visible;
-  .left-container-header {
-    display: block;
-    height: 50px;
-    margin-top: -2%;
-  }
 
   ul {
     max-height: 750px;
+    margin-right: 4px;
     overflow-y: auto;
     li.list {
       display: block;
@@ -672,10 +668,32 @@ a.control-btn {
     padding: 0;
   }
 }
+.container-header {
+  display: block;
+  height: 50px;
+  margin-top: -14px;
+}
 
 .right-container {
   float: right;
   width: 20%;
+  .events-list {
+    max-height: 750px;
+    overflow-y: auto;
+    margin-right: 4px;
+    .event-item {
+      display: block;
+      position: relative;
+      margin-bottom: 10px;
+      border-bottom: 1px solid @light-gray-border;
+      span.name, span.team {
+        font-weight: bold;
+      }
+      a.link {
+        cursor: pointer;
+      }
+    }
+  }
 }
 
 .filter {

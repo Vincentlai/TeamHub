@@ -100,6 +100,59 @@
 
     ]);
 
+    module.filter('eventDateFilter', [
+        function () {
+            return function (d) {
+                // var date = new Date(d);
+                console.log(typeof d);
+                return d;
+                // var now = new Date();
+                // var date = new Date(parseInt(millisecond.toString(), 16) * 1000);
+                // console.log(date.getFullYear());
+                // return date.getFullYear();
+                // if (now.getFullYear() > date.getFullYear()) {
+                //     if (now.getFullYear() - date.getFullYear() == 1) {
+                //         return "last year";
+                //     } else {
+                //         return "in " + (now.getFullYear() - date.getFullYear()) + ' years ago';
+                //     }
+                // }
+                // if (now.getMonth() > date.getMonth()) {
+                //     if (now.getMonth() - date.getMonth() == 1) {
+                //         return "last month";
+                //     } else {
+                //         return "in " + (now.getMonth() - date.getMonth()) + ' months ago';
+                //     }
+                // }
+                // if (now.getDate() > date.getDate()) {
+                //
+                //     if (now.getDate() - date.getDate() == 1) {
+                //         return "yesterday";
+                //     } else {
+                //         return "in " + (now.getDate() - date.getDate()) + ' days ago';
+                //     }
+                // }
+                // if (now.getHours() > date.getHours()) {
+                //     if (now.getHours() - date.getHours() == 1) {
+                //         return "in 1 hour ago";
+                //     } else {
+                //         return "in " + (now.getHours() - date.getHours()) + ' hours ago';
+                //     }
+                // }
+                // if (now.getMinutes() > date.getMinutes()) {
+                //     if (now.getMinutes() - date.getMinutes() == 1) {
+                //         return "in 1 minute ago";
+                //     } else {
+                //         return "in " + (now.getMinutes() - date.getMinutes()) + ' minutes ago';
+                //     }
+                // }
+                // return "just now";
+            }
+        }
+
+    ]);
+
+
     module.filter('dateFilter', [
         function () {
             return function (date) {
@@ -535,12 +588,13 @@
         '$timeout',
         '$http',
         'news',
-        '$window',
-        '$document',
-        function ($scope, $rootScope, $state, $timeout, $http, news, $window, $document) {
+        'events',
+        function ($scope, $rootScope, $state, $timeout, $http, news, events) {
 
             // initial vars
             $scope.news = news;
+            $scope.events = events;
+            console.log(typeof $scope.events[0].start);
             $scope.filter_team_name = 'All Teams';
             $scope.filter_team_id = '';
             $scope.limit_news = 20;

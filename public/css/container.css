@@ -792,7 +792,7 @@ a.control-btn:hover {
 .left-container,
 .right-container {
   margin: 20px 4% 0 4%;
-  padding: 2%;
+  padding: 24px 20px 24px 24px;
   background-color: white;
   overflow: auto;
   border-radius: .25em .25em .4em .4em;
@@ -805,13 +805,9 @@ a.control-btn:hover {
   position: relative;
   overflow: visible;
 }
-.left-container .left-container-header {
-  display: block;
-  height: 50px;
-  margin-top: -2%;
-}
 .left-container ul {
   max-height: 750px;
+  margin-right: 4px;
   overflow-y: auto;
 }
 .left-container ul li.list {
@@ -842,9 +838,32 @@ a.control-btn:hover {
   line-height: 50px;
   padding: 0;
 }
+.container-header {
+  display: block;
+  height: 50px;
+  margin-top: -14px;
+}
 .right-container {
   float: right;
   width: 20%;
+}
+.right-container .events-list {
+  max-height: 750px;
+  overflow-y: auto;
+  margin-right: 4px;
+}
+.right-container .events-list .event-item {
+  display: block;
+  position: relative;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(225, 225, 225, 0.8);
+}
+.right-container .events-list .event-item span.name,
+.right-container .events-list .event-item span.team {
+  font-weight: bold;
+}
+.right-container .events-list .event-item a.link {
+  cursor: pointer;
 }
 .filter {
   height: 50px;

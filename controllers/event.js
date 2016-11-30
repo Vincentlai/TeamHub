@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var models = require('../models/models.js');
 
-exports.create = function(sess, team_id, title, description, start, end, callback) {
+exports.create = function (sess, team_id, title, description, start, end, callback) {
 
     var user_id = sess.user_id;
 
@@ -29,7 +29,7 @@ exports.create = function(sess, team_id, title, description, start, end, callbac
         return;
     }
 
-    models.Team.findOne({ _id: team_id }, function(err, team_obj) {
+    models.Team.findOne({_id: team_id}, function (err, team_obj) {
 
         if (!team_obj) {
 
@@ -38,7 +38,7 @@ exports.create = function(sess, team_id, title, description, start, end, callbac
                 'msg': 'Invalid team_id'
             });
             return;
-        
+
         } else {
 
             // check if user is belong to this team
@@ -72,7 +72,7 @@ exports.create = function(sess, team_id, title, description, start, end, callbac
 
             callback({
                 'code': '1',
-                'msg': 'Event '+ title + ' has been created successfully'
+                'msg': 'Event ' + title + ' has been created successfully'
             });
             return;
         }
@@ -80,7 +80,7 @@ exports.create = function(sess, team_id, title, description, start, end, callbac
     });
 }
 
-exports.getEvents = function(sess, team_id, callback) {
+exports.getEvents = function (sess, team_id, callback) {
 
     var user_id = sess.user_id;
 
@@ -100,7 +100,7 @@ exports.getEvents = function(sess, team_id, callback) {
         return;
     }
 
-    models.Team.findOne({ _id: team_id }, function(err, team_obj) {
+    models.Team.findOne({_id: team_id}, function (err, team_obj) {
 
         if (!team_obj) {
 
@@ -109,7 +109,7 @@ exports.getEvents = function(sess, team_id, callback) {
                 'msg': 'Invalid team_id'
             });
             return;
-        
+
         } else {
 
             // check if user is belong to this team
@@ -129,14 +129,15 @@ exports.getEvents = function(sess, team_id, callback) {
                 return;
             }
 
-            models.Event.find({ team_id: team_id }, function(err, events) {
+            models.Event.find({team_id: team_id}, function (err, events) {
 
-                if(events.length != 0){
+                if (events.length != 0) {
 
-                   callback({
+                    callback({
                         'code': '1',
                         'msg': 'Get events successfully',
-                        'events' : events
+                        'events': events,
+                        'team_name': team_obj.name
                     });
 
 
@@ -147,7 +148,7 @@ exports.getEvents = function(sess, team_id, callback) {
                         'msg': 'There is no event in this team'
                     });
 
-                }          
+                }
 
 
             });
@@ -157,7 +158,7 @@ exports.getEvents = function(sess, team_id, callback) {
     });
 }
 
-exports.delete = function(sess, event_id, callback) {
+exports.delete = function (sess, event_id, callback) {
 
     var user_id = sess.user_id;
 
@@ -177,7 +178,7 @@ exports.delete = function(sess, event_id, callback) {
         return;
     }
 
-    models.Event.findOne({ _id: event_id }, function(err, event_obj) {
+    models.Event.findOne({_id: event_id}, function (err, event_obj) {
 
         if (!event_obj) {
 
@@ -186,7 +187,7 @@ exports.delete = function(sess, event_id, callback) {
                 'msg': 'Invalid team_id'
             });
             return;
-        
+
         } else {
 
             // check if user is the creator of this to event
@@ -196,8 +197,8 @@ exports.delete = function(sess, event_id, callback) {
                     'code': '-2',
                     'msg': 'Permission denied'
                 });
-            
-            }else{
+
+            } else {
 
                 event_obj.remove();
 

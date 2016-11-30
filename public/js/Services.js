@@ -366,8 +366,7 @@
     module.service('NewsService', [
         '$q',
         '$http',
-        '$rootScope',
-        function ($q, $http, $rootScope) {
+        function ($q, $http) {
             var me = this;
             var addNewsToArray = function (news) {
                 var list = [];
@@ -401,6 +400,52 @@
                                 }
                             });
                             return news_list;
+                        }, function (error) {
+                            console.log(error);
+                        }
+                    )
+            };
+
+        }
+    ]);
+    module.service('EventService', [
+        '$q',
+        '$http',
+        function ($q, $http) {
+            var me = this;
+            var addEventToArray = function (events, team_name) {
+                var list = [];
+                var item;
+                for (var j = 0; j < events.length; j++) {
+                    item = {
+                        start: Date.parse(events[j].start),
+                        end: Date.parse(events[j].end),
+                        title: events[j].title,
+                        event_id: events[j]._id,
+                        description: events[j].description,
+                        creator_id: events[j].creator_id,
+                        team_name: team_name
+                    };
+                    list.unshift(item);
+                }
+                return list;
+            };
+            me.getEvents = function (teams) {
+                var event_list = [];
+                return $q.all(teams.map(function (team) {
+                    return $http.get('/events/get?team_id=' + team.id);
+                }))
+                    .then(
+                        function (result) {
+                            angular.forEach(result, function (res) {
+                                if (res.data.code == 1) {
+                                    event_list = event_list.concat(addEventToArray(res.data.events, res.data.team_name));
+                                } else if (res.data.code == -3) {
+                                } else {
+                                    console.log('error in get events');
+                                }
+                            });
+                            return event_list;
                         }, function (error) {
                             console.log(error);
                         }

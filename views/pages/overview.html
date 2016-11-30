@@ -2,7 +2,7 @@
 
     <div class="left-container">
 
-        <div class="left-container-header">
+        <div class="container-header">
             <div class="filter">
                 <div class="filter-name">
                     {{filter_team_name}}
@@ -41,17 +41,31 @@
                 </div>
             </li>
         </ul>
-            <!--<a class="control-btn news-btn"-->
-           <!--ng-click="loadMore()"-->
-           <!--ng-if="filter_limite>=number_of_selected_filter">-->
-            <!--Load More-->
-        <!--</a>-->
 
     </div>
 
     <div class="right-container">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur, error, illum! Cum error, voluptatum. Ad
-        blanditiis dolorem labore maxime pariatur possimus quas qui similique sint. Cum earum eum excepturi itaque?
+        <div class="container-header">
+            <div class="filter">
+                <div class="filter-name">
+                    Event Reminder
+                </div>
+            </div>
+        </div>
+        <ul class="events-list">
+            <li class="event-item" ng-repeat="event in events | orderBy :'-start'">
+                {{event.start | date:' HH:mm yy-MM-dd' : 'GMT-0800' | eventDateFilter}}
+                <br>
+                {{event.title}}
+                <br>
+                {{event.description}}
+                <br>
+                {{event.team_name}}
+                <br>
+                <br>
+                <br>
+            </li>
+        </ul>
     </div>
 
 

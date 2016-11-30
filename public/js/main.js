@@ -82,6 +82,9 @@
                     resolve: {
                         news: function (information, NewsService) {
                             return NewsService.getNews(information.teams);
+                        },
+                        events: function (information, EventService) {
+                            return EventService.getEvents(information.teams);
                         }
                     },
                     authenticated: true
