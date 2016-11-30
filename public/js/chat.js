@@ -23,6 +23,13 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
     const GET_AVATAR_URL = "/users/download_avatar?user_id=";
     // initialize msg list
     $scope.msg_list = [];
+
+    // hide zoom in image
+    $scope.showZoomIn = false;
+
+    // loading ani
+    $scope.isUploading = false;
+
     // check if user has avatar
     $http.get('/users/download_avatar')
         .then(
@@ -46,12 +53,21 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
         return role_arr[index].src;
     };
 
-    $scope.hasImg = function (index){
-        if($scope.msg_list[index].file_id){
+    $scope.hasImg = function (index) {
+        if ($scope.msg_list[index].file_id) {
             return true;
-        }else{
+        } else {
             return false;
         }
+    }
+
+    $scope.zoomIn = function (file_id) {
+        $scope.zoom_in_file_id = file_id;
+        $scope.showZoomIn = true;
+    }
+
+    $scope.ZoomOut = function () {
+        $scope.showZoomIn = false;
     }
 
     /* on receive team message */
@@ -142,6 +158,8 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
                     return;
                 }
 
+                $scope.isUploading = true;
+
                 Upload.upload({
                     url: '/files/upload',
                     data: {
@@ -154,9 +172,12 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
                 }).then(function (response) {
                     $timeout(function () {
 
+                        $scope.isUploading = false;
+
                         var data = response.data;
 
                         if (data.code == '1') {
+
                             console.log(data.msg);
 
                             var nickname = $rootScope.user.nickname;
@@ -195,7 +216,8 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
                         }
                     });
                 }, function (response) {
-                    if (response.status > 0) { }
+                    if (response.status > 0) {}
+                    $$scope.isUploading = false; 
                 }, function (evt) { });
             });
         };
