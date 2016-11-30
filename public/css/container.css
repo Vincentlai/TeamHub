@@ -282,6 +282,7 @@ notification end
 */
 .side-bar {
   position: fixed;
+  -webkit-transform: translateZ(0);
   top: 60px;
   bottom: 0;
   overflow-x: hidden;
@@ -809,6 +810,10 @@ a.control-btn:hover {
   height: 50px;
   margin-top: -2%;
 }
+.left-container ul {
+  max-height: 750px;
+  overflow-y: auto;
+}
 .left-container ul li.list {
   display: block;
   position: relative;
@@ -1137,6 +1142,8 @@ a.control-btn:hover {
 .files-list {
   margin-left: 5px;
   margin-right: 5px;
+  max-height: 140px;
+  overflow-y: auto;
 }
 .files-list .file {
   position: relative;
@@ -1361,7 +1368,7 @@ file html
 .file-table td {
   padding-left: 5px;
   border-bottom: 0.5px solid rgba(225, 225, 225, 0.8);
-  outline: none!important;
+  outline: none !important;
 }
 .file-table td.name {
   width: 500px;
@@ -1378,7 +1385,7 @@ file html
   opacity: 0;
   visibility: hidden;
   -webkit-transition: transform .2s ease;
-  -o-transition: transform  .2s ease;
+  -o-transition: transform .2s ease;
   transition: transform .2s ease;
 }
 .file-table td.order i.reverse {
@@ -1422,6 +1429,10 @@ file html
   width: 70px;
   cursor: pointer;
 }
+.file-table tbody tr td.operations a,
+.file-table tbody tr td.operations i {
+  color: #4D4D4D;
+}
 .file-table tbody tr td.operations i.download,
 .file-table tbody tr td.operations i.delete,
 .file-table tbody tr td.operations .deleting {
@@ -1430,7 +1441,7 @@ file html
   visibility: hidden;
   opacity: 0;
   -webkit-transition: all .2s ease;
-  -o-transition: all  .2s ease;
+  -o-transition: all .2s ease;
   transition: all .2s ease;
   right: 5px;
 }

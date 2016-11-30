@@ -85,7 +85,7 @@
             me.changePassword = function (data, callback) {
                 var url = '/users/cpass';
                 CallApi.postApi(url, data, function (code, msg) {
-                   callback(code, msg);
+                    callback(code, msg);
                 });
 
             };
@@ -94,21 +94,6 @@
                 var url = '/users/download_avatar?user_id=' + id;
             }
 
-        }
-    ]);
-
-    module.factory('HomeService', [
-        function () {
-            var HomeService = {};
-            HomeService.test = function (a, b, callback) {
-
-                var s = a;
-                var c = b;
-                a = 5;
-                callback(s + c);
-            };
-
-            return HomeService;
         }
     ]);
 
@@ -189,8 +174,8 @@
                 }, 4000);
             };
             me.resetError = function () {
-              me.error = false;
-              me.msg = null;
+                me.error = false;
+                me.msg = null;
             };
         }
     ]);
@@ -366,15 +351,62 @@
                     url: url,
                     data: data
                 }).then(function (res) {
-                    if(res.data.code == 1){
+                    if (res.data.code == 1) {
                         callback(res.data.code);
-                    }else{
+                    } else {
                         callback(res.data.code, res.data.msg);
                     }
-                },function (error) {
+                }, function (error) {
                     callback(error.status, 'Upload Failed');
                 })
             };
+        }
+    ]);
+
+    module.service('NewsService', [
+        '$q',
+        '$http',
+        '$rootScope',
+        function ($q, $http, $rootScope) {
+            var me = this;
+            var addNewsToArray = function (news) {
+                var list = [];
+                var item;
+                for (var j = 0; j < news.length; j++) {
+                    item = {
+                        user_id: news[j].user_id,
+                        user_nickname: news[j].user_nickname,
+                        action_name: news[j].action_name,
+                        action_target: news[j].action_target,
+                        action_target_id: news[j].action_target_id,
+                        time_in_mili: new Date(parseInt(news[j]._id.toString().substring(0, 8), 16) * 1000),
+                        target_team: news[j].target_team_name
+                    };
+                    list.unshift(item);
+                }
+                return list;
+            };
+            me.getNews = function (teams) {
+                var news_list = [];
+                return $q.all(teams.map(function (team) {
+                    return $http.get('/teams/news?team_id=' + team.id);
+                }))
+                    .then(
+                        function (result) {
+                            angular.forEach(result, function (res) {
+                                if (res.data.code == 1) {
+                                    news_list = news_list.concat(addNewsToArray(res.data.news));
+                                } else {
+                                    console.log('error in get news');
+                                }
+                            });
+                            return news_list;
+                        }, function (error) {
+                            console.log(error);
+                        }
+                    )
+            };
+
         }
     ]);
 

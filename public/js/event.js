@@ -29,6 +29,7 @@
                         console.log("Got event list");
                         
                         response.data.events.forEach(function(event){
+                            console.log(event);
                             $scope.events.push({
                                 start: new Date(event.start),
                                 end: new Date(event.end),

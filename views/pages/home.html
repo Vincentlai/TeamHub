@@ -30,10 +30,7 @@
             </ul>
 
         </div>
-        <!--<div class="link">-->
-            <!--<i class="material-icons main-menu">group</i>-->
-            <!--Teams-->
-        <!--</div>-->
+
         <div class="team-list">
             <ul id="accordion" class="accordion" ng-repeat="teamItem in teams">
                 <li id="teams{{$index}}" ng-class="{'selected': isSelected(teamItem.id)}">
@@ -41,8 +38,6 @@
                         <i class="material-icons" ng-if="teamItem.is_creator">person</i>
                         <i class="material-icons" ng-if="!teamItem.is_creator">person_outline</i>
                         <a >{{teamItem.name}}</a>
-                        <!--<i class="material-icons main-menu">group</i>-->
-                        <!--Teams-->
                         <i class="material-icons drop-down">expand_more</i>
                     </div>
                     <ul class="submenu">
@@ -73,6 +68,15 @@
     </div>
     <div class="content">
         <div ui-view="contains"></div>
+        <div class="in-loading" ng-show="is_loading">
+            <div class="sk-folding-cube">
+                <div class="sk-cube1 sk-cube"></div>
+                <div class="sk-cube2 sk-cube"></div>
+                <div class="sk-cube4 sk-cube"></div>
+                <div class="sk-cube3 sk-cube"></div>
+            </div>
+            <div class="loading-text"> Loading ...</div>
+        </div>
     </div>
     <div id="create-team" class="popUpWindow" role="alert" ng-cloak>
 
