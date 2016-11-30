@@ -38,6 +38,7 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
     var file_name = req.body.file_name;
     var file_size = req.body.file_size;
     var team_id = req.body.team_id;
+    var is_pic = req.body.is_pic;
     var content_type = mime.lookup(req.body.file_name);
 
     var user_id = req.session.user_id;
@@ -59,6 +60,12 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
             "msg": "Missing fields"
         });
         return;
+    }
+
+    if(is_pic){
+        is_pic = true;
+    }else{
+        is_pic = false;
     }
 
     models.Team.findOne({ _id: team_id }, function(err, team_obj) {
@@ -89,7 +96,12 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
                 return;
             }
 
-            models.File.findOne({ $and: [{ file_name: file_name }, { team_id: team_id }, { owner_user_id: user_id }] }, function(err, file_obj) {
+            models.File.findOne({ $and: [
+              { file_name: file_name },
+              { team_id: team_id },
+              { owner_user_id: user_id },
+              { is_pic: false} 
+              ] }, function(err, file_obj) {
 
                 if (file_obj) {
                     res.json({
@@ -106,7 +118,8 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
                         owner_user_id: user_id,
                         owner_nickname: nickname,
                         file_name: file_name,
-                        file_size: file_size
+                        file_size: file_size,
+                        is_pic: is_pic
                     });
 
                     newFile.save(function(err, obj) {
@@ -124,20 +137,22 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
                                 if (!err) {
 
                                     var upload_time = new Date();
-
-                                    // push NEW to team
-                                    team_obj.news.unshift(
-                                        {
-                                            user_id: user_id,
-                                            user_nickname: nickname,
-                                            action_name: 'uploaded',
-                                            action_target: 'file',
-                                            action_target_id: obj.id,
-                                            target_team_id: team_id,
-                                            target_team_name: team_obj.name,
-                                        }
-                                    );
-                                    team_obj.save();
+                                    
+                                    if(!is_pic){
+                                        // push NEW to team
+                                        team_obj.news.unshift(
+                                            {
+                                                user_id: user_id,
+                                                user_nickname: nickname,
+                                                action_name: 'uploaded',
+                                                action_target: 'file',
+                                                action_target_id: obj.id,
+                                                target_team_id: team_id,
+                                                target_team_name: team_obj.name,
+                                            }
+                                        );
+                                        team_obj.save();
+                                    }
 
                                     console.log("-> File uploaded successfully \n");
 
@@ -149,7 +164,8 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
                                         "owner_user_id": obj.owner_user_id,
                                         "owner_nickname": obj.owner_nickname,
                                         "file_size": obj.file_size,
-                                        "time": upload_time.toDateString() + " " + upload_time.toTimeString().substring(0, 8)
+                                        "time": upload_time.toDateString() + " " + upload_time.toTimeString().substring(0, 8),
+                                        "is_pic": is_pic
                                     });
                                 }
 
@@ -372,7 +388,7 @@ router.get('/all', function(req, res) {
                 return;
             }
 
-            models.File.find({ team_id: team_id }, function(err, files) {
+            models.File.find({ $and:[ {team_id: team_id}, {is_pic: false}] }, function(err, files) {
 
                 if (files) {
 

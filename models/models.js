@@ -87,7 +87,8 @@ var fileSchema = mongoose.Schema({
     owner_nickname: String,
     file_name: String, // full name including suffix
     file_size: Number, // in Bytes
-    post_id: String
+    post_id: String,
+    is_pic: Boolean // is picture or not
 });
 
 var fileDataSchema = mongoose.Schema({
