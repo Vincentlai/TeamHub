@@ -5,7 +5,8 @@ app.config(function ($socketProvider) {
 });
 
 
-app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $http) {
+app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $http, $window, Upload, $timeout) {
+
     function guid() {
         function s4() {
             return Math.floor((1 + Math.random()) * 0x10000)
@@ -22,17 +23,24 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
     const GET_AVATAR_URL = "/users/download_avatar?user_id=";
     // initialize msg list
     $scope.msg_list = [];
+
+    // hide zoom in image
+    $scope.showZoomIn = false;
+
+    // loading ani
+    $scope.isUploading = false;
+
     // check if user has avatar
     $http.get('/users/download_avatar')
         .then(
         function (res) {
-            if(!res.data.code){
+            if (!res.data.code) {
                 self_icon = '/users/download_avatar';
             }
         }, function (error) {
             console.log('error in get team info ' + error);
         }
-    );
+        );
     // generate a GUID
     var uuid = guid();
 
@@ -45,6 +53,23 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
         return role_arr[index].src;
     };
 
+    $scope.hasImg = function (index) {
+        if ($scope.msg_list[index].file_id) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    $scope.zoomIn = function (file_id) {
+        $scope.zoom_in_file_id = file_id;
+        $scope.showZoomIn = true;
+    }
+
+    $scope.ZoomOut = function () {
+        $scope.showZoomIn = false;
+    }
+
     /* on receive team message */
     $socket.on('team_msg', function (json) {
 
@@ -55,11 +80,12 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
             var nickname = json.nickname;
             var msg = json.msg;
             var time = json.time;
+            var file_id = json.file_id;
 
             //noinspection JSAnnotator
-            $scope.msg_list.push({index, nickname, msg, time});
+            $scope.msg_list.push({ index, nickname, msg, time, file_id });
             var url = GET_AVATAR_URL + json.user_id;
-            role_arr.push({class: "other", src: url});
+            role_arr.push({ class: "other", src: url });
             index++;
             console.log('i got msg' + msg);
         }
@@ -106,40 +132,135 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
         index++;
     };
 
+    /* on send picture */
+    $scope.pickFile = function () {
+        setTimeout(function () {
+            document.getElementById('pick_file').click()
+        }, 0);
+    };
+
+    var handleFileSelect = function (evt) {
+
+        var file = evt.currentTarget.files[0];
+
+        console.log(evt.currentTarget.files);
+        file_name = file.name; console.log('name: ' + file.name);
+        file_size = file.size; console.log('size: ' + file.size + ' Bytes');
+
+        var reader = new FileReader();
+        reader.onload = function (evt) {
+            $scope.$apply(function ($scope) {
+                dataUrl = evt.target.result;
+
+                // file size limit check
+                if (file_size > 16000000) {
+                    $window.alert("Your picture is over 16 MB");
+                    return;
+                }
+
+                $scope.isUploading = true;
+
+                Upload.upload({
+                    url: '/files/upload',
+                    data: {
+                        team_id: $rootScope.selectedTeamId,
+                        file: Upload.dataUrltoBlob(dataUrl),
+                        file_name: file_name,
+                        file_size: file_size,
+                        is_pic: true
+                    }
+                }).then(function (response) {
+                    $timeout(function () {
+
+                        $scope.isUploading = false;
+
+                        var data = response.data;
+
+                        if (data.code == '1') {
+
+                            console.log(data.msg);
+
+                            var nickname = $rootScope.user.nickname;
+                            var user_id = $rootScope.user.user_id;
+                            var team_ui = $rootScope.selectedTeamId;
+                            var file_id = data.file_id;
+                            var msg = '';
+
+                            // send json to server
+
+                            // format time
+                            var d = new Date();
+                            var min = d.getMinutes();
+                            if (min < 10)
+                                min = '0' + min;
+                            var time = d.getHours() + ":" + min;
+
+                            var json = {};
+                            json.file_id = file_id;
+                            json.nickname = nickname;
+                            json.team_id = team_ui; // tmp: to be changed
+                            json.uuid = uuid;
+                            json.time = time;
+                            json.user_id = user_id;
+
+                            $socket.emit('team_msg', json);
+
+                            //noinspection JSAnnotator
+                            $scope.msg_list.push({ index, nickname, msg, time, file_id });
+                            role_arr.push({ class: "self", src: self_icon });
+                            index++;
+
+
+                        } else {
+                            console.log("upload error: " + data.msg)
+                        }
+                    });
+                }, function (response) {
+                    if (response.status > 0) {}
+                    $$scope.isUploading = false; 
+                }, function (evt) { });
+            });
+        };
+        reader.readAsDataURL(file);
+    };
+    angular.element(document.querySelector('#pick_file')).on('change', handleFileSelect);
+
     // check when selected team changes
     $scope.$watch(function () { return $rootScope.selectedTeamId; }, function (newVal, oldVal) {
 
-            // load chat history
-            $http.get('/teams/chat_history?team_id=' + newVal)
-                .then(
-                function (res) {
-                    var detail;
-                    if (res.data.code == 1) {
-                        var history = res.data.history;
-                        var user_id = $rootScope.user.user_id;
-                        $scope.msg_list = [];
-                        role_arr = [];
-                        for (var i = 0; i < history.length; i++) {
-                            var nickname = history[i].nickname;
-                            var msg = history[i].message;
-                            var time = history[i].time;
-                            //noinspection JSAnnotator
-                            $scope.msg_list.push({ i, nickname, msg, time });
-                            if(history[i].user_id == user_id){
-                                role_arr.push({ class: "self", src: self_icon });
-                            }else{
-                                var url = GET_AVATAR_URL + history[i].user_id;
-                                role_arr.push({ class: "other", src: url });
-                            }
+        // load chat history
+        $http.get('/teams/chat_history?team_id=' + newVal)
+            .then(
+            function (res) {
+                var detail;
+                if (res.data.code == 1) {
+                    var history = res.data.history;
+                    var user_id = $rootScope.user.user_id;
+                    $scope.msg_list = [];
+                    role_arr = [];
+                    for (var i = 0; i < history.length; i++) {
+                        var nickname = history[i].nickname;
+                        var msg = history[i].message;
+                        var time = history[i].time;
+                        var file_id = history[i].file_id;
+
+                        $scope.msg_list.push({ i, nickname, msg, time, file_id });
+
+                        if (history[i].user_id == user_id) {
+                            role_arr.push({ class: "self", src: self_icon });
+                        } else {
+                            var url = GET_AVATAR_URL + history[i].user_id;
+                            role_arr.push({ class: "other", src: url });
                         }
-                    } else {
-                        // clear arrays
-                        $scope.msg_list = [];
-                        role_arr = [];
                     }
-                }, function (error) {
-                    console.log('error in get team chat history ' + error);
-                });
+                } else {
+                    // clear arrays
+                    $scope.msg_list = [];
+                    role_arr = [];
+                }
+            }, function (error) {
+                console.log('error in get team chat history ' + error);
+            });
     })
 });
 // scroll list to bottom when type in or receive a new message

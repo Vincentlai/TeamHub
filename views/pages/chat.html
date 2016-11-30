@@ -122,14 +122,13 @@
 		border-top-left-radius: 0px;
 		box-shadow: -1px 2px 0px #D4D4D4;
 	}
-
+	
 	.self .msg {
 		order: 1;
 		border-top-left-radius: 0px;
 		box-shadow: -1px 2px 0px #D4D4D4;
 		background: #B0E46E;
 	}
-	
 	/*
 	.other:before {
 		content: "";
@@ -174,13 +173,6 @@
 		box-shadow: 0px 2px 0px #D4D4D4;
 	}
 	*/
-	
-	
-	.msg p {
-		font-size: 15px;
-		margin: 0 0 0.2rem 0;
-		color: black;
-	}
 	
 	.msg img {
 		position: relative;
@@ -235,7 +227,7 @@
 		bottom: 0px;
 		left: 249px;
 		right: 0px;
-		width: 100%;
+		width: 85%;
 		height: 50px;
 		z-index: 99;
 		background: #444359;
@@ -248,16 +240,64 @@
 		font-size: 25px;
 	}
 	
-	button.send_button {
-		position: fixed;
-		right: 0px;
-		bottom: 0px;
-		width: 100px;
-		height: 50px;
-		display: inline-block;
-		z-index: 100;
+	.chat .nickname {
+		position: relative;
+		font-size: 12px;
+		float: left;
+		color: #b3b3b3;
 	}
-
+	
+	#wrapper {
+		margin-left: 10px;
+		height: auto;
+		width: auto;
+	}
+	
+	#send_button {
+		position: fixed;
+		z-index: 100;
+		right: 0;
+		bottom: 0;
+		margin-right: 10px;
+		font-size: 45px;
+		color: white;
+		cursor: pointer;
+	}
+	
+	#camera {
+		position: fixed;
+		z-index: 100;
+		right: 0;
+		bottom: 0;
+		margin-right: 80px;
+		font-size: 45px;
+		color: white;
+		cursor: pointer;
+	}
+	
+	#send_button:hover {
+		color: teal;
+	}
+	
+	#camera:hover {
+		color: teal;
+	}
+	
+	*:focus {
+		outline: none;
+	}
+	
+	.msg p {
+		font-size: 15px;
+		margin: 0 0 0.2rem 0;
+		color: black;
+	}
+	
+	#msgInBox {
+		word-wrap: break-word;
+		max-width: 500px;
+	}
+	
 	.msg {
 		background: white;
 		min-width: 50px;
@@ -268,45 +308,69 @@
 		clear: left;
 		margin-top: 2px;
 	}
-
-	.chat  .nickname {
-		position: relative;
-		font-size: 12px;
-		float: left;
-		color: #b3b3b3;
+	
+	#pick_file {
+		display: none;
+	}
+	
+	#pic {
+		height: 300px;
+		width: auto;
+		cursor: zoom-in;
+	}
+	
+	#zoom {
+		position: fixed;
+		height: 700px;
+		width: auto;
+		margin: -100px 0 0 -200px;
+		top: 20%;
+		left: 32%;
+		cursor: zoom-out;
+		z-index: 99999999;
 	}
 
-	#wrapper{
-		margin-left:10px;
-		height:auto; 
-		width:auto;
+	#uploading{
+		position: fixed;
+		z-index: 100;
+		right: 93px;
+		bottom: 70px;
 	}
 </style>
+
+
 <div class="page-container" ng-cloak>
 
-    <scroll-section id="chatBox" style="overflow-y: auto; overflow-x: hidden; height:93vh;" scroll-bottom="msg_list">
+	<img id="zoom" ng-src="/files/download?file_id={{zoom_in_file_id}}" ng-show="showZoomIn" ng-click="ZoomOut()">
 
-        <input ng-model="dataToSend" class="textarea" type="text" placeholder="Enter a message here..." onkeydown="if (event.keyCode == 13) document.getElementById('send').click()"
-        />
+	<scroll-section id="chatBox" style="overflow-y: auto; overflow-x: hidden; height:93vh;" scroll-bottom="msg_list">
 
-        <button ng-click="emitTeamMsg()" class="send_button" id="send">SEND</button>
+		<input ng-model="dataToSend" class="textarea" type="text" placeholder="Enter a message here..." onkeydown="if (event.keyCode == 13) document.getElementById('send_button').click()"
+		/>
+		<md-progress-circular md-mode="indeterminate" md-diameter="20" ng-show="isUploading" id="uploading" class="single-file-loading in-file">
+		</md-progress-circular>
+		<i ng-click="pickFile()" class="material-icons" id="camera">photo_camera</i>
+		<i ng-click="emitTeamMsg()" class="material-icons" id="send_button">send</i>
+		<input type="file" id="pick_file" type="image">
 
-        <ol class="chat">
+		<ol class="chat">
 
-            <li ng-repeat="json in msg_list" ng-class="getClass($index)" ng-attr-id="{{ 'msg_' + $index }}">
-                <div class="avatar"><img ng-src="{{getSrc($index)}}" draggable="false" /></div>
+			<li ng-repeat="json in msg_list" ng-class="getClass($index)" ng-attr-id="{{ 'msg_' + $index }}">
+				<div class="avatar"><img ng-src="{{getSrc($index)}}" draggable="false" /></div>
 
 				<div id="wrapper">
 					<div class="nickname">{{json.nickname}}</div>
 					<time>{{json.time}}</time>
 					<div class="msg">
-						<p>{{json.msg}}</p>
+						<p id="msgInBox"> {{json.msg}}</p>
+						<img id="pic" ng-src="/files/download?file_id={{json.file_id}}" ng-show="hasImg($index)" draggable="false" ng-click="zoomIn(json.file_id)"
+						/>
 					</div>
 				</div>
-            </li>
+			</li>
 
-        </ol>
+		</ol>
 
-    </scroll-section>
+	</scroll-section>
 
 </div>
