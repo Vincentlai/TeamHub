@@ -1,7 +1,7 @@
 var app = angular.module('chat', []);
 
 app.config(function ($socketProvider) {
-    $socketProvider.setConnectionUrl('http://localhost:3000');
+    $socketProvider.setConnectionUrl('http://localhost:8080');
 });
 
 

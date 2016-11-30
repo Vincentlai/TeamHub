@@ -202,7 +202,8 @@
                                 team_id: $rootScope.selectedTeamId,
                                 file: file,
                                 file_name: file.name,
-                                file_size: file.size
+                                file_size: file.size,
+                                is_pic: true
                             }
                         }).then(function (res) {
                             $scope.post_files[index].isLoading = false;
