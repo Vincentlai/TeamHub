@@ -78,7 +78,8 @@ var chatHistorySchema = mongoose.Schema({
     nickname: String,
     user_id: String,
     time: String,
-    message: String
+    message: String,
+    file_id: String
 });
 
 var fileSchema = mongoose.Schema({
