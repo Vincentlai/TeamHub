@@ -219,7 +219,7 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
                     });
                 }, function (response) {
                     if (response.status > 0) {}
-                    $$scope.isUploading = false;
+                    $scope.isUploading = false;
                 }, function (evt) { });
             });
         };
