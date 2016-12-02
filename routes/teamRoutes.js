@@ -193,7 +193,7 @@ router.get('/team_info',function(req, res)
     var sess = req.session;
 
     team.teamInfo(sess, team_id, function (found) {
-        console.log(found);
+        //console.log(found);
         res.json(found);
     });
 });

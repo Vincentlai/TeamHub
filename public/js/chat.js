@@ -6,7 +6,6 @@ var app = angular.module('chat', []);
 //     //$socketProvider.setConnectionUrl('http://ec2-52-40-59-253.us-west-2.compute.amazonaws.com:8080'); // when using aws
 // });
 
-
 app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $http, $window, Upload, $timeout) {
 
     function guid() {

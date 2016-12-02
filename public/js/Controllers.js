@@ -526,7 +526,8 @@
         '$timeout',
         'ErrorService',
         'TeamService',
-        function ($scope, $rootScope, $state, $timeout, ErrorService, TeamService) {
+        '$socket',
+        function ($scope, $rootScope, $state, $timeout, ErrorService, TeamService, $socket) {
             $scope.hasNoTeam = ($rootScope.teams.length === 0);
 
             $scope.openTag = function () {

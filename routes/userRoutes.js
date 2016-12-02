@@ -180,7 +180,7 @@ router.get('/my_info', function (req, res) {
     var sess = req.session;
 
     user.myInfo(sess, function (found) {
-        console.log(found);
+        //console.log(found);
         res.json(found);
     });
 });
