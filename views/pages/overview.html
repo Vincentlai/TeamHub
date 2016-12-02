@@ -1,8 +1,8 @@
-<div class="page-container clearfix" data-ng-init="loadNews()">
+<div class="page-container clearfix">
 
     <div class="left-container">
 
-        <div class="left-container-header">
+        <div class="container-header">
             <div class="filter">
                 <div class="filter-name">
                     {{filter_team_name}}
@@ -18,8 +18,8 @@
                 </div>
             </div>
         </div>
-        <ul>
-            <li class="list clearfix" ng-repeat="item in news | orderBy : '-time_in_mili'  | filter: filterTeam ">
+        <ul id="news-list">
+            <li class="list clearfix" ng-repeat="item in news | orderBy : '-time_in_mili'  | filter: filterTeam | limitTo: limit_news">
                 <div class="list-content">
                     <span class="name">
                         {{item.user_nickname}}&nbsp
@@ -28,7 +28,7 @@
                     <a class="link">
                         {{item.action_target}}
                     </a>
-                    to
+                    {{item.action_name | action}}
                     <span class="team">
                         {{item.target_team}}
                     </span>
@@ -41,16 +41,35 @@
                 </div>
             </li>
         </ul>
-            <!--<a class="control-btn news-btn"-->
-           <!--ng-click="loadMore()"-->
-           <!--ng-if="filter_limite>=number_of_selected_filter">-->
-            <!--Load More-->
-        <!--</a>-->
 
     </div>
 
     <div class="right-container">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur, error, illum! Cum error, voluptatum. Ad
-        blanditiis dolorem labore maxime pariatur possimus quas qui similique sint. Cum earum eum excepturi itaque?
+        <!--<div class="container-header">-->
+            <!--<div class="filter">-->
+                <!--<div class="filter-name">-->
+                    <!--Event Reminder-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <ul class="events-list">
+            <li class="event-item" ng-repeat="event in events | orderBy :'-start'">
+                <span class="event-name">
+                    {{event.title}}
+                </span>
+                of
+                <span class="event-team-name">
+                    {{event.team_name}}
+                </span>
+                <br>
+                <span class="event-time">
+                    <!--Start on {{event.start | date:' HH:mm yy-MM-dd' : 'GMT-0800' | eventDateFilter}}-->
+                    Will start {{event.start | eventDateFilter}}
+                </span>
+                <br>
+            </li>
+        </ul>
     </div>
+
+
 </div>

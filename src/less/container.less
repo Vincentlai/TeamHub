@@ -98,6 +98,7 @@ notification end
 */
 .side-bar {
   position: fixed;
+  -webkit-transform: translateZ(0);
   top: 60px;
   bottom: 0;
   overflow-x: hidden;
@@ -336,7 +337,7 @@ popUp Window
         float: none;
         position: relative;
         width: 100%;
-        button.inpop{
+        button.inpop {
           border-radius: 0 0 .25em .25em;
         }
       }
@@ -621,7 +622,7 @@ a.control-btn {
 
 .left-container, .right-container {
   margin: 20px 4% 0 4%;
-  padding: 2%;
+  padding: 24px 20px 24px 24px;
   background-color: white;
   overflow: auto;
   .default-border;
@@ -633,14 +634,11 @@ a.control-btn {
   min-height: 500px;
   position: relative;
   overflow: visible;
-  .left-container-header {
-    display: block;
-    height: 50px;
-    margin-top: -2%;
-  }
 
   ul {
-
+    max-height: 750px;
+    margin-right: 4px;
+    overflow-y: auto;
     li.list {
       display: block;
       position: relative;
@@ -671,9 +669,36 @@ a.control-btn {
   }
 }
 
+.container-header {
+  display: block;
+  height: 50px;
+  margin-top: -14px;
+}
+
 .right-container {
   float: right;
   width: 20%;
+  .events-list {
+    max-height: 750px;
+    overflow-y: auto;
+    margin-right: 4px;
+    .event-item {
+      display: block;
+      position: relative;
+      margin-bottom: 10px;
+      border-bottom: 1px solid @light-gray-border;
+      padding-bottom: 10px;
+      font-size: 1.1em;
+      line-height: 1.2em;
+      cursor: pointer;
+      .event-name {
+        font-weight: bold;
+      }
+      a.link {
+        cursor: pointer;
+      }
+    }
+  }
 }
 
 .filter {
@@ -691,7 +716,7 @@ a.control-btn {
     position: relative;
     cursor: pointer;
     line-height: 50px;
-    i{
+    i {
       display: inline-block;
       position: absolute;
       top: 14px;
@@ -983,6 +1008,8 @@ a.control-btn {
 .files-list {
   margin-left: 5px;
   margin-right: 5px;
+  max-height: 140px;
+  overflow-y: auto;
   .file {
     position: relative;
     display: block;
@@ -998,13 +1025,13 @@ a.control-btn {
       display: inline-block;
       top: 2px;
       right: 25px;
-      &.in-file, &.load-ok, &.load-error{
+      &.in-file, &.load-ok, &.load-error {
         right: 0;
       }
-      &.load-ok{
+      &.load-ok {
         color: @primary-color;
       }
-      &.load-error{
+      &.load-error {
         color: @important;
       }
 
@@ -1139,7 +1166,6 @@ img.big {
 file html
  */
 
-
 .upload_area {
   margin-bottom: 10px;
 }
@@ -1166,8 +1192,6 @@ file html
   margin-left: 20px;
   margin-right: 10px;
 }
-
-
 
 /* Drag and drop */
 
@@ -1206,17 +1230,6 @@ file html
   }
 }
 
-li.list {
-  .file-icon {
-    .icon {
-
-    }
-  }
-  .file-description {
-
-  }
-}
-
 .bottom-container {
   margin: 2em auto 0 auto;
   width: 80%;
@@ -1233,7 +1246,7 @@ li.list {
     height: 60px;
     line-height: 60px;
     cursor: default;
-    max-height:60px;
+    max-height: 60px;
     overflow-x: scroll;
     overflow-y: scroll;
     max-lines: 1;
@@ -1241,14 +1254,14 @@ li.list {
   td {
     padding-left: 5px;
     border-bottom: .5px solid @light-gray-border;
-    outline: none!important;
+    outline: none !important;
     &.name {
       width: 500px;
     }
-    &.order{
+    &.order {
       position: relative;
       cursor: pointer;
-      i{
+      i {
         display: inline-block;
         position: absolute;
         top: 18px;
@@ -1256,7 +1269,7 @@ li.list {
         opacity: 0;
         visibility: hidden;
         -webkit-transition: transform .2s ease;
-        -o-transition: transform  .2s ease;
+        -o-transition: transform .2s ease;
         transition: transform .2s ease;
         &.reverse {
           -webkit-transform: rotate(180deg);
@@ -1264,12 +1277,12 @@ li.list {
           -o-transform: rotate(180deg);
           transform: rotate(180deg);
         }
-        &.visible{
+        &.visible {
           opacity: 1;
           visibility: visible;
         }
       }
-      &:hover{
+      &:hover {
         color: @primary-color;
       }
       &.sort-me {
@@ -1285,18 +1298,17 @@ li.list {
   }
   tbody tr {
     &:hover {
-      background-color: rgba(225,225,225,.4);
+      background-color: rgba(225, 225, 225, .4);
       td.operations i.delete,
-      td.operations i.download
-      {
+      td.operations i.download {
         visibility: visible;
         opacity: 1;
       }
     }
-    td.name{
+    td.name {
       cursor: pointer;
 
-      &:hover{
+      &:hover {
         color: @primary-color;
       }
     }
@@ -1304,13 +1316,16 @@ li.list {
       position: relative;
       width: 70px;
       cursor: pointer;
-      i.download, i.delete, .deleting{
+      a, i {
+        color: @primary-text-color;
+      }
+      i.download, i.delete, .deleting {
         position: absolute;
         top: 18px;
         visibility: hidden;
         opacity: 0;
         -webkit-transition: all .2s ease;
-        -o-transition: all  .2s ease;
+        -o-transition: all .2s ease;
         transition: all .2s ease;
         right: 5px;
       }
@@ -1344,7 +1359,6 @@ li.list {
     }
   }
 }
-
 
 .search-bar {
   margin: 10px auto 20px auto;

@@ -1,376 +1,376 @@
 <style>
-	@import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700);
-	@import url(http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
-	html,
-	body {
-		background: #e5e5e5;
-		font-family: 'Lato', sans-serif;
-		margin: 0px auto;
-	}
-	
-	::selection {
-		background: rgba(82, 179, 217, 0.3);
-		color: inherit;
-	}
-	
-	a {
-		color: rgba(82, 179, 217, 0.9);
-	}
-	
-	.back {
-		position: absolute;
-		width: 90px;
-		height: 50px;
-		top: 0px;
-		left: 0px;
-		color: #fff;
-		line-height: 50px;
-		font-size: 30px;
-		padding-left: 10px;
-		cursor: pointer;
-	}
-	
-	.back img {
-		position: absolute;
-		top: 5px;
-		left: 30px;
-		width: 40px;
-		height: 40px;
-		background-color: rgba(255, 255, 255, 0.98);
-		border-radius: 100%;
-		-webkit-border-radius: 100%;
-		-moz-border-radius: 100%;
-		-ms-border-radius: 100%;
-		margin-left: 15px;
-	}
-	
-	.back:active {
-		background: rgba(255, 255, 255, 0.2);
-	}
-	
-	.name {
-		position: absolute;
-		top: 3px;
-		left: 110px;
-		font-family: 'Lato';
-		font-size: 25px;
-		font-weight: 300;
-		color: rgba(255, 255, 255, 0.98);
-		cursor: default;
-	}
-	
-	.last {
-		position: absolute;
-		top: 30px;
-		left: 115px;
-		font-family: 'Lato';
-		font-size: 11px;
-		font-weight: 400;
-		color: rgba(255, 255, 255, 0.6);
-		cursor: default;
-	}
-	/* M E S S A G E S */
-	
-	.chat {
-		list-style: none;
-		background: none;
-		padding: 0 0 50px 0;
-		/*margin-top: 60px;*/
-		margin-bottom: 10px;
-	}
-	
-	.chat li {
-		padding: 0.5rem;
-		overflow: hidden;
-		display: flex;
-	}
-	
-	.chat .avatar {
-		width: 40px;
-		height: 40px;
-		position: relative;
-		display: block;
-		z-index: 2;
-		margin-top: 11px;
-	}
-	
-	.chat .avatar img {
-		width: 40px;
-		height: 40px;
-	}
-	
-	.chat .day {
-		position: relative;
-		display: block;
-		text-align: center;
-		color: #c0c0c0;
-		height: 20px;
-		text-shadow: 7px 0px 0px #e5e5e5, 6px 0px 0px #e5e5e5, 5px 0px 0px #e5e5e5, 4px 0px 0px #e5e5e5, 3px 0px 0px #e5e5e5, 2px 0px 0px #e5e5e5, 1px 0px 0px #e5e5e5, 1px 0px 0px #e5e5e5, 0px 0px 0px #e5e5e5, -1px 0px 0px #e5e5e5, -2px 0px 0px #e5e5e5, -3px 0px 0px #e5e5e5, -4px 0px 0px #e5e5e5, -5px 0px 0px #e5e5e5, -6px 0px 0px #e5e5e5, -7px 0px 0px #e5e5e5;
-		box-shadow: inset 20px 0px 0px #e5e5e5, inset -20px 0px 0px #e5e5e5, inset 0px -2px 0px #d7d7d7;
-		line-height: 38px;
-		margin-top: 5px;
-		margin-bottom: 20px;
-		cursor: default;
-		-webkit-touch-callout: none;
-		-webkit-user-select: none;
-		-moz-user-select: none;
-		-ms-user-select: none;
-	}
-	
-	.other .msg {
-		order: 1;
-		border-top-left-radius: 0px;
-		box-shadow: -1px 2px 0px #D4D4D4;
-	}
-	
-	.self .msg {
-		order: 1;
-		border-top-left-radius: 0px;
-		box-shadow: -1px 2px 0px #D4D4D4;
-		background: #B0E46E;
-	}
-	/*
-	.other:before {
-		content: "";
-		position: relative;
-		top: 0px;
-		right: 0px;
-		left: 40px;
-		width: 0px;
-		height: 0px;
-		border: 5px solid #fff;
-		border-left-color: transparent;
-		border-bottom-color: transparent;
-	}
+    @import url(http://fonts.googleapis.com/css?family=Lato:100,300,400,700);
+    @import url(http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
+    html,
+    body {
+        background: #e5e5e5;
+        font-family: 'Lato', sans-serif;
+        margin: 0px auto;
+    }
 
-	
-	.self {
-		justify-content: flex-end;
-		align-items: flex-end;
-	}
-	
-	.self .msg {
-		order: 1;
-		border-bottom-right-radius: 0px;
-		box-shadow: 1px 2px 0px #D4D4D4;
-	}
-	
-	.self .avatar {
-		order: 2;
-	}
-	
-	.self .avatar:after {
-		content: "";
-		position: relative;
-		display: inline-block;
-		bottom: 19px;
-		right: 0px;
-		width: 0px;
-		height: 0px;
-		border: 5px solid #fff;
-		border-right-color: transparent;
-		border-top-color: transparent;
-		box-shadow: 0px 2px 0px #D4D4D4;
-	}
-	*/
-	
-	.msg img {
-		position: relative;
-		display: block;
-		width: 450px;
-		border-radius: 5px;
-		box-shadow: 0px 0px 3px #eee;
-		transition: all .4s cubic-bezier(0.565, -0.260, 0.255, 1.410);
-		cursor: default;
-		-webkit-touch-callout: none;
-		-webkit-user-select: none;
-		-moz-user-select: none;
-		-ms-user-select: none;
-	}
-	
-	@media screen and (max-width: 800px) {
-		.msg img {
-			width: 300px;
-		}
-	}
-	
-	@media screen and (max-width: 550px) {
-		.msg img {
-			width: 200px;
-		}
-	}
-	
-	time {
-		font-size: 0.7rem;
-		color: #b3b3b3;
-		float: left;
-		cursor: default;
-		-webkit-touch-callout: none;
-		-webkit-user-select: none;
-		-moz-user-select: none;
-		-ms-user-select: none;
-	}
-	
-	time:before {
-		content: "\f017";
-		color: #b3b3b3;
-		font-family: FontAwesome;
-		display: inline-block;
-		margin-left: 6px;
-		margin-right: 2px;
-		float: left;
-	}
-	/* T Y P E */
-	
-	input.textarea {
-		position: fixed;
-		bottom: 0px;
-		left: 249px;
-		right: 0px;
-		width: 85%;
-		height: 50px;
-		z-index: 99;
-		background: #444359;
-		border: none;
-		outline: none;
-		padding-left: 10px;
-		padding-right: 310px;
-		color: #ffffff;
-		font-weight: 400;
-		font-size: 25px;
-	}
-	
-	.chat .nickname {
-		position: relative;
-		font-size: 12px;
-		float: left;
-		color: #b3b3b3;
-	}
-	
-	#wrapper {
-		margin-left: 10px;
-		height: auto;
-		width: auto;
-	}
-	
-	#send_button {
-		position: fixed;
-		z-index: 100;
-		right: 0;
-		bottom: 0;
-		margin-right: 10px;
-		font-size: 45px;
-		color: white;
-		cursor: pointer;
-	}
-	
-	#camera {
-		position: fixed;
-		z-index: 100;
-		right: 0;
-		bottom: 0;
-		margin-right: 80px;
-		font-size: 45px;
-		color: white;
-		cursor: pointer;
-	}
-	
-	#send_button:hover {
-		color: teal;
-	}
-	
-	#camera:hover {
-		color: teal;
-	}
-	
-	*:focus {
-		outline: none;
-	}
-	
-	.msg p {
-		font-size: 15px;
-		margin: 0 0 0.2rem 0;
-		color: black;
-	}
-	
-	#msgInBox {
-		word-wrap: break-word;
-		max-width: 500px;
-	}
-	
-	.msg {
-		background: white;
-		min-width: 50px;
-		padding: 10px;
-		border-radius: 2px;
-		box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.07);
-		float: left;
-		clear: left;
-		margin-top: 2px;
-	}
-	
-	#pick_file {
-		display: none;
-	}
-	
-	#pic {
-		height: 300px;
-		width: auto;
-		cursor: zoom-in;
-	}
-	
-	#zoom {
-		position: fixed;
-		height: 700px;
-		width: auto;
-		margin: -100px 0 0 -200px;
-		top: 20%;
-		left: 32%;
-		cursor: zoom-out;
-		z-index: 99999999;
-	}
+    ::selection {
+        background: rgba(82, 179, 217, 0.3);
+        color: inherit;
+    }
 
-	#uploading{
-		position: fixed;
-		z-index: 100;
-		right: 93px;
-		bottom: 70px;
-	}
+    a {
+        color: rgba(82, 179, 217, 0.9);
+    }
+
+    .back {
+        position: absolute;
+        width: 90px;
+        height: 50px;
+        top: 0px;
+        left: 0px;
+        color: #fff;
+        line-height: 50px;
+        font-size: 30px;
+        padding-left: 10px;
+        cursor: pointer;
+    }
+
+    .back img {
+        position: absolute;
+        top: 5px;
+        left: 30px;
+        width: 40px;
+        height: 40px;
+        background-color: rgba(255, 255, 255, 0.98);
+        border-radius: 100%;
+        -webkit-border-radius: 100%;
+        -moz-border-radius: 100%;
+        -ms-border-radius: 100%;
+        margin-left: 15px;
+    }
+
+    .back:active {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .name {
+        position: absolute;
+        top: 3px;
+        left: 110px;
+        font-family: 'Lato';
+        font-size: 25px;
+        font-weight: 300;
+        color: rgba(255, 255, 255, 0.98);
+        cursor: default;
+    }
+
+    .last {
+        position: absolute;
+        top: 30px;
+        left: 115px;
+        font-family: 'Lato';
+        font-size: 11px;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.6);
+        cursor: default;
+    }
+    /* M E S S A G E S */
+
+    .chat {
+        list-style: none;
+        background: none;
+        padding: 0 0 50px 0;
+        /*margin-top: 60px;*/
+        margin-bottom: 10px;
+    }
+
+    .chat li {
+        padding: 0.5rem;
+        overflow: hidden;
+        display: flex;
+    }
+
+    .chat .avatar {
+        width: 40px;
+        height: 40px;
+        position: relative;
+        display: block;
+        z-index: 2;
+        margin-top: 11px;
+    }
+
+    .chat .avatar img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .chat .day {
+        position: relative;
+        display: block;
+        text-align: center;
+        color: #c0c0c0;
+        height: 20px;
+        text-shadow: 7px 0px 0px #e5e5e5, 6px 0px 0px #e5e5e5, 5px 0px 0px #e5e5e5, 4px 0px 0px #e5e5e5, 3px 0px 0px #e5e5e5, 2px 0px 0px #e5e5e5, 1px 0px 0px #e5e5e5, 1px 0px 0px #e5e5e5, 0px 0px 0px #e5e5e5, -1px 0px 0px #e5e5e5, -2px 0px 0px #e5e5e5, -3px 0px 0px #e5e5e5, -4px 0px 0px #e5e5e5, -5px 0px 0px #e5e5e5, -6px 0px 0px #e5e5e5, -7px 0px 0px #e5e5e5;
+        box-shadow: inset 20px 0px 0px #e5e5e5, inset -20px 0px 0px #e5e5e5, inset 0px -2px 0px #d7d7d7;
+        line-height: 38px;
+        margin-top: 5px;
+        margin-bottom: 20px;
+        cursor: default;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    .other .msg {
+        order: 1;
+        border-top-left-radius: 0px;
+        box-shadow: -1px 2px 0px #D4D4D4;
+    }
+
+    .self .msg {
+        order: 1;
+        border-top-left-radius: 0px;
+        box-shadow: -1px 2px 0px #D4D4D4;
+        background: #B0E46E;
+    }
+    /*
+    .other:before {
+        content: "";
+        position: relative;
+        top: 0px;
+        right: 0px;
+        left: 40px;
+        width: 0px;
+        height: 0px;
+        border: 5px solid #fff;
+        border-left-color: transparent;
+        border-bottom-color: transparent;
+    }
+
+
+    .self {
+        justify-content: flex-end;
+        align-items: flex-end;
+    }
+
+    .self .msg {
+        order: 1;
+        border-bottom-right-radius: 0px;
+        box-shadow: 1px 2px 0px #D4D4D4;
+    }
+
+    .self .avatar {
+        order: 2;
+    }
+
+    .self .avatar:after {
+        content: "";
+        position: relative;
+        display: inline-block;
+        bottom: 19px;
+        right: 0px;
+        width: 0px;
+        height: 0px;
+        border: 5px solid #fff;
+        border-right-color: transparent;
+        border-top-color: transparent;
+        box-shadow: 0px 2px 0px #D4D4D4;
+    }
+    */
+
+    .msg img {
+        position: relative;
+        display: block;
+        width: 450px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 3px #eee;
+        transition: all .4s cubic-bezier(0.565, -0.260, 0.255, 1.410);
+        cursor: default;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    @media screen and (max-width: 800px) {
+        .msg img {
+            width: 300px;
+        }
+    }
+
+    @media screen and (max-width: 550px) {
+        .msg img {
+            width: 200px;
+        }
+    }
+
+    time {
+        font-size: 0.7rem;
+        color: #b3b3b3;
+        float: left;
+        cursor: default;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+    }
+
+    time:before {
+        content: "\f017";
+        color: #b3b3b3;
+        font-family: FontAwesome;
+        display: inline-block;
+        margin-left: 6px;
+        margin-right: 2px;
+        float: left;
+    }
+    /* T Y P E */
+
+    input.textarea {
+        position: fixed;
+        bottom: 0px;
+        left: 249px;
+        right: 0px;
+        width: 100%;
+        height: 50px;
+        z-index: 99;
+        background: #444359;
+        border: none;
+        outline: none;
+        padding-left: 10px;
+        padding-right: 310px;
+        color: #ffffff;
+        font-weight: 400;
+        font-size: 25px;
+    }
+
+    .chat .nickname {
+        position: relative;
+        font-size: 12px;
+        float: left;
+        color: #b3b3b3;
+    }
+
+    #wrapper {
+        margin-left: 10px;
+        height: auto;
+        width: auto;
+    }
+
+    #send_button {
+        position: fixed;
+        z-index: 100;
+        right: 0;
+        bottom: 0;
+        margin-right: 10px;
+        font-size: 45px;
+        color: white;
+        cursor: pointer;
+    }
+
+    #camera {
+        position: fixed;
+        z-index: 100;
+        right: 0;
+        bottom: 0;
+        margin-right: 80px;
+        font-size: 45px;
+        color: white;
+        cursor: pointer;
+    }
+
+    #send_button:hover {
+        color: teal;
+    }
+
+    #camera:hover {
+        color: teal;
+    }
+
+    *:focus {
+        outline: none;
+    }
+
+    .msg p {
+        font-size: 15px;
+        margin: 0 0 0.2rem 0;
+        color: black;
+    }
+
+    #msgInBox {
+        word-wrap: break-word;
+        max-width: 500px;
+    }
+
+    .msg {
+        background: white;
+        min-width: 50px;
+        padding: 10px;
+        border-radius: 2px;
+        box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.07);
+        float: left;
+        clear: left;
+        margin-top: 2px;
+    }
+
+    #pick_file {
+        display: none;
+    }
+
+    #pic {
+        height: 300px;
+        width: auto;
+        cursor: zoom-in;
+    }
+
+    #zoom {
+        position: fixed;
+        height: 700px;
+        width: auto;
+        margin: -100px 0 0 -200px;
+        top: 20%;
+        left: 32%;
+        cursor: zoom-out;
+        z-index: 99999999;
+    }
+
+    #uploading{
+        position: fixed;
+        z-index: 100;
+        right: 93px;
+        bottom: 70px;
+    }
 </style>
 
 
 <div class="page-container" ng-cloak>
 
-	<img id="zoom" ng-src="/files/download?file_id={{zoom_in_file_id}}" ng-show="showZoomIn" ng-click="ZoomOut()">
+    <img id="zoom" ng-src="/files/download?file_id={{zoom_in_file_id}}" ng-show="showZoomIn" ng-click="ZoomOut()">
 
-	<scroll-section id="chatBox" style="overflow-y: auto; overflow-x: hidden; height:93vh;" scroll-bottom="msg_list">
+    <scroll-section id="chatBox" style="overflow-y: auto; overflow-x: hidden; height:93vh;" scroll-bottom="msg_list">
 
-		<input ng-model="dataToSend" class="textarea" type="text" placeholder="Enter a message here..." onkeydown="if (event.keyCode == 13) document.getElementById('send_button').click()"
-		/>
-		<md-progress-circular md-mode="indeterminate" md-diameter="20" ng-show="isUploading" id="uploading" class="single-file-loading in-file">
-		</md-progress-circular>
-		<i ng-click="pickFile()" class="material-icons" id="camera">photo_camera</i>
-		<i ng-click="emitTeamMsg()" class="material-icons" id="send_button">send</i>
-		<input type="file" id="pick_file" type="image">
+        <input ng-model="dataToSend" class="textarea" type="text" placeholder="Enter a message here..." onkeydown="if (event.keyCode == 13) document.getElementById('send_button').click()"
+        />
+        <md-progress-circular md-mode="indeterminate" md-diameter="20" ng-show="isUploading" id="uploading" class="single-file-loading in-file">
+        </md-progress-circular>
+        <i ng-click="pickFile()" class="material-icons" id="camera">photo_camera</i>
+        <i ng-click="emitTeamMsg()" class="material-icons" id="send_button">send</i>
+        <input type="file" id="pick_file" type="image">
 
-		<ol class="chat">
+        <ol class="chat">
 
-			<li ng-repeat="json in msg_list" ng-class="getClass($index)" ng-attr-id="{{ 'msg_' + $index }}">
-				<div class="avatar"><img ng-src="{{getSrc($index)}}" draggable="false" /></div>
+            <li ng-repeat="json in msg_list" ng-class="getClass($index)" ng-attr-id="{{ 'msg_' + $index }}">
+                <div class="avatar"><img ng-src="{{getSrc($index)}}" draggable="false" /></div>
 
-				<div id="wrapper">
-					<div class="nickname">{{json.nickname}}</div>
-					<time>{{json.time}}</time>
-					<div class="msg">
-						<p id="msgInBox"> {{json.msg}}</p>
-						<img id="pic" ng-src="/files/download?file_id={{json.file_id}}" ng-show="hasImg($index)" draggable="false" ng-click="zoomIn(json.file_id)"
-						/>
-					</div>
-				</div>
-			</li>
+                <div id="wrapper">
+                    <div class="nickname">{{json.nickname}}</div>
+                    <time>{{json.time}}</time>
+                    <div class="msg">
+                        <p id="msgInBox"> {{json.msg}}</p>
+                        <img id="pic" ng-src="/files/download?file_id={{json.file_id}}" ng-show="hasImg($index)" draggable="false" ng-click="zoomIn(json.file_id)"
+                        />
+                    </div>
+                </div>
+            </li>
 
-		</ol>
+        </ol>
 
-	</scroll-section>
+    </scroll-section>
 
 </div>

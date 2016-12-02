@@ -5,6 +5,7 @@
     'use strict';
     console.log('I am myapp module');
     var module = angular.module('myApp', [
+        'socket.io',
         'ui.router',
         'ngMaterial',
         'ngMessages',
@@ -12,7 +13,6 @@
         'Services',
         'ngCookies',
         'ngPassword',
-        'socket.io',
         'chat',
         'event',
         'fileUpload',
@@ -27,7 +27,8 @@
                 .state('home', {
                     url: "/",
                     views: {
-                        'navigation': {templateUrl: 'partials/header.html',
+                        'navigation': {
+                            templateUrl: 'partials/header.html',
                             controller: 'headerController'
                         },
                         'container': {
@@ -36,11 +37,12 @@
                         }
                     },
                     resolve: {
-                        information: function ($http, $state, Auth) {
+                        'information': function ($http, $state, Auth, $rootScope) {
+
                             return $http.get('/users/my_info')
                                 .then(
                                     function (res) {
-                                        if(res.data.code == 1){
+                                        if (res.data.code == 1) {
                                             var url = '/users/download_avatar?user_id=' + res.data.user_id;
                                             var info = {
                                                 user: {
@@ -51,17 +53,19 @@
                                                 },
                                                 teams: res.data.teams
                                             };
+                                            $rootScope.user = info.user;
+                                            $rootScope.teams = info.teams;
                                             return info;
-                                        }else{
+                                        } else {
                                             Auth.removeCookie();
                                             $state.go('login');
                                         }
-                                    },function (error) {
+                                    }, function (error) {
                                         Auth.removeCookie();
                                         console.log('error in get user info' + error);
                                         $state.go('login');
                                     }
-                                )
+                                );
                         }
                     },
                     authenticated: true,
@@ -73,6 +77,14 @@
                         'contains': {
                             templateUrl: 'pages/overview.html',
                             controller: 'overviewController'
+                        }
+                    },
+                    resolve: {
+                        news: function (information, NewsService) {
+                            return NewsService.getNews(information.teams);
+                        },
+                        events: function (information, EventService) {
+                            return EventService.getEvents(information.teams);
                         }
                     },
                     authenticated: true
@@ -107,7 +119,7 @@
                         }
                     },
                     resolve: {
-                        'title': function($rootScope, $stateParams){
+                        'title': function ($rootScope, $stateParams) {
                             $rootScope.selectedTeamId = $stateParams.team_id;
                         }
                     },
@@ -144,12 +156,12 @@
                             controller: 'postController'
                         }
                     },
-                    resolve : {
-                        postList : function ($http, $stateParams, $rootScope) {
+                    resolve: {
+                        postList: function ($http, $stateParams, $rootScope) {
                             return $http.get('posts/get_posts?team_id=' + $stateParams.team_id)
                                 .then(
                                     function (res) {
-                                        if(res.data.code == 1){
+                                        if (res.data.code == 1) {
                                             $rootScope.selectedTeamId = $stateParams.team_id;
                                             return res.data.posts;
                                         }
@@ -180,7 +192,7 @@
                         }
                     },
                     resolve: {
-                        'title': function($rootScope, $stateParams){
+                        'title': function ($rootScope, $stateParams) {
                             $rootScope.selectedTeamId = $stateParams.team_id;
                         }
                     },
@@ -203,6 +215,7 @@
             // keep user logged in after page refresh
             $rootScope.$on("$stateChangeStart",
                 function (event, toState, toParams, fromState, fromParams) {
+                    $rootScope.is_loading = true;
                     // redirect to login page if not logged in
                     if (!Auth.isLoggedIn()) {
                         $http.get('/users/my_info')
@@ -233,6 +246,12 @@
                         }
                     }
                 });
+
+            $rootScope.$on('$stateChangeSuccess',
+                function (event, toState, toParams, fromState, fromParams, options) {
+                    $rootScope.is_loading = false;
+                });
         }]);
 
-})();
+})
+();

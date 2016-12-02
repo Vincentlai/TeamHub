@@ -97,11 +97,11 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
             }
 
             models.File.findOne({ $and: [
-              { file_name: file_name },
-              { team_id: team_id },
-              { owner_user_id: user_id },
-              { is_pic: false} 
-              ] }, function(err, file_obj) {
+                { file_name: file_name },
+                { team_id: team_id },
+                { owner_user_id: user_id },
+                { is_pic: false}
+            ] }, function(err, file_obj) {
 
                 if (file_obj) {
                     res.json({
@@ -137,7 +137,7 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
                                 if (!err) {
 
                                     var upload_time = new Date();
-                                    
+
                                     if(!is_pic){
                                         // push NEW to team
                                         team_obj.news.unshift(
@@ -184,7 +184,7 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
  * Login is required
  *
  * Input: 'file_id' : team to get files from
- * 
+ *
  * Output: one single file of any kind
  */
 router.get('/download', function(req, res) {

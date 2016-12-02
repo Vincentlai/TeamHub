@@ -95,12 +95,15 @@
                         <img class="icon" ng-src="{{getSrc(item.file_name)}}" draggable="false"/>
                     </td>
                     <td class="operations">
-                        <i class="material-icons download">
-                            get_app
-                            <md-tooltip md-direction="top">
-                                Download
-                            </md-tooltip>
-                        </i>
+                        <a download="{{item.file_name}}" ng-href="{{getFilePath(item.file_id)}}">
+                            <i class="material-icons download" >
+                                get_app
+                                <md-tooltip md-direction="top">
+                                    Download
+                                </md-tooltip>
+                            </i>
+                        </a>
+
                         <i class="material-icons delete"
                            ng-click="deleteFile(item)"
                            ng-show="item.owner_user_id==user.user_id && !item.is_deleting">
@@ -147,7 +150,7 @@
         </div>
 
 
-        <div ng-show="showLoading()">
+        <div ng-show="show_loading">
             <div class="sk-folding-cube">
                 <div class="sk-cube1 sk-cube"></div>
                 <div class="sk-cube2 sk-cube"></div>

@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var models = require('../models/models.js');
 
-exports.create = function(sess, team_id, title, description, start, end, callback) {
+exports.create = function (sess, team_id, title, description, start, end, callback) {
 
     var user_id = sess.user_id;
 
@@ -29,7 +29,7 @@ exports.create = function(sess, team_id, title, description, start, end, callbac
         return;
     }
 
-    models.Team.findOne({ _id: team_id }, function(err, team_obj) {
+    models.Team.findOne({_id: team_id}, function (err, team_obj) {
 
         if (!team_obj) {
 
@@ -38,7 +38,7 @@ exports.create = function(sess, team_id, title, description, start, end, callbac
                 'msg': 'Invalid team_id'
             });
             return;
-        
+
         } else {
 
             // check if user is belong to this team
@@ -72,15 +72,15 @@ exports.create = function(sess, team_id, title, description, start, end, callbac
 
             callback({
                 'code': '1',
-                'msg': 'Event '+ title + ' has been created successfully'
+                'msg': 'Event ' + title + ' has been created successfully'
             });
             return;
         }
 
     });
-}
+};
 
-exports.getEvents = function(sess, team_id, callback) {
+exports.getEvents = function (sess, team_id, current_time, callback) {
 
     var user_id = sess.user_id;
 
@@ -100,7 +100,7 @@ exports.getEvents = function(sess, team_id, callback) {
         return;
     }
 
-    models.Team.findOne({ _id: team_id }, function(err, team_obj) {
+    models.Team.findOne({_id: team_id}, function (err, team_obj) {
 
         if (!team_obj) {
 
@@ -109,7 +109,7 @@ exports.getEvents = function(sess, team_id, callback) {
                 'msg': 'Invalid team_id'
             });
             return;
-        
+
         } else {
 
             // check if user is belong to this team
@@ -129,16 +129,36 @@ exports.getEvents = function(sess, team_id, callback) {
                 return;
             }
 
-            models.Event.find({ team_id: team_id }, function(err, events) {
+            models.Event.find({team_id: team_id}, function (err, events) {
 
-                if(events.length != 0){
+                if (events.length != 0) {
 
-                   callback({
+                    if (current_time == '') {
+                        callback({
+                            'code': '1',
+                            'msg': 'Get events successfully',
+                            'events': events,
+                            'team_name': team_obj.name
+                        });
+                        return;
+                    }
+
+                    var result = [];
+                    for (var j = 0; j < events.length; j++) {
+                        var event = events[j];
+                        var start = new Date(event.start).getTime();
+                        var diff = start - current_time;
+                        if (diff >= 0 && diff <= 7 * 24 * 60 * 60 * 1000) {
+                            result.push(event)
+                        }
+                    }
+                    callback({
                         'code': '1',
                         'msg': 'Get events successfully',
-                        'events' : events
+                        'events': result,
+                        'team_name': team_obj.name
                     });
-
+                    return;
 
                 } else {
 
@@ -147,7 +167,7 @@ exports.getEvents = function(sess, team_id, callback) {
                         'msg': 'There is no event in this team'
                     });
 
-                }          
+                }
 
 
             });
@@ -155,9 +175,9 @@ exports.getEvents = function(sess, team_id, callback) {
         }
 
     });
-}
+};
 
-exports.delete = function(sess, event_id, callback) {
+exports.delete = function (sess, event_id, callback) {
 
     var user_id = sess.user_id;
 
@@ -177,7 +197,7 @@ exports.delete = function(sess, event_id, callback) {
         return;
     }
 
-    models.Event.findOne({ _id: event_id }, function(err, event_obj) {
+    models.Event.findOne({_id: event_id}, function (err, event_obj) {
 
         if (!event_obj) {
 
@@ -186,7 +206,7 @@ exports.delete = function(sess, event_id, callback) {
                 'msg': 'Invalid team_id'
             });
             return;
-        
+
         } else {
 
             // check if user is the creator of this to event
@@ -196,8 +216,8 @@ exports.delete = function(sess, event_id, callback) {
                     'code': '-2',
                     'msg': 'Permission denied'
                 });
-            
-            }else{
+
+            } else {
 
                 event_obj.remove();
 
@@ -209,4 +229,58 @@ exports.delete = function(sess, event_id, callback) {
         }
 
     });
-}
+};
+
+// exports.get_coming_events = function (sess, teams, current_time, callback) {
+//
+//     var user_id = sess.user_id;
+//
+//     if (!user_id) {
+//         callback({
+//             code: '-9',
+//             msg: 'No session, login required'
+//         });
+//         return;
+//     }
+//
+//     if (!teams || teams.length == 0) {
+//         callback({
+//             code: '-10',
+//             msg: 'no teams'
+//         });
+//         return;
+//     }
+//
+//     if (!current_time) {
+//         callback({
+//             code: '-8',
+//             msg: 'no current time'
+//         });
+//         return;
+//     }
+//
+//     models.Event.find({
+//         team_id: {
+//             $in: teams
+//         }
+//     }, function (err, events) {
+//         if (err) {
+//             throw err;
+//         }
+//         var result = [];
+//         for (var j = 0; j < events.length; j++){
+//             var event = events[j];
+//             var start = new Date(event.start).getTime();
+//             if(start >= current_time){
+//                 result.push(event)
+//             }
+//         }
+//         callback({
+//             code: 1,
+//             msg: 'get coming events ok'
+//         })
+//
+//     })
+//
+//
+// };

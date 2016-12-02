@@ -58,7 +58,7 @@ module.exports = function (io) {
                     nickname: json.nickname,
                     user_id: json.user_id,
                     time: json.time,
-                    message: json.msg,
+                    message: json.msg
                 });
 
             }

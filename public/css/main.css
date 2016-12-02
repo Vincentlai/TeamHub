@@ -456,6 +456,20 @@ Header  Navigation
   color: white;
 }
 /*
+  Loading animation
+ */
+.in-loading {
+  z-index: 99999999;
+}
+.in-loading .loading-text {
+  position: absolute;
+  top: 38%;
+  left: 43.5%;
+  font-size: 1.3em;
+  z-index: 99999;
+  color: #4D4D4D;
+}
+/*
 Setting for angular material
 */
 .md-input-message-animation {

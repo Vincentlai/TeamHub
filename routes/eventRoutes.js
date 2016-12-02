@@ -67,12 +67,27 @@ router.get('/get', function (req, res) {
 
     var team_id = req.query.team_id;
     var sess = req.session;
+    var current_time = req.query.current_time;
 
-    event.getEvents(sess, team_id, function (found) {
+    event.getEvents(sess, team_id, current_time, function (found) {
         console.log(found);
         res.json(found);
     });
 });
+
+// router.get('/get_coming_events', function (req, res) {
+//
+//     var teams = req.query.teams;
+//     var sess = req.session;
+//     var current_time = req.query.current_time;
+//
+//     event.getEvents(sess, teams, current_time, function (found) {
+//         console.log(found);
+//         res.jason(found);
+//     })
+//
+// });
+
 
 /* PATH: host_url:8080/events/delete?event_id=1234567890 (DELETE)
  *

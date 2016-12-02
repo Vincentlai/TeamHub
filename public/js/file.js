@@ -35,20 +35,10 @@ app.controller('fileController', ['$scope', 'Upload', '$timeout',
                 $scope.creator_filter = '';
             }
         };
-        // Bytes conversion
-        function bytesToSize(bytes) {
-            return FileService.getSize(bytes);
-        }
 
-        var file_name = '';
-        var file_size = 0;
-        var dataUrl = '';
-        var show_loading = true;
+        $scope.show_loading = false;
         var show_uploading = false;
 
-        $scope.showLoading = function () {
-            return show_loading;
-        };
 
         $scope.showUploading = function () {
             return show_uploading;
@@ -57,13 +47,13 @@ app.controller('fileController', ['$scope', 'Upload', '$timeout',
 
         function load_list() {
             console.log("load_list");
-
+            $scope.show_loading = true;
             /* Get file list */
             $http.get('/files/all?team_id=' + team_id)
                 .then(
                     function (res) {
 
-                        show_loading = false;
+                        $scope.show_loading = false;
 
                         if (res.data) {
                             if (res.data.code == '1') {
@@ -86,7 +76,7 @@ app.controller('fileController', ['$scope', 'Upload', '$timeout',
                     }, function (error) {
                         console.log('error in get team info ' + error);
                     });
-        };
+        }
         load_list();
 
 
@@ -102,12 +92,8 @@ app.controller('fileController', ['$scope', 'Upload', '$timeout',
             $window.open('/files/download?file_id=' + file_id);
         };
 
-        $scope.getFileName = function (index) {
-            return $scope.file_list[index].file_name;
-        };
-
-        $scope.getFilePath = function (index) {
-            return '/files/download?file_id=' + $scope.file_list[index].file_id;
+        $scope.getFilePath = function (file_id) {
+            return '/files/download?file_id=' + file_id;
         };
 
         $scope.showDeleting = function (index) {

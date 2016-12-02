@@ -44,6 +44,7 @@
                     {{postCard.text}}
                 </p>
 
+                <!-- image viewer -->
                 <div class="post-files-list">
                     <img id="bigImg" class="big" ng-show="postCard.selectedUrl" ng-click="unselectUrl(postCard)" ng-src="{{postCard.selectedUrl}}"/>
                     <ul>
@@ -52,8 +53,6 @@
                         </li>
                     </ul>
                 </div>
-
-                <img ng-src="/files/download?file_id={{zoom_in_file_id}}">
 
                 <!--like button-->
                 <md-button

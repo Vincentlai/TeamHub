@@ -282,6 +282,7 @@ notification end
 */
 .side-bar {
   position: fixed;
+  -webkit-transform: translateZ(0);
   top: 60px;
   bottom: 0;
   overflow-x: hidden;
@@ -791,7 +792,7 @@ a.control-btn:hover {
 .left-container,
 .right-container {
   margin: 20px 4% 0 4%;
-  padding: 2%;
+  padding: 24px 20px 24px 24px;
   background-color: white;
   overflow: auto;
   border-radius: .25em .25em .4em .4em;
@@ -804,10 +805,10 @@ a.control-btn:hover {
   position: relative;
   overflow: visible;
 }
-.left-container .left-container-header {
-  display: block;
-  height: 50px;
-  margin-top: -2%;
+.left-container ul {
+  max-height: 750px;
+  margin-right: 4px;
+  overflow-y: auto;
 }
 .left-container ul li.list {
   display: block;
@@ -837,9 +838,35 @@ a.control-btn:hover {
   line-height: 50px;
   padding: 0;
 }
+.container-header {
+  display: block;
+  height: 50px;
+  margin-top: -14px;
+}
 .right-container {
   float: right;
   width: 20%;
+}
+.right-container .events-list {
+  max-height: 750px;
+  overflow-y: auto;
+  margin-right: 4px;
+}
+.right-container .events-list .event-item {
+  display: block;
+  position: relative;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(225, 225, 225, 0.8);
+  padding-bottom: 10px;
+  font-size: 1.1em;
+  line-height: 1.2em;
+  cursor: pointer;
+}
+.right-container .events-list .event-item .event-name {
+  font-weight: bold;
+}
+.right-container .events-list .event-item a.link {
+  cursor: pointer;
 }
 .filter {
   height: 50px;
@@ -1137,6 +1164,8 @@ a.control-btn:hover {
 .files-list {
   margin-left: 5px;
   margin-right: 5px;
+  max-height: 140px;
+  overflow-y: auto;
 }
 .files-list .file {
   position: relative;
@@ -1361,7 +1390,7 @@ file html
 .file-table td {
   padding-left: 5px;
   border-bottom: 0.5px solid rgba(225, 225, 225, 0.8);
-  outline: none!important;
+  outline: none !important;
 }
 .file-table td.name {
   width: 500px;
@@ -1378,7 +1407,7 @@ file html
   opacity: 0;
   visibility: hidden;
   -webkit-transition: transform .2s ease;
-  -o-transition: transform  .2s ease;
+  -o-transition: transform .2s ease;
   transition: transform .2s ease;
 }
 .file-table td.order i.reverse {
@@ -1422,6 +1451,10 @@ file html
   width: 70px;
   cursor: pointer;
 }
+.file-table tbody tr td.operations a,
+.file-table tbody tr td.operations i {
+  color: #4D4D4D;
+}
 .file-table tbody tr td.operations i.download,
 .file-table tbody tr td.operations i.delete,
 .file-table tbody tr td.operations .deleting {
@@ -1430,7 +1463,7 @@ file html
   visibility: hidden;
   opacity: 0;
   -webkit-transition: all .2s ease;
-  -o-transition: all  .2s ease;
+  -o-transition: all .2s ease;
   transition: all .2s ease;
   right: 5px;
 }

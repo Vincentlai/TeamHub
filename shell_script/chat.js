@@ -1,10 +1,10 @@
 var app = angular.module('chat', []);
 
 app.config(function ($socketProvider) {
-    //$socketProvider.setConnectionUrl('http://localhost:8080'); // when using local machine
-    $socketProvider.setConnectionUrl('http://localhost:3000'); // when using vagrant
-    //$socketProvider.setConnectionUrl('http://ec2-52-40-59-253.us-west-2.compute.amazonaws.com:8080'); // when using aws
-});
+     //$socketProvider.setConnectionUrl('http://localhost:8080'); // when using local machine
+     $socketProvider.setConnectionUrl('http://localhost:3000'); // when using vagrant
+     //$socketProvider.setConnectionUrl('http://ec2-52-40-59-253.us-west-2.compute.amazonaws.com:8080'); // when using aws
+ });
 
 
 app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $http, $window, Upload, $timeout) {
@@ -219,7 +219,7 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
                     });
                 }, function (response) {
                     if (response.status > 0) {}
-                    $$scope.isUploading = false; 
+                    $scope.isUploading = false;
                 }, function (evt) { });
             });
         };
@@ -246,6 +246,7 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
                         var time = history[i].time;
                         var file_id = history[i].file_id;
 
+                        //noinspection JSAnnotator
                         $scope.msg_list.push({ i, nickname, msg, time, file_id });
 
                         if (history[i].user_id == user_id) {

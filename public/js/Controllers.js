@@ -84,49 +84,164 @@
         }
     ]);
 
+    module.filter('action', [
+        function () {
+            return function (action_name) {
+                switch (action_name) {
+                    case 'created':
+                        return 'to';
+                    case 'deleted':
+                        return 'from';
+                    default:
+                        return 'to';
+                }
+            }
+        }
+
+    ]);
+
+    module.filter('eventDateFilter', [
+        function () {
+            return function (d) {
+                var now = Date.now();
+                var year = 60 * 60 * 24 * 365 * 1000;
+                var month = 60 * 60 * 24 * 31 * 1000;
+                var week = 60 * 60 * 24 * 7 * 1000;
+                var day = 60 * 60 * 24 * 1000;
+                var hour = 60 * 60 * 1000;
+                var minute = 60 * 1000;
+                var diff = d - now;
+                var multi = function (time) {
+                    return 'in ' + Math.floor(diff / time);
+                };
+                if (diff > year * 2) {
+                    return multi(year) + ' years';
+                }
+                if (diff >= year && diff <= year * 2) {
+                    return 'in 1 year';
+                }
+                if (diff < year && diff >= month * 2) {
+                    return multi(month) + ' months';
+                }
+                if (diff < month * 2 && diff >= month) {
+                    return 'in 1 month';
+                }
+                if (diff < month && diff >= week * 2) {
+                    return multi(week) + ' weeks';
+                }
+                if (diff < week * 2 && diff >= week) {
+                    return 'in 1 week';
+                }
+                if (diff < week && diff >= day * 2) {
+                    return multi(day) + ' days';
+                }
+                if (diff < day * 2 && diff >= day) {
+                    return 'in 1 day';
+                }
+                if (diff < day && diff >= hour * 2) {
+                    return multi(hour) + ' hours';
+                }
+                if (diff < hour * 2 && diff >= hour) {
+                    return 'in 1 hour';
+                }
+                if (diff < hour && diff >= minute * 2) {
+                    return multi(minute) + ' minutes';
+                }
+                return 'soon';
+            }
+        }
+
+    ]);
+
+
     module.filter('dateFilter', [
         function () {
             return function (date) {
-                var now = new Date();
-                // var timeStamp = millisecond.substring(0, 8);
-                // var date = new Date(parseInt(timeStamp, 16) * 1000);
-                if (now.getFullYear() > date.getFullYear()) {
-                    if (now.getFullYear() - date.getFullYear() == 1) {
-                        return "last year";
-                    } else {
-                        return "in " + (now.getFullYear() - date.getFullYear()) + ' years ago';
-                    }
+                var now = Date.now();
+                var year = 60 * 60 * 24 * 365 * 1000;
+                var month = 60 * 60 * 24 * 31 * 1000;
+                var week = 60 * 60 * 24 * 7 * 1000;
+                var day = 60 * 60 * 24 * 1000;
+                var hour = 60 * 60 * 1000;
+                var minute = 60 * 1000;
+                var diff = now - date;
+                var multi = function (time) {
+                    return Math.floor(diff / time);
+                };
+                if (diff > year * 2) {
+                    return multi(year) + ' years ago';
                 }
-                if (now.getMonth() > date.getMonth()) {
-                    if (now.getMonth() - date.getMonth() == 1) {
-                        return "last month";
-                    } else {
-                        return "in " + (now.getMonth() - date.getMonth()) + ' months ago';
-                    }
+                if (diff >= year && diff <= year * 2) {
+                    return '1 year ago';
                 }
-                if (now.getDate() > date.getDate()) {
-
-                    if (now.getDate() - date.getDate() == 1) {
-                        return "yesterday";
-                    } else {
-                        return "in " + (now.getDate() - date.getDate()) + ' days ago';
-                    }
+                if (diff < year && diff >= month * 2) {
+                    return multi(month) + ' months ago';
                 }
-                if (now.getHours() > date.getHours()) {
-                    if (now.getHours() - date.getHours() == 1) {
-                        return "in 1 hour ago";
-                    } else {
-                        return "in " + (now.getHours() - date.getHours()) + ' hours ago';
-                    }
+                if (diff < month * 2 && diff >= month) {
+                    return '1 month ago';
                 }
-                if (now.getMinutes() > date.getMinutes()) {
-                    if (now.getMinutes() - date.getMinutes() == 1) {
-                        return "in 1 minute ago";
-                    } else {
-                        return "in " + (now.getMinutes() - date.getMinutes()) + ' minutes ago';
-                    }
+                if (diff < month && diff >= week * 2) {
+                    return multi(week) + ' weeks ago';
                 }
-                return "just now";
+                if (diff < week * 2 && diff >= week) {
+                    return '1 week ago';
+                }
+                if (diff < week && diff >= day * 2) {
+                    return multi(day) + ' days ago';
+                }
+                if (diff < day * 2 && diff >= day) {
+                    return '1 day ago';
+                }
+                if (diff < day && diff >= hour * 2) {
+                    return multi(hour) + ' hours ago';
+                }
+                if (diff < hour * 2 && diff >= hour) {
+                    return '1 hour ago';
+                }
+                if (diff < hour && diff >= minute * 2) {
+                    return multi(minute) + ' minutes ago';
+                }
+                return 'just now';
+                // var now = new Date();
+                // // var timeStamp = millisecond.substring(0, 8);
+                // // var date = new Date(parseInt(timeStamp, 16) * 1000);
+                // if (now.getFullYear() > date.getFullYear()) {
+                //     if (now.getFullYear() - date.getFullYear() == 1) {
+                //         return "last year";
+                //     } else {
+                //         return "in " + (now.getFullYear() - date.getFullYear()) + ' years ago';
+                //     }
+                // }
+                // if (now.getMonth() > date.getMonth()) {
+                //     if (now.getMonth() - date.getMonth() == 1) {
+                //         return "last month";
+                //     } else {
+                //         return "in " + (now.getMonth() - date.getMonth()) + ' months ago';
+                //     }
+                // }
+                // if (now.getDate() > date.getDate()) {
+                //
+                //     if (now.getDate() - date.getDate() == 1) {
+                //         return "yesterday";
+                //     } else {
+                //         return "in " + (now.getDate() - date.getDate()) + ' days ago';
+                //     }
+                // }
+                // if (now.getHours() > date.getHours()) {
+                //     if (now.getHours() - date.getHours() == 1) {
+                //         return "in 1 hour ago";
+                //     } else {
+                //         return "in " + (now.getHours() - date.getHours()) + ' hours ago';
+                //     }
+                // }
+                // if (now.getMinutes() > date.getMinutes()) {
+                //     if (now.getMinutes() - date.getMinutes() == 1) {
+                //         return "in 1 minute ago";
+                //     } else {
+                //         return "in " + (now.getMinutes() - date.getMinutes()) + ' minutes ago';
+                //     }
+                // }
+                // return "just now";
             }
         }
     ]);
@@ -226,6 +341,7 @@
                         });
                         promises.push(deferred.promise);
                     });
+
                     $q.all(promises).then(
                         function (res) {
 
@@ -243,7 +359,7 @@
                                                     $scope.closeForm('create-post');
                                                     $state.transitionTo($state.current.name, {team_id: $rootScope.selectedTeamId},
                                                         {reload: $state.current.name, inherit: false, notify: true});
-                                                }, 3000);
+                                                }, 1000);
                                         } else {
                                             ErrorService.displayError(res.data.msg);
                                         }
@@ -373,14 +489,12 @@
                 //get file name and size from input
 
                 var handleFileSelect = function (event) {
-
-
-                    for(var i = 0; i < event.currentTarget.files.length; i++){
+                    for (var i = 0; i < event.currentTarget.files.length; i++) {
                         var v = event.currentTarget.files[i];
                         v.isLoading = false;
                         if (v.type.includes('image')) {
                             v.isLoading = false;
-                            $scope.$apply(function(v) {
+                            $scope.$apply(function (v) {
                                 $scope.post_files.push(v);
                             }(v));
                         } else {
@@ -389,31 +503,6 @@
                     }
                 };
 
-                // var handle = function (event) {
-                //     var input_files = event.currentTarget.files;
-                //     console.log(input_files);
-                //
-                //     angular.forEach(input_files, function (v) {
-                //         var input = v;
-                //         var file = {};
-                //         file.file_name = input.name;
-                //         file.file_size = input.size;
-                //         file.file_type = input.type;
-                //         file.isLoading = false;
-                //         if (file.file_type.includes('image')) {
-                //             var index = $scope.post_files.push(file);
-                //             var reader = new FileReader();
-                //             reader.onload = function (f) {
-                //                 return function (e) {
-                //                     $scope.$apply(function () {
-                //                         f.file_url = e.target.result;
-                //                     });
-                //                 };
-                //             }($scope.post_files[index - 1]);
-                //             reader.readAsDataURL(v);
-                //         }
-                //     });
-                // };
                 angular.element(document.querySelector('#addFile')).on('change', handleFileSelect);
 
                 $scope.selectUrl = function (post, id) {
@@ -434,17 +523,16 @@
         '$scope',
         '$rootScope',
         '$state',
-        'information',
         '$timeout',
         'ErrorService',
         'TeamService',
-        function ($scope, $rootScope, $state, information, $timeout, ErrorService, TeamService) {
-            $scope.teams = information.teams;
-            $scope.hasNoTeam = ($scope.teams.length === 0);
-            $rootScope.user = information.user;
+        '$socket',
+        function ($scope, $rootScope, $state, $timeout, ErrorService, TeamService, $socket) {
+            $scope.hasNoTeam = ($rootScope.teams.length === 0);
+
             $scope.openTag = function () {
-                for (var i = 0; i < $scope.teams.length; i++) {
-                    if ($scope.teams[i].id == $rootScope.selectedTeamId) {
+                for (var i = 0; i < $rootScope.teams.length; i++) {
+                    if ($rootScope.teams[i].id == $rootScope.selectedTeamId) {
                         $scope.index = i;
                         $timeout(function () {
                             $scope.tagSlide('teams' + $scope.index);
@@ -547,40 +635,26 @@
         '$state',
         '$timeout',
         '$http',
-        function ($scope, $rootScope, $state, $timeout, $http) {
+        'news',
+        'events',
+        function ($scope, $rootScope, $state, $timeout, $http, news, events) {
 
-            $scope.loadNews = function () {
-                $scope.news = [];
-                for (var i = 0; i < $scope.teams.length; i++) {
-                    $http.get('/teams/news?team_id=' + $scope.teams[i].id)
-                        .then(
-                            function (res) {
-                                if (res.data.code == 1) {
-                                    var news;
-                                    for (var j = 0; j < res.data.news.length; j++) {
-                                        news = {
-                                            user_id: res.data.news[j].user_id,
-                                            user_nickname: res.data.news[j].user_nickname,
-                                            action_name: res.data.news[j].action_name,
-                                            action_target: res.data.news[j].action_target,
-                                            action_target_id: res.data.news[j].action_target_id,
-                                            time_in_mili: new Date(parseInt(res.data.news[j]._id.toString().substring(0, 8), 16) * 1000),
-                                            target_team: res.data.news[j].target_team_name
-                                        };
-                                        $scope.news.unshift(news);
-                                    }
-                                }
-                            }, function (error) {
-                                console.log('error in calling team new');
-                            }
-                        )
+            // initial vars
+            $scope.news = news;
+            $scope.events = events;
+            $scope.filter_team_name = 'All Teams';
+            $scope.filter_team_id = '';
+            $scope.limit_news = 20;
+            var loadMore = function () {
+                if ($scope.limit_news <= $scope.news.length) {
+                    $scope.$apply(function ($scope) {
+                        $scope.limit_news += 10;
+
+                    });
+
                 }
-                // $scope.number_of_selected_filter = $scope.news.length;
-                // $scope.current_number_of_selected_filter = 0;
-                // $scope.filter_limite = 10;
-                $scope.filter_team_name = 'All Teams';
-                $scope.filter_team_id = '';
             };
+            // filter for selected team news
             $scope.selectFilter = function (id, name) {
                 if (id == '') {
                     $scope.filter_team_name = 'All Teams';
@@ -599,18 +673,15 @@
                 }
                 return false;
             };
-            // $scope.loadMore = function () {
-            //     $scope.filter_limite += 10;
-            // };
-            // $scope.$watch(function () {
-            //         return $scope.filter_team_name;
-            //     }, function (n, o) {
-            //         if(n != o){
-            //             $scope.current_number_of_selected_filter = 0;
-            //             $scope.filter_limite = 10;
-            //         }
-            //     }, true
-            // )
+
+
+            $('#news-list').bind("scroll", function (e) {
+                var height = (document.getElementById('news-list').scrollHeight -
+                    document.getElementById('news-list').scrollTop) - document.getElementById('news-list').offsetHeight;
+                if (height <= 15) {
+                    loadMore();
+                }
+            });
         }
     ]);
     module.controller('teamController', [
@@ -619,14 +690,15 @@
         '$state',
         'ErrorService',
         'TeamService',
-        function ($scope, $timeout, $state, ErrorService, TeamService) {
+        '$rootScope',
+        function ($scope, $timeout, $state, ErrorService, TeamService, $rootScope) {
             $scope.team = {};
-            $scope.numOfTeams = $scope.teams.length;
+            $scope.numOfTeams = $rootScope.teams.length;
 
             $scope.loadTeamDetail = function () {
                 $scope.teamsDetail = [];
-                for (var i = 0; i < $scope.teams.length; i++) {
-                    TeamService.teamsDetail($scope.teams[i].id, function (r, data) {
+                for (var i = 0; i < $rootScope.teams.length; i++) {
+                    TeamService.teamsDetail($rootScope.teams[i].id, function (r, data) {
                         if (r) {
                             $scope.teamsDetail.push(data);
                         } else {
