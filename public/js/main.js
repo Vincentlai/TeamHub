@@ -5,6 +5,7 @@
     'use strict';
     console.log('I am myapp module');
     var module = angular.module('myApp', [
+        'socket.io',
         'ui.router',
         'ngMaterial',
         'ngMessages',
@@ -12,7 +13,6 @@
         'Services',
         'ngCookies',
         'ngPassword',
-        'socket.io',
         'chat',
         'event',
         'fileUpload',
@@ -205,6 +205,10 @@
                 'default': '500'
             })
             .accentPalette('pink');
+    });
+
+    module.config(function ($socketProvider) {
+        $socketProvider.setConnectionUrl('http://localhost:8080');
     });
 
     module.run(['$rootScope',

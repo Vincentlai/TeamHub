@@ -78,9 +78,9 @@ exports.create = function (sess, team_id, title, description, start, end, callba
         }
 
     });
-}
+};
 
-exports.getEvents = function (sess, team_id, callback) {
+exports.getEvents = function (sess, team_id, current_time, callback) {
 
     var user_id = sess.user_id;
 
@@ -133,13 +133,32 @@ exports.getEvents = function (sess, team_id, callback) {
 
                 if (events.length != 0) {
 
+                    if (current_time == '') {
+                        callback({
+                            'code': '1',
+                            'msg': 'Get events successfully',
+                            'events': events,
+                            'team_name': team_obj.name
+                        });
+                        return;
+                    }
+
+                    var result = [];
+                    for (var j = 0; j < events.length; j++) {
+                        var event = events[j];
+                        var start = new Date(event.start).getTime();
+                        var diff = start - current_time;
+                        if (diff >= 0 && diff <= 7 * 24 * 60 * 60 * 1000) {
+                            result.push(event)
+                        }
+                    }
                     callback({
                         'code': '1',
                         'msg': 'Get events successfully',
-                        'events': events,
+                        'events': result,
                         'team_name': team_obj.name
                     });
-
+                    return;
 
                 } else {
 
@@ -156,7 +175,7 @@ exports.getEvents = function (sess, team_id, callback) {
         }
 
     });
-}
+};
 
 exports.delete = function (sess, event_id, callback) {
 
@@ -210,4 +229,58 @@ exports.delete = function (sess, event_id, callback) {
         }
 
     });
-}
+};
+
+// exports.get_coming_events = function (sess, teams, current_time, callback) {
+//
+//     var user_id = sess.user_id;
+//
+//     if (!user_id) {
+//         callback({
+//             code: '-9',
+//             msg: 'No session, login required'
+//         });
+//         return;
+//     }
+//
+//     if (!teams || teams.length == 0) {
+//         callback({
+//             code: '-10',
+//             msg: 'no teams'
+//         });
+//         return;
+//     }
+//
+//     if (!current_time) {
+//         callback({
+//             code: '-8',
+//             msg: 'no current time'
+//         });
+//         return;
+//     }
+//
+//     models.Event.find({
+//         team_id: {
+//             $in: teams
+//         }
+//     }, function (err, events) {
+//         if (err) {
+//             throw err;
+//         }
+//         var result = [];
+//         for (var j = 0; j < events.length; j++){
+//             var event = events[j];
+//             var start = new Date(event.start).getTime();
+//             if(start >= current_time){
+//                 result.push(event)
+//             }
+//         }
+//         callback({
+//             code: 1,
+//             msg: 'get coming events ok'
+//         })
+//
+//     })
+//
+//
+// };

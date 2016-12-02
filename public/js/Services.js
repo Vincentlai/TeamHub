@@ -424,6 +424,7 @@
                         event_id: events[j]._id,
                         description: events[j].description,
                         creator_id: events[j].creator_id,
+                        creator_nickname: events[j].creator_nickname,
                         team_name: team_name
                     };
                     list.unshift(item);
@@ -432,8 +433,9 @@
             };
             me.getEvents = function (teams) {
                 var event_list = [];
+                var current_time = Date.now();
                 return $q.all(teams.map(function (team) {
-                    return $http.get('/events/get?team_id=' + team.id);
+                    return $http.get('/events/get?team_id=' + team.id + '&current_time=' + current_time);
                 }))
                     .then(
                         function (result) {

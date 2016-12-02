@@ -857,9 +857,12 @@ a.control-btn:hover {
   position: relative;
   margin-bottom: 10px;
   border-bottom: 1px solid rgba(225, 225, 225, 0.8);
+  padding-bottom: 10px;
+  font-size: 1.1em;
+  line-height: 1.2em;
+  cursor: pointer;
 }
-.right-container .events-list .event-item span.name,
-.right-container .events-list .event-item span.team {
+.right-container .events-list .event-item .event-name {
   font-weight: bold;
 }
 .right-container .events-list .event-item a.link {

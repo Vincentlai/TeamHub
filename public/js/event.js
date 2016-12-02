@@ -18,18 +18,15 @@
             $rootScope.selectedTeamId = $stateParams.team_id;
             $scope.events = [];
             var teamID = $rootScope.selectedTeamId;
-            console.log(teamID);
             function receiveEventListFromDataBase() {
                 console.log("load event.");
-                console.log($rootScope.selectedTeamId);
-                $http.get('/events/get?team_id=' + teamID)
+                $http.get('/events/get?team_id=' + teamID + '&current_time= ')
                     .then(
                         function (response) {
                             if (response.data.code == 1) {
                                 console.log("Got event list");
 
                                 response.data.events.forEach(function (event) {
-                                    console.log(event);
                                     $scope.events.push({
                                         start: new Date(event.start),
                                         end: new Date(event.end),
@@ -122,8 +119,6 @@
                     + $scope.eventEndTimeMin * 60 * 1000);
                 createdEvent.description = $scope.eventDescription;
                 //createdEvent.allDayEvent = $scope.allDayEvent;
-                // console.log(createdEvent.start);
-                // console.log(createdEvent.end);
                 // console.log(createdEvent.title);
                 // console.log(createdEvent.description);
                 // console.log(createdEvent.allDayEvent);
