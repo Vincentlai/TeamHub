@@ -1,7 +1,7 @@
 <!--I am the header of index page-->
 <!--I am the navigation bar-->
 
-<div class="nav-bar clearfix" >
+<div class="nav-bar clearfix">
     <div class="logo">
         <img ui-sref="home.overview" src="/images/logo.png" alt="logo">
     </div>
@@ -10,11 +10,25 @@
         <li><a class="important" ui-sref="signup">SIGN UP</a></li>
     </ul>
     <ul ng-if="user">
+        <li ng-click="showNotification()">
+            <md-tooltip md-direction="bottom">
+                Notifications
+            </md-tooltip>
+            <a id="dropdown" class="nav-link">
+                <i id="notifIcon" class="material-icons">notifications</i>
+                <text>{{num_of_notif}}</text>
+                <div ng-repeat="json in notif_list" id="dropdown-content" ng-show="showNotif">
+                    <a class="notif_row">
+                        {{'You have '+json.number+' new '+json.type+' '+json.activity+' in '+json.team_name+'.'}}
+                    </a>
+                </div>
+            </a>
+        </li>
         <li ui-sref="home.setting">
             <md-tooltip md-direction="bottom">
                 Account Setting
             </md-tooltip>
-            <a class="nav-link" >{{user.nickname}}</a>
+            <a class="nav-link">{{user.nickname}}</a>
         </li>
         <li ng-click="logout()">
             <md-tooltip md-direction="bottom">
@@ -25,3 +39,38 @@
         </li>
     </ul>
 </div>
+
+<style>
+
+    #notifIcon{
+        position: relative;
+        top: 5px;
+    }
+    #dropdown {
+        position: relative;
+        display: inline-block;
+        width: 70px;
+    }
+    /* Dropdown Content (Hidden by Default) */
+    
+    #dropdown-content {
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 300px;
+        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+        z-index: 9999999999;
+        margin-right: 100px;
+        right: 89px;
+    }
+    /* Links inside the dropdown */
+    
+    #dropdown-content a {
+        font-size: 12px;
+        color: black;
+        text-decoration: none;
+        display: block;
+        margin-right: 2px;
+        margin-left: 2px;
+        height: 200px;
+    }
+</style>

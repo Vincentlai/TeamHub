@@ -29,7 +29,7 @@ exports.create = function (sess, team_id, title, description, start, end, callba
         return;
     }
 
-    models.Team.findOne({_id: team_id}, function (err, team_obj) {
+    models.Team.findOne({ _id: team_id }, function (err, team_obj) {
 
         if (!team_obj) {
 
@@ -70,6 +70,15 @@ exports.create = function (sess, team_id, title, description, start, end, callba
 
             newEvent.save();
 
+            // send event notification
+            io.emit('notification', {
+                type: 'event',
+                team_id: team_id,
+                team_name: team_obj.name,
+                nickname: sess.nickname,
+                user_id: user_id
+            });
+
             callback({
                 'code': '1',
                 'msg': 'Event ' + title + ' has been created successfully'
@@ -100,7 +109,7 @@ exports.getEvents = function (sess, team_id, current_time, callback) {
         return;
     }
 
-    models.Team.findOne({_id: team_id}, function (err, team_obj) {
+    models.Team.findOne({ _id: team_id }, function (err, team_obj) {
 
         if (!team_obj) {
 
@@ -129,7 +138,7 @@ exports.getEvents = function (sess, team_id, current_time, callback) {
                 return;
             }
 
-            models.Event.find({team_id: team_id}, function (err, events) {
+            models.Event.find({ team_id: team_id }, function (err, events) {
 
                 if (events.length != 0) {
 
@@ -197,7 +206,7 @@ exports.delete = function (sess, event_id, callback) {
         return;
     }
 
-    models.Event.findOne({_id: event_id}, function (err, event_obj) {
+    models.Event.findOne({ _id: event_id }, function (err, event_obj) {
 
         if (!event_obj) {
 

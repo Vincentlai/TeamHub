@@ -31,16 +31,6 @@ module.exports = function (io) {
             console.log('** current online users: ' + onlineUsersList.length + "\n")
         });
 
-        /* on chat room mesasge */
-        socket.on('chat message', function (msg) {
-            console.log("-> public chat message received");
-            console.log("** socket_id: " + this.id);
-            console.log("** session_id: " + socket.handshake.session.id);
-            console.log("** user_id: " + socket.handshake.session.user_id);
-
-            io.emit('chat message', msg);
-        });
-
         socket.on('team_msg', function (json) {
 
             if (json.file_id) {
@@ -70,6 +60,9 @@ module.exports = function (io) {
             });
 
             io.emit('team_msg', json);
+
+            json.type = 'chat message';
+            io.emit('notification', json);
 
         });
     });

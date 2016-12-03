@@ -22,7 +22,7 @@ var fs = require('fs');
 var storage = multer.diskStorage({
     destination: 'tmp/',
     filename: function(req, file, cb) {
-        cb(null, req.session.user_id+"_"+Math.random())
+        cb(null, req.session.user_id + "_" + Math.random())
     }
 });
 var upload = multer({ storage: storage });
@@ -62,9 +62,9 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
         return;
     }
 
-    if(is_pic){
+    if (is_pic) {
         is_pic = true;
-    }else{
+    } else {
         is_pic = false;
     }
 
@@ -96,14 +96,16 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
                 return;
             }
 
-            models.File.findOne({ $and: [
-                { file_name: file_name },
-                { team_id: team_id },
-                { owner_user_id: user_id },
-                { is_pic: false}
-            ] }, function(err, file_obj) {
+            models.File.findOne({
+                $and: [
+                    { file_name: file_name },
+                    { team_id: team_id },
+                    { owner_user_id: user_id },
+                    { is_pic: false }
+                ]
+            }, function(err, file_obj) {
 
-                if (file_obj) {
+                if (file_obj && !is_pic) {
                     res.json({
                         'code': '-4',
                         'msg': 'You cannot upload the same file twice: ' + file_name
@@ -138,7 +140,7 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
 
                                     var upload_time = new Date();
 
-                                    if(!is_pic){
+                                    if (!is_pic) {
                                         // push NEW to team
                                         team_obj.news.unshift(
                                             {
@@ -155,6 +157,17 @@ router.post('/upload', upload.single('file'), function(req, res, next) {
                                     }
 
                                     console.log("-> File uploaded successfully \n");
+
+                                    if (!is_pic) {
+                                        // send file notification
+                                        io.emit('notification', {
+                                            type: 'file',
+                                            team_id: team_id,
+                                            nickname: nickname,
+                                            user_id: user_id,
+                                            team_name: team_obj.name
+                                        });
+                                    }
 
                                     res.json({
                                         "code": "1",
@@ -388,7 +401,7 @@ router.get('/all', function(req, res) {
                 return;
             }
 
-            models.File.find({ $and:[ {team_id: team_id}, {is_pic: false}] }, function(err, files) {
+            models.File.find({ $and: [{ team_id: team_id }, { is_pic: false }] }, function(err, files) {
 
                 if (files) {
 

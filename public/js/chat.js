@@ -1,5 +1,6 @@
 var app = angular.module('chat', []);
 
+// UNNECESSARY:
 // app.config(function ($socketProvider) {
 //     $socketProvider.setConnectionUrl('http://localhost:8080'); // when using local machine
 //     //$socketProvider.setConnectionUrl('http://localhost:3000'); // when using vagrant
@@ -17,6 +18,8 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
             s4() + '-' + s4() + s4() + s4();
     }
+
+    $rootScope.inChatRoomTeamId = $rootScope.selectedTeamId;
 
     var index = 0;
     var role_arr = [];
