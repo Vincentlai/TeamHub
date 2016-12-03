@@ -12,13 +12,13 @@
     <ul ng-if="user">
         <li ng-click="showNotification()">
             <md-tooltip md-direction="bottom">
-                Notifications
+                {{hover_msg()}}
             </md-tooltip>
             <a id="dropdown" class="nav-link">
                 <i id="notifIcon" class="material-icons">notifications</i>
                 <text>{{num_of_notif}}</text>
                 <div ng-repeat="json in notif_list" id="dropdown-content" ng-show="showNotif">
-                    <a class="notif_row">
+                    <a class="notiaf_row">
                         {{'You have '+json.number+' new '+json.type+' '+json.activity+' in '+json.team_name+'.'}}
                     </a>
                 </div>
@@ -45,6 +45,11 @@
     #notifIcon{
         position: relative;
         top: 5px;
+        
+    }
+
+    *:focus{
+        outline: none;
     }
     #dropdown {
         position: relative;
@@ -59,18 +64,15 @@
         min-width: 300px;
         box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
         z-index: 9999999999;
-        margin-right: 100px;
-        right: 89px;
+        right: 189px;
     }
     /* Links inside the dropdown */
     
-    #dropdown-content a {
-        font-size: 12px;
+    #dropdown-content a{
+        font-size: 11px;
         color: black;
         text-decoration: none;
-        display: block;
         margin-right: 2px;
         margin-left: 2px;
-        height: 200px;
     }
 </style>

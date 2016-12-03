@@ -265,6 +265,7 @@
             $scope.showNotification = function () {
                 $scope.showNotif = !$scope.showNotif;
                 $scope.num_of_notif = undefined;
+                console.log($scope.notif_list);
             }
 
             /* on receive NEW team message */
@@ -317,25 +318,18 @@
 
                         break;
                     }
-                }
-
-                /*
-                if (json.uuid != uuid && json.team_id == team_ui) { // if not my message & is in the same team
-                    // update ui
-                    var nickname = json.nickname;
-                    var msg = json.msg;
-                    var time = json.time;
-                    var file_id = json.file_id;
-
-                    //noinspection JSAnnotator
-                    $scope.msg_list.push({ index, nickname, msg, time, file_id });
-                    var url = GET_AVATAR_URL + json.user_id;
-                    role_arr.push({ class: "other", src: url });
-                    index++;
-                    console.log('i got msg' + msg);
-                }
-                */
+                } 
             });
+
+            $scope.hover_msg = function(){
+                if(!$scope.num_of_notif){
+                    return 'No New Notification';
+                }else if($scope.num_of_notif == 1){
+                    return '1 New Notification';
+                }else if($scope.num_of_notif > 1){
+                    return $scope.num_of_notif + ' New Notifications';
+                }
+            }
         }
 
     ]);
