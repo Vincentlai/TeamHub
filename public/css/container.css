@@ -852,6 +852,9 @@ a.control-btn:hover {
 .right-container {
   float: right;
   width: 20%;
+  background-color: white;
+  border-radius: .25em .25em .4em .4em;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 .right-container .events-list {
   max-height: 750px;
@@ -1524,4 +1527,50 @@ file html
 }
 .search-bar {
   margin: 10px auto 20px auto;
+}
+.event-container {
+  width: 70%;
+  display: inline-block;
+  float: left;
+}
+.detail-container {
+  display: inline-block;
+  width: 30%;
+  height: 100%;
+  background-color: white;
+  margin: 0;
+  float: right;
+  border-left: 2px solid teal;
+}
+.detail-container h1 {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+  padding: 1em;
+  color: #8f9cb5;
+}
+.detail-container {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.detail-container .events {
+  border-top: 1px solid rgba(225, 225, 225, 0.8);
+  padding-top: 10px;
+}
+.detail-container .events .events-list .event-item {
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid rgba(225, 225, 225, 0.8);
+}
+.detail-container .events .events-list .event-item .date .time {
+  font-weight: bold;
+}
+.create-event .hour-input,
+.create-event .minute-input {
+  width: 100px;
+}
+.create-event .center {
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
 }

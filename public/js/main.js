@@ -181,6 +181,39 @@
                             controller: 'calendarController'
                         }
                     },
+                    resolve: {
+                        eventList: function ($http, $stateParams, $rootScope) {
+                            return $http.get('/events/get?team_id=' + $stateParams.team_id + '&current_time= ')
+                                .then(
+                                    function (res) {
+                                        $rootScope.selectedTeamId = $stateParams.team_id;
+                                        if (res.data.code == 1) {
+                                            var events = res.data.events;
+                                            var result = [];
+                                            for (var i = 0; i < events.length; i++) {
+                                                var event = events[i];
+                                                result = result.concat({
+                                                    start: new Date(event.start),
+                                                    end: new Date(event.end),
+                                                    title: event.title,
+                                                    event_id: event._id,
+                                                    description: event.description,
+                                                    creator_id: event.creator_id
+                                                });
+                                                if(i == events.length -1){
+                                                    return result;
+                                                }
+                                            }
+
+                                        } else {
+                                            return [];
+                                        }
+                                    }, function (error) {
+                                        console.log('error in getting event list ' + error);
+                                    }
+                                )
+                        }
+                    },
                     authenticated: true
                 })
                 .state('home.files', {
