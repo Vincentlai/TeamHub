@@ -61,20 +61,20 @@
                 sendToDataBase(createdEvent);
             };
 
-            // $scope.errorMessageShow = function () {
-            //     var startTime = $scope.eventStartDate.getTime()
-            //         + $scope.eventStartTimeHour * 60 * 60 * 1000
-            //         + $scope.eventStartTimeMin * 60 * 1000;
-            //     var endTime = $scope.eventEndDate.getTime()
-            //         + $scope.eventEndTimeHour * 60 * 60 * 1000
-            //         + $scope.eventEndTimeMin * 60 * 1000;
-            //     var result = endTime - startTime;
-            //     if (result < 0) {
-            //         return true;
-            //     } else {
-            //         return false;
-            //     }
-            // };
+            $scope.errorMessageShow = function () {
+                if (angular.isUndefined($scope.eventStartDate) ||
+                    angular.isUndefined($scope.eventEndDate)) {
+                    return false;
+                }
+                var startTime = $scope.eventStartDate.getTime()
+                    + $scope.eventStartTimeHour * 60 * 60 * 1000
+                    + $scope.eventStartTimeMin * 60 * 1000;
+                var endTime = $scope.eventEndDate.getTime()
+                    + $scope.eventEndTimeHour * 60 * 60 * 1000
+                    + $scope.eventEndTimeMin * 60 * 1000;
+                var result = endTime - startTime;
+                return result < 0;
+            };
 
             function sendToDataBase(createdEvent) {
                 $http.post('/events/create', createdEvent)
@@ -103,12 +103,6 @@
                 return date.toDateString();
             }
 
-            var deleteEventID;
-            var chosenEventCreatorID;
-            //var chosenEventTitle;
-            //var chosenEventStart;
-            //var chosenEventEnd;
-            //var chosenEventDescription;
             $scope.changeView = function (new_view) {
                 if (new_view == 'detail') {
                     $scope.listView = false;
@@ -139,14 +133,22 @@
                 $scope.result = currentDay(date);
             };
 
-            $scope.resetTime = function () {
-                $scope.eventStartTimeHour = 0;
-                $scope.eventStartTimeMin = 0;
-                $scope.eventEndTimeHour = 0;
-                $scope.eventEndTimeMin = 0;
-            };
-
-            $scope.dis = false;
+            $scope.reset = function () {
+                if(angular.isUndefined($scope.eventCreateForm)){
+                    return;
+                }
+                $scope.eventCreateForm.$setUntouched();
+                $scope.eventCreateForm.eventDescription.$setUntouched();
+                $scope.eventCreateForm.$setPristine();
+                delete $scope.newEventTitle;
+                delete $scope.newEventStartHour;
+                delete $scope.newEventStartMin;
+                delete $scope.eventStartDate;
+                delete $scope.newEventEndHour;
+                delete $scope.newEventEndMin;
+                delete $scope.eventEndDate;
+                delete $scope.eventDescription;
+            }
 
         }
     ]);

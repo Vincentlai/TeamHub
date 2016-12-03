@@ -1597,7 +1597,7 @@ file html
 .event-detail .detail {
   padding-left: 10px;
   padding-right: 10px;
-  font-size: 24px;
+  font-size: 1.3em;
   color: #8f9cb5;
   line-height: 50px;
 }
@@ -1612,4 +1612,8 @@ file html
 .event-detail .detail .dis,
 .event-detail .detail .creator {
   border-bottom: 1px solid teal;
+}
+.timeError {
+  font-size: .9em;
+  color: #fc7169;
 }
