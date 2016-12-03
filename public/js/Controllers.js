@@ -374,14 +374,12 @@
                         }
                     );
                 };
+
                 $scope.deletePost = function (id) {
                     if ($scope.isDeleting) {
                         return;
                     }
-                    var promises = [];
-                    angular.forEach($scope.post_files, function (file, index) {
 
-                    });
                     console.log('delete post clicked' + id);
                     $http.delete('/posts/delete?post_id=' + id)
                         .then(

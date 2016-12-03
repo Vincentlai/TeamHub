@@ -217,8 +217,18 @@
             </error-notify>
             <h1>Are you sure you want to delete this post?</h1>
             <ul class="cd-buttons clearfix">
+                <md-progress-circular md-mode="indeterminate"
+                                      ng-show="isDeleting"
+                                      md-diameter="20" class="post-upload"></md-progress-circular>
                 <li type="submit" ng-click="deletePost(selectedId)">
-                    <button class="agree inpop">Yes</button>
+                    <button class="agree inpop">
+                        <span ng-show="isDeleting">
+                                    Deleting..
+                                </span>
+                        <span ng-show="!isDeleting">
+                                    Delete
+                                </span>
+                    </button>
                 </li>
                 <li>
                     <button class="inpop" ng-click="closeForm('delete-post')">No</button>

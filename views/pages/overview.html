@@ -45,22 +45,15 @@
     </div>
 
     <div class="right-container">
-        <!--<div class="container-header">-->
-            <!--<div class="filter">-->
-                <!--<div class="filter-name">-->
-                    <!--Event Reminder-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
         <ul class="events-list">
-            <li class="event-item" ng-repeat="event in events | orderBy :'-start'">
+            <li class="event-item" ng-repeat="event in events | orderBy :'start'">
                 <span class="event-name">
                     {{event.title}}
                 </span>
-                of
-                <span class="event-team-name">
-                    {{event.team_name}}
-                </span>
+                <!--of-->
+                <!--<span class="event-team-name">-->
+                <!--{{event.team_name}}-->
+                <!--</span>-->
                 <br>
                 <span class="event-time">
                     <!--Start on {{event.start | date:' HH:mm yy-MM-dd' : 'GMT-0800' | eventDateFilter}}-->
