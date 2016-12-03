@@ -1,6 +1,12 @@
 /*---------------------------
     Variables
 -----------------------------*/
+/*
+  important color
+*/
+/*
+  Warning color
+*/
 .sk-folding-cube {
   width: 50px;
   height: 50px;
@@ -856,18 +862,30 @@ a.control-btn:hover {
   display: block;
   position: relative;
   margin-bottom: 20px;
+  border: 1px solid #fc7169;
   border-left: 5px solid #fc7169;
   padding: 5px;
+  padding-top: 15px;
+  padding-bottom: 12px;
   font-size: 1.1em;
   line-height: 1.2em;
+  min-height: 80px;
   cursor: pointer;
-  background-color: rgba(252, 113, 105, 0.5);
-  color: white;
-  border-radius: 2px;
+  color: #fc7169;
+  border-radius: .25em .25em .4em .4em;
+  box-shadow: 0 0 10px rgba(252, 113, 105, 0.5);
   -webkit-transition: all .3s;
   -moz-transition: all .3s;
   -o-transition: all .3s;
   transition: all .3s;
+}
+.right-container .events-list .event-item.warning {
+  border-color: rgba(159, 96, 0, 0.5);
+  color: #9f6000;
+  box-shadow: 0 0 10px rgba(159, 96, 0, 0.5);
+}
+.right-container .events-list .event-item.warning:hover {
+  background-color: rgba(159, 96, 0, 0.8);
 }
 .right-container .events-list .event-item .event-name {
   font-size: 1.4em;
@@ -877,6 +895,7 @@ a.control-btn:hover {
 }
 .right-container .events-list .event-item:hover {
   background-color: rgba(252, 113, 105, 0.8);
+  color: white;
 }
 .filter {
   height: 50px;

@@ -680,6 +680,16 @@
                     loadMore();
                 }
             });
+            var check_days = function (date){
+                var now = Date.now();
+                var day = 60 * 60 * 24 * 1000;
+                var diff = date - now;
+                return Math.floor(diff / day);
+            };
+
+            $scope.isWarning = function (date) {
+                return check_days(date) > 3 && check_days(date) <= 7;
+            };
         }
     ]);
     module.controller('teamController', [

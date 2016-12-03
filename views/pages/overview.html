@@ -46,7 +46,7 @@
 
     <div class="right-container">
         <ul class="events-list">
-            <li class="event-item" ng-repeat="event in events | orderBy :'start'">
+            <li class="event-item" ng-repeat="event in events | orderBy :'start'" ng-class="{'warning': isWarning(event.start)}">
                 <span class="event-name">
                     {{event.title}}
                 </span>
