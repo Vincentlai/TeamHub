@@ -1530,19 +1530,24 @@ file html
 }
 .event-container {
   width: 70%;
-  display: inline-block;
   float: left;
+  display: inline-block;
+  height: 100%;
+  border-right: 2px solid #444359;
 }
-.detail-container {
+.detail-container,
+.event-detail,
+.create-event {
   display: inline-block;
   width: 30%;
-  height: 100%;
+  float: right;
   background-color: white;
   margin: 0;
-  float: right;
-  border-left: 2px solid teal;
+  height: 100%;
 }
-.detail-container h1 {
+.detail-container h1,
+.event-detail h1,
+.create-event h1 {
   font-size: 1.5em;
   font-weight: bold;
   text-align: center;
@@ -1561,9 +1566,21 @@ file html
   padding-bottom: 5px;
   margin-bottom: 5px;
   border-bottom: 1px solid rgba(225, 225, 225, 0.8);
+  cursor: pointer;
 }
-.detail-container .events .events-list .event-item .date .time {
-  font-weight: bold;
+.detail-container .events .events-list .event-item .date {
+  color: #4D4D4D;
+}
+.detail-container .events .events-list .event-item .event-name {
+  margin-top: 10px;
+  font-size: 1.2em;
+}
+.detail-container .events .events-list .event-item:hover {
+  border-color: teal;
+}
+.detail-container .events .events-list .event-item:hover .date,
+.detail-container .events .events-list .event-item:hover .event-name {
+  color: teal;
 }
 .create-event .hour-input,
 .create-event .minute-input {
@@ -1573,4 +1590,26 @@ file html
   display: inline-block;
   margin-left: auto;
   margin-right: auto;
+}
+.event-page {
+  background-color: white;
+}
+.event-detail .detail {
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 24px;
+  color: #8f9cb5;
+  line-height: 50px;
+}
+.event-detail .detail .detail-content {
+  margin-top: 0;
+  margin-left: 10px;
+  color: #4D4D4D;
+}
+.event-detail .detail .title,
+.event-detail .detail .start-time,
+.event-detail .detail .end-time,
+.event-detail .detail .dis,
+.event-detail .detail .creator {
+  border-bottom: 1px solid teal;
 }

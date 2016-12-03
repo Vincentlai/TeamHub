@@ -19,19 +19,18 @@
 
             //initial data
             $scope.events = eventList;
+            $scope.listView = true;
+            $scope.detailView = false;
+            $scope.formView = false;
 
             function deleteEventFromDatabase(deleteEventID) {
                 $http.delete('/events/delete?event_id=' + deleteEventID)
                     .then(
                         function (response) {
                             if (response.data.code == 1) {
-                                console.log("Delete event successfully");
-                                //console.log($scope.events[0]);
                                 $timeout(function () {
-                                    //console.log("working???")
                                     $state.transitionTo($state.current.name, {team_id: $rootScope.selectedTeamId},
                                         {reload: $state.current.name, inherit: false, notify: true});
-                                    delete $scope.selectedId;
                                 }, 500);
 
                             } else {
@@ -43,14 +42,12 @@
                         });
             }
 
-            $scope.deleteEvent = function () {
-                deleteEventFromDatabase(deleteEventID);
-                $scope.closeForm('display-event');
+            $scope.deleteEvent = function (event) {
+                deleteEventFromDatabase(event.event_id);
             };
 
             $scope.createEvent = function () {
                 var createdEvent = {};
-                console.log($rootScope.selectedTeamId);
                 createdEvent.team_id = $rootScope.selectedTeamId;
                 createdEvent.title = $scope.newEventTitle;
                 createdEvent.start = new Date($scope.eventStartDate.getTime()
@@ -62,7 +59,6 @@
                 createdEvent.description = $scope.eventDescription;
                 //createdEvent.allDayEvent = $scope.allDayEvent;
                 sendToDataBase(createdEvent);
-                $scope.closeForm('create-event');
             };
 
             // $scope.errorMessageShow = function () {
@@ -81,21 +77,17 @@
             // };
 
             function sendToDataBase(createdEvent) {
-                console.log(createdEvent.team_id);
                 $http.post('/events/create', createdEvent)
                     .then(
                         function (response) {
                             if (response.data.code == 1) {
-                                console.log("seccessfully");
                                 $timeout(function () {
-                                    //console.log("working???")
                                     $state.transitionTo($state.current.name, {team_id: $rootScope.selectedTeamId},
                                         {reload: $state.current.name, inherit: false, notify: true});
-                                    delete $scope.selectedId;
                                 }, 500);
                             } else {
                                 console.log("error message in response");
-                                console.log(response.data.code);
+                                console.log(response.data.msg);
                             }
                         }, function (error) {
                             console.log('error in create events' + error);
@@ -117,27 +109,34 @@
             //var chosenEventStart;
             //var chosenEventEnd;
             //var chosenEventDescription;
+            $scope.changeView = function (new_view) {
+                if (new_view == 'detail') {
+                    $scope.listView = false;
+                    $scope.formView = false;
+                    $scope.detailView = true;
+                } else if (new_view == 'list') {
+                    $scope.formView = false;
+                    $scope.detailView = false;
+                    $scope.listView = true;
+                } else {
+                    $scope.detailView = false;
+                    $scope.listView = false;
+                    $scope.formView = true;
+                }
+            };
+
+            $scope.detail = function (event) {
+                $scope.changeView('detail');
+            };
 
             $scope.eventClicked = function (item) {
-                $scope.result = item.start.toDateString();
-                //console.log($scope.result);
-                $scope.showEventInformation = true;
-                $scope.showDeleteEventForm = true;
-                deleteEventID = item.event_id;
-                $scope.chosenEventTitle = item.title;
-                $scope.chosenEventStart = item.start.toString();
-                $scope.chosenEventEnd = item.end.toString();
-                $scope.chosenEventDescription = item.description;
-                chosenEventCreatorID = item.creator_id;
-                $scope.createForm('display-event');
-                console.log(item);
+                $scope.changeView('detail');
+                $scope.selected_event = item;
             };
 
             $scope.createClicked = function (date) {
-                console.log(date);
+                $scope.changeView('form');
                 $scope.result = currentDay(date);
-                $scope.showCreateEventForm = true;
-                $scope.createForm('create-event');
             };
 
             $scope.resetTime = function () {
@@ -145,11 +144,6 @@
                 $scope.eventStartTimeMin = 0;
                 $scope.eventEndTimeHour = 0;
                 $scope.eventEndTimeMin = 0;
-                //console.log($scope.newEndDate.getTime());
-            };
-
-            $scope.isDisabled = function () {
-                return ($rootScope.user.user_id != chosenEventCreatorID);
             };
 
             $scope.dis = false;

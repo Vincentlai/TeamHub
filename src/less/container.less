@@ -1394,17 +1394,18 @@ file html
 
 .event-container {
   width: 70%;
-  display: inline-block;
   float: left;
+  display: inline-block;
+  height: 100%;
+  border-right: 2px solid @secondary-bg-color;
 }
-.detail-container {
+.detail-container,.event-detail, .create-event{
   display: inline-block;
   width: 30%;
-  height: 100%;
+  float: right;
   background-color: white;
   margin: 0;
-  float: right;
-  border-left: 2px solid @primary-color;
+  height: 100%;
   h1{
     font-size: 1.5em;
     font-weight: bold;
@@ -1424,9 +1425,21 @@ file html
         padding-bottom: 5px;
         margin-bottom: 5px;
         border-bottom: 1px solid @light-gray-border;
+        cursor: pointer;
         .date{
-          .time {
-            font-weight: bold;
+          color: @primary-text-color;
+          //.time {
+          //  font-weight: bold;
+          //}
+        }
+        .event-name{
+          margin-top: 10px;
+          font-size: 1.2em;
+        }
+        &:hover{
+          border-color: @primary-color;
+          .date, .event-name{
+            color: @primary-color;
           }
         }
       }
@@ -1444,6 +1457,24 @@ file html
     margin-right: auto;
   }
 }
-
-
+.event-page{
+  background-color: white;
+}
+.event-detail{
+  .detail {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 24px;
+    color: @secondary-text-color;
+    line-height: 50px;
+    .detail-content {
+      margin-top: 0;
+      margin-left: 10px;
+      color: @primary-text-color;
+    }
+    .title, .start-time, .end-time, .dis, .creator {
+      border-bottom: 1px solid @primary-color;
+    }
+  }
+}
 

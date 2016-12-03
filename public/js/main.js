@@ -198,7 +198,8 @@
                                                     title: event.title,
                                                     event_id: event._id,
                                                     description: event.description,
-                                                    creator_id: event.creator_id
+                                                    creator_id: event.creator_id,
+                                                    creator_nickname: event.creator_nickname
                                                 });
                                                 if(i == events.length -1){
                                                     return result;
