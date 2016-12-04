@@ -465,7 +465,9 @@ Header  Navigation
 .nav-bar > ul > li.notify-btn .notif-list li.notif-item {
   display: block;
   width: 300px;
-  height: 40px;
+  min-height: 40px;
+  height: auto;
+  overflow-y: visible;
   line-height: 40px;
   border-bottom: 1px solid #4b4a5e;
 }

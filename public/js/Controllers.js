@@ -254,6 +254,10 @@
         'UserService',
         '$socket',
         function ($scope, Auth, $state, $http, $rootScope, UserService, $socket) {
+
+            //initial data
+            $scope.notif_list = [];
+            $scope.showNotif = false;
             $rootScope.logout = function () {
                 UserService.logout(function () {
                     delete $rootScope.user;
@@ -262,13 +266,14 @@
             };
 
             $scope.showNotification = function () {
-                $scope.showNotif = !$scope.showNotif;
-                $scope.num_of_notif = undefined;
-                console.log($scope.notif_list);
+                if($scope.notif_list.length != 0){
+                    $scope.showNotif = !$scope.showNotif;
+                    $scope.num_of_notif = undefined;
+                    console.log($scope.notif_list);
+                }
             };
 
             /* on receive NEW team message */
-            $scope.notif_list = [];
             $socket.on('notification', function (json) {
                 console.log(json);
 
