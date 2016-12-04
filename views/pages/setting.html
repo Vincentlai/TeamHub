@@ -137,7 +137,9 @@
                 </div>
 
                 <div class="ava-btn">
-                    <a class="ava upload" ng-click="upload(myCroppedImage)">
+                    <a class="ava upload"
+                       ng-class="{disabled: myImage==''}"
+                       ng-click="upload(myCroppedImage)">
                         Upload
                     </a>
                 </div>

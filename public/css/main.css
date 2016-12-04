@@ -417,10 +417,10 @@ Header  Navigation
 .nav-bar .logo img {
   cursor: pointer;
 }
-.nav-bar ul {
+.nav-bar > ul {
   float: right;
 }
-.nav-bar ul li {
+.nav-bar > ul > li {
   display: inline-block;
   text-align: center;
   cursor: pointer;
@@ -429,12 +429,59 @@ Header  Navigation
   -ms-transition: all 0.5s ease-in-out;
   -o-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
+  outline: none !important;
 }
-.nav-bar ul li:hover {
+.nav-bar > ul > li:focus {
+  outline: none !important;
+}
+.nav-bar > ul > li.notify-btn {
+  position: relative;
+}
+.nav-bar > ul > li.notify-btn i {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  color: white;
+}
+.nav-bar > ul > li.notify-btn .notif-list {
+  display: block;
+  position: absolute;
+  top: 70px;
+  right: 0;
+  z-index: 100;
+  background-color: #444359;
+  color: white;
+  height: auto;
+  overflow: visible;
+}
+.nav-bar > ul > li.notify-btn .notif-list:before {
+  position: absolute;
+  right: 0;
+  top: -10px;
+  width: 0;
+  height: 0;
+  display: block;
+  content: ' ';
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #444359;
+  overflow: visible;
+  z-index: 100;
+}
+.nav-bar > ul > li.notify-btn .notif-list li.notif-item {
+  display: block;
+  width: 300px;
+  min-height: 40px;
+  height: auto;
+  overflow-y: visible;
+  line-height: 40px;
+  border-bottom: 1px solid #4b4a5e;
+}
+.nav-bar > ul > li:hover {
   background-color: #009688;
   color: white;
 }
-.nav-bar ul li a {
+.nav-bar > ul > li a {
   display: inline-block;
   color: white;
   font-weight: bold;
@@ -445,19 +492,23 @@ Header  Navigation
   -o-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
 }
-.nav-bar ul li a.logout {
+.nav-bar > ul > li a.logout {
   width: 50px;
   position: relative;
 }
-.nav-bar ul li a.logout i {
+.nav-bar > ul > li a.logout i {
   position: absolute;
   left: 14px;
   top: -16px;
 }
-.nav-bar ul li a.important {
+.nav-bar > ul > li a.notify-icon {
+  width: 100px;
+  padding-left: 40px;
+}
+.nav-bar > ul > li a.important {
   color: #fc7169;
 }
-.nav-bar ul li a.important:hover {
+.nav-bar > ul > li a.important:hover {
   background-color: #fc7169;
   color: white;
 }
@@ -489,4 +540,7 @@ form {
 }
 .md-input {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.md-event-calendar-create-link {
+  display: block !important;
 }

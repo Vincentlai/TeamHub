@@ -1,54 +1,6 @@
-<style>
-    /*.timeError {*/
-    /*color: red;*/
-    /*font-size: 0.5em;*/
-    /*}*/
-
-    /*.calendarCreate {*/
-    /*position: absolute;*/
-    /*z-index: 5;*/
-    /*}*/
-
-    /*.eventDisplay {*/
-    /*position: absolute;*/
-    /*z-index: 5;*/
-    /*}*/
-
-    /*.displayContent {*/
-    /*margin: 25px;*/
-    /*color: gray;*/
-    /*}*/
-
-    /*#note p {*/
-    /*margin: 10px;*/
-    /*margin-top: 20px;*/
-    /*font-size: 0.5em;*/
-
-    /*}*/
-
-    /*.eventDetail th {*/
-    /*padding: 10px;*/
-    /*font-weight: bold;*/
-    /*}*/
-
-    /*.eventDetail td {*/
-    /*padding: 10px;*/
-    /*color: gray;*/
-    /*}*/
-
-    /*.displayContent label {*/
-    /*font-weight: bold*/
-    /*}*/
-
-    /*.eventTime {*/
-    /*color: gray*/
-    /*}*/
-
-</style>
-
 <div class="page-container event-page clearfix">
 
-    <div class="event-container" id="event-container">
+    <div class="event-container clearfix" id="event-container">
         <div class="calendarMainPart">
             <md-event-calendar
                     auto-height=""
@@ -56,10 +8,9 @@
                     md-events="events"
                     md-event-click="eventClicked($selectedEvent)"
                     md-create-event-click="createClicked($date)"
-                    md-label="title"
-                    md-show-create-link
-                    md-create-disabled="dis"
-            >
+                    md-label="title",
+                    md-show-create-link="true"
+                    md-create-disabled="dis">
                 <md-event-calendar-header>
                     <div flex></div>
                     <md-event-calendar-prev></md-event-calendar-prev>

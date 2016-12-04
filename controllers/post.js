@@ -89,6 +89,15 @@ exports.post = function (sess, team_id, text, files, callback) {
                         }
                     );
                     team_obj.save();
+
+                    // send post notification
+                    io.emit('notification', {
+                        type: 'post',
+                        team_id: team_id,
+                        nickname: sess.nickname,
+                        user_id: user_id,
+                        team_name: team_obj
+                    });
                 }
             });
 
@@ -257,7 +266,6 @@ exports.delete = function (sess, post_id, callback) {
                 }
 
 
-
                 post_obj.remove(function (err, removed) {
                     if (!err) {
                         models.Team.findOne({_id: post_obj.team_id}, function (err, team_obj) {
@@ -355,12 +363,23 @@ exports.comment = function (sess, post_id, comment, callback) {
                         'comment': comment
                     });
 
-                    post_obj.save(function(err, obj){
-                        if(!err){
+                    post_obj.save(function (err, obj) {
+                        if (!err) {
+
+                            // send comment notification
+                            io.emit('notification', {
+                                type: 'comment',
+                                team_id: team_obj._id,
+                                team_name: team_obj.name,
+                                nickname: sess.nickname,
+                                user_id: user_id,
+                                owner_id: post_obj.user_id
+                            });
+
                             callback({
                                 'code': '1',
                                 'comment': comment,
-                                'time': obj.comments[obj.comments.length-1]._id.toString(),
+                                'time': obj.comments[obj.comments.length - 1]._id.toString(),
                                 'user_id': user_id,
                                 'nickname': sess.nickname,
                                 'msg': 'Comment success'
@@ -368,7 +387,6 @@ exports.comment = function (sess, post_id, comment, callback) {
                             return;
                         }
                     });
-
 
 
                 } else {
@@ -384,6 +402,78 @@ exports.comment = function (sess, post_id, comment, callback) {
     });
 };
 
+exports.deleteComment = function (sess, post_id, comment_id, callback) {
+    var user_id = sess.user_id;
+
+    if (!user_id) {
+        callback({
+            'code': '-9',
+            'msg': 'No Session, login required'
+        });
+        return;
+    }
+    if (!post_id || !comment_id) {
+        callback({
+            'code': "-10",
+            'msg': "Missing fields"
+        });
+        return;
+    }
+
+    models.Post.findOne({_id: post_id}, function (err, post_obj) {
+
+            if (!post_obj) {
+
+                callback({
+                    'code': '-1',
+                    'msg': 'Invalid post_id'
+                });
+                return;
+
+            } else {
+                models.Team.findOne({_id: post_obj.team_id}, function (err, team_obj) {
+
+                    var users = team_obj.users;
+                    var found = false;
+                    for (var i = 0; i < users.length; i++) {
+                        if (users[i].id == user_id) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (found) {
+
+
+                        for (var j = 0; j < post_obj.comments.length; j++) {
+                            if (post_obj.comments[j]._id == comment_id) {
+                                break;
+                            }
+                        }
+                        post_obj.comments.splice(j, 1);
+                        post_obj.save();
+                        callback({
+                            'code': '1',
+                            'msg': 'delete comment success'
+                        });
+                        return;
+
+
+                    } else {
+                        callback({
+                            'code': '-3',
+                            'msg': 'You do not have access to this post'
+                        });
+                        return;
+                    }
+                });
+            }
+        }
+    );
+
+
+};
+
 exports.likeOrUnlike = function (sess, post_id, flag, callback) {
     var user_id = sess.user_id;
 
@@ -394,7 +484,7 @@ exports.likeOrUnlike = function (sess, post_id, flag, callback) {
         });
         return;
     }
-    if (!post_id || typeof(flag) == undefined) {
+    if (!post_id || typeof (flag) == undefined) {
         callback({
             'code': "-10",
             'msg': "Missing fields"
@@ -431,12 +521,28 @@ exports.likeOrUnlike = function (sess, post_id, flag, callback) {
                                 'user_id': user_id,
                                 'nickname': sess.nickname,
                             });
-                            post_obj.save();
-                            callback({
-                                'code': '1',
-                                'msg': 'like success'
+
+                            // send like notification
+                            io.emit('notification', {
+                                type: 'like',
+                                team_id: team_obj._id,
+                                team_name: team_obj.name,
+                                nickname: sess.nickname,
+                                user_id: user_id,
+                                owner_id: post_obj.user_id
                             });
-                            return;
+
+                            post_obj.save(function (err, msg) {
+                                if (!err) {
+
+                                    callback({
+                                        'code': '1',
+                                        'msg': 'like success'
+                                    });
+                                    return;
+                                }
+                            });
+
                         } else {
                             //flag = true --> unlike
                             for (var j = 0; j < post_obj.likes.length; j++) {
@@ -469,7 +575,7 @@ exports.likeOrUnlike = function (sess, post_id, flag, callback) {
 
 };
 
-exports.getComments = function(sess, post_id, callback){
+exports.getComments = function (sess, post_id, callback) {
     var user_id = sess.user_id;
 
     if (!user_id) {
@@ -488,10 +594,10 @@ exports.getComments = function(sess, post_id, callback){
         return;
     }
 
-    models.Post.findOne({_id: post_id}, function(err, post_obj){
+    models.Post.findOne({_id: post_id}, function (err, post_obj) {
 
-        if(!err){
-            if(!post_obj){
+        if (!err) {
+            if (!post_obj) {
                 callback({
                     'code': '-1',
                     'msg': 'Post doesn\'t exist'

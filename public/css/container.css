@@ -780,6 +780,26 @@ a.control-btn:hover {
   margin-bottom: 10px;
   border-bottom: 1px solid rgba(225, 225, 225, 0.8);
 }
+.post-container .post-content .comment-container .comment-box .comment-list .delete-btn {
+  position: absolute;
+  right: 0;
+  left: auto;
+  margin-top: -8px;
+  display: inline-block;
+  opacity: .5;
+  -webkit-transition: all .2s ease;
+  -o-transition: all .2s ease;
+  transition: all .2s ease;
+}
+.post-container .post-content .comment-container .comment-box .comment-list .delete-btn:hover {
+  opacity: 1;
+}
+.post-container .post-content .comment-container .comment-box .comment-list .delete-btn:hover i {
+  color: teal;
+}
+.post-container .post-content .comment-container .comment-box .comment-list .delete-btn:hover i.delete {
+  color: #fc7169;
+}
 .avatar {
   border: 1px solid rgba(225, 225, 225, 0.8);
   width: 50px;
@@ -869,10 +889,20 @@ a.control-btn:hover {
   cursor: pointer;
 }
 .right-container .events-list .event-item .event-name {
+  color: #fc7169;
   font-weight: bold;
 }
 .right-container .events-list .event-item a.link {
   cursor: pointer;
+}
+.right-container .events-list .event-item:hover {
+  border-color: #fc7169;
+}
+.right-container .events-list .event-item.isWarning .event-name {
+  color: teal;
+}
+.right-container .events-list .event-item.isWarning:hover {
+  border-color: teal;
 }
 .filter {
   height: 50px;
@@ -886,16 +916,23 @@ a.control-btn:hover {
 .filter.file-filter {
   margin-left: 16%;
 }
-.filter .filter-name {
+.filter .filter-name,
+.filter .event-title {
   position: relative;
   cursor: pointer;
   line-height: 50px;
 }
-.filter .filter-name i {
+.filter .filter-name i,
+.filter .event-title i {
   display: inline-block;
   position: absolute;
   top: 14px;
   right: -25px;
+}
+.filter .event-title {
+  cursor: default;
+  font-weight: bold;
+  font-size: 1.1em;
 }
 .filter .filter-options {
   background-color: white;
@@ -1137,6 +1174,10 @@ a.control-btn:hover {
   color: white;
   background-color: teal;
   border-color: teal;
+}
+.ava.disabled {
+  opacity: .5;
+  cursor: not-allowed;
 }
 .old_avatar {
   float: right;

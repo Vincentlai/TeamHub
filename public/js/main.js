@@ -284,6 +284,7 @@
             $rootScope.$on('$stateChangeSuccess',
                 function (event, toState, toParams, fromState, fromParams, options) {
                     $rootScope.is_loading = false;
+                    $rootScope.inChatRoomTeamId = '';
                 });
         }]);
 

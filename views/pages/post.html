@@ -19,14 +19,6 @@
                 <div class="more">
                     <ul>
                         <li ng-if="postCard.creator_id==user.user_id">
-                            <md-button class="md-icon-button" aria-label="More">
-                                <i class="material-icons">mode_edit</i>
-                            </md-button>
-                            <md-tooltip md-direction="top">
-                                Edit
-                            </md-tooltip>
-                        </li>
-                        <li ng-if="postCard.creator_id==user.user_id">
                             <md-button class="md-icon-button" aria-label="More"
                                        ng-click="createForm('delete-post', postCard.post_id)">
                                 <i class="material-icons delete">delete</i>
@@ -106,6 +98,15 @@
                     <!--comment list-->
                     <div class="comment-box" ng-show="postCard.visibleComment">
                         <div class="comment-list" ng-repeat="comment in postCard.commentList | orderBy: '-time'">
+                            <div ng-if="comment.user_id==user.user_id" class="delete-btn">
+                                <md-button class="md-icon-button" aria-label="More"
+                                           ng-click="deleteComment(postCard, comment)">
+                                    <i class="material-icons delete">delete</i>
+                                </md-button>
+                                <md-tooltip md-direction="top">
+                                    Delete
+                                </md-tooltip>
+                            </div>
                             <img class="avatar " ng-src="{{'/users/download_avatar?user_id='+ comment.user_id}}"
                                  alt="nickname">
                             <span class="post-creater">

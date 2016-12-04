@@ -29,7 +29,7 @@ exports.create = function (sess, team_id, title, description, start, end, callba
         return;
     }
 
-    models.Team.findOne({_id: team_id}, function (err, team_obj) {
+    models.Team.findOne({ _id: team_id }, function (err, team_obj) {
 
         if (!team_obj) {
 
@@ -66,9 +66,33 @@ exports.create = function (sess, team_id, title, description, start, end, callba
                 end: end,
                 creator_id: user_id,
                 creator_nickname: sess.nickname
-            })
+            });
 
-            newEvent.save();
+            newEvent.save(function (err, obj) {
+                if (!err) {
+                    team_obj.news.unshift(
+                        {
+                            user_id: user_id,
+                            user_nickname: sess.nickname,
+                            action_name: 'created',
+                            action_target: 'event',
+                            action_target_id: obj.id,
+                            target_team_id: team_id,
+                            target_team_name: team_obj.name
+                        }
+                    );
+                    team_obj.save();
+                }
+            });
+
+            // send event notification
+            io.emit('notification', {
+                type: 'event',
+                team_id: team_id,
+                team_name: team_obj.name,
+                nickname: sess.nickname,
+                user_id: user_id
+            });
 
             callback({
                 'code': '1',
@@ -100,7 +124,7 @@ exports.getEvents = function (sess, team_id, current_time, callback) {
         return;
     }
 
-    models.Team.findOne({_id: team_id}, function (err, team_obj) {
+    models.Team.findOne({ _id: team_id }, function (err, team_obj) {
 
         if (!team_obj) {
 
@@ -129,7 +153,7 @@ exports.getEvents = function (sess, team_id, current_time, callback) {
                 return;
             }
 
-            models.Event.find({team_id: team_id}, function (err, events) {
+            models.Event.find({ team_id: team_id }, function (err, events) {
 
                 if (events.length != 0) {
 
@@ -197,7 +221,7 @@ exports.delete = function (sess, event_id, callback) {
         return;
     }
 
-    models.Event.findOne({_id: event_id}, function (err, event_obj) {
+    models.Event.findOne({ _id: event_id }, function (err, event_obj) {
 
         if (!event_obj) {
 
@@ -230,57 +254,3 @@ exports.delete = function (sess, event_id, callback) {
 
     });
 };
-
-// exports.get_coming_events = function (sess, teams, current_time, callback) {
-//
-//     var user_id = sess.user_id;
-//
-//     if (!user_id) {
-//         callback({
-//             code: '-9',
-//             msg: 'No session, login required'
-//         });
-//         return;
-//     }
-//
-//     if (!teams || teams.length == 0) {
-//         callback({
-//             code: '-10',
-//             msg: 'no teams'
-//         });
-//         return;
-//     }
-//
-//     if (!current_time) {
-//         callback({
-//             code: '-8',
-//             msg: 'no current time'
-//         });
-//         return;
-//     }
-//
-//     models.Event.find({
-//         team_id: {
-//             $in: teams
-//         }
-//     }, function (err, events) {
-//         if (err) {
-//             throw err;
-//         }
-//         var result = [];
-//         for (var j = 0; j < events.length; j++){
-//             var event = events[j];
-//             var start = new Date(event.start).getTime();
-//             if(start >= current_time){
-//                 result.push(event)
-//             }
-//         }
-//         callback({
-//             code: 1,
-//             msg: 'get coming events ok'
-//         })
-//
-//     })
-//
-//
-// };

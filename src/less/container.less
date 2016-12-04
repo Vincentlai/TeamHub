@@ -594,6 +594,26 @@ a.control-btn {
           position: relative;
           margin-bottom: 10px;
           border-bottom: 1px solid @light-gray-border;
+          .delete-btn {
+            position: absolute;
+            right: 0;
+            left: auto;
+            margin-top: -8px;
+            display: inline-block;
+            opacity: .5;
+            -webkit-transition: all .2s ease;
+            -o-transition: all .2s ease;
+            transition: all .2s ease;
+            &:hover {
+              i {
+                color: @primary-color;
+                &.delete {
+                  color: @important;
+                }
+              }
+              opacity: 1;
+            }
+          }
         }
 
       }
@@ -627,8 +647,6 @@ a.control-btn {
   overflow: auto;
   .default-border;
 }
-
-
 
 .left-container {
   float: left;
@@ -694,10 +712,22 @@ a.control-btn {
       line-height: 1.2em;
       cursor: pointer;
       .event-name {
+        color: @important;
         font-weight: bold;
       }
       a.link {
         cursor: pointer;
+      }
+      &:hover {
+        border-color: @important;
+      }
+      &.isWarning {
+        .event-name {
+          color: @primary-color;
+        }
+        &:hover {
+          border-color: @primary-color;
+        }
       }
     }
   }
@@ -714,7 +744,7 @@ a.control-btn {
   &.file-filter {
     margin-left: 16%;
   }
-  .filter-name {
+  .filter-name, .event-title {
     position: relative;
     cursor: pointer;
     line-height: 50px;
@@ -724,6 +754,11 @@ a.control-btn {
       top: 14px;
       right: -25px;
     }
+  }
+  .event-title {
+    cursor: default;
+    font-weight: bold;
+    font-size: 1.1em;
   }
   .filter-options {
     background-color: white;
@@ -969,6 +1004,10 @@ a.control-btn {
     color: white;
     background-color: @primary-color;
     border-color: @primary-color;
+  }
+  &.disabled {
+    opacity: .5;
+    cursor: not-allowed;
   }
   overflow: hidden;
 
@@ -1373,14 +1412,15 @@ file html
   height: 100%;
   border-right: 2px solid @secondary-bg-color;
 }
-.detail-container,.event-detail, .create-event{
+
+.detail-container, .event-detail, .create-event {
   display: inline-block;
   width: 30%;
   float: right;
   background-color: white;
   margin: 0;
   height: 100%;
-  h1{
+  h1 {
     font-size: 1.5em;
     font-weight: bold;
     text-align: center;
@@ -1388,31 +1428,32 @@ file html
     color: #8f9cb5;
   }
 }
+
 .detail-container {
   padding-left: 10px;
   padding-right: 10px;
-  .events{
+  .events {
     border-top: 1px solid @light-gray-border;
     padding-top: 10px;
-    .events-list{
-      .event-item{
+    .events-list {
+      .event-item {
         padding-bottom: 5px;
         margin-bottom: 5px;
         border-bottom: 1px solid @light-gray-border;
         cursor: pointer;
-        .date{
+        .date {
           color: @primary-text-color;
           //.time {
           //  font-weight: bold;
           //}
         }
-        .event-name{
+        .event-name {
           margin-top: 10px;
           font-size: 1.2em;
         }
-        &:hover{
+        &:hover {
           border-color: @primary-color;
-          .date, .event-name{
+          .date, .event-name {
             color: @primary-color;
           }
         }
@@ -1420,7 +1461,8 @@ file html
     }
   }
 }
-.create-event{
+
+.create-event {
 
   .hour-input, .minute-input {
     width: 100px;
@@ -1431,10 +1473,12 @@ file html
     margin-right: auto;
   }
 }
-.event-page{
+
+.event-page {
   background-color: white;
 }
-.event-detail{
+
+.event-detail {
   .detail {
     padding-left: 10px;
     padding-right: 10px;
@@ -1451,6 +1495,7 @@ file html
     }
   }
 }
+
 .timeError {
   font-size: .9em;
   color: @important;

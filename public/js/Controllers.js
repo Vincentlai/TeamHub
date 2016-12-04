@@ -202,46 +202,7 @@
                     return multi(minute) + ' minutes ago';
                 }
                 return 'just now';
-                // var now = new Date();
-                // // var timeStamp = millisecond.substring(0, 8);
-                // // var date = new Date(parseInt(timeStamp, 16) * 1000);
-                // if (now.getFullYear() > date.getFullYear()) {
-                //     if (now.getFullYear() - date.getFullYear() == 1) {
-                //         return "last year";
-                //     } else {
-                //         return "in " + (now.getFullYear() - date.getFullYear()) + ' years ago';
-                //     }
-                // }
-                // if (now.getMonth() > date.getMonth()) {
-                //     if (now.getMonth() - date.getMonth() == 1) {
-                //         return "last month";
-                //     } else {
-                //         return "in " + (now.getMonth() - date.getMonth()) + ' months ago';
-                //     }
-                // }
-                // if (now.getDate() > date.getDate()) {
-                //
-                //     if (now.getDate() - date.getDate() == 1) {
-                //         return "yesterday";
-                //     } else {
-                //         return "in " + (now.getDate() - date.getDate()) + ' days ago';
-                //     }
-                // }
-                // if (now.getHours() > date.getHours()) {
-                //     if (now.getHours() - date.getHours() == 1) {
-                //         return "in 1 hour ago";
-                //     } else {
-                //         return "in " + (now.getHours() - date.getHours()) + ' hours ago';
-                //     }
-                // }
-                // if (now.getMinutes() > date.getMinutes()) {
-                //     if (now.getMinutes() - date.getMinutes() == 1) {
-                //         return "in 1 minute ago";
-                //     } else {
-                //         return "in " + (now.getMinutes() - date.getMinutes()) + ' minutes ago';
-                //     }
-                // }
-                // return "just now";
+
             }
         }
     ]);
@@ -252,14 +213,113 @@
         '$http',
         '$rootScope',
         'UserService',
-        function ($scope, Auth, $state, $http, $rootScope, UserService) {
+        '$socket',
+        function ($scope, Auth, $state, $http, $rootScope, UserService, $socket) {
+
+            //initial data
+            var my_id = $rootScope.user.user_id;
+
+            $scope.notif_list = [];
+            $scope.showNotif = false;
+
             $rootScope.logout = function () {
                 UserService.logout(function () {
                     delete $rootScope.user;
                     $state.go('login');
                 });
             };
+
+            $scope.showNotification = function () {
+                if ($scope.notif_list.length != 0) {
+                    $scope.showNotif = !$scope.showNotif;
+                    $scope.num_of_notif = undefined;
+                    console.log($scope.notif_list);
+                }
+            };
+
+            $socket.on('teamNotif', function (json) {
+                if (json.user_id == my_id) {
+
+                    if ($scope.num_of_notif) {
+                        $scope.num_of_notif++;
+                    } else {
+                        $scope.num_of_notif = 1;
+                    }
+                    $scope.notif_list.unshift(json);
+                }
+            });
+
+
+            /* on receive NEW team activity */
+            $socket.on('notification', function (json) {
+
+                var teams = $rootScope.teams;
+                var inChatRoomTeamId = $rootScope.inChatRoomTeamId;
+
+                for (var i = 0; i < teams.length; i++) {
+
+                    if (teams[i].id == json.team_id
+                        && my_id != json.user_id
+                        && inChatRoomTeamId != json.team_id) {
+
+                        // if new comment and like is not for my post
+                        if (json.owner_id) {
+                            if (json.owner_id != my_id) {
+                                return;
+                            }
+                        }
+
+                        json.team_name = teams[i].name;
+
+                        if ($scope.num_of_notif) {
+                            $scope.num_of_notif++;
+                        } else {
+                            $scope.num_of_notif = 1;
+                        }
+
+                        // add to the list
+                        var found = false;
+                        for (var j = 0; j < $scope.notif_list.length; j++) {
+                            // same action from same person increment #
+                            if ($scope.notif_list[j].type == json.type
+                                && $scope.notif_list[j].team_id == json.team_id) {
+                                $scope.notif_list[j].number++;
+                                $scope.notif_list[j].msg = 'You have ' + $scope.notif_list[j].number + ' new ' +
+                                    $scope.notif_list[j].type + ' in ' + $scope.notif_list[j].team_name + '.'
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if (!found) {
+                            $scope.notif_list.unshift({
+                                type: json.type,
+                                nickname: json.nickname,
+                                team_name: json.team_name,
+                                team_id: json.team_id,
+                                user_id: json.user_id,
+                                number: 1,
+                                msg: 'You have 1 new ' + json.type + ' in ' + json.team_name + '.'
+                            });
+                        }
+                        console.log($scope.notif_list.length);
+
+                        break;
+                    }
+                }
+            });
+
+            $scope.hover_msg = function () {
+                if (!$scope.num_of_notif) {
+                    return 'No New Notification';
+                } else if ($scope.num_of_notif == 1) {
+                    return '1 New Notification';
+                } else if ($scope.num_of_notif > 1) {
+                    return $scope.num_of_notif + ' New Notifications';
+                }
+            }
         }
+
     ]);
     module.controller('postController', [
             '$scope',
@@ -484,6 +544,21 @@
                         $scope.getComments(index, id);
                     }
                 };
+
+                // delete comment
+                $scope.deleteComment = function (postCard, comment) {
+                    console.log('delete comment');
+                    var post_id = postCard.post_id;
+                    var comment_id = comment.comment_id;
+                    PostService.deleteComment(post_id, comment_id, function () {
+                        PostService.getComments(post_id, function (comments) {
+                            postCard.commentList = comments;
+                            postCard.comments = postCard.commentList.length;
+                        });
+                    })
+                };
+
+
                 //get file name and size from input
 
                 var handleFileSelect = function (event) {
@@ -672,7 +747,6 @@
                 return false;
             };
 
-
             $('#news-list').bind("scroll", function (e) {
                 var height = (document.getElementById('news-list').scrollHeight -
                     document.getElementById('news-list').scrollTop) - document.getElementById('news-list').offsetHeight;
@@ -680,7 +754,24 @@
                     loadMore();
                 }
             });
-            var check_days = function (date){
+
+            $scope.goToPage = function (name, team_id) {
+                switch (name) {
+                    case 'post':
+                        $state.go('home.posts', {team_id: team_id});
+                        break;
+                    case 'file':
+                        $state.go('home.files', {team_id: team_id});
+                        break;
+                    case 'event':
+                        $state.go('home.events', {team_id: team_id});
+                        break;
+                    default :
+                        return;
+                }
+            };
+
+            var check_days = function (date) {
                 var now = Date.now();
                 var day = 60 * 60 * 24 * 1000;
                 var diff = date - now;
@@ -729,7 +820,7 @@
 
             $scope.deleteTeam = function () {
                 TeamService.deleteTeam($scope.input.team_id, function (r, msg) {
-                    if (r) {
+                    if (r == 1) {
                         successFunc('delete-team');
                     } else {
                         $scope.errorNotify = ErrorService;
@@ -740,7 +831,7 @@
 
             $scope.addUser = function () {
                 TeamService.addUser($scope.input, function (r, msg) {
-                    if (r) {
+                    if (r == 1) {
                         successFunc('add-user');
                     } else {
                         $scope.errorNotify = ErrorService;
@@ -752,7 +843,7 @@
             $scope.removeUser = function () {
                 console.log($scope.input);
                 TeamService.removeUser($scope.input, function (r, msg) {
-                    if (r) {
+                    if (r == 1) {
                         successFunc('remove-user');
                     } else {
                         $scope.errorNotify = ErrorService;
@@ -763,7 +854,7 @@
 
             $scope.quitTeam = function () {
                 TeamService.quitTeam($scope.input.team_id, function (r, msg) {
-                    if (r) {
+                    if (r == 1) {
                         successFunc('quit-team');
                     } else {
                         $scope.errorNotify = ErrorService;
@@ -772,25 +863,6 @@
                 });
             };
 
-
-        }
-    ]);
-    // module.controller('teamDetailController', [
-    //     '$scope',
-    //     '$stateParams',
-    //     '$http',
-    //     '$state',
-    //     '$timeout',
-    //     function ($scope, $stateParams, $http, $state, $timeout) {
-    //         $scope.team_id = $stateParams.team_id;
-    //         $scope.team_name = $stateParams.team_name;
-    //
-    //     }
-    // ]);
-    module.controller('chatController', [
-        '$scope',
-        '$rootScope',
-        function ($scope, $rootScope) {
 
         }
     ]);

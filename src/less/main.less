@@ -1,4 +1,5 @@
 @import "variable.less";
+
 /**
 Reset browser default css
 **/
@@ -22,31 +23,34 @@ time, mark, audio, video {
   font: inherit;
   vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section, main {
   display: block;
 }
+
 body {
   line-height: 1;
 }
+
 ol, ul {
   list-style: none;
 }
+
 blockquote, q {
   quotes: none;
 }
+
 blockquote:before, blockquote:after,
 q:before, q:after {
   content: '';
 }
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-
-
-
 
 /*
 global setting
@@ -58,14 +62,14 @@ body {
   position: fixed;
   top: 0;
   bottom: 0;
-  background-image:  url("/images/newdb.jpeg");
-  background-repeat:no-repeat;
+  background-image: url("/images/newdb.jpeg");
+  background-repeat: no-repeat;
   background-size: cover;
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 
 button {
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif !important;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 
 .clearfix:after,
@@ -78,26 +82,26 @@ button {
 * {
   box-sizing: border-box;
 }
+
 a:hover,
 a:focus,
 a:link,
-a:visited{
+a:visited {
   text-decoration: none;
 }
-
 
 /**
 scroll bar
 **/
 
 * {
-  scrollbar-arrow-color: rgb(200,200,200);
-  scrollbar-3dlight-color: rgb(200,200,200);
-  scrollbar-highlight-color: rgb(200,200,200);
-  scrollbar-shadow-color: rgb(200,200,200);
-  scrollbar-darkshadow-color: rgb(200,200,200);
-  scrollbar-face-color: rgb(200,200,200);
-  scrollbar-track-color: rgb(240,240,240);
+  scrollbar-arrow-color: rgb(200, 200, 200);
+  scrollbar-3dlight-color: rgb(200, 200, 200);
+  scrollbar-highlight-color: rgb(200, 200, 200);
+  scrollbar-shadow-color: rgb(200, 200, 200);
+  scrollbar-darkshadow-color: rgb(200, 200, 200);
+  scrollbar-face-color: rgb(200, 200, 200);
+  scrollbar-track-color: rgb(240, 240, 240);
 }
 
 ::-webkit-scrollbar {
@@ -105,28 +109,36 @@ scroll bar
   height: 10px;
   color: #009688;
 }
+
 ::-webkit-scrollbar-button {
   display: none;
 }
+
 ::-webkit-scrollbar-track {
   display: none;
 }
+
 ::-webkit-scrollbar-track-piece {
-  background: rgb(240,240,240);
+  background: rgb(240, 240, 240);
 }
+
 ::-webkit-scrollbar-thumb {
-  background: rgb(200,200,200);
+  background: rgb(200, 200, 200);
   border-radius: 2em;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(180,180,180);
+  background: rgb(180, 180, 180);
 }
+
 ::-webkit-scrollbar-corner {
-  background: rgb(200,200,200);
+  background: rgb(200, 200, 200);
 }
+
 ::-webkit-scrollbar-resizer {
-  background: rgb(200,200,200);
+  background: rgb(200, 200, 200);
 }
+
 /*
 Header  Navigation
 */
@@ -151,9 +163,9 @@ Header  Navigation
       cursor: pointer;
     }
   }
-  ul {
+  > ul {
     float: right;
-    li {
+    > li {
       display: inline-block;
       text-align: center;
       cursor: pointer;
@@ -162,6 +174,53 @@ Header  Navigation
       -ms-transition: all .5s ease-in-out;
       -o-transition: all .5s ease-in-out;
       transition: all .5s ease-in-out;
+      outline: none !important;
+      &:focus {
+        outline: none !important;
+      }
+      &.notify-btn {
+        position: relative;
+        i {
+          position: absolute;
+          top: 18px;
+          left: 18px;
+          color: white;
+        }
+        .notif-list {
+          display: block;
+          position: absolute;
+          top: 70px;
+          right: 0;
+          z-index: 100;
+          background-color: @secondary-bg-color;
+          color: white;
+          height: auto;
+          overflow: visible;
+          &:before {
+            position: absolute;
+            right: 0;
+            top: -10px;
+            width: 0;
+            height: 0;
+            display: block;
+            content: ' ';
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid @secondary-bg-color;
+            overflow: visible;
+            z-index: 100;
+          }
+          li.notif-item {
+            display: block;
+            width: 300px;
+            min-height: 40px;
+            height: auto;
+            overflow-y: visible;
+            line-height: 40px;
+            border-bottom: 1px solid #4b4a5e;
+          }
+        }
+      }
       &:hover {
         .convert-color(#009688, white);
       }
@@ -173,11 +232,15 @@ Header  Navigation
         &.logout {
           width: 50px;
           position: relative;
-          i{
+          i {
             position: absolute;
             left: 14px;
             top: -16px;
           }
+        }
+        &.notify-icon {
+          width: 100px;
+          padding-left: 40px;
         }
         &.important {
           color: @important;
@@ -203,29 +266,35 @@ Header  Navigation
   .loading-text {
     position: absolute;
     top: 38%;
-    left:43.5%;
+    left: 43.5%;
     font-size: 1.3em;
     z-index: 99999;
     color: @primary-text-color;
   }
 }
 
-
 /*
 Setting for angular material
 */
 
 .md-input-message-animation {
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+
 form {
   overflow: auto;
 }
-.md-block{
+
+.md-block {
   margin: 30px 0;
 }
+
 .md-input {
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.md-event-calendar-create-link {
+  display: block !important;
 }
 
 

@@ -23,7 +23,9 @@ app.controller('settingController', ['$scope',
         };
 
         $scope.changePassword = function () {
-            console.log('change pwd');
+            if($scope.changePasswordForm.$invalid){
+                return;
+            }
             UserService.changePassword({
                 old_pwd: $scope.currentPassword,
                 new_pwd: $scope.newPassword
@@ -68,6 +70,9 @@ app.controller('settingController', ['$scope',
             //console.log("upload-> dataUrl: " + dataUrl + " name: " + file_name);
 
             // file format validation
+            if($scope.myImage == ''){
+                return;
+            }
             var file_type = file_name.substring(file_name.lastIndexOf('.'), file_name.length).toLocaleLowerCase();
             if (file_type != '.jpg' && file_type != '.jpeg' && file_type != '.png' && file_type && '.gif') {
                 $window.alert("Unacceptable file format, please choose an image file.");

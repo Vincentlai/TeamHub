@@ -97,6 +97,18 @@ router.delete('/delete', function (req, res) {
     });
 });
 
+router.delete('/deleteComment', function (req, res) {
+
+    var sess = req.session;
+    var post_id = req.query.post_id;
+    var comment_id = req.query.comment_id;
+
+    post.deleteComment(sess, post_id, comment_id, function (found) {
+        console.log(found);
+        res.json(found);
+    });
+});
+
 router.post('/likeOrUnlike', function (req, res) {
     var post_id = req.body.post_id;
     var sess = req.session;

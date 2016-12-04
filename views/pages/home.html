@@ -24,7 +24,7 @@
                 <li>
                     <div ui-sref="home.setting" class="link">
                         <i class="material-icons">settings</i>
-                        <a>Setting</a>
+                        <a>Settings</a>
                     </div>
                 </li>
             </ul>
@@ -43,21 +43,21 @@
                     <ul class="submenu">
                         <li ui-sref="home.posts({team_id:teamItem.id})" ng-class="{'selected': isPost&&isSelected(teamItem.id)}">
                                 <i class="material-icons">assignment</i>
-                                <a>Post</a>
+                                <a>Posts</a>
                         </li>
                         <li ui-sref="home.chat({team_id:teamItem.id})"  ng-class="{'selected': isChat&&isSelected(teamItem.id)}">
                                 <i class="material-icons">chat</i>
-                                <a> Chat Rooms</a>
+                                <a>Chat Room</a>
                         </li>
 
                         <li ui-sref="home.events({team_id:teamItem.id})" ng-class="{'selected': isEvent&&isSelected(teamItem.id)}">
                                 <i class="material-icons">event</i>
-                                <a>Event</a>
+                                <a>Events</a>
                         </li>
 
                         <li ui-sref="home.files({team_id:teamItem.id})"  ng-class="{'selected': isFile&&isSelected(teamItem.id)}">
                                 <i class="material-icons">folder</i>
-                                <a>File</a>
+                                <a>Files</a>
                         </li>
                     </ul>
                 </li>

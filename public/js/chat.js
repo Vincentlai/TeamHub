@@ -1,5 +1,6 @@
 var app = angular.module('chat', []);
 
+// UNNECESSARY:
 // app.config(function ($socketProvider) {
 //     $socketProvider.setConnectionUrl('http://localhost:8080'); // when using local machine
 //     //$socketProvider.setConnectionUrl('http://localhost:3000'); // when using vagrant
@@ -14,9 +15,12 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
                 .toString(16)
                 .substring(1);
         }
+
         return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
             s4() + '-' + s4() + s4() + s4();
     }
+
+    $rootScope.inChatRoomTeamId = $rootScope.selectedTeamId;
 
     var index = 0;
     var role_arr = [];
@@ -34,13 +38,13 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
     // check if user has avatar
     $http.get('/users/download_avatar')
         .then(
-        function (res) {
-            if (!res.data.code) {
-                self_icon = '/users/download_avatar';
+            function (res) {
+                if (!res.data.code) {
+                    self_icon = '/users/download_avatar';
+                }
+            }, function (error) {
+                console.log('error in get team info ' + error);
             }
-        }, function (error) {
-            console.log('error in get team info ' + error);
-        }
         );
     // generate a GUID
     var uuid = guid();
@@ -55,21 +59,17 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
     };
 
     $scope.hasImg = function (index) {
-        if ($scope.msg_list[index].file_id) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+        return $scope.msg_list[index].file_id;
+    };
 
     $scope.zoomIn = function (file_id) {
         $scope.zoom_in_file_id = file_id;
         $scope.showZoomIn = true;
-    }
+    };
 
     $scope.ZoomOut = function () {
         $scope.showZoomIn = false;
-    }
+    };
 
     /* on receive team message */
     $socket.on('team_msg', function (json) {
@@ -84,9 +84,9 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
             var file_id = json.file_id;
 
             //noinspection JSAnnotator
-            $scope.msg_list.push({ index, nickname, msg, time, file_id });
+            $scope.msg_list.push({index, nickname, msg, time, file_id});
             var url = GET_AVATAR_URL + json.user_id;
-            role_arr.push({ class: "other", src: url });
+            role_arr.push({class: "other", src: url});
             index++;
             console.log('i got msg' + msg);
         }
@@ -94,6 +94,9 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
 
     /* on send team message */
     $scope.emitTeamMsg = function emitTeamMsg() {
+        if (angular.isUndefined($scope.dataToSend)) {
+            return;
+        }
 
         var nickname = $rootScope.user.nickname;
         var user_id = $rootScope.user.user_id;
@@ -128,8 +131,8 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
         $scope.dataToSend = "";
 
         //noinspection JSAnnotator
-        $scope.msg_list.push({ index, nickname, msg, time });
-        role_arr.push({ class: "self", src: self_icon });
+        $scope.msg_list.push({index, nickname, msg, time});
+        role_arr.push({class: "self", src: self_icon});
         index++;
     };
 
@@ -145,8 +148,10 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
         var file = evt.currentTarget.files[0];
 
         console.log(evt.currentTarget.files);
-        file_name = file.name; console.log('name: ' + file.name);
-        file_size = file.size; console.log('size: ' + file.size + ' Bytes');
+        file_name = file.name;
+        console.log('name: ' + file.name);
+        file_size = file.size;
+        console.log('size: ' + file.size + ' Bytes');
 
         var reader = new FileReader();
         reader.onload = function (evt) {
@@ -207,8 +212,8 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
                             $socket.emit('team_msg', json);
 
                             //noinspection JSAnnotator
-                            $scope.msg_list.push({ index, nickname, msg, time, file_id });
-                            role_arr.push({ class: "self", src: self_icon });
+                            $scope.msg_list.push({index, nickname, msg, time, file_id});
+                            role_arr.push({class: "self", src: self_icon});
                             index++;
 
 
@@ -217,9 +222,11 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
                         }
                     });
                 }, function (response) {
-                    if (response.status > 0) {}
+                    if (response.status > 0) {
+                    }
                     $scope.isUploading = false;
-                }, function (evt) { });
+                }, function (evt) {
+                });
             });
         };
         reader.readAsDataURL(file);
@@ -227,42 +234,45 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
     angular.element(document.querySelector('#pick_file')).on('change', handleFileSelect);
 
     // check when selected team changes
-    $scope.$watch(function () { return $rootScope.selectedTeamId; }, function (newVal, oldVal) {
-
+    $scope.$watch(function () {
+        return $rootScope.selectedTeamId;
+    }, function (newVal, oldVal) {
+        $rootScope.is_loading = true;
         // load chat history
         $http.get('/teams/chat_history?team_id=' + newVal)
             .then(
-            function (res) {
-                var detail;
-                if (res.data.code == 1) {
-                    var history = res.data.history;
-                    var user_id = $rootScope.user.user_id;
-                    $scope.msg_list = [];
-                    role_arr = [];
-                    for (var i = 0; i < history.length; i++) {
-                        var nickname = history[i].nickname;
-                        var msg = history[i].message;
-                        var time = history[i].time;
-                        var file_id = history[i].file_id;
+                function (res) {
+                    var detail;
+                    if (res.data.code == 1) {
+                        var history = res.data.history;
+                        var user_id = $rootScope.user.user_id;
+                        $scope.msg_list = [];
+                        role_arr = [];
+                        for (var i = 0; i < history.length; i++) {
+                            var nickname = history[i].nickname;
+                            var msg = history[i].message;
+                            var time = history[i].time;
+                            var file_id = history[i].file_id;
 
-                        //noinspection JSAnnotator
-                        $scope.msg_list.push({ i, nickname, msg, time, file_id });
+                            //noinspection JSAnnotator
+                            $scope.msg_list.push({i, nickname, msg, time, file_id});
 
-                        if (history[i].user_id == user_id) {
-                            role_arr.push({ class: "self", src: self_icon });
-                        } else {
-                            var url = GET_AVATAR_URL + history[i].user_id;
-                            role_arr.push({ class: "other", src: url });
+                            if (history[i].user_id == user_id) {
+                                role_arr.push({class: "self", src: self_icon});
+                            } else {
+                                var url = GET_AVATAR_URL + history[i].user_id;
+                                role_arr.push({class: "other", src: url});
+                            }
                         }
+                        $rootScope.is_loading = false;
+                    } else {
+                        // clear arrays
+                        $scope.msg_list = [];
+                        role_arr = [];
                     }
-                } else {
-                    // clear arrays
-                    $scope.msg_list = [];
-                    role_arr = [];
-                }
-            }, function (error) {
-                console.log('error in get team chat history ' + error);
-            });
+                }, function (error) {
+                    console.log('error in get team chat history ' + error);
+                });
     })
 });
 // scroll list to bottom when type in or receive a new message

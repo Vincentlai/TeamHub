@@ -263,6 +263,7 @@
                                     user_id: comment.user_id,
                                     nickname: comment.nickname,
                                     comment: comment.comment,
+                                    comment_id: comment._id.toString(),
                                     time: new Date(parseInt(comment._id.toString().substring(0, 8), 16) * 1000)
                                 }
                             );
@@ -272,6 +273,16 @@
                         console.log(data.msg);
                     }
                 });
+            };
+            me.deleteComment = function (post_id, comment_id, callback) {
+                var url = 'posts/deleteComment?post_id=' + post_id + '&comment_id=' + comment_id;
+                CallApi.deleteApi(url, function (code, data) {
+                    if (code == 1) {
+                        callback();
+                    } else {
+                        console.log(data.msg);
+                    }
+                })
             }
         }
     ]);
@@ -368,7 +379,7 @@
         '$http',
         function ($q, $http) {
             var me = this;
-            var addNewsToArray = function (news) {
+            var addNewsToArray = function (news, team_id) {
                 var list = [];
                 var item;
                 for (var j = 0; j < news.length; j++) {
@@ -379,7 +390,8 @@
                         action_target: news[j].action_target,
                         action_target_id: news[j].action_target_id,
                         time_in_mili: new Date(parseInt(news[j]._id.toString().substring(0, 8), 16) * 1000),
-                        target_team: news[j].target_team_name
+                        target_team: news[j].target_team_name,
+                        target_team_id: team_id
                     };
                     list.unshift(item);
                 }
@@ -394,9 +406,9 @@
                         function (result) {
                             angular.forEach(result, function (res) {
                                 if (res.data.code == 1) {
-                                    news_list = news_list.concat(addNewsToArray(res.data.news));
+                                    news_list = news_list.concat(addNewsToArray(res.data.news, res.data.team_id));
                                 } else {
-                                    console.log('error in get news');
+                                    console.log(res.data.msg);
                                 }
                             });
                             return news_list;
@@ -425,7 +437,8 @@
                         description: events[j].description,
                         creator_id: events[j].creator_id,
                         creator_nickname: events[j].creator_nickname,
-                        team_name: team_name
+                        team_name: team_name,
+                        team_id: events[j].team_id
                     };
                     list.unshift(item);
                 }

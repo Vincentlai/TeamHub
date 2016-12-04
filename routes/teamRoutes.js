@@ -220,7 +220,4 @@ router.get('/chat_history',function(req, res)
         res.json(found);
     });
 });
-
-
-
 module.exports = router;
