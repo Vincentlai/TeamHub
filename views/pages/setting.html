@@ -4,7 +4,7 @@
         <div class="current-avatar">
             <img ng-src="{{user.current_avatar}}"/>
             <a class="ava" ng-click="openTab=!openTab">
-                Upload Avatar
+                UPLOAD AVATAR
             </a>
             <!--<div class="fileUpload ava">-->
             <!--<span>Upload Avatar</span>-->
@@ -105,7 +105,7 @@
                     </div>
                     <div class="btns">
                         <a ng-click="changePassword()"
-                           ng-class="{disabled: changePasswordForm.$invalid}" >Submit</a>
+                           ng-class="{disabled: changePasswordForm.$invalid}">SUBMIT</a>
                     </div>
                     <!--<a ng-click="reset()">reset</a>-->
                 </form>
@@ -131,7 +131,7 @@
 
                 <div class="select-file">
                     <label for="fileInput" class="custom-file-upload">
-                        Select File
+                        SELECT FILE
                     </label>
                     <input id="fileInput" type="file"/>
                 </div>
@@ -140,7 +140,7 @@
                     <a class="ava upload"
                        ng-class="{disabled: myImage==''}"
                        ng-click="upload(myCroppedImage)">
-                        Upload
+                        UPLOAD
                     </a>
                 </div>
                 <div class="progress" ng-show="progress >= 0">

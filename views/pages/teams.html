@@ -5,12 +5,12 @@
         </h1>
         <a ng-click="createForm('create-team')" class="control-btn">
             <i class="material-icons">group_add</i>
-            New Team
+            NEW TEAM
         </a>
     </div>
 
     <div class="card-container clearfix">
-        <div class="card" ng-repeat="teamCard in teamsDetail" id="{{teamCard.name}}">
+        <div class="card" ng-repeat="teamCard in teamsDetail | orderBy: 'name'" id="{{teamCard.name}}">
             <div class="card-content">
                 <h1>{{teamCard.name}}</h1>
                 <h2>

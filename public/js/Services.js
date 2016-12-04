@@ -58,6 +58,8 @@
                             me.error = true;
                             $timeout(function () {
                                 me.error = false;
+                                me.data = '';
+                                $state.go('login');
                             }, 4000);
                         } else {
                             me.msg = r.data.msg;
@@ -290,8 +292,7 @@
     module.service('FileService', [
         'CallApi',
         'Upload',
-        '$timeout',
-        function (CallApi, Upload, $timeout) {
+        function (CallApi, Upload) {
             var me = this;
             me.getSize = function (bytes) {
                 var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];

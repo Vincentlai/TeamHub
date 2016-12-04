@@ -258,7 +258,7 @@
   100% {
     width: 100%;
     border-radius: 4px;
-    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 3px 3px -1px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0px 3px 3px -1px rgba(0, 0, 0, 0.12);
   }
 }
 @keyframes fade-in {
@@ -533,7 +533,6 @@ popUp Window
   cursor: pointer;
   -webkit-transition: color .3s linear;
   -moz-transition: color .3s linear;
-  -ms-transition: color .3s linear;
   -o-transition: color .3s linear;
   transition: color .3s linear;
 }
@@ -821,13 +820,13 @@ a.control-btn:hover {
   padding: 24px 20px 24px 24px;
   background-color: white;
   overflow: auto;
+    min-height: 500px;
   border-radius: .25em .25em .4em .4em;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 .left-container {
   float: left;
   width: 64%;
-  min-height: 500px;
   position: relative;
   overflow: visible;
 }
@@ -1032,7 +1031,6 @@ a.control-btn:hover {
   transform: translate3d(400px, 0, 400px);
   -webkit-transition: all .6s linear;
   -moz-transition: all .6s linear;
-  -ms-transition: all .6s linear;
   -o-transition: all .6s linear;
   transition: all .6s linear;
 }
@@ -1079,7 +1077,6 @@ a.control-btn:hover {
   border-radius: 2px;
   -webkit-transition: all .5s;
   -moz-transition: all .5s;
-  -ms-transition: all .5s;
   -o-transition: all .5s;
   transition: all .5s;
 }
@@ -1165,7 +1162,6 @@ a.control-btn:hover {
   border-radius: 2px;
   -webkit-transition: all .5s;
   -moz-transition: all .5s;
-  -ms-transition: all .5s;
   -o-transition: all .5s;
   transition: all .5s;
   overflow: hidden;
@@ -1253,7 +1249,6 @@ a.control-btn:hover {
   cursor: pointer;
   -webkit-transition: all .5s;
   -moz-transition: all .5s;
-  -ms-transition: all .5s;
   -o-transition: all .5s;
   transition: all .5s;
 }
@@ -1343,7 +1338,6 @@ img.big {
   border-radius: 2px;
   -webkit-transition: all .5s;
   -moz-transition: all .5s;
-  -ms-transition: all .5s;
   -o-transition: all .5s;
   transition: all .5s;
 }
