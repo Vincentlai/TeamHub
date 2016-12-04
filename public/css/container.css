@@ -798,15 +798,15 @@ a.control-btn:hover {
 .left-container,
 .right-container {
   margin: 20px 4% 0 4%;
+  padding: 24px 20px 24px 24px;
+  background-color: white;
   overflow: auto;
+  border-radius: .25em .25em .4em .4em;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 .left-container {
   float: left;
   width: 64%;
-  background-color: white;
-  border-radius: .25em .25em .4em .4em;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-  padding: 24px 20px 24px 24px;
   min-height: 500px;
   position: relative;
   overflow: visible;
@@ -852,9 +852,6 @@ a.control-btn:hover {
 .right-container {
   float: right;
   width: 20%;
-  background-color: white;
-  border-radius: .25em .25em .4em .4em;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 .right-container .events-list {
   max-height: 750px;
@@ -864,41 +861,18 @@ a.control-btn:hover {
 .right-container .events-list .event-item {
   display: block;
   position: relative;
-  margin-bottom: 20px;
-  border: 1px solid #fc7169;
-  border-left: 5px solid #fc7169;
-  padding: 5px;
-  padding-top: 15px;
-  padding-bottom: 12px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(225, 225, 225, 0.8);
+  padding-bottom: 10px;
   font-size: 1.1em;
   line-height: 1.2em;
-  min-height: 80px;
   cursor: pointer;
-  color: #fc7169;
-  border-radius: .25em .25em .4em .4em;
-  box-shadow: 0 0 10px rgba(252, 113, 105, 0.5);
-  -webkit-transition: all .3s;
-  -moz-transition: all .3s;
-  -o-transition: all .3s;
-  transition: all .3s;
-}
-.right-container .events-list .event-item.warning {
-  border-color: rgba(159, 96, 0, 0.5);
-  color: #9f6000;
-  box-shadow: 0 0 10px rgba(159, 96, 0, 0.5);
-}
-.right-container .events-list .event-item.warning:hover {
-  background-color: rgba(159, 96, 0, 0.8);
 }
 .right-container .events-list .event-item .event-name {
-  font-size: 1.4em;
+  font-weight: bold;
 }
 .right-container .events-list .event-item a.link {
   cursor: pointer;
-}
-.right-container .events-list .event-item:hover {
-  background-color: rgba(252, 113, 105, 0.8);
-  color: white;
 }
 .filter {
   height: 50px;

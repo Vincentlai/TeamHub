@@ -622,15 +622,17 @@ a.control-btn {
 
 .left-container, .right-container {
   margin: 20px 4% 0 4%;
+  padding: 24px 20px 24px 24px;
+  background-color: white;
   overflow: auto;
+  .default-border;
 }
+
+
 
 .left-container {
   float: left;
   width: 64%;
-  background-color: white;
-  .default-border;
-  padding: 24px 20px 24px 24px;
   min-height: 500px;
   position: relative;
   overflow: visible;
@@ -678,8 +680,6 @@ a.control-btn {
 .right-container {
   float: right;
   width: 20%;
-  background-color: white;
-  .default-border;
   .events-list {
     max-height: 750px;
     overflow-y: auto;
@@ -687,43 +687,17 @@ a.control-btn {
     .event-item {
       display: block;
       position: relative;
-      margin-bottom: 20px;
-      border: 1px solid @important;
-      border-left: 5px solid @important;
-      padding: 5px;
-      padding-top: 15px;
-      padding-bottom: 12px;
-      //border-bottom: 1px solid @light-gray-border;
+      margin-bottom: 10px;
+      border-bottom: 1px solid @light-gray-border;
+      padding-bottom: 10px;
       font-size: 1.1em;
       line-height: 1.2em;
-      min-height: 80px;
       cursor: pointer;
-      //background-color: @light-important;
-      color: @important;
-      border-radius: .25em .25em .4em .4em;
-      box-shadow: 0 0 10px @light-important;
-      -webkit-transition: all .3s;
-      -moz-transition: all .3s;
-      -o-transition: all .3s;
-      transition: all .3s;
-      &.warning {
-        //background-color: @light-warning;
-        border-color: @light-warning;
-        color: @warning;
-        box-shadow: 0 0 10px @light-warning;
-        &:hover{
-          background-color: @dark-warning;
-        }
-      }
       .event-name {
-        font-size: 1.4em;
+        font-weight: bold;
       }
       a.link {
         cursor: pointer;
-      }
-      &:hover {
-        background-color: @dark-important;
-        color: white;
       }
     }
   }
