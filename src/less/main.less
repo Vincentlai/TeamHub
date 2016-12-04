@@ -151,9 +151,9 @@ Header  Navigation
       cursor: pointer;
     }
   }
-  ul {
+  >ul {
     float: right;
-    li {
+    >li {
       display: inline-block;
       text-align: center;
       cursor: pointer;
@@ -162,12 +162,57 @@ Header  Navigation
       -ms-transition: all .5s ease-in-out;
       -o-transition: all .5s ease-in-out;
       transition: all .5s ease-in-out;
+      outline: none!important;
+      &:focus{
+        outline: none!important;
+      }
+      &.notify-btn {
+        position: relative;
+        i{
+          position: absolute;
+          top: 18px;
+          left: 18px;
+          color: white;
+        }
+        .notif-list {
+          display: block;
+          position: absolute;
+          top: 70px;
+          right: 0;
+          z-index: 100;
+          background-color: @secondary-bg-color;
+          color: white;
+          height: auto;
+          overflow: visible;
+          &:before{
+            position: absolute;
+            right: 0;
+            top: -10px;
+            width: 0;
+            height: 0;
+            display: block;
+            content: ' ';
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid @secondary-bg-color;
+            overflow: visible;
+            z-index: 100;
+          }
+          li.notif-item {
+            display: block;
+            width: 300px;
+            height: 40px;
+            line-height: 40px;
+            border-bottom: 1px solid #4b4a5e;
+          }
+        }
+      }
       &:hover {
         .convert-color(#009688, white);
       }
       a {
         display: inline-block;
-        color: black;
+        color: white;
         font-weight: bold;
         width: 130px;
         &.logout {
@@ -178,6 +223,10 @@ Header  Navigation
             left: 14px;
             top: -16px;
           }
+        }
+        &.notify-icon {
+          width: 100px;
+          padding-left: 40px;
         }
         &.important {
           color: @important;

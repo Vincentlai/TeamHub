@@ -261,12 +261,11 @@
                 });
             };
 
-            $scope.showNotif = false;
             $scope.showNotification = function () {
                 $scope.showNotif = !$scope.showNotif;
                 $scope.num_of_notif = undefined;
                 console.log($scope.notif_list);
-            }
+            };
 
             /* on receive NEW team message */
             $scope.notif_list = [];

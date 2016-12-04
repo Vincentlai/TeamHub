@@ -10,20 +10,23 @@
         <li><a class="important" ui-sref="signup">SIGN UP</a></li>
     </ul>
     <ul ng-if="user">
-        <li ng-click="showNotification()">
+
+
+        <li ng-click="showNotification()" class="notify-btn">
+            <i class="material-icons">notifications</i>
+            <a class="nav-link notify-icon">
+                {{num_of_notif}}
+            </a>
             <md-tooltip md-direction="bottom">
                 {{hover_msg()}}
             </md-tooltip>
-            <a id="dropdown" class="nav-link">
-                <i id="notifIcon" class="material-icons">notifications</i>
-                <text>{{num_of_notif}}</text>
-                <div ng-repeat="json in notif_list" id="dropdown-content" ng-show="showNotif">
-                    <a class="notiaf_row">
-                        {{'You have '+json.number+' new '+json.type+' '+json.activity+' in '+json.team_name+'.'}}
-                    </a>
-                </div>
-            </a>
+            <ul class="notif-list" ng-show="showNotif">
+                <li class="notif-item" ng-repeat="json in notif_list">
+                    {{'You have '+json.number+' new '+json.type+' '+json.activity+' in '+json.team_name+'.'}}
+                </li>
+            </ul>
         </li>
+
         <li ui-sref="home.setting">
             <md-tooltip md-direction="bottom">
                 Account Setting
@@ -40,39 +43,3 @@
     </ul>
 </div>
 
-<style>
-
-    #notifIcon{
-        position: relative;
-        top: 5px;
-        
-    }
-
-    *:focus{
-        outline: none;
-    }
-    #dropdown {
-        position: relative;
-        display: inline-block;
-        width: 70px;
-    }
-    /* Dropdown Content (Hidden by Default) */
-    
-    #dropdown-content {
-        position: absolute;
-        background-color: #f9f9f9;
-        min-width: 300px;
-        box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-        z-index: 9999999999;
-        right: 189px;
-    }
-    /* Links inside the dropdown */
-    
-    #dropdown-content a{
-        font-size: 11px;
-        color: black;
-        text-decoration: none;
-        margin-right: 2px;
-        margin-left: 2px;
-    }
-</style>
