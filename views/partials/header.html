@@ -22,7 +22,7 @@
             </md-tooltip>
             <ul class="notif-list" ng-show="showNotif">
                 <li class="notif-item" ng-repeat="json in notif_list">
-                    {{'You have '+json.number+' new '+json.type+' '+json.activity+' in '+json.team_name+'.'}}
+                    {{json.msg}}
                 </li>
             </ul>
         </li>

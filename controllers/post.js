@@ -344,6 +344,17 @@ exports.comment = function (sess, post_id, comment, callback) {
 
                     post_obj.save(function (err, obj) {
                         if (!err) {
+
+                            // send comment notification
+                            io.emit('notification', {
+                                type: 'comment',
+                                team_id: team_obj._id,
+                                team_name: team_obj.name,
+                                nickname: sess.nickname,
+                                user_id: user_id,
+                                owner_id: post_obj.user_id
+                            });
+
                             callback({
                                 'code': '1',
                                 'comment': comment,
@@ -418,12 +429,28 @@ exports.likeOrUnlike = function (sess, post_id, flag, callback) {
                             'user_id': user_id,
                             'nickname': sess.nickname,
                         });
-                        post_obj.save();
-                        callback({
-                            'code': '1',
-                            'msg': 'like success'
+
+                        // send like notification
+                        io.emit('notification', {
+                            type: 'like',
+                            team_id: team_obj._id,
+                            team_name: team_obj.name,
+                            nickname: sess.nickname,
+                            user_id: user_id,
+                            owner_id: post_obj.user_id
                         });
-                        return;
+
+                        post_obj.save(function (err, msg) {
+                            if (!err) {
+
+                                callback({
+                                    'code': '1',
+                                    'msg': 'like success'
+                                });
+                                return;
+                            }
+                        });
+
                     } else {
                         //flag = true --> unlike
                         for (var j = 0; j < post_obj.likes.length; j++) {
