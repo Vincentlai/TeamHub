@@ -1,7 +1,7 @@
 <!--I am the header of index page-->
 <!--I am the navigation bar-->
 
-<div class="nav-bar clearfix" >
+<div class="nav-bar clearfix">
     <div class="logo">
         <img ui-sref="home.overview" src="/images/logo.png" alt="logo">
     </div>
@@ -10,11 +10,28 @@
         <li><a class="important" ui-sref="signup">SIGN UP</a></li>
     </ul>
     <ul ng-if="user">
+
+
+        <li ng-click="showNotification()" class="notify-btn">
+            <i class="material-icons">notifications</i>
+            <a class="nav-link notify-icon">
+                {{num_of_notif}}
+            </a>
+            <md-tooltip md-direction="bottom">
+                {{hover_msg()}}
+            </md-tooltip>
+            <ul class="notif-list" ng-show="showNotif">
+                <li class="notif-item" ng-repeat="json in notif_list">
+                    {{json.msg}}
+                </li>
+            </ul>
+        </li>
+
         <li ui-sref="home.setting">
             <md-tooltip md-direction="bottom">
                 Account Setting
             </md-tooltip>
-            <a class="nav-link" >{{user.nickname}}</a>
+            <a class="nav-link">{{user.nickname}}</a>
         </li>
         <li ng-click="logout()">
             <md-tooltip md-direction="bottom">
@@ -25,3 +42,4 @@
         </li>
     </ul>
 </div>
+
