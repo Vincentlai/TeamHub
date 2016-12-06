@@ -53,8 +53,6 @@ app.controller('settingController', ['$scope',
             $scope.createForm('change-avatar');
             var file = evt.currentTarget.files[0];
             file_name = file.name;
-            console.log(file.name);
-            console.log(file.size);
             var reader = new FileReader();
             reader.onload = function (evt) {
                 $scope.$apply(function ($scope) {
@@ -67,7 +65,6 @@ app.controller('settingController', ['$scope',
 
         /* Upload */
         $scope.upload = function (dataUrl) {
-            //console.log("upload-> dataUrl: " + dataUrl + " name: " + file_name);
 
             // file format validation
             if($scope.myImage == ''){

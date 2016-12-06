@@ -245,25 +245,25 @@ exports.delete = function (sess, post_id, callback) {
             // check if user is the creator of this team
             if (user_id == post_obj.user_id) {
 
-                var files = post_obj.files;
-                if (files.length > 0) {
-                    for (var i = 0; i < files.length; i++) {
-                        models.File.findOne({_id: files[i].file_id}, function (err, file_obj) {
-                            if (file_obj) {
-                                // delete file
-                                file_obj.remove();
-
-                                models.FileData.findOne({file_id: files[i].file_id}, function (err, file_data_obj) {
-
-                                    if (file_data_obj) {
-                                        // delete file over
-                                        file_data_obj.remove();
-                                    }
-                                });
-                            }
-                        });
-                    }
-                }
+                // var files = post_obj.files;
+                // if (files.length > 0) {
+                //     for (var i = 0; i < files.length; i++) {
+                //         models.File.findOne({_id: files[i].file_id}, function (err, file_obj) {
+                //             if (file_obj) {
+                //                 // delete file
+                //                 file_obj.remove();
+                //
+                //                 models.FileData.findOne({file_id: files[i].file_id}, function (err, file_data_obj) {
+                //
+                //                     if (file_data_obj) {
+                //                         // delete file over
+                //                         file_data_obj.remove();
+                //                     }
+                //                 });
+                //             }
+                //         });
+                //     }
+                // }
 
 
                 post_obj.remove(function (err, removed) {

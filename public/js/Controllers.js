@@ -32,8 +32,6 @@
 
                     scope.$watch(attrs.ngModel, function (n, o) {
                         if (n !== o) {
-                            console.log(n);
-                            console.log(o);
                             var url = '/users/is_exist?email=' + n;
                             $http.get(url)
                                 .then(
@@ -233,7 +231,6 @@
                 if ($scope.notif_list.length != 0) {
                     $scope.showNotif = !$scope.showNotif;
                     $scope.num_of_notif = undefined;
-                    console.log($scope.notif_list);
                 }
             };
 
@@ -302,8 +299,6 @@
                                 msg: 'You have 1 new ' + json.type + ' in ' + json.team_name + '.'
                             });
                         }
-                        console.log($scope.notif_list.length);
-
                         break;
                     }
                 }
@@ -335,12 +330,18 @@
             function ($scope, postList, $state, $http, $timeout, $rootScope, ErrorService, PostService, Upload, $q) {
 
                 $scope.postList = postList;
-                $scope.postList.forEach(function (post) {
-                    post.visibleComment = false;
-                });
+                if (angular.isDefined($scope.postList)) {
+                    $scope.postList.forEach(function (post) {
+                        post.visibleComment = false;
+                    });
+                }
                 $scope.isPosting = false;
                 $scope.isDeleting = false;
-                $scope.numOfPosts = $scope.postList.length;
+                if (angular.isDefined($scope.postList)) {
+                    $scope.numOfPosts = $scope.postList.length;
+                } else {
+                    $scope.numOfPosts = 0;
+                }
 
                 //initialize file upload array
                 $scope.post_files = [];
@@ -355,12 +356,10 @@
                         comment: data.comment,
                         time: new Date(parseInt(data.time.toString().substring(0, 8), 16) * 1000)
                     };
-                    console.log(comment);
                     $scope.postList[index].commentList.push(comment);
                     $scope.postList[index].comments++;
                 };
                 $scope.createPost = function () {
-                    console.log('create post');
                     if ($scope.isPosting) {
                         return;
                     }
@@ -390,9 +389,7 @@
                                 posted_files.push(result);
                                 deferred.resolve(res.data.msg);
                             } else {
-
                                 deferred.reject(res.data.msg);
-                                console.log(res.data.msg);
                             }
                         }, function (error) {
                             $scope.post_files[index].isLoading = false;
@@ -424,13 +421,11 @@
                                             ErrorService.displayError(res.data.msg);
                                         }
                                     }, function (error) {
-                                        console.log('error in creating post ' + error);
                                     }
                                 )
                         }, function (error) {
                             $scope.isPosting = false;
                             ErrorService.displayError("Error in posting...");
-                            console.log(error);
                         }
                     );
                 };
@@ -439,8 +434,6 @@
                     if ($scope.isDeleting) {
                         return;
                     }
-
-                    console.log('delete post clicked' + id);
                     $http.delete('/posts/delete?post_id=' + id)
                         .then(
                             function (res) {
@@ -458,15 +451,12 @@
                                         $scope.error = false;
                                         delete $scope.msg;
                                     }, 4000);
-                                    console.log('cannot delete post');
                                 }
                             }, function (error) {
-                                console.log('error in delete post ' + error);
                             }
                         )
                 };
                 $scope.createComment = function (id, index) {
-                    console.log('create comment');
                     var input = document.getElementById('comment-input' + index).value;
                     if (input == '')
                         return;
@@ -486,10 +476,8 @@
                                         addNewComment(res.data, index);
                                     }
                                 } else {
-                                    console.log(res.data.msg);
                                 }
                             }, function (error) {
-                                console.log('error in adding comment ' + error);
                             }
                         )
                 };
@@ -522,16 +510,13 @@
                                     $scope.postList[$scope.index].likes.splice(j, 1);
                                     $scope.postList[$scope.index].isLiked = false;
                                 } else {
-                                    console.log('cannot like or unlike');
                                 }
                             }, function (error) {
-                                console.log('error in like or unlike ' + error);
                             }
                         )
                 };
 
                 $scope.getComments = function (index, id) {
-                    console.log('load comments');
                     PostService.getComments(id, function (comments) {
                         $scope.postList[index].commentList = comments;
                         $scope.postList[index].comments = $scope.postList[index].commentList.length;
@@ -547,7 +532,6 @@
 
                 // delete comment
                 $scope.deleteComment = function (postCard, comment) {
-                    console.log('delete comment');
                     var post_id = postCard.post_id;
                     var comment_id = comment.comment_id;
                     PostService.deleteComment(post_id, comment_id, function () {
@@ -571,7 +555,6 @@
                                 $scope.post_files.push(v);
                             }(v));
                         } else {
-                            console.log('not image');
                         }
                     }
                 };
@@ -841,7 +824,6 @@
             };
 
             $scope.removeUser = function () {
-                console.log($scope.input);
                 TeamService.removeUser($scope.input, function (r, msg) {
                     if (r == 1) {
                         successFunc('remove-user');

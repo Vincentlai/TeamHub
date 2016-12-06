@@ -34,11 +34,8 @@
                                 }, 500);
 
                             } else {
-                                console.log("error message in response");
-                                console.log(response.data.code);
                             }
                         }, function (error) {
-                            console.log('error in delete event info' + error);
                         });
             }
 
@@ -85,12 +82,8 @@
                                     $state.transitionTo($state.current.name, {team_id: $rootScope.selectedTeamId},
                                         {reload: $state.current.name, inherit: false, notify: true});
                                 }, 500);
-                            } else {
-                                console.log("error message in response");
-                                console.log(response.data.msg);
                             }
                         }, function (error) {
-                            console.log('error in create events' + error);
                         }
                     )
             }

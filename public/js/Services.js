@@ -32,7 +32,6 @@
             var me = this;
             me.data = {};
             me.login = function () {
-                console.log('login');
                 $http.post('/users/login', me.data)
                     .then(function (r) {
                         if (r.data.code == 1) {
@@ -46,11 +45,9 @@
                             }, 4000);
                         }
                     }, function (e) {
-                        console.log(e.data);
                     });
             };
             me.signup = function () {
-                console.log('signup');
                 $http.post('/users/register', me.data)
                     .then(function (r) {
                         if (r.data.code == 1) {
@@ -69,7 +66,6 @@
                             }, 4000);
                         }
                     }, function (e) {
-                        console.log(e.data);
                     });
             };
             me.logout = function (callback) {
@@ -80,7 +76,6 @@
                             Auth.removeCookie();
                             callback();
                         }, function (error) {
-                            console.log('Error occurs in Logout' + error);
                         }
                     )
             };
@@ -128,7 +123,6 @@
                                 callback(code, data)
                             })
                         }, function (error) {
-                            console.log('error in ' + url + " " + error);
                         }
                     )
             };
@@ -141,7 +135,6 @@
                                 callback(code, msg)
                             })
                         }, function (error) {
-                            console.log('error in ' + url + " " + error);
                         }
                     )
             };
@@ -154,7 +147,6 @@
                                 callback(code, msg)
                             })
                         }, function (error) {
-                            console.log('error in ' + url + " " + error);
                         }
                     )
             };
@@ -272,7 +264,6 @@
                         });
                         callback(commentArray);
                     } else {
-                        console.log(data.msg);
                     }
                 });
             };
@@ -282,7 +273,6 @@
                     if (code == 1) {
                         callback();
                     } else {
-                        console.log(data.msg);
                     }
                 })
             }
@@ -409,12 +399,10 @@
                                 if (res.data.code == 1) {
                                     news_list = news_list.concat(addNewsToArray(res.data.news, res.data.team_id));
                                 } else {
-                                    console.log(res.data.msg);
                                 }
                             });
                             return news_list;
                         }, function (error) {
-                            console.log(error);
                         }
                     )
             };
@@ -458,12 +446,10 @@
                                     event_list = event_list.concat(addEventToArray(res.data.events, res.data.team_name));
                                 } else if (res.data.code == -3) {
                                 } else {
-                                    console.log('error in get events');
                                 }
                             });
                             return event_list;
                         }, function (error) {
-                            console.log(error);
                         }
                     )
             };

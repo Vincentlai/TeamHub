@@ -43,7 +43,6 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
                     self_icon = '/users/download_avatar';
                 }
             }, function (error) {
-                console.log('error in get team info ' + error);
             }
         );
     // generate a GUID
@@ -88,7 +87,6 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
             var url = GET_AVATAR_URL + json.user_id;
             role_arr.push({class: "other", src: url});
             index++;
-            console.log('i got msg' + msg);
         }
     });
 
@@ -101,8 +99,6 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
         var nickname = $rootScope.user.nickname;
         var user_id = $rootScope.user.user_id;
         var team_ui = $rootScope.selectedTeamId;
-
-        console.log(team_ui);
 
         // send json to server
         var msg = $scope.dataToSend;
@@ -146,12 +142,8 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
     var handleFileSelect = function (evt) {
 
         var file = evt.currentTarget.files[0];
-
-        console.log(evt.currentTarget.files);
         file_name = file.name;
-        console.log('name: ' + file.name);
         file_size = file.size;
-        console.log('size: ' + file.size + ' Bytes');
 
         var reader = new FileReader();
         reader.onload = function (evt) {
@@ -183,8 +175,6 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
                         var data = response.data;
 
                         if (data.code == '1') {
-
-                            console.log(data.msg);
 
                             var nickname = $rootScope.user.nickname;
                             var user_id = $rootScope.user.user_id;
@@ -218,7 +208,6 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
 
 
                         } else {
-                            console.log("upload error: " + data.msg)
                         }
                     });
                 }, function (response) {
@@ -243,6 +232,7 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
             .then(
                 function (res) {
                     var detail;
+                    $rootScope.is_loading = false;
                     if (res.data.code == 1) {
                         var history = res.data.history;
                         var user_id = $rootScope.user.user_id;
@@ -264,14 +254,12 @@ app.controller('ChatController', function Ctrl($scope, $socket, $rootScope, $htt
                                 role_arr.push({class: "other", src: url});
                             }
                         }
-                        $rootScope.is_loading = false;
                     } else {
                         // clear arrays
                         $scope.msg_list = [];
                         role_arr = [];
                     }
                 }, function (error) {
-                    console.log('error in get team chat history ' + error);
                 });
     })
 });
@@ -286,7 +274,6 @@ app.directive('scrollSection',
                 link: function ($scope, $element) {
                     $scope.$watchCollection('scrollBottom', function (newValue) {
                         if (newValue) {
-                            console.log($scope.scrollBottom.length);
                             var index = $scope.scrollBottom.length - 1;
                             var id = 'msg_' + index;
                             $location.hash(id);

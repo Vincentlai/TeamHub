@@ -1,6 +1,5 @@
 # CMPT 470 FINAL PROJECT GROUP-6
 
-# For Project Checkpoint readme, please see file "readme.txt"
 ## Team Collaboration Web Application
 
 > A web application that helps project teams to collaborate in a fast, dynamic and real-time environment. The primary technologies that we are going to use will be Express.js, Node.js, Angular.js and MongoDB.
@@ -8,41 +7,28 @@
 ## Features 
 
 - User registration
-- Update personal info(change pwd, etc)
+- Update personal info(change pwd, change avatar)
 - Sign in/out
 - Create/delete teams
-- Invite/delete memebers to/from team (Email alert maybe?)
+- Invite/delete members to/from team
 - Publish/delete new posts(text/pictures) in team
-- Comment on posts
+- Comment and Like on posts
 - Create new event/meeting using calendar
 - Instant team chat
 - File sharing
+- Real-time Notification of team activities
 
-## How to run on local
-1. Make sure that you've installed [Node.js](https://nodejs.org/)
-2. `git pull`
-3. `npm install` --- **You might need to run this command multiple times if errors occur**
-4. `gulp styles`  --- **If you are going to modify the .less files 
-run `gulp` instead of `gulp styles`
-and open a new terminal to run next step**
-5. `node app.js`
-6.  Browse http://localhost:8080/ to see the site 
+## Browse http://localhost:3000/ to see the site 
 
+## Testing accounts
+1. Email:   `test_account_1@test.com`   Password: `cmpt470`
+2. Email:   `test_account_2@test.com`   Password: `cmpt470`
 
-## How to run on VM(Vagrant)
-
-1. Make sure that you've installed [Vagrant](https://www.vagrantup.com/) & [VirtualBox](https://www.virtualbox.org/)
-2. Clone this repository
-3. In terminal, run `$vagrant up`
-4. Wait for VM to finish booting up
-5. Browse http://localhost:3000/ to see the site 
-
-## How to contribute  
-
-1. Discuss what you're going to implement with your teammates
-2. Create a new branch and name it with whatever you're going to implement
-3. When you finish implementing the feature, test it and create a `merge request`. Please add a description for it.
-4. Let your team know you have a `merge request` and it's ready for code review
+## Reference
+- We use NodeJs, ExpressJs, MongoDB and AngularJs to built this app
+- A part of UI design used [Angular Material](https://material.angularjs.org/latest/) framework and [Material Icons](https://material.io/icons/)
+- The event calendar used [Angular Material Event Calendar](https://github.com/B-3PO/angular-material-event-calendar) API
+- We use [socket.io](http://socket.io/) to implement the real-time chatting and notification
 
 ## How to access DB (through GUI)
 

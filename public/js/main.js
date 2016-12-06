@@ -3,7 +3,6 @@
  */
 ;(function () {
     'use strict';
-    console.log('I am myapp module');
     var module = angular.module('myApp', [
         'socket.io',
         'ui.router',
@@ -62,7 +61,6 @@
                                         }
                                     }, function (error) {
                                         Auth.removeCookie();
-                                        console.log('error in get user info' + error);
                                         $state.go('login');
                                     }
                                 );
@@ -166,7 +164,6 @@
                                             return res.data.posts;
                                         }
                                     }, function (error) {
-                                        console.log('error in getting post list ' + error);
                                     }
                                 )
                         }
@@ -210,7 +207,6 @@
                                             return [];
                                         }
                                     }, function (error) {
-                                        console.log('error in getting event list ' + error);
                                     }
                                 )
                         }
@@ -259,16 +255,13 @@
                                     } else {
                                         if (toState.authenticated) {
                                             event.preventDefault();
-                                            console.log('No user has logged in.');
                                             return $state.go('login');
                                         }
                                     }
                                 }, function (error) {
-                                    console.log('Error in Auth. ' + error);
                                 }
                             );
                     } else {
-                        console.log(Auth.isLoggedIn() + "is logged in ");
                         if (!toState.authenticated) {
                             event.preventDefault();
                             return $state.go('home.teams');
