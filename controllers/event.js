@@ -94,6 +94,15 @@ exports.create = function (sess, team_id, title, description, start, end, callba
                 user_id: user_id
             });
 
+            // send event notification
+            io.emit('notification', {
+                type: 'event',
+                team_id: team_id,
+                team_name: team_obj.name,
+                nickname: sess.nickname,
+                user_id: user_id
+            });
+
             callback({
                 'code': '1',
                 'msg': 'Event ' + title + ' has been created successfully'
