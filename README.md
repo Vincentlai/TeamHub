@@ -2,9 +2,9 @@
 
 ## Team Collaboration Web Application
 
-> A web application that helps project teams to collaborate in a fast, dynamic and real-time environment. The primary technologies that we are going to use will be Express.js, Node.js, Angular.js and MongoDB.
+> A web application that helps project teams to collaborate in a fast, dynamic and real-time environment. The primary technologies that we used are Express.js, Node.js, Angular.js and MongoDB. We also used Socket.Io for building real-time chat and notification.
 
-## Features 
+## Main Features 
 
 - User registration
 - Update personal info(change pwd, change avatar)
@@ -14,9 +14,16 @@
 - Publish/delete new posts(text/pictures) in team
 - Comment and Like on posts
 - Create new event/meeting using calendar
-- Instant team chat
-- File sharing
-- Real-time Notification of team activities
+- Instant team chat (supports both text and picture)
+- File sharing (uploading/downloading files)
+- Real-time Notification of team activities (Event reminder)
+
+> All the features mentioned above work perfectly.
+
+## Additional Features
+- Minimalist UI design with consistency
+- Team Filters in overview page for notification
+- Files page allows smart search (atuo-filling file name) and different ordering options
 
 ## Browse http://localhost:3000/ to see the site 
 
