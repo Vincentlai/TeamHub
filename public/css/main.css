@@ -515,13 +515,27 @@ Header  Navigation
 
 .ad {
     font-family: "Arial Black", serif;
-    font-size: 4em;
+  font-size: 3em;
     line-height: 1.5em;
-    width: 40%;
+  width: 80%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 100px;
     color: white;
+}
+
+@media only screen and (min-width: 768px) {
+  .ad {
+    font-size: 3.5em;
+    width: 60%;
+  }
+}
+
+@media only screen and (min-width: 1280px) {
+  .ad {
+    font-size: 4em;
+    width: 40%;
+  }
 }
 /*
   Loading animation
